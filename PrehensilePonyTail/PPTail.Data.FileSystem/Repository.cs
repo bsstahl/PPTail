@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace PPTail.Data.FileSystem
 {
-    public class Repository
+    public class Repository: Interfaces.IContentRepository
     {
-        public Repository()
-        {
-        }
+        public Repository() { }
+
     }
 }

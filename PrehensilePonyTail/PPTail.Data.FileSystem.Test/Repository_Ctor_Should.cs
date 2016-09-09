@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PPTail.Interfaces;
+using System;
 using Xunit;
 
 namespace PPTail.Data.FileSystem.Test
@@ -9,7 +10,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void NotThrowAnException() 
         {
-            var target = new Repository();
+            var target = (null as IContentRepository).Create();
         }
 
     }

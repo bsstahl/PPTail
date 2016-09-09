@@ -3,16 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace PPTail.Generator.T4Html.Test
 {
-    public class PageGenerator_Ctor_Should
+    public static class Extensions
     {
-        [Fact]
-        public void NotThrowAnException()
+        public static IPageGenerator Create(this IPageGenerator ignore)
         {
-            var target = (null as IPageGenerator).Create();
+            return new PPTail.Generator.T4Html.PageGenerator();
         }
     }
 }
