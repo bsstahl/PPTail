@@ -10,7 +10,7 @@ namespace PPTail.Generator.T4Html
     {
         public static string ProcessTemplate(this ContentItem item, string template)
         {
-            return template.Replace("{Title}", item.Title).Replace("{Content}", item.Content);
+            return template.Replace("{Title}", item.Title).Replace("{Content}", item.Content).Replace("{Author}", item.Author);
         }
     }
 }
