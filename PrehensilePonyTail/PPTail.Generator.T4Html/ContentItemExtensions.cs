@@ -8,7 +8,7 @@ namespace PPTail.Generator.T4Html
 {
     public static class ContentItemExtensions
     {
-        public static string ProcessTemplate(this ContentItem item, string template)
+        public static string ProcessTemplate(this ContentItem item, string template, string dateTimeFormatSpecifier)
         {
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", item.Content)

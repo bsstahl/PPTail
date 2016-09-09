@@ -10,10 +10,12 @@ namespace PPTail.Generator.T4Html
     {
         private string _contentPageTemplate;
         private string _postPageTemplate;
+        private string _dateTimeFormatSpecifier;
 
-        public PageGenerator(string contentPageTemplate, string postPageTemplate)
+        public PageGenerator(string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
         {
             _contentPageTemplate = contentPageTemplate;
+            _dateTimeFormatSpecifier = dateTimeFormatSpecifier;
         }
 
         private string ContentPageTemplate
@@ -24,9 +26,17 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        private string DateTimeFormatSpecifier
+        {
+            get
+            {
+                return _dateTimeFormatSpecifier;
+            }
+        }
+
         public string GenerateContentPage(ContentItem pageData)
         {
-            return pageData.ProcessTemplate(this.ContentPageTemplate);
+            return pageData.ProcessTemplate(this.ContentPageTemplate, this.DateTimeFormatSpecifier);
         }
 
         public string GeneratePostPage(ContentItem article)

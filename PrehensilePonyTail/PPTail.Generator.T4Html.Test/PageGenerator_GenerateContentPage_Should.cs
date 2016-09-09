@@ -180,5 +180,42 @@ namespace PPTail.Generator.T4Html.Test
             Assert.Equal(0, actualCount);
         }
 
+        [Fact]
+        public void ReplaceAllPubDatePlaceholdersWithThePubDate()
+        {
+            const string placeholderText = "{PublicationDate}";
+            const string dateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
+
+            var pageData = (null as ContentItem).Create();
+            var expectedData = pageData.PublicationDate.ToString(dateTimeFormatSpecifier);
+
+            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
+            var target = (null as IPageGenerator).Create(template, string.Empty, dateTimeFormatSpecifier);
+
+            var actual = target.GenerateContentPage(pageData);
+            Console.WriteLine(actual);
+
+            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
+            Assert.Equal(6, actualCount);
+        }
+
+        [Fact]
+        public void ReplaceAllLastModDatePlaceholdersWithTheLastModDate()
+        {
+            const string placeholderText = "{LastModificationDate}";
+            const string dateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
+
+            var pageData = (null as ContentItem).Create();
+            var expectedData = pageData.LastModificationDate.ToString(dateTimeFormatSpecifier);
+
+            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
+            var target = (null as IPageGenerator).Create(template, string.Empty, dateTimeFormatSpecifier);
+
+            var actual = target.GenerateContentPage(pageData);
+            Console.WriteLine(actual);
+
+            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
+            Assert.Equal(6, actualCount);
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace PPTail.Generator.T4Html.Test
     {
         const string _contentPageTemplatePath = @"..\ContentPage.template.html";
         const string _postPageTemplatePath = @"..\PostPage.template.html";
+        const string _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
 
         public static IPageGenerator Create(this IPageGenerator ignore)
         {
@@ -22,7 +23,12 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate)
         {
-            return new PPTail.Generator.T4Html.PageGenerator(contentPageTemplate, postPageTemplate);
+            return ignore.Create(contentPageTemplate, postPageTemplate, _defaultDateTimeFormatSpecifier);
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
+        {
+            return new PPTail.Generator.T4Html.PageGenerator(contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier);
         }
 
         public static ContentItem Create(this ContentItem ignore)
