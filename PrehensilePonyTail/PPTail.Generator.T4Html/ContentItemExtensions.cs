@@ -13,7 +13,9 @@ namespace PPTail.Generator.T4Html
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", item.Content)
                 .Replace("{Author}", item.Author)
-                .Replace("{Description}", item.Description);
+                .Replace("{Description}", item.Description)
+                .Replace("{PublicationDate}", item.PublicationDate.ToString(dateTimeFormatSpecifier))
+                .Replace("{LastModificationDate}", item.LastModificationDate.ToString(dateTimeFormatSpecifier));
         }
     }
 }
