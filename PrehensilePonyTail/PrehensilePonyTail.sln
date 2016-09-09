@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail", "PPTail\PPTail.xproj", "{399BA252-B5D3-4912-A5C2-0760F325837A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Common", "PPTail.Common\PPTail.Common.xproj", "{BD3009C6-BA42-4029-815D-8774ACE59C60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1AF51888-396D-4451-AB09-1CEC9AAC5BA5}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.FileSystem", "PPTail.Data.FileSystem\PPTail.Data.FileSystem.xproj", "{D2412FFD-AC36-470D-BF16-E87463A22D26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B28258E1-3587-4F84-B41F-1EE3A9139868}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.FileSystem.Test", "PPTail.Data.FileSystem.Test\PPTail.Data.FileSystem.Test.xproj", "{4060760D-0892-4E38-B97F-E05D8D6CED40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{399BA252-B5D3-4912-A5C2-0760F325837A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399BA252-B5D3-4912-A5C2-0760F325837A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399BA252-B5D3-4912-A5C2-0760F325837A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399BA252-B5D3-4912-A5C2-0760F325837A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD3009C6-BA42-4029-815D-8774ACE59C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD3009C6-BA42-4029-815D-8774ACE59C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD3009C6-BA42-4029-815D-8774ACE59C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD3009C6-BA42-4029-815D-8774ACE59C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2412FFD-AC36-470D-BF16-E87463A22D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2412FFD-AC36-470D-BF16-E87463A22D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2412FFD-AC36-470D-BF16-E87463A22D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2412FFD-AC36-470D-BF16-E87463A22D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4060760D-0892-4E38-B97F-E05D8D6CED40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4060760D-0892-4E38-B97F-E05D8D6CED40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4060760D-0892-4E38-B97F-E05D8D6CED40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4060760D-0892-4E38-B97F-E05D8D6CED40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{399BA252-B5D3-4912-A5C2-0760F325837A} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{BD3009C6-BA42-4029-815D-8774ACE59C60} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{D2412FFD-AC36-470D-BF16-E87463A22D26} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{4060760D-0892-4E38-B97F-E05D8D6CED40} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+	EndGlobalSection
+EndGlobal
