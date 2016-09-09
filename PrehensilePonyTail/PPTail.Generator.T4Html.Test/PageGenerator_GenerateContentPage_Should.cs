@@ -11,7 +11,7 @@ namespace PPTail.Generator.T4Html.Test
     public class PageGenerator_GenerateContentPage_Should
     {
         [Fact]
-        public void SetTheContentTitleAsTitleOfThePage()
+        public void ReplaceATitlePlaceholderWithTheTitle()
         {
             var pageData = (null as ContentItem).Create();
 
