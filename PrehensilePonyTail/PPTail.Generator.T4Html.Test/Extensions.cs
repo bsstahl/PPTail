@@ -10,9 +10,19 @@ namespace PPTail.Generator.T4Html.Test
 {
     public static class Extensions
     {
+        const string _contentPageTemplatePath = @"..\ContentPage.template.html";
+        const string _postPageTemplatePath = @"..\PostPage.template.html";
+
         public static IPageGenerator Create(this IPageGenerator ignore)
         {
-            return new PPTail.Generator.T4Html.PageGenerator();
+            var cpt = System.IO.File.ReadAllText(_contentPageTemplatePath);
+            var ppt = System.IO.File.ReadAllText(_postPageTemplatePath);
+            return ignore.Create(cpt, ppt);
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate)
+        {
+            return new PPTail.Generator.T4Html.PageGenerator(contentPageTemplate, postPageTemplate);
         }
 
         public static ContentItem Create(this ContentItem ignore)

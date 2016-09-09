@@ -13,12 +13,14 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void SetTheContentTitleAsTitleOfThePage()
         {
-            var target = (null as IPageGenerator).Create();
             var pageData = (null as ContentItem).Create();
 
-            string expected = $"<title>{pageData.Title}</title>";
+            string template = "*******************************{Title}*******************************";
+            var target = (null as IPageGenerator).Create(template, string.Empty);
+
             var actual = target.GenerateContentPage(pageData);
-            Assert.Contains(expected, actual);
+            Console.WriteLine(actual);
+            Assert.Contains(pageData.Title, actual);
         }
     }
 }
