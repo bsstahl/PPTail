@@ -12,7 +12,7 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateContentPage(ContentItem pageData)
         {
-            throw new NotImplementedException();
+            return $"<title>{pageData.Title}</title>";
         }
 
         public string GeneratePostPage(ContentItem article)
