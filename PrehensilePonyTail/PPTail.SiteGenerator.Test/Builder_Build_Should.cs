@@ -100,13 +100,9 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
-            var contentItems = new List<ContentItem>();
-            for (int i = 0; i < 25.GetRandom(10); i++)
-            {
-                var item = (null as ContentItem).Create();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
                 item.IsPublished = false;
-                contentItems.Add(item);
-            }
 
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
 
@@ -122,13 +118,9 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
-            var contentItems = new List<ContentItem>();
-            for (int i = 0; i < 50.GetRandom(25); i++)
-            {
-                var item = (null as ContentItem).Create();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
-                contentItems.Add(item);
-            }
 
             var expected = contentItems.Count(ci => ci.IsPublished);
 
@@ -146,13 +138,9 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
-            var contentItems = new List<ContentItem>();
-            for (int i = 0; i < 50.GetRandom(25); i++)
-            {
-                var item = (null as ContentItem).Create();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
                 item.IsPublished = true;
-                contentItems.Add(item);
-            }
 
             var unpublishedItem = contentItems.GetRandom();
             unpublishedItem.IsPublished = false;
@@ -172,13 +160,9 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
-            var contentItems = new List<ContentItem>();
-            for (int i = 0; i < 25.GetRandom(10); i++)
-            {
-                var item = (null as ContentItem).Create();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
                 item.IsPublished = false;
-                contentItems.Add(item);
-            }
 
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
 
@@ -194,13 +178,9 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
-            var contentItems = new List<ContentItem>();
-            for (int i = 0; i < 50.GetRandom(25); i++)
-            {
-                var item = (null as ContentItem).Create();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
-                contentItems.Add(item);
-            }
 
             var expected = contentItems.Count(ci => ci.IsPublished);
 
@@ -218,13 +198,9 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
-            var contentItems = new List<ContentItem>();
-            for (int i = 0; i < 50.GetRandom(25); i++)
-            {
-                var item = (null as ContentItem).Create();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
                 item.IsPublished = true;
-                contentItems.Add(item);
-            }
 
             var unpublishedItem = contentItems.GetRandom();
             unpublishedItem.IsPublished = false;
@@ -236,6 +212,7 @@ namespace PPTail.SiteGenerator.Test
 
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
         }
+
 
     }
 }
