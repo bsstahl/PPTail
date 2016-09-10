@@ -25,7 +25,15 @@ namespace PPTail.SiteGenerator
             // TODO: Add all post pages to the results
 
             var pages = _contentRepo.GetAllPages();
-            // TODO: All all content pages to the results
+            foreach (var page in pages)
+            {
+                // All all content pages to the results
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = ".\\Pages\\",
+                    Content = ""
+                });
+            }
 
             return result;
         }
