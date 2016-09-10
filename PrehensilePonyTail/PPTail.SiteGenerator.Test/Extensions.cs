@@ -20,7 +20,12 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen)
         {
-            return new Builder(contentRepo, pageGen);
+            return ignore.Create(contentRepo, pageGen, "html");
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, string pageFilenameExtension)
+        {
+            return new Builder(contentRepo, pageGen, pageFilenameExtension);
         }
 
         public static ContentItem Create(this ContentItem ignore)

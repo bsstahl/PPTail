@@ -6,6 +6,7 @@ using Xunit;
 using Moq;
 using PPTail.Interfaces;
 using PPTail.Entities;
+using TestHelperExtensions;
 
 namespace PPTail.SiteGenerator.Test
 {
@@ -54,9 +55,44 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
+
             var target = (null as Builder).Create(contentRepo.Object, pageGen);
             var actual = target.Build();
+
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains("\\Posts\\")));
         }
+
+        [Fact]
+        public void SetTheFilenameOfTheContentPageToTheSlugPlusTheExtension()
+        {
+            string extension = string.Empty.GetRandom(4);
+            var pageGen = Mock.Of<IPageGenerator>();
+            var contentRepo = new Mock<IContentRepository>();
+            var contentItem = (null as ContentItem).Create();
+            var expected = $"\\Pages\\{contentItem.Slug}.{extension}";
+            contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen, extension);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains(expected)));
+        }
+
+        [Fact]
+        public void SetTheFilenameOfThePostPageToTheSlugPlusTheExtension()
+        {
+            string extension = string.Empty.GetRandom(4);
+            var pageGen = Mock.Of<IPageGenerator>();
+            var contentRepo = new Mock<IContentRepository>();
+            var contentItem = (null as ContentItem).Create();
+            var expected = $"\\Posts\\{contentItem.Slug}.{extension}";
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen, extension);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains(expected)));
+        }
+
     }
 }

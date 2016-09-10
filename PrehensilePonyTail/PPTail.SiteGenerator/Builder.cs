@@ -12,7 +12,7 @@ namespace PPTail.SiteGenerator
         private readonly IContentRepository _contentRepo;
         private readonly IPageGenerator _pageGen;
 
-        public Builder(IContentRepository contentRepo, IPageGenerator pageGen)
+        public Builder(IContentRepository contentRepo, IPageGenerator pageGen, string pageFilenameExtension)
         {
             _contentRepo = contentRepo;
         }
