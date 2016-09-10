@@ -165,5 +165,77 @@ namespace PPTail.SiteGenerator.Test
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
         }
 
+
+        [Fact]
+        public void DontCreateAnyFilesIfAllPostsAreUnpublished()
+        {
+            var pageGen = Mock.Of<IPageGenerator>();
+            var contentRepo = new Mock<IContentRepository>();
+
+            var contentItems = new List<ContentItem>();
+            for (int i = 0; i < 25.GetRandom(10); i++)
+            {
+                var item = (null as ContentItem).Create();
+                item.IsPublished = false;
+                contentItems.Add(item);
+            }
+
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count());
+        }
+
+        [Fact]
+        public void OnlyCreateAsManyFilesAsThereArePublishedPosts()
+        {
+            var pageGen = Mock.Of<IPageGenerator>();
+            var contentRepo = new Mock<IContentRepository>();
+
+            var contentItems = new List<ContentItem>();
+            for (int i = 0; i < 50.GetRandom(25); i++)
+            {
+                var item = (null as ContentItem).Create();
+                item.IsPublished = true.GetRandom();
+                contentItems.Add(item);
+            }
+
+            var expected = contentItems.Count(ci => ci.IsPublished);
+
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var actual = target.Build();
+
+            Assert.Equal(expected, actual.Count());
+        }
+
+        [Fact]
+        public void DoNotCreateOutputForAnUnpublishedPost()
+        {
+            var pageGen = Mock.Of<IPageGenerator>();
+            var contentRepo = new Mock<IContentRepository>();
+
+            var contentItems = new List<ContentItem>();
+            for (int i = 0; i < 50.GetRandom(25); i++)
+            {
+                var item = (null as ContentItem).Create();
+                item.IsPublished = true;
+                contentItems.Add(item);
+            }
+
+            var unpublishedItem = contentItems.GetRandom();
+            unpublishedItem.IsPublished = false;
+
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
+        }
+
     }
 }
