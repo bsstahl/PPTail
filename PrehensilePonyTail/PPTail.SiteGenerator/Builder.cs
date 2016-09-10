@@ -11,10 +11,12 @@ namespace PPTail.SiteGenerator
     {
         private readonly IContentRepository _contentRepo;
         private readonly IPageGenerator _pageGen;
+        private readonly string _pageFilenameExtension;
 
         public Builder(IContentRepository contentRepo, IPageGenerator pageGen, string pageFilenameExtension)
         {
             _contentRepo = contentRepo;
+            _pageFilenameExtension = pageFilenameExtension;
         }
 
         public IEnumerable<SiteFile> Build()
@@ -27,7 +29,7 @@ namespace PPTail.SiteGenerator
                 // All all content pages to the results
                 result.Add(new SiteFile()
                 {
-                    RelativeFilePath = ".\\Posts\\",
+                    RelativeFilePath = $".\\Posts\\{post.Slug}.{_pageFilenameExtension}",
                     Content = ""
                 });
             }
@@ -38,7 +40,7 @@ namespace PPTail.SiteGenerator
                 // All all content pages to the results
                 result.Add(new SiteFile()
                 {
-                    RelativeFilePath = ".\\Pages\\",
+                    RelativeFilePath = $".\\Pages\\{page.Slug}.{_pageFilenameExtension}",
                     Content = ""
                 });
             }
