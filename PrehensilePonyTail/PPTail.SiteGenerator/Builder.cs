@@ -16,6 +16,7 @@ namespace PPTail.SiteGenerator
         public Builder(IContentRepository contentRepo, IPageGenerator pageGen, string pageFilenameExtension)
         {
             _contentRepo = contentRepo;
+            _pageGen = pageGen;
             _pageFilenameExtension = pageFilenameExtension;
         }
 
@@ -43,7 +44,7 @@ namespace PPTail.SiteGenerator
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Pages\\{page.Slug}.{_pageFilenameExtension}",
-                        Content = ""
+                        Content = _pageGen.GenerateContentPage(page)
                     });
             }
 

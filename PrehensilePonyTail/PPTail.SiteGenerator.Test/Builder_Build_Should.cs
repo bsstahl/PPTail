@@ -222,16 +222,16 @@ namespace PPTail.SiteGenerator.Test
 
             var pageGen = new Mock<IPageGenerator>();
             foreach (var item in contentItems)
-            {
                 item.IsPublished = true.GetRandom();
-                if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(item), Times.Once);
-            }
 
             var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
             var actual = target.Build();
 
-            pageGen.VerifyAll();
+            foreach (var item in contentItems)
+            {
+                if (item.IsPublished)
+                    pageGen.Verify(c => c.GenerateContentPage(item), Times.Once);
+            }
         }
 
     }
