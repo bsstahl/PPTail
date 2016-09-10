@@ -37,12 +37,13 @@ namespace PPTail.SiteGenerator
             var pages = _contentRepo.GetAllPages();
             foreach (var page in pages)
             {
-                // All all content pages to the results
-                result.Add(new SiteFile()
-                {
-                    RelativeFilePath = $".\\Pages\\{page.Slug}.{_pageFilenameExtension}",
-                    Content = ""
-                });
+                // All all published content pages to the results
+                if (page.IsPublished)
+                    result.Add(new SiteFile()
+                    {
+                        RelativeFilePath = $".\\Pages\\{page.Slug}.{_pageFilenameExtension}",
+                        Content = ""
+                    });
             }
 
             return result;
