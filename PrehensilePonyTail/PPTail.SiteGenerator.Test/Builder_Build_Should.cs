@@ -213,6 +213,26 @@ namespace PPTail.SiteGenerator.Test
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
         }
 
+        [Fact]
+        public void CallThePageGeneratorExactlyOnceWithEachPublishedPage()
+        {
+            var contentRepo = new Mock<IContentRepository>();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
+
+            var pageGen = new Mock<IPageGenerator>();
+            foreach (var item in contentItems)
+            {
+                item.IsPublished = true.GetRandom();
+                if (item.IsPublished)
+                    pageGen.Verify(c => c.GenerateContentPage(item), Times.Once);
+            }
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var actual = target.Build();
+
+            pageGen.VerifyAll();
+        }
 
     }
 }
