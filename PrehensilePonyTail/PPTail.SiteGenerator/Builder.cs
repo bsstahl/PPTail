@@ -9,15 +9,23 @@ namespace PPTail.SiteGenerator
 {
     public class Builder
     {
+        private readonly IContentRepository _contentRepo;
+        private readonly IPageGenerator _pageGen;
+
         public Builder(IContentRepository contentRepo, IPageGenerator pageGen)
         {
+            _contentRepo = contentRepo;
         }
 
         public IEnumerable<SiteFile> Build()
         {
             var result = new List<SiteFile>();
 
-            //TODO: Implement
+            var posts = _contentRepo.GetAllPosts();
+            // TODO: Add all post pages to the results
+
+            var pages = _contentRepo.GetAllPages();
+            // TODO: All all content pages to the results
 
             return result;
         }
