@@ -22,7 +22,15 @@ namespace PPTail.SiteGenerator
             var result = new List<SiteFile>();
 
             var posts = _contentRepo.GetAllPosts();
-            // TODO: Add all post pages to the results
+            foreach (var post in posts)
+            {
+                // All all content pages to the results
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = ".\\Posts\\",
+                    Content = ""
+                });
+            }
 
             var pages = _contentRepo.GetAllPages();
             foreach (var page in pages)
