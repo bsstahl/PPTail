@@ -234,5 +234,25 @@ namespace PPTail.SiteGenerator.Test
             }
         }
 
+        [Fact]
+        public void CallThePageGeneratorExactlyOnceWithEachPublishedPost()
+        {
+            var contentRepo = new Mock<IContentRepository>();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
+
+            var pageGen = new Mock<IPageGenerator>();
+            foreach (var item in contentItems)
+                item.IsPublished = true.GetRandom();
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var actual = target.Build();
+
+            foreach (var item in contentItems)
+            {
+                if (item.IsPublished)
+                    pageGen.Verify(c => c.GeneratePostPage(item), Times.Once);
+            }
+        }
     }
 }
