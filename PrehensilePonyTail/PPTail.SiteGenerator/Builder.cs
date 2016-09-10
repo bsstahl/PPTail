@@ -32,7 +32,7 @@ namespace PPTail.SiteGenerator
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Posts\\{post.Slug}.{_pageFilenameExtension}",
-                        Content = ""
+                        Content = _pageGen.GeneratePostPage(post)
                     });
             }
 
