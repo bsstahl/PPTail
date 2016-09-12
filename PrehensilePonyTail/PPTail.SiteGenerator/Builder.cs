@@ -24,7 +24,24 @@ namespace PPTail.SiteGenerator
         {
             var result = new List<SiteFile>();
 
+            var settings = _contentRepo.GetSiteSettings();
+
+            // Create Stylesheet page
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $".\\Style.css",
+                Content = _pageGen.GenerateStylesheet(settings)
+            });
+
             var posts = _contentRepo.GetAllPosts();
+
+            // Create home page
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $".\\index.html",
+                Content = _pageGen.GenerateHomepage(settings, posts)
+            });
+
             foreach (var post in posts)
             {
                 // All all published content pages to the results
@@ -32,7 +49,7 @@ namespace PPTail.SiteGenerator
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Posts\\{post.Slug}.{_pageFilenameExtension}",
-                        Content = _pageGen.GeneratePostPage(post)
+                        Content = _pageGen.GeneratePostPage(settings, post)
                     });
             }
 
@@ -44,7 +61,7 @@ namespace PPTail.SiteGenerator
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Pages\\{page.Slug}.{_pageFilenameExtension}",
-                        Content = _pageGen.GenerateContentPage(page)
+                        Content = _pageGen.GenerateContentPage(settings, page)
                     });
             }
 

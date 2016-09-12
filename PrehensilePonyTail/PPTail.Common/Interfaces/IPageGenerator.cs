@@ -7,7 +7,9 @@ namespace PPTail.Interfaces
 {
     public interface IPageGenerator
     {
-        string GenerateContentPage(Entities.ContentItem pageData);
-        string GeneratePostPage(Entities.ContentItem article);
+        string GenerateStylesheet(Entities.SiteSettings settings);
+        string GenerateHomepage(Entities.SiteSettings settings, IEnumerable<Entities.ContentItem> posts);
+        string GenerateContentPage(Entities.SiteSettings settings, Entities.ContentItem pageData);
+        string GeneratePostPage(Entities.SiteSettings settings, Entities.ContentItem article);
     }
 }

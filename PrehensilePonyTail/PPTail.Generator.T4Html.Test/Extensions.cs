@@ -10,6 +10,7 @@ namespace PPTail.Generator.T4Html.Test
 {
     public static class Extensions
     {
+        const string _styleTemplatePath = @"..\Style.template.css";
         const string _contentPageTemplatePath = @"..\ContentPage.template.html";
         const string _postPageTemplatePath = @"..\PostPage.template.html";
         const string _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
@@ -28,7 +29,12 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
         {
-            return new PPTail.Generator.T4Html.PageGenerator(contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier);
+            return new PPTail.Generator.T4Html.PageGenerator(_styleTemplatePath, contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier);
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, string styleTemplate, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
+        {
+            return new PPTail.Generator.T4Html.PageGenerator(styleTemplate, contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier);
         }
 
         public static ContentItem Create(this ContentItem ignore)
@@ -47,5 +53,15 @@ namespace PPTail.Generator.T4Html.Test
                 Title = string.Empty.GetRandom()
             };
         }
+
+        public static SiteSettings Create(this SiteSettings ignore)
+        {
+            return new SiteSettings()
+            {
+                Title = "Test Site Title",
+                Description = "Test Site Description"
+            };
+        }
+
     }
 }

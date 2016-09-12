@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<page>
+  <title>Page Title 1</title>
+  <description />
+  <content>
+    &lt;h1&gt;Page Heading 1 in Content&lt;/h1&gt;
+    &lt;p&gt;Page content paragraph. This is the text.&lt;/p&gt;
+  </content>
+  <keywords />
+  <slug>Page-Title-1</slug>
+  <parent>00000000-0000-0000-0000-000000000000</parent>
+  <isfrontpage>False</isfrontpage>
+  <showinlist>False</showinlist>
+  <ispublished>True</ispublished>
+  <datecreated>2016-08-16 21:53:36</datecreated>
+  <datemodified>2016-08-16 22:15:32</datemodified>
+</page>

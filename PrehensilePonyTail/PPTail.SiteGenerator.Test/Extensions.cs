@@ -25,7 +25,7 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, string pageFilenameExtension)
         {
-            return new Builder(contentRepo, pageGen, pageFilenameExtension);
+            return ignore.Create(contentRepo, pageGen, pageFilenameExtension);
         }
 
         public static ContentItem Create(this ContentItem ignore)
@@ -51,6 +51,15 @@ namespace PPTail.SiteGenerator.Test
             for (int i = 0; i < count; i++)
                 contentItems.Add((null as ContentItem).Create());
             return contentItems;
+        }
+
+        public static SiteSettings Create(this SiteSettings ignore)
+        {
+            return new SiteSettings()
+            {
+                Title = "Test Site Title",
+                Description = "Test Site Description"
+            };
         }
 
     }

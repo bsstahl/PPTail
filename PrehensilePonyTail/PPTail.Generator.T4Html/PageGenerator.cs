@@ -8,41 +8,57 @@ namespace PPTail.Generator.T4Html
 {
     public class PageGenerator : Interfaces.IPageGenerator
     {
+        private string _styleTemplate;
+        private string _homePageTemplate;
         private string _contentPageTemplate;
         private string _postPageTemplate;
+        private string _itemTemplate;
         private string _dateTimeFormatSpecifier;
+        private string _itemSeparator;
 
-        public PageGenerator(string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
+        public PageGenerator(string styleTemplate, string homePageTemplate, string contentPageTemplate, string postPageTemplate, string itemTemplate, string dateTimeFormatSpecifier, string itemSeparator)
         {
+            _styleTemplate = styleTemplate;
+            _homePageTemplate = homePageTemplate;
             _contentPageTemplate = contentPageTemplate;
+            _postPageTemplate = postPageTemplate;
+            _itemTemplate = itemTemplate;
             _dateTimeFormatSpecifier = dateTimeFormatSpecifier;
+            _itemSeparator = itemSeparator;
         }
 
-        private string ContentPageTemplate
+        private string StyleTemplate  { get { return _styleTemplate; } }
+        private string HomePageTemplate { get { return _homePageTemplate;  } }
+        private string ContentPageTemplate { get { return _contentPageTemplate; } }
+        private string PostPageTemplate { get { return _postPageTemplate; } }
+        private string ItemTemplate { get { return _itemTemplate; } }
+        private string DateTimeFormatSpecifier { get { return _dateTimeFormatSpecifier; } }
+        private string ItemSeparator { get { return _itemSeparator; } }
+
+
+        //TODO: Test this method
+        public string GenerateStylesheet(SiteSettings settings)
         {
-            get
-            {
-                return _contentPageTemplate;
-            }
+            // TODO: Implement template processing (replace any settings values as needed)
+            return _styleTemplate;
         }
 
-        private string DateTimeFormatSpecifier
+        public string GenerateHomepage(SiteSettings settings, IEnumerable<ContentItem> posts)
         {
-            get
-            {
-                return _dateTimeFormatSpecifier;
-            }
+            return posts.ProcessTemplate(settings, this.HomePageTemplate, this.ItemTemplate, this.DateTimeFormatSpecifier, this.ItemSeparator);
         }
 
-        public string GenerateContentPage(ContentItem pageData)
+        public string GenerateContentPage(SiteSettings settings, ContentItem pageData)
         {
-            return pageData.ProcessTemplate(this.ContentPageTemplate, this.DateTimeFormatSpecifier);
+            return pageData.ProcessTemplate(settings, this.ContentPageTemplate, this.DateTimeFormatSpecifier);
         }
 
-        public string GeneratePostPage(ContentItem article)
+        //TODO: Test this method
+        public string GeneratePostPage(SiteSettings settings, ContentItem article)
         {
-            throw new NotImplementedException();
+            return article.ProcessTemplate(settings, this.PostPageTemplate, this.DateTimeFormatSpecifier);
         }
+
 
         public void LoadContentPageTemplate(string path)
         {
@@ -55,5 +71,6 @@ namespace PPTail.Generator.T4Html
             throw new NotImplementedException();
             // _postPageTemplate = System.IO.File.ReadAllText(path);
         }
+
     }
 }

@@ -227,10 +227,12 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
             var actual = target.Build();
 
+            var settings = (null as SiteSettings).Create();
+
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(item), Times.Once);
+                    pageGen.Verify(c => c.GenerateContentPage(settings, item), Times.Once);
             }
         }
 
@@ -245,14 +247,19 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
 
+            var settings = (null as SiteSettings).Create();
+
             var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
             var actual = target.Build();
 
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GeneratePostPage(item), Times.Once);
+                    pageGen.Verify(c => c.GeneratePostPage(settings, item), Times.Once);
             }
         }
+
+        //TODO: Add tests to verify SiteSettings
+
     }
 }
