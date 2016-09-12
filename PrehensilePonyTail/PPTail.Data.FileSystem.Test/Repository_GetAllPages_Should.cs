@@ -79,17 +79,28 @@ namespace PPTail.Data.FileSystem.Test
             Assert.Equal(expected, fileSystem.PathLastEnumerated);
         }
 
-        [Fact(Skip = "NotImplemented")]
-        public void SkipUnpublishedPage()
-        {
-
-        }
-
-        [Fact(Skip = "NotImplemented")]
+        [Fact]
         public void SkipPagesWithInvalidSchema()
         {
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
+            var fileSystem = new MockFileSystem();
+            fileSystem.Files = files;
+            fileSystem.FileText = "Not valid xml";
+
+            var serviceProvider = new ServiceCollection();
+            serviceProvider.AddSingleton<IFileSystem>(fileSystem);
+
+            var target = (null as IContentRepository).Create(serviceProvider);
+            var pages = target.GetAllPages();
+
+            Assert.Equal(0, pages.Count());
         }
 
+        [Fact(Skip = "NotImplemented")]
+        public void SkipPagesWithTheWrongRootNode()
+        {
+        }
     }
 }
