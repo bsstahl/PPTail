@@ -12,9 +12,12 @@ namespace PPTail.Data.FileSystem.Test
 
         public string FileText { get; set; }
 
+        public string PathLastEnumerated { get; set; }
+
 
         public IEnumerable<string> EnumerateFiles(string path)
         {
+            this.PathLastEnumerated = path;
             return this.Files;
         }
 

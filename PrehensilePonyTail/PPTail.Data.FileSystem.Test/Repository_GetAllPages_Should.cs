@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using TestHelperExtensions;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -54,6 +55,28 @@ namespace PPTail.Data.FileSystem.Test
             var pages = target.GetAllPages();
 
             Assert.Equal(3, pages.Count());
+        }
+
+        [Fact]
+        public void RequestFilesFromThePagesFolder()
+        {
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+
+            var fileSystem = new MockFileSystem();
+            fileSystem.Files = files;
+            fileSystem.FileText = "<page/>";
+
+            var serviceProvider = new ServiceCollection();
+            serviceProvider.AddSingleton<IFileSystem>(fileSystem);
+
+            string rootDirectory = $"c:\\{string.Empty.GetRandom()}";
+            string expected = rootDirectory + "\\pages";
+
+            var target = (null as IContentRepository).Create(serviceProvider);
+            var pages = target.GetAllPages();
+
+            Assert.Equal(expected, fileSystem.PathLastEnumerated);
         }
 
         [Fact(Skip = "NotImplemented")]

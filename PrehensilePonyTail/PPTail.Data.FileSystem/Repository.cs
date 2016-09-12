@@ -11,7 +11,7 @@ namespace PPTail.Data.FileSystem
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public Repository(IServiceProvider serviceProvider)
+        public Repository(IServiceProvider serviceProvider, string rootPath)
         {
             _serviceProvider = serviceProvider;
         }

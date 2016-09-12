@@ -19,12 +19,12 @@ namespace PPTail.Data.FileSystem.Test
 
         public static IContentRepository Create(this IContentRepository ignore, IServiceCollection container)
         {
-            return ignore.Create(container.BuildServiceProvider());
+            return ignore.Create(container, "c:\\");
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
+        public static IContentRepository Create(this IContentRepository ignore, IServiceCollection container, string rootPath)
         {
-            return new PPTail.Data.FileSystem.Repository(serviceProvider);
+            return new PPTail.Data.FileSystem.Repository(container.BuildServiceProvider(), rootPath);
         }
     }
 }
