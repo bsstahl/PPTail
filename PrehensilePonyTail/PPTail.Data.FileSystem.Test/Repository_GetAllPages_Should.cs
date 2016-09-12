@@ -70,10 +70,10 @@ namespace PPTail.Data.FileSystem.Test
             var serviceProvider = new ServiceCollection();
             serviceProvider.AddSingleton<IFileSystem>(fileSystem);
 
-            string rootDirectory = $"c:\\{string.Empty.GetRandom()}";
-            string expected = rootDirectory + "\\pages";
+            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            string expected = rootPath + "\\pages";
 
-            var target = (null as IContentRepository).Create(serviceProvider);
+            var target = (null as IContentRepository).Create(serviceProvider, rootPath);
             var pages = target.GetAllPages();
 
             Assert.Equal(expected, fileSystem.PathLastEnumerated);

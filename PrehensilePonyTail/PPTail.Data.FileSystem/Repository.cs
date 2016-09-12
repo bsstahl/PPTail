@@ -10,10 +10,12 @@ namespace PPTail.Data.FileSystem
     public class Repository: Interfaces.IContentRepository
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly string _rootPath;
 
         public Repository(IServiceProvider serviceProvider, string rootPath)
         {
             _serviceProvider = serviceProvider;
+            _rootPath = rootPath;
         }
 
         public IEnumerable<ContentItem> GetAllPages()
@@ -21,8 +23,8 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFileSystem>();
 
             var results = new List<ContentItem>();
-            // string pagePath = System.IO.Path.Combine(_rootPath, "pages");
-            var files = fileSystem.EnumerateFiles(""); // pagePath
+            string pagePath = System.IO.Path.Combine(_rootPath, "pages");
+            var files = fileSystem.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
                 var contentItem = fileSystem.ReadAllText(file).ParseContentItem("page");
