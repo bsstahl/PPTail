@@ -15,7 +15,8 @@ namespace PPTail.Generator.T4Html
                 .Replace("{Author}", item.Author)
                 .Replace("{Description}", item.Description)
                 .Replace("{PublicationDate}", item.PublicationDate.ToString(dateTimeFormatSpecifier))
-                .Replace("{LastModificationDate}", item.LastModificationDate.ToString(dateTimeFormatSpecifier));
+                .Replace("{LastModificationDate}", item.LastModificationDate.ToString(dateTimeFormatSpecifier))
+                .Replace("{ByLine}", item.ByLine);
         }
 
         public static string ReplaceSettingsVariables(this string template, SiteSettings settings)

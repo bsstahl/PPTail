@@ -1,6 +1,6 @@
 ﻿body {
 	color: #000000;
-	text-align: center;
+	text-align: left;
 	line-height: 140%;
 	font-family: Georgia,"Times New Roman",Times,serif;
 	font-size: 13px;
@@ -35,6 +35,8 @@ a, a:visited {
 
 	.header h2 {
 		font-size: 14px;
+		margin-bottom: 0;
+		margin-top: 0;
 	}
 
 .footer {
