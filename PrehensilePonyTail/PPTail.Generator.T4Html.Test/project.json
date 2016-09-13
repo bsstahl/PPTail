@@ -9,7 +9,8 @@
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "PPTail.Generator.T4Html": "1.0.0-*",
     "TestHelperExtensions": "1.1.5",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0"
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Moq": "4.6.38-alpha"
   },
   "testRunner": "xunit",
   "frameworks": {

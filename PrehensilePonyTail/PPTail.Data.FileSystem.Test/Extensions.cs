@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -11,7 +12,7 @@ namespace PPTail.Data.FileSystem.Test
     {
         public static IContentRepository Create(this IContentRepository ignore)
         {
-            IFileSystem mockFileSystem = new MockFileSystem();
+            IFileSystem mockFileSystem = Mock.Of<IFileSystem>();
             IServiceCollection container = new ServiceCollection();
             container.AddSingleton<IFileSystem>(mockFileSystem);
             return ignore.Create(container);
