@@ -224,6 +224,14 @@ namespace PPTail.Data.FileSystem.Test
             ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
         }
 
+        [Fact]
+        public void ReturnTheProperValueInTheSlugField()
+        {
+            string fieldName = "slug";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Slug;
+            ExecutePropertyTest(fieldName, fieldValueDelegate);
+        }
+
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             string expected = string.Empty.GetRandom();
