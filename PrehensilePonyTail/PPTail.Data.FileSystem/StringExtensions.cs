@@ -27,12 +27,15 @@ namespace PPTail.Data.FileSystem
             {
                 string author = node.GetElementValue("author");
 
+                bool isPublished = false;
+                bool.TryParse(node.GetElementValue("ispublished"), out isPublished);
+
                 // DateTime publicationDate = DateTime.MinValue;
                 // DateTime.TryParse(node.GetElementValue("pubDate"), out publicationDate);
 
                 result = new ContentItem()
                 {
-                    //IsPublished = Convert.ToBoolean(node.GetElementValue("ispublished")),
+                    IsPublished = isPublished,
                     Title = node.GetElementValue("title"),
                     Description = node.GetElementValue("description"),
                     Content = node.GetElementValue("content"),
