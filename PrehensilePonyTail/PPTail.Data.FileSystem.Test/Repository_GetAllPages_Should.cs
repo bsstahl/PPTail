@@ -211,6 +211,19 @@ namespace PPTail.Data.FileSystem.Test
             ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
         }
 
+        [Fact]
+        public void ReturnTheProperValueInTheLastModifiedDateField()
+        {
+            string fieldName = "lastModified";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.LastModificationDate.ToString();
+
+            DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
+            string expected = expectedValue.ToString();
+            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+
+            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+        }
+
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             string expected = string.Empty.GetRandom();
