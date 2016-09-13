@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Xunit;
 using TestHelperExtensions;
 using Moq;
+using System.Linq.Expressions;
+using PPTail.Entities;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -141,8 +143,15 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
+            string fieldName = "author";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Author;
+            ExecutePropertyTest(fieldName, fieldValueDelegate);
+        }
+
+        private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
+        {
             string expected = string.Empty.GetRandom();
-            string xml = $"<page><author>{expected}</author></page>";
+            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
@@ -160,9 +169,9 @@ namespace PPTail.Data.FileSystem.Test
 
             var target = (null as IContentRepository).Create(serviceProvider);
             var pages = target.GetAllPages();
+            var actual = pages.ToArray()[0];
 
-            Assert.Equal(expected, pages.ToArray()[0].Author);
+            Assert.Equal(expected, fieldValueDelegate(actual));
         }
-
     }
 }
