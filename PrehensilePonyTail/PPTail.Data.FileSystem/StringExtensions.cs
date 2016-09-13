@@ -25,7 +25,7 @@ namespace PPTail.Data.FileSystem
 
             if (node != null && node.Name.LocalName == nodeLocalName)
             {
-                // string author = node.GetElementValue("author");
+                string author = node.GetElementValue("author");
 
                 // DateTime publicationDate = DateTime.MinValue;
                 // DateTime.TryParse(node.GetElementValue("pubDate"), out publicationDate);
@@ -36,7 +36,7 @@ namespace PPTail.Data.FileSystem
                     //Title = node.GetElementValue("title"),
                     //Content = node.GetElementValue("content"),
                     //Slug = node.GetElementValue("slug"),
-                    //Author = author,
+                    Author = author
                     //PublicationDate = publicationDate,
                     //ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
                 };
