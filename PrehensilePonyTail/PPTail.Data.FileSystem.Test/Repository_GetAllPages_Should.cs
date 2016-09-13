@@ -164,6 +164,14 @@ namespace PPTail.Data.FileSystem.Test
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
+        [Fact]
+        public void ReturnTheProperValueInTheContentField()
+        {
+            string fieldName = "content";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Content;
+            ExecutePropertyTest(fieldName, fieldValueDelegate);
+        }
+
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             string expected = string.Empty.GetRandom();
