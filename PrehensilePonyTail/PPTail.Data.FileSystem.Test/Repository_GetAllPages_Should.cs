@@ -202,7 +202,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInThePubDateField()
         {
             string fieldName = "pubDate";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.PublicationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
             string expected = expectedValue.ToString();

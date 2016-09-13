@@ -30,8 +30,8 @@ namespace PPTail.Data.FileSystem
                 bool isPublished = false;
                 bool.TryParse(node.GetElementValue("ispublished"), out isPublished);
 
-                // DateTime publicationDate = DateTime.MinValue;
-                // DateTime.TryParse(node.GetElementValue("pubDate"), out publicationDate);
+                DateTime publicationDate = DateTime.MinValue;
+                DateTime.TryParse(node.GetElementValue("pubDate"), out publicationDate);
 
                 result = new ContentItem()
                 {
@@ -40,8 +40,8 @@ namespace PPTail.Data.FileSystem
                     Description = node.GetElementValue("description"),
                     Content = node.GetElementValue("content"),
                     //Slug = node.GetElementValue("slug"),
-                    Author = author
-                    //PublicationDate = publicationDate,
+                    Author = author,
+                    PublicationDate = publicationDate
                     //ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
                 };
             }
