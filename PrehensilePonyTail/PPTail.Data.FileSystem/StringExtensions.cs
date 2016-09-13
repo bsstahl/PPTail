@@ -33,7 +33,7 @@ namespace PPTail.Data.FileSystem
                 result = new ContentItem()
                 {
                     //IsPublished = Convert.ToBoolean(node.GetElementValue("ispublished")),
-                    //Title = node.GetElementValue("title"),
+                    Title = node.GetElementValue("title"),
                     //Content = node.GetElementValue("content"),
                     //Slug = node.GetElementValue("slug"),
                     Author = author
