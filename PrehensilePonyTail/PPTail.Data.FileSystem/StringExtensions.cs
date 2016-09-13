@@ -33,6 +33,9 @@ namespace PPTail.Data.FileSystem
                 DateTime publicationDate = DateTime.MinValue;
                 DateTime.TryParse(node.GetElementValue("pubDate"), out publicationDate);
 
+                DateTime lastModificationDate = DateTime.MinValue;
+                DateTime.TryParse(node.GetElementValue("lastModified"), out lastModificationDate);
+
                 result = new ContentItem()
                 {
                     IsPublished = isPublished,
@@ -41,7 +44,8 @@ namespace PPTail.Data.FileSystem
                     Content = node.GetElementValue("content"),
                     //Slug = node.GetElementValue("slug"),
                     Author = author,
-                    PublicationDate = publicationDate
+                    PublicationDate = publicationDate,
+                    LastModificationDate = lastModificationDate
                     //ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
                 };
             }
