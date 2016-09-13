@@ -23,8 +23,8 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFileSystem>();
-                fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
-                    .Returns(files);
+            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+                .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -172,11 +172,41 @@ namespace PPTail.Data.FileSystem.Test
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
+        [Fact]
+        public void ReturnTrueIfThePageIsPublished()
+        {
+            string fieldName = "ispublished";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
+
+            bool expectedValue = true;
+            string expected = expectedValue.ToString();
+            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+
+            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+        }
+
+        [Fact]
+        public void ReturnFalseIfThePageIsNotPublished()
+        {
+            string fieldName = "ispublished";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
+
+            bool expectedValue = false;
+            string expected = expectedValue.ToString();
+            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+
+            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+        }
+
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             string expected = string.Empty.GetRandom();
             string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+        }
 
+        private static void ExecutePropertyTest(string fieldName, string expected, Func<ContentItem, string> fieldValueDelegate, string xml)
+        {
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
