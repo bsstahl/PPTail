@@ -137,5 +137,32 @@ namespace PPTail.Data.FileSystem.Test
 
             Assert.Equal(0, pages.Count());
         }
+
+        [Fact]
+        public void ReturnTheProperValueInTheAuthorField()
+        {
+            string expected = string.Empty.GetRandom();
+            string xml = $"<page><author>{expected}</author></page>";
+
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+                    .Returns(files);
+
+            foreach (var file in files)
+                fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                    .Returns(xml);
+
+            var serviceProvider = new ServiceCollection();
+            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
+
+            var target = (null as IContentRepository).Create(serviceProvider);
+            var pages = target.GetAllPages();
+
+            Assert.Equal(expected, pages.ToArray()[0].Author);
+        }
+
     }
 }
