@@ -36,7 +36,18 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<ContentItem> GetAllPosts()
         {
-            throw new NotImplementedException();
+            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+
+            var results = new List<ContentItem>();
+            string pagePath = System.IO.Path.Combine(_rootPath, "posts");
+            var files = fileSystem.EnumerateFiles(pagePath);
+            foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
+            {
+                var contentItem = fileSystem.ReadAllText(file).ParseContentItem("post");
+                if (contentItem != null)
+                    results.Add(contentItem);
+            }
+            return results;
         }
     }
 }
