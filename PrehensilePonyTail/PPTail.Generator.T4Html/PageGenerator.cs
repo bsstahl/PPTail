@@ -3,26 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PPTail.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Generator.T4Html
 {
     public class PageGenerator : Interfaces.IPageGenerator
     {
-        private string _contentPageTemplate;
-        private string _postPageTemplate;
-        private string _dateTimeFormatSpecifier;
+        // private string _contentPageTemplate;
+        // private string _dateTimeFormatSpecifier;
 
-        public PageGenerator(string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
+        private readonly IServiceProvider _serviceProvider;
+        private readonly Settings _settings;
+        private readonly IEnumerable<Template> _templates;
+
+        public PageGenerator(IServiceProvider serviceProvider)
         {
-            _contentPageTemplate = contentPageTemplate;
-            _dateTimeFormatSpecifier = dateTimeFormatSpecifier;
+            _serviceProvider = serviceProvider;
+            _settings = serviceProvider.GetService<Settings>();
+            _templates = serviceProvider.GetService<IEnumerable<Template>>();
         }
 
-        private string ContentPageTemplate
+        private Template ContentPageTemplate
         {
             get
             {
-                return _contentPageTemplate;
+                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.ContentPage);
             }
         }
 
@@ -30,13 +35,13 @@ namespace PPTail.Generator.T4Html
         {
             get
             {
-                return _dateTimeFormatSpecifier;
+                return _settings.DateTimeFormatSpecifier;
             }
         }
 
         public string GenerateContentPage(ContentItem pageData)
         {
-            return pageData.ProcessTemplate(this.ContentPageTemplate, this.DateTimeFormatSpecifier);
+            return pageData.ProcessTemplate(this.ContentPageTemplate.Content, this.DateTimeFormatSpecifier);
         }
 
         public string GeneratePostPage(ContentItem article)

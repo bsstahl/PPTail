@@ -6,26 +6,35 @@ using PPTail.Interfaces;
 using Moq;
 using PPTail.Entities;
 using TestHelperExtensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.SiteGenerator.Test
 {
     public static class Extensions
     {
-        public static Builder Create(this Builder ignore)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo)
         {
-            IContentRepository contentRepo = Mock.Of<IContentRepository>();
-            IPageGenerator pageGen = Mock.Of<IPageGenerator>();
-            return ignore.Create(contentRepo, pageGen);
+            return ignore.Create(contentRepo, string.Empty.GetRandom());
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
         {
-            return ignore.Create(contentRepo, pageGen, "html");
+            IServiceCollection container = (null as IServiceCollection).Create();
+            var pageGen = Mock.Of<IPageGenerator>();
+
+            var settings = new Settings();
+            settings.outputFileExtension = pageFilenameExtension;
+
+            container.AddSingleton<IContentRepository>(contentRepo);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+
+            return ignore.Create(container);
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, string pageFilenameExtension)
+        public static Builder Create(this Builder ignore, IServiceCollection container)
         {
-            return new Builder(contentRepo, pageGen, pageFilenameExtension);
+            return new Builder(container.BuildServiceProvider());
         }
 
         public static ContentItem Create(this ContentItem ignore)
@@ -53,5 +62,13 @@ namespace PPTail.SiteGenerator.Test
             return contentItems;
         }
 
+        public static IServiceCollection Create(this IServiceCollection ignore)
+        {
+            var serviceCollection = new ServiceCollection();
+            
+            // TODO: create contentRepo, pageGen, pageFilenameExtension
+
+            return serviceCollection;
+        }
     }
 }

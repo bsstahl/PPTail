@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestHelperExtensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Generator.T4Html.Test
 {
@@ -28,7 +29,18 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
         {
-            return new PPTail.Generator.T4Html.PageGenerator(contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier);
+            var contentTemplate = new Template() { Content = contentPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
+            var postTemplate = new Template() { Content = postPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
+            var templates = new List<Template>() { contentTemplate, postTemplate };
+
+            var settings = new Settings();
+            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<Settings>(settings);
+
+            return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
         }
 
         public static ContentItem Create(this ContentItem ignore)

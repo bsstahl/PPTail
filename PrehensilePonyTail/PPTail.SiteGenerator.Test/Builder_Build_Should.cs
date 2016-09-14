@@ -7,6 +7,7 @@ using Moq;
 using PPTail.Interfaces;
 using PPTail.Entities;
 using TestHelperExtensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.SiteGenerator.Test
 {
@@ -15,35 +16,28 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void RequestAllPagesFromTheRepository()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
-
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
-
             contentRepo.Verify(c => c.GetAllPages(), Times.AtLeastOnce());
         }
 
         [Fact]
         public void RequestAllPostsFromTheRepository()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
-
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
-
             contentRepo.Verify(c => c.GetAllPosts(), Times.AtLeastOnce());
         }
 
         [Fact]
         public void ReturnOneItemInFolderPagesIfOnePageIsRetrieved()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains("\\Pages\\")));
         }
@@ -51,14 +45,11 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnOneItemInFolderPostsIfOnePostIsRetrieved()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
-
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
-
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains("\\Posts\\")));
         }
 
@@ -66,13 +57,12 @@ namespace PPTail.SiteGenerator.Test
         public void SetTheFilenameOfTheContentPageToTheSlugPlusTheExtension()
         {
             string extension = string.Empty.GetRandom(4);
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
             var expected = $"\\Pages\\{contentItem.Slug}.{extension}";
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen, extension);
+            var target = (null as Builder).Create(contentRepo.Object, extension);
             var actual = target.Build();
 
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains(expected)));
@@ -82,13 +72,12 @@ namespace PPTail.SiteGenerator.Test
         public void SetTheFilenameOfThePostPageToTheSlugPlusTheExtension()
         {
             string extension = string.Empty.GetRandom(4);
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
             var expected = $"\\Posts\\{contentItem.Slug}.{extension}";
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen, extension);
+            var target = (null as Builder).Create(contentRepo.Object, extension);
             var actual = target.Build();
 
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains(expected)));
@@ -97,7 +86,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DontCreateAnyFilesIfAllPagesAreUnpublished()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -106,7 +94,7 @@ namespace PPTail.SiteGenerator.Test
 
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count());
@@ -115,7 +103,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void OnlyCreateAsManyFilesAsThereArePublishedPages()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -126,7 +113,7 @@ namespace PPTail.SiteGenerator.Test
 
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
             Assert.Equal(expected, actual.Count());
@@ -135,7 +122,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DoNotCreateOutputForAnUnpublishedPage()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -147,7 +133,7 @@ namespace PPTail.SiteGenerator.Test
 
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
@@ -157,7 +143,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DontCreateAnyFilesIfAllPostsAreUnpublished()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -166,7 +151,7 @@ namespace PPTail.SiteGenerator.Test
 
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count());
@@ -175,7 +160,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void OnlyCreateAsManyFilesAsThereArePublishedPosts()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -186,7 +170,7 @@ namespace PPTail.SiteGenerator.Test
 
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
             Assert.Equal(expected, actual.Count());
@@ -195,7 +179,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DoNotCreateOutputForAnUnpublishedPost()
         {
-            var pageGen = Mock.Of<IPageGenerator>();
             var contentRepo = new Mock<IContentRepository>();
 
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -207,7 +190,7 @@ namespace PPTail.SiteGenerator.Test
 
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen);
+            var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
@@ -216,6 +199,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPage()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
@@ -224,7 +209,14 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var settings = new Settings();
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen.Object);
+            container.AddSingleton<Settings>(settings);
+
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             foreach (var item in contentItems)
@@ -237,6 +229,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPost()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
@@ -245,7 +239,13 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var settings = new Settings();
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen.Object);
+            container.AddSingleton<Settings>(settings);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             foreach (var item in contentItems)
