@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 
@@ -11,9 +12,15 @@ namespace PPTail
     {
         public static void Main(string[] args)
         {
-            // string sourceDataPath = "C:\\Users\\bsstahl\\Documents\\CognitiveInheritance\\App_Data";
-            string sourceDataPath = "E:\\CognitiveInheritance\\App_Data";
-            string outputPath = "C:\\Users\\bsstahl\\Documents\\My Web Sites\\Generated";
+            const string _sourceDataPathSettingName = "sourceDataPath";
+            const string _outputPathSettingName = "outputPath";
+
+            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
+            var config = builder.Build();
+
+            string sourceDataPath = config[_sourceDataPathSettingName];
+            string outputPath = config[_outputPathSettingName];
+
             string dateTimeFormatSpecifier = "MM/dd/yy H:mm UTC";
             string itemSeparator = "<hr/>";
 

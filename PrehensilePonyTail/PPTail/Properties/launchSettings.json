@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "PPTail": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "sourceDataPath": "C:\\Users\\bstahl\\Documents\\CognitiveInheritanceData"
+      }
+    },
+    "win7-dev-box": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "C:\\Users\\bstahl\\Documents\\My Web Sites\\CognitiveInheritance\\Generated",
+        "sourceDataPath": "C:\\Users\\bstahl\\Documents\\CognitiveInheritanceData"
+      }
+    }
+  }
+}
