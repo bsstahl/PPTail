@@ -59,5 +59,12 @@ namespace PPTail.Generator.T4Html.Test
                 Title = string.Empty.GetRandom()
             };
         }
+
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore)
+        {
+            var contentTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
+            var postTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
+            return new List<Template>() { contentTemplate, postTemplate };
+        }
     }
 }
