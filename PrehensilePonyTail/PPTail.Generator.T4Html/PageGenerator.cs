@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PPTail.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Exceptions;
 
 namespace PPTail.Generator.T4Html
 {
@@ -39,6 +40,14 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        private Template PostPageTemplate
+        {
+            get
+            {
+                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.PostPage);
+            }
+        }
+
         private string DateTimeFormatSpecifier
         {
             get
@@ -49,11 +58,16 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateContentPage(ContentItem pageData)
         {
+            var template = this.ContentPageTemplate;
+            if (template == null)
+                throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
+
             return pageData.ProcessTemplate(this.ContentPageTemplate.Content, this.DateTimeFormatSpecifier);
         }
 
         public string GeneratePostPage(ContentItem article)
         {
+            //TODO: Verify required templates are available
             throw new NotImplementedException();
         }
 
