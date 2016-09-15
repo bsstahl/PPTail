@@ -1,4 +1,6 @@
-﻿using PPTail.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PPTail.Entities;
+using PPTail.Exceptions;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,22 @@ namespace PPTail.Generator.T4Html.Test
 {
     public class PageGenerator_GenerateContentPage_Should
     {
+        [Fact]
+        public void ThrowATemplateNotFoundExceptionIfTheContentPageTemplateIsNotSupplied()
+        {
+            var allTemplates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var templates = allTemplates.Where(t => t.TemplateType != Enumerations.TemplateType.ContentPage);
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<Settings>(settings);
+
+            var pageData = (null as ContentItem).Create();
+            var target = (null as IPageGenerator).Create(templates, settings);
+            Assert.Throws<TemplateNotFoundException>(() => target.GenerateContentPage(pageData));
+        }
+
         [Fact]
         public void ReplaceATitlePlaceholderWithTheTitle()
         {

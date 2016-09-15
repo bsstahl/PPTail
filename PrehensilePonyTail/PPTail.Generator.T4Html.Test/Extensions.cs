@@ -33,14 +33,25 @@ namespace PPTail.Generator.T4Html.Test
             var postTemplate = new Template() { Content = postPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
             var templates = new List<Template>() { contentTemplate, postTemplate };
 
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
+            var settings = (null as Settings).CreateDefault(dateTimeFormatSpecifier);
 
+            return ignore.Create(templates, settings);
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, Settings settings)
+        {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<Settings>(settings);
 
             return new PPTail.Generator.T4Html.PageGenerator(container);
+        }
+
+        public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)
+        {
+            var settings = new Settings();
+            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
+            return settings;
         }
 
         public static ContentItem Create(this ContentItem ignore)
