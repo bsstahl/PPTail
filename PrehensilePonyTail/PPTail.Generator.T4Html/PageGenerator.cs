@@ -62,13 +62,16 @@ namespace PPTail.Generator.T4Html
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
 
-            return pageData.ProcessTemplate(this.ContentPageTemplate.Content, this.DateTimeFormatSpecifier);
+            return pageData.ProcessTemplate(template.Content, this.DateTimeFormatSpecifier);
         }
 
         public string GeneratePostPage(ContentItem article)
         {
-            //TODO: Verify required templates are available
-            throw new NotImplementedException();
+            var template = this.PostPageTemplate;
+            if (template == null)
+                throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
+
+            return article.ProcessTemplate(template.Content, this.DateTimeFormatSpecifier);
         }
 
         //public void LoadContentPageTemplate(string path)
