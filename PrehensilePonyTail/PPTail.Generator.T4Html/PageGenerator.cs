@@ -18,9 +18,17 @@ namespace PPTail.Generator.T4Html
 
         public PageGenerator(IServiceCollection container)
         {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+
             _serviceProvider = container.BuildServiceProvider();
             _settings = _serviceProvider.GetService<Settings>();
+            if (_settings == null)
+                throw new Exceptions.DependencyNotFoundException(typeof(Settings));
+
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            if (!_templates.Any())
+                throw new Exceptions.DependencyNotFoundException(typeof(IEnumerable<Template>));
         }
 
         private Template ContentPageTemplate
