@@ -49,16 +49,16 @@ namespace PPTail.Generator.T4Html
             throw new NotImplementedException();
         }
 
-        public void LoadContentPageTemplate(string path)
-        {
-            throw new NotImplementedException();
-            // _contentPageTemplate = System.IO.File.ReadAllText(path);
-        }
+        //public void LoadContentPageTemplate(string path)
+        //{
+        //    throw new NotImplementedException();
+        //    // _contentPageTemplate = System.IO.File.ReadAllText(path);
+        //}
 
-        public void LoadPostPageTemplate(string path)
-        {
-            throw new NotImplementedException();
-            // _postPageTemplate = System.IO.File.ReadAllText(path);
-        }
+        //public void LoadPostPageTemplate(string path)
+        //{
+        //    throw new NotImplementedException();
+        //    // _postPageTemplate = System.IO.File.ReadAllText(path);
+        //}
     }
 }

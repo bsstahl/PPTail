@@ -16,7 +16,8 @@ namespace PPTail
             // Configure Dependencies
             container.AddSingleton<Settings>(settings);
 
-            // var fileSystem = new PPTail.Data.FileSystem.
+            var fileSystem = new PPTail.Data.FileSystem.FileSystemAbstraction.Provider();
+            container.AddSingleton<PPTail.Data.FileSystem.IFileSystem>(fileSystem);
 
             var repo = new PPTail.Data.FileSystem.Repository(container);
             container.AddSingleton<Interfaces.IContentRepository>(repo);
