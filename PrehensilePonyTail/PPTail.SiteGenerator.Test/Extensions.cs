@@ -19,7 +19,7 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            IServiceCollection container = new ServiceCollection();
             var pageGen = Mock.Of<IPageGenerator>();
 
             var settings = new Settings();
@@ -34,7 +34,7 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IServiceCollection container)
         {
-            return new Builder(container.BuildServiceProvider());
+            return new Builder(container);
         }
 
         public static ContentItem Create(this ContentItem ignore)
@@ -62,13 +62,5 @@ namespace PPTail.SiteGenerator.Test
             return contentItems;
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore)
-        {
-            var serviceCollection = new ServiceCollection();
-            
-            // TODO: create contentRepo, pageGen, pageFilenameExtension
-
-            return serviceCollection;
-        }
     }
 }

@@ -30,10 +30,7 @@ namespace PPTail.Data.FileSystem.Test
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<post/>");
 
-            var serviceProvider = new ServiceCollection();
-            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
-
-            var target = (null as IContentRepository).Create(serviceProvider);
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(files.Count(), posts.Count());
@@ -59,10 +56,7 @@ namespace PPTail.Data.FileSystem.Test
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<post/>");
 
-            var serviceProvider = new ServiceCollection();
-            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
-
-            var target = (null as IContentRepository).Create(serviceProvider);
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(3, posts.Count());
@@ -77,6 +71,9 @@ namespace PPTail.Data.FileSystem.Test
             string rootPath = $"c:\\{string.Empty.GetRandom()}";
             string expectedPath = rootPath + "\\posts";
 
+            var settings = new Settings();
+            settings.ExtendedSettings.Set("sourceDataPath", rootPath);
+
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.Setup(f => f.EnumerateFiles(expectedPath))
                 .Returns(files).Verifiable();
@@ -85,10 +82,11 @@ namespace PPTail.Data.FileSystem.Test
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<post/>");
 
-            var serviceProvider = new ServiceCollection();
-            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
+            var container = new ServiceCollection();
+            container.AddSingleton<IFileSystem>(fileSystem.Object);
+            container.AddSingleton<Settings>(settings);
 
-            var target = (null as IContentRepository).Create(serviceProvider, rootPath);
+            var target = (null as IContentRepository).Create(container);
             var posts = target.GetAllPosts();
 
             fileSystem.VerifyAll();
@@ -108,10 +106,7 @@ namespace PPTail.Data.FileSystem.Test
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("Not valid XML");
 
-            var serviceProvider = new ServiceCollection();
-            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
-
-            var target = (null as IContentRepository).Create(serviceProvider);
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(0, posts.Count());
@@ -131,10 +126,7 @@ namespace PPTail.Data.FileSystem.Test
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<posts/>");
 
-            var serviceProvider = new ServiceCollection();
-            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
-
-            var target = (null as IContentRepository).Create(serviceProvider);
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(0, posts.Count());
@@ -252,10 +244,7 @@ namespace PPTail.Data.FileSystem.Test
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns(xml);
 
-            var serviceProvider = new ServiceCollection();
-            serviceProvider.AddSingleton<IFileSystem>(fileSystem.Object);
-
-            var target = (null as IContentRepository).Create(serviceProvider);
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var pages = target.GetAllPosts();
             var actual = pages.ToArray()[0];
 

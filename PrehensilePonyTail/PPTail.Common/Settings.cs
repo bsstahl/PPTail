@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PPTail.Entities
+namespace PPTail
 {
     public class Settings
     {
@@ -11,5 +11,12 @@ namespace PPTail.Entities
         public string ItemSeparator { get; set; }
 
         public string outputFileExtension { get; set; }
+
+        public ExtendedSettingsCollection ExtendedSettings { get; private set; }
+
+        public Settings()
+        {
+            this.ExtendedSettings = new ExtendedSettingsCollection();
+        }
     }
 }

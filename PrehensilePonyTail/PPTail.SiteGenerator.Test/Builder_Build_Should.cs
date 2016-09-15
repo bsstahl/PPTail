@@ -199,7 +199,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPage()
         {
-            var container = (null as IServiceCollection).Create();
+            var container = new ServiceCollection();
 
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
@@ -229,7 +229,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPost()
         {
-            var container = (null as IServiceCollection).Create();
+            var container = new ServiceCollection();
 
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));

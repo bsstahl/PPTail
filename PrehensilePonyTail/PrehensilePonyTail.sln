@@ -15,9 +15,12 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.FileSystem", "P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B28258E1-3587-4F84-B41F-1EE3A9139868}"
 	ProjectSection(SolutionItems) = preProject
+		ContentItem.template.html = ContentItem.template.html
 		ContentPage.template.html = ContentPage.template.html
 		global.json = global.json
+		Homepage.template.html = Homepage.template.html
 		PostPage.template.html = PostPage.template.html
+		Style.template.css = Style.template.css
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.FileSystem.Test", "PPTail.Data.FileSystem.Test\PPTail.Data.FileSystem.Test.xproj", "{4060760D-0892-4E38-B97F-E05D8D6CED40}"
@@ -29,6 +32,8 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.SiteGenerator", "PPTail.SiteGenerator\PPTail.SiteGenerator.xproj", "{57C13842-A341-473A-9114-10C44CF3FE7F}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.SiteGenerator.Test", "PPTail.SiteGenerator.Test\PPTail.SiteGenerator.Test.xproj", "{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Common.Test", "PPTail.Common.Test\PPTail.Common.Test.xproj", "{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +73,10 @@ Global
 		{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +90,6 @@ Global
 		{BB1DF9B4-FAE1-4EFF-B0D3-2003E6415D1E} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 		{57C13842-A341-473A-9114-10C44CF3FE7F} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{BF653504-69E3-4CE6-9388-9AE4F01B5BF8} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 	EndGlobalSection
 EndGlobal

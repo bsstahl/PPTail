@@ -12,9 +12,9 @@ namespace PPTail.SiteGenerator
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public Builder(IServiceProvider serviceProvider)
+        public Builder(IServiceCollection container)
         {
-            _serviceProvider = serviceProvider;
+            _serviceProvider = container.BuildServiceProvider();
         }
 
         public IEnumerable<SiteFile> Build()

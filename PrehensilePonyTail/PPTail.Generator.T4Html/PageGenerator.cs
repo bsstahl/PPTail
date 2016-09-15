@@ -16,11 +16,11 @@ namespace PPTail.Generator.T4Html
         private readonly Settings _settings;
         private readonly IEnumerable<Template> _templates;
 
-        public PageGenerator(IServiceProvider serviceProvider)
+        public PageGenerator(IServiceCollection container)
         {
-            _serviceProvider = serviceProvider;
-            _settings = serviceProvider.GetService<Settings>();
-            _templates = serviceProvider.GetService<IEnumerable<Template>>();
+            _serviceProvider = container.BuildServiceProvider();
+            _settings = _serviceProvider.GetService<Settings>();
+            _templates = _serviceProvider.GetService<IEnumerable<Template>>();
         }
 
         private Template ContentPageTemplate

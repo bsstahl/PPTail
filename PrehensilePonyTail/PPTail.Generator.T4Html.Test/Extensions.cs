@@ -40,7 +40,7 @@ namespace PPTail.Generator.T4Html.Test
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<Settings>(settings);
 
-            return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
+            return new PPTail.Generator.T4Html.PageGenerator(container);
         }
 
         public static ContentItem Create(this ContentItem ignore)

@@ -9,13 +9,27 @@ namespace PPTail.Data.FileSystem
 {
     public class Repository: Interfaces.IContentRepository
     {
+        const string _sourceDataPathSettingName = "sourceDataPath";
+
         private readonly IServiceProvider _serviceProvider;
         private readonly string _rootPath;
 
-        public Repository(IServiceProvider serviceProvider, string rootPath)
+        public Repository(IServiceCollection container)
         {
-            _serviceProvider = serviceProvider;
-            _rootPath = rootPath;
+            _serviceProvider =  container.BuildServiceProvider();
+
+            var settings = _serviceProvider.GetService<Settings>();
+            if (settings == null)
+                throw new Exceptions.DependencyNotFoundException(typeof(Settings));
+
+            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            if (fileSystem == null)
+                throw new Exceptions.DependencyNotFoundException(typeof(IFileSystem));
+
+            if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
+                throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
+
+            _rootPath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
         }
 
         public IEnumerable<ContentItem> GetAllPages()
