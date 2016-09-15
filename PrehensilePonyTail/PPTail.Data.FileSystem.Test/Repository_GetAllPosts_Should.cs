@@ -226,8 +226,9 @@ namespace PPTail.Data.FileSystem.Test
 
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
+            // Added a "decoy" value to make sure we are getting the right elements
             string expected = string.Empty.GetRandom();
-            string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
+            string xml = $"<post><{fieldName}>{expected}</{fieldName}><childElement><{fieldName}>{string.Empty.GetRandom()}</{fieldName}></childElement></post>";
             ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
         }
 

@@ -11,9 +11,9 @@ namespace PPTail.Data.FileSystem
         public static string GetElementValue(this XElement node, string localName)
         {
             string result = string.Empty;
-            var value = node.Descendants().Where(n => n.Name.LocalName == localName).SingleOrDefault();
-            if (node != null)
-                result = node.Value;
+            var childNode = node.Descendants().Where(n => n.Parent == node && n.Name.LocalName == localName).SingleOrDefault();
+            if (childNode != null)
+                result = childNode.Value;
             return result;
         }
     }
