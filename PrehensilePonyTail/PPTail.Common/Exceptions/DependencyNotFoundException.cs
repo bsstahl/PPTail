@@ -7,11 +7,11 @@ namespace PPTail.Exceptions
 {
     public class DependencyNotFoundException : System.Exception
     {
-        public Type InterfaceType { get; set; }
+        public string InterfaceTypeName { get; set; }
 
-        public DependencyNotFoundException(Type interfaceType) : base($"Unable to locate dependency for {interfaceType.FullName}")
+        public DependencyNotFoundException(string interfaceTypeName) : base($"Unable to locate dependency for type {interfaceTypeName}")
         {
-            this.InterfaceType = interfaceType;
+            this.InterfaceTypeName = interfaceTypeName;
         }
 
     }

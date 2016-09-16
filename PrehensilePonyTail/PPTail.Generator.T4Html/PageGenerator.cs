@@ -25,11 +25,11 @@ namespace PPTail.Generator.T4Html
             _serviceProvider = container.BuildServiceProvider();
             _settings = _serviceProvider.GetService<Settings>();
             if (_settings == null)
-                throw new Exceptions.DependencyNotFoundException(typeof(Settings));
+                throw new Exceptions.DependencyNotFoundException(nameof(Settings));
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
             if (!_templates.Any())
-                throw new Exceptions.DependencyNotFoundException(typeof(IEnumerable<Template>));
+                throw new Exceptions.DependencyNotFoundException("IEnumerable<Template>");
         }
 
         private Template ContentPageTemplate

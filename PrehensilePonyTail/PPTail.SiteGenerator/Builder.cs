@@ -30,11 +30,16 @@ namespace PPTail.SiteGenerator
             {
                 // All all published content pages to the results
                 if (post.IsPublished)
+                {
+                    if (string.IsNullOrWhiteSpace(post.Slug))
+                        post.Slug = post.Title.CreateSlug();
+
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Posts\\{post.Slug}.{settings.outputFileExtension}",
                         Content = pageGen.GeneratePostPage(post)
                     });
+                }
             }
 
             var pages = contentRepo.GetAllPages();
@@ -42,11 +47,16 @@ namespace PPTail.SiteGenerator
             {
                 // All all published content pages to the results
                 if (page.IsPublished)
+                {
+                    if (string.IsNullOrWhiteSpace(page.Slug))
+                        page.Slug = page.Title.CreateSlug();
+
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Pages\\{page.Slug}.{settings.outputFileExtension}",
                         Content = pageGen.GenerateContentPage(page)
                     });
+                }
             }
 
             return result;

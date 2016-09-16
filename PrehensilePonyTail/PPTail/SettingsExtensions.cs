@@ -7,12 +7,13 @@ namespace PPTail
 {
     public static class SettingsExtensions
     {
-        public static Settings Create(this Settings ignore, string sourceDataPath, string outputPath, string dateTimeFormatSpecifier, string itemSeparator)
+        public static Settings Create(this Settings ignore, string sourceDataPath, string outputPath, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
         {
             var settings = new Settings()
             {
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                ItemSeparator = itemSeparator
+                ItemSeparator = itemSeparator,
+                outputFileExtension = outputFileExtension
             };
 
             settings.ExtendedSettings.Set("sourceDataPath", sourceDataPath);

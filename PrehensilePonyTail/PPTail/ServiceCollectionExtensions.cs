@@ -9,12 +9,13 @@ namespace PPTail
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection Create(this IServiceCollection ignore, Settings settings)
+        public static IServiceCollection Create(this IServiceCollection ignore, Settings settings, IEnumerable<Template> templates)
         {
             IServiceCollection container = new ServiceCollection();
 
             // Configure Dependencies
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<IEnumerable<Template>>(templates);
 
             var fileSystem = new PPTail.Data.FileSystem.FileSystemAbstraction.Provider();
             container.AddSingleton<PPTail.Data.FileSystem.IFileSystem>(fileSystem);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
+using PPTail.Enumerations;
 
 namespace PPTail
 {
@@ -15,16 +16,9 @@ namespace PPTail
             const string _sourceDataPathSettingName = "sourceDataPath";
             const string _outputPathSettingName = "outputPath";
 
-            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
-            var config = builder.Build();
-
-            string sourceDataPath = config[_sourceDataPathSettingName];
-            string outputPath = config[_outputPathSettingName];
-
+            string outputFileExtension = "html";
             string dateTimeFormatSpecifier = "MM/dd/yy H:mm UTC";
             string itemSeparator = "<hr/>";
-
-            var settings = (null as Settings).Create(sourceDataPath, outputPath, dateTimeFormatSpecifier, itemSeparator);
 
             string styleTemplatePath = "..\\Style.template.css";
             string homePageTemplatePath = "..\\HomePage.template.html";
@@ -32,13 +26,18 @@ namespace PPTail
             string postPageTemplatePath = "..\\PostPage.template.html";
             string itemTemplatePath = "..\\ContentItem.template.html";
 
-            string contentPageTemplate = System.IO.File.ReadAllText(contentPageTemplatePath);
-            string styleTemplate = System.IO.File.ReadAllText(styleTemplatePath);
-            string homePageTemplate = System.IO.File.ReadAllText(homePageTemplatePath);
-            string postPageTemplate = System.IO.File.ReadAllText(postPageTemplatePath);
-            string itemTemplate = System.IO.File.ReadAllText(itemTemplatePath);
 
-            var container = (null as IServiceCollection).Create(settings);
+            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
+            var config = builder.Build();
+
+            string sourceDataPath = config[_sourceDataPathSettingName];
+            string outputPath = config[_outputPathSettingName];
+
+            var settings = (null as Settings).Create(sourceDataPath, outputPath, dateTimeFormatSpecifier, itemSeparator, outputFileExtension);
+            var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, itemTemplatePath);
+
+            var container = (null as IServiceCollection).Create(settings, templates);
+
             var serviceProvider = container.BuildServiceProvider();
 
             var siteBuilder = serviceProvider.GetService<PPTail.SiteGenerator.Builder>();

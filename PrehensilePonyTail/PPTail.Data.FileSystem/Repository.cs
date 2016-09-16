@@ -20,11 +20,11 @@ namespace PPTail.Data.FileSystem
 
             var settings = _serviceProvider.GetService<Settings>();
             if (settings == null)
-                throw new Exceptions.DependencyNotFoundException(typeof(Settings));
+                throw new Exceptions.DependencyNotFoundException(nameof(Settings));
 
             var fileSystem = _serviceProvider.GetService<IFileSystem>();
             if (fileSystem == null)
-                throw new Exceptions.DependencyNotFoundException(typeof(IFileSystem));
+                throw new Exceptions.DependencyNotFoundException(nameof(IFileSystem));
 
             if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
                 throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
