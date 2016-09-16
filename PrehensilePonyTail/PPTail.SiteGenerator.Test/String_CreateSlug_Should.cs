@@ -28,6 +28,8 @@ namespace PPTail.SiteGenerator.Test
         [InlineData("Will &quot;Augmented Reality&quot; Finally Make My Life's Dream Come True?", "Will-Augmented-Reality-Finally-Make-My-Lifes-Dream-Come-True")]
         [InlineData("Yeah! Awesome!", "Yeah-Awesome")]
         [InlineData("Yeah----Awesome---Lot's of     spaces  ", "Yeah-Awesome-Lots-of-spaces")]
+        [InlineData("Includes MSWord “smartquotes”", "Includes-MSWord-smartquotes")]
+        [InlineData("Handles an em–dash", "Handles-an-em-dash")]
         public void ProperlyEncodeTheString(string source, string expected)
         {
             Assert.Equal(expected, source.CreateSlug());

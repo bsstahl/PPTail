@@ -36,7 +36,7 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $".\\Posts\\{post.Slug}.{settings.outputFileExtension}",
+                        RelativeFilePath = $".\\Posts\\{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         Content = pageGen.GeneratePostPage(post)
                     });
                 }
@@ -53,7 +53,7 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $".\\Pages\\{page.Slug}.{settings.outputFileExtension}",
+                        RelativeFilePath = $".\\Pages\\{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         Content = pageGen.GenerateContentPage(page)
                     });
                 }
