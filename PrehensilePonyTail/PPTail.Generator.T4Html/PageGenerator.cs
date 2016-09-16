@@ -48,6 +48,22 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        private Template HomePageTemplate
+        {
+            get
+            {
+                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.HomePage);
+            }
+        }
+
+        private Template ItemTemplate
+        {
+            get
+            {
+                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Item);
+            }
+        }
+
         private Template StyleTemplate
         {
             get
@@ -64,28 +80,41 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        private string ItemSeparator
+        {
+            get
+            {
+                return _settings.ItemSeparator;
+            }
+        }
+
+        public string GenerateHomepage(SiteSettings siteSettings, IEnumerable<ContentItem> posts)
+        {
+            return posts.ProcessTemplate(siteSettings, this.HomePageTemplate.Content, this.ItemTemplate.Content, this.DateTimeFormatSpecifier, this.ItemSeparator);
+        }
+
         public string GenerateStylesheet(SiteSettings siteSettings)
         {
             //TODO: Process template against additional data (such as Settings and SiteSettings)
             return this.StyleTemplate.Content;
         }
 
-        public string GenerateContentPage(ContentItem pageData)
+        public string GenerateContentPage(SiteSettings siteSettings, ContentItem pageData)
         {
             var template = this.ContentPageTemplate;
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
 
-            return pageData.ProcessTemplate(template.Content, this.DateTimeFormatSpecifier);
+            return pageData.ProcessTemplate(siteSettings, template.Content, this.DateTimeFormatSpecifier);
         }
 
-        public string GeneratePostPage(ContentItem article)
+        public string GeneratePostPage(SiteSettings siteSettings, ContentItem article)
         {
             var template = this.PostPageTemplate;
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
 
-            return article.ProcessTemplate(template.Content, this.DateTimeFormatSpecifier);
+            return article.ProcessTemplate(siteSettings, template.Content, this.DateTimeFormatSpecifier);
         }
 
         //public void LoadContentPageTemplate(string path)

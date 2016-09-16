@@ -97,7 +97,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
-            Assert.Equal(0, actual.Count());
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage));
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
-            Assert.Equal(expected, actual.Count());
+            Assert.Equal(expected, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage));
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
-            Assert.Equal(0, actual.Count());
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage));
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
 
-            Assert.Equal(expected, actual.Count());
+            Assert.Equal(expected, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage));
         }
 
         [Fact]
@@ -215,14 +215,14 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
 
-
+            var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(item), Times.Once);
+                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<SiteSettings>(), item), Times.Once);
             }
         }
 
@@ -245,13 +245,15 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
 
+            var siteSettings = (null as SiteSettings).Create();
+
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GeneratePostPage(item), Times.Once);
+                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<SiteSettings>(), item), Times.Once);
             }
         }
     }

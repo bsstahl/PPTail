@@ -77,5 +77,20 @@ namespace PPTail.Generator.T4Html.Test
             var postTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
             return new List<Template>() { contentTemplate, postTemplate };
         }
+        
+        public static SiteSettings Create(this SiteSettings ignore)
+        {
+            return ignore.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2));
+        }
+
+        public static SiteSettings Create(this SiteSettings ignore, string title, string description, int postsPerPage)
+        {
+            return new SiteSettings()
+            {
+                Title = title,
+                Description = description,
+                PostsPerPage = postsPerPage
+            };
+        }
     }
 }

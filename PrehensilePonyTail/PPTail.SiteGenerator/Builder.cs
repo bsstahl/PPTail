@@ -32,7 +32,16 @@ namespace PPTail.SiteGenerator
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $".\\Style.css",
+                SourceTemplateType = Enumerations.TemplateType.Style,
                 Content = pageGen.GenerateStylesheet(siteSettings)
+            });
+
+            // Create home page
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $".\\index.html",
+                SourceTemplateType = Enumerations.TemplateType.HomePage,
+                Content = pageGen.GenerateHomepage(siteSettings, posts)
             });
 
             foreach (var post in posts)
@@ -46,7 +55,8 @@ namespace PPTail.SiteGenerator
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Posts\\{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
-                        Content = pageGen.GeneratePostPage(post)
+                        SourceTemplateType = Enumerations.TemplateType.PostPage,
+                        Content = pageGen.GeneratePostPage(siteSettings, post)
                     });
                 }
             }
@@ -63,7 +73,8 @@ namespace PPTail.SiteGenerator
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $".\\Pages\\{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
-                        Content = pageGen.GenerateContentPage(page)
+                        SourceTemplateType = Enumerations.TemplateType.ContentPage,
+                        Content = pageGen.GenerateContentPage(siteSettings, page)
                     });
                 }
             }

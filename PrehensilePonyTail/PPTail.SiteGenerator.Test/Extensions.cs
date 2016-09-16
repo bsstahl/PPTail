@@ -62,5 +62,20 @@ namespace PPTail.SiteGenerator.Test
             return contentItems;
         }
 
+        public static SiteSettings Create(this SiteSettings ignore)
+        {
+            return ignore.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2));
+        }
+
+        public static SiteSettings Create(this SiteSettings ignore, string title, string description, int postsPerPage)
+        {
+            return new SiteSettings()
+            {
+                Title = title,
+                Description = description,
+                PostsPerPage = postsPerPage
+            };
+        }
+
     }
 }
