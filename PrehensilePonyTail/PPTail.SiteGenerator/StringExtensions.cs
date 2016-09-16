@@ -11,7 +11,13 @@ namespace PPTail.SiteGenerator
         {
             return title.Trim()
                 .Replace(' ', '-')
-                .Replace("&quot;", "")
+                .HTMLEncode()
+                .RemoveConsecutiveDashes();
+        }
+
+        public static string HTMLEncode(this string data)
+        {
+            return data.Replace("&quot;", "")
                 .Replace("\"", "")
                 .Replace("'", "")
                 .Replace("?", "")
@@ -19,7 +25,21 @@ namespace PPTail.SiteGenerator
                 .Replace("&lt;", "")
                 .Replace(">", "")
                 .Replace("&gt;", "")
-                .Replace("--", "-");
+                .Replace("!", "");
+        }
+
+        public static string RemoveConsecutiveDashes(this string data)
+        {
+            string original = string.Empty;
+            string current = data;
+
+            do
+            {
+                original = current;
+                current = current.Replace("--", "-");
+            } while (current != original);
+
+            return current;
         }
     }
 }

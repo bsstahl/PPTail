@@ -26,6 +26,8 @@ namespace PPTail.SiteGenerator.Test
         [InlineData("<html> tag", "html-tag")]
         [InlineData("Question mark?", "Question-mark")]
         [InlineData("Will &quot;Augmented Reality&quot; Finally Make My Life's Dream Come True?", "Will-Augmented-Reality-Finally-Make-My-Lifes-Dream-Come-True")]
+        [InlineData("Yeah! Awesome!", "Yeah-Awesome")]
+        [InlineData("Yeah----Awesome---Lot's of     spaces  ", "Yeah-Awesome-Lots-of-spaces")]
         public void ProperlyEncodeTheString(string source, string expected)
         {
             Assert.Equal(expected, source.CreateSlug());
