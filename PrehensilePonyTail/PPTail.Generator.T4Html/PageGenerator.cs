@@ -48,12 +48,26 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        private Template StyleTemplate
+        {
+            get
+            {
+                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Style);
+            }
+        }
+
         private string DateTimeFormatSpecifier
         {
             get
             {
                 return _settings.DateTimeFormatSpecifier;
             }
+        }
+
+        public string GenerateStylesheet(SiteSettings siteSettings)
+        {
+            //TODO: Process template against additional data (such as Settings and SiteSettings)
+            return this.StyleTemplate.Content;
         }
 
         public string GenerateContentPage(ContentItem pageData)

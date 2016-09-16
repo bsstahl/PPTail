@@ -26,8 +26,15 @@ namespace PPTail.SiteGenerator
             var settings = _serviceProvider.GetService<Settings>();
 
             var siteSettings = contentRepo.GetSiteSettings();
-
             var posts = contentRepo.GetAllPosts();
+
+            // Create Stylesheet page
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $".\\Style.css",
+                Content = pageGen.GenerateStylesheet(siteSettings)
+            });
+
             foreach (var post in posts)
             {
                 // All all published content pages to the results
