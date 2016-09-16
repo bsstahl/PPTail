@@ -25,6 +25,8 @@ namespace PPTail.SiteGenerator
             var pageGen = _serviceProvider.GetService<IPageGenerator>();
             var settings = _serviceProvider.GetService<Settings>();
 
+            var siteSettings = contentRepo.GetSiteSettings();
+
             var posts = contentRepo.GetAllPosts();
             foreach (var post in posts)
             {

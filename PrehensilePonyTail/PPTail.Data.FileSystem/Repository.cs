@@ -9,6 +9,7 @@ namespace PPTail.Data.FileSystem
 {
     public class Repository: Interfaces.IContentRepository
     {
+        const int _defaultPostsPerPage = 3;
         const string _sourceDataPathSettingName = "sourceDataPath";
 
         private readonly IServiceProvider _serviceProvider;
@@ -30,6 +31,21 @@ namespace PPTail.Data.FileSystem
                 throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
 
             _rootPath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
+        }
+
+        public SiteSettings GetSiteSettings()
+        {
+            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            string settingsPath = System.IO.Path.Combine(_rootPath, "settings.xml");
+            var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
+
+            if (string.IsNullOrWhiteSpace(result.Title))
+                throw new Exceptions.SettingNotFoundException("SiteSettings.Title");
+
+            if (result.PostsPerPage == 0)
+                result.PostsPerPage = _defaultPostsPerPage;
+
+            return result;
         }
 
         public IEnumerable<ContentItem> GetAllPages()

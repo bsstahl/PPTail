@@ -8,6 +8,7 @@ namespace PPTail.Interfaces
 {
     public interface IContentRepository
     {
+        SiteSettings GetSiteSettings();
         IEnumerable<ContentItem> GetAllPages();
         IEnumerable<ContentItem> GetAllPosts();
     }

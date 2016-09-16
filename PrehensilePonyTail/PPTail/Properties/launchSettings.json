@@ -3,7 +3,8 @@
     "PPTail": {
       "commandName": "Project",
       "environmentVariables": {
-        "sourceDataPath": "C:\\Users\\bstahl\\Documents\\CognitiveInheritanceData"
+        "outputPath": "C:\\Users\\barry\\Documents\\My Web Sites\\CognitiveInheritance",
+        "sourceDataPath": "C:\\Users\\barry\\Documents\\My Web Sites\\CognitiveInheritanceData"
       }
     },
     "win7-dev-box": {
