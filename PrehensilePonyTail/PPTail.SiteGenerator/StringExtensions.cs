@@ -28,7 +28,10 @@ namespace PPTail.SiteGenerator
                 .Replace("!", "")
                 .Replace("“", "")
                 .Replace("”", "")
-                .Replace("–", "-");
+                .Replace("–", "-")
+                .Replace("e28093", "-")
+                .Replace("e2809c", "")
+                .Replace("e2809d", "");
         }
 
         public static string RemoveConsecutiveDashes(this string data)

@@ -29,7 +29,9 @@ namespace PPTail.SiteGenerator.Test
         [InlineData("Yeah! Awesome!", "Yeah-Awesome")]
         [InlineData("Yeah----Awesome---Lot's of     spaces  ", "Yeah-Awesome-Lots-of-spaces")]
         [InlineData("Includes MSWord “smartquotes”", "Includes-MSWord-smartquotes")]
-        [InlineData("Handles an em–dash", "Handles-an-em-dash")]
+        [InlineData("Handles an en–dash", "Handles-an-en-dash")]
+        [InlineData("Converts an encoded ene28093dash to a normal dash", "Converts-an-encoded-en-dash-to-a-normal-dash")]
+        [InlineData("Removes encoded e2809csmartquotese2809d", "Removes-encoded-smartquotes")]
         public void ProperlyEncodeTheString(string source, string expected)
         {
             Assert.Equal(expected, source.CreateSlug());
