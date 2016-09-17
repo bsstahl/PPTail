@@ -10,9 +10,6 @@ namespace PPTail.Generator.T4Html
 {
     public class PageGenerator : Interfaces.IPageGenerator
     {
-        // private string _contentPageTemplate;
-        // private string _dateTimeFormatSpecifier;
-
         private readonly IServiceProvider _serviceProvider;
         private readonly Settings _settings;
         private readonly IEnumerable<Template> _templates;

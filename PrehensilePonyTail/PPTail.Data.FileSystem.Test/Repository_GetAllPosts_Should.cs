@@ -174,7 +174,7 @@ namespace PPTail.Data.FileSystem.Test
             string expected = expectedValue.ToString();
             string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
-            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace PPTail.Data.FileSystem.Test
             string expected = expectedValue.ToString();
             string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
-            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
@@ -200,7 +200,7 @@ namespace PPTail.Data.FileSystem.Test
             string expected = expectedValue.ToString();
             string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
-            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
@@ -213,7 +213,7 @@ namespace PPTail.Data.FileSystem.Test
             string expected = expectedValue.ToString();
             string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
-            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
@@ -224,15 +224,34 @@ namespace PPTail.Data.FileSystem.Test
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
+        [Fact]
+        public void ReturnTheProperValueInTheByLineField()
+        {
+            string author = string.Empty.GetRandom();
+            string expected = $"by {author}";
+            string xml = $"<post><author>{author}</author></post>";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ByLine;
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyStringInTheByLineFieldIfAuthorFieldIsEmpty()
+        {
+            string expected = string.Empty;
+            string xml = $"<post/>";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ByLine;
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
+        }
+
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             // Added a "decoy" value to make sure we are getting the right elements
             string expected = string.Empty.GetRandom();
             string xml = $"<post><{fieldName}>{expected}</{fieldName}><childElement><{fieldName}>{string.Empty.GetRandom()}</{fieldName}></childElement></post>";
-            ExecutePropertyTest(fieldName, expected, fieldValueDelegate, xml);
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
-        private static void ExecutePropertyTest(string fieldName, string expected, Func<ContentItem, string> fieldValueDelegate, string xml)
+        private static void ExecutePropertyTest(string expected, Func<ContentItem, string> fieldValueDelegate, string xml)
         {
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
