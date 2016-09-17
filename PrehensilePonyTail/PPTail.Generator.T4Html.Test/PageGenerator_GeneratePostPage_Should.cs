@@ -258,7 +258,7 @@ namespace PPTail.Generator.T4Html.Test
             var expectedData = pageData.ByLine;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(string.Empty, template);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GeneratePostPage(siteSettings, pageData);
