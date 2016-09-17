@@ -45,8 +45,8 @@ namespace PPTail.Data.FileSystem
                     Slug = node.GetElementValue("slug"),
                     Author = author,
                     PublicationDate = publicationDate,
-                    LastModificationDate = lastModificationDate
-                    //ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
+                    LastModificationDate = lastModificationDate,
+                    ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
                 };
             }
 

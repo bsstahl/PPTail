@@ -229,7 +229,7 @@ namespace PPTail.Data.FileSystem.Test
         {
             string author = string.Empty.GetRandom();
             string expected = $"by {author}";
-            string xml = $"<page><author>{expected}</author></page>";
+            string xml = $"<page><author>{author}</author></page>";
             Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
