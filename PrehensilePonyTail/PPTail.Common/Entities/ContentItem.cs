@@ -17,5 +17,7 @@ namespace PPTail.Entities
         public string Slug { get; set; }
         public IEnumerable<string> Tags { get; set; }
         public IEnumerable<Guid> CategoryIds { get; set; }
+
+        public string ByLine { get; set; }
     }
 }
