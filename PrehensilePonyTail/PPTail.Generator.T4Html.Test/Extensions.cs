@@ -56,9 +56,10 @@ namespace PPTail.Generator.T4Html.Test
 
         public static ContentItem Create(this ContentItem ignore)
         {
+            string author = string.Empty.GetRandom();
             return new ContentItem()
             {
-                Author = string.Empty.GetRandom(),
+                Author = author,
                 CategoryIds = new List<Guid>() { Guid.NewGuid() },
                 Content = string.Empty.GetRandom(),
                 Description = string.Empty.GetRandom(),
@@ -67,7 +68,8 @@ namespace PPTail.Generator.T4Html.Test
                 PublicationDate = DateTime.UtcNow.AddDays(-20.GetRandom(10)),
                 Slug = string.Empty.GetRandom(),
                 Tags = new List<string>() { string.Empty.GetRandom() },
-                Title = string.Empty.GetRandom()
+                Title = string.Empty.GetRandom(),
+                ByLine = $"by {author}"
             };
         }
 

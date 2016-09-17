@@ -248,5 +248,25 @@ namespace PPTail.Generator.T4Html.Test
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
             Assert.Equal(6, actualCount);
         }
+
+        [Fact]
+        public void ReplaceAllByLinePlaceholdersWithTheByLine()
+        {
+            const string placeholderText = "{ByLine}";
+
+            var pageData = (null as ContentItem).Create();
+            var expectedData = pageData.ByLine;
+
+            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
+            var target = (null as IPageGenerator).Create(template, string.Empty);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateContentPage(siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
+            Assert.Equal(6, actualCount);
+        }
+
     }
 }
