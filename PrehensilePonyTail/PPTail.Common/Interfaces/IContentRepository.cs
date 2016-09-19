@@ -11,5 +11,6 @@ namespace PPTail.Interfaces
         SiteSettings GetSiteSettings();
         IEnumerable<ContentItem> GetAllPages();
         IEnumerable<ContentItem> GetAllPosts();
+        IEnumerable<Widget> GetAllWidgets();
     }
 }

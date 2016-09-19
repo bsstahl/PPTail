@@ -27,8 +27,21 @@ namespace PPTail.SiteGenerator
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
+            var pages = contentRepo.GetAllPages();
 
-            // Create Stylesheet page
+            var widgets = contentRepo.GetAllWidgets();
+
+            var sidebarContent = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+
+            // Create bootstrap file
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $".\\bootstrap.min.css",
+                SourceTemplateType = Enumerations.TemplateType.Bootstrap,
+                Content = pageGen.GenerateBootstrapPage()
+            });
+
+            // Create Style page
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $".\\Style.css",
@@ -41,12 +54,12 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $".\\index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = pageGen.GenerateHomepage(siteSettings, posts)
+                Content = pageGen.GenerateHomepage(sidebarContent, siteSettings, posts)
             });
 
             foreach (var post in posts)
             {
-                // All all published content pages to the results
+                // Add all published content pages to the results
                 if (post.IsPublished)
                 {
                     if (string.IsNullOrWhiteSpace(post.Slug))
@@ -56,15 +69,14 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $".\\Posts\\{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(siteSettings, post)
+                        Content = pageGen.GeneratePostPage(sidebarContent, siteSettings, post)
                     });
                 }
             }
 
-            var pages = contentRepo.GetAllPages();
             foreach (var page in pages)
             {
-                // All all published content pages to the results
+                // Add all published content pages to the results
                 if (page.IsPublished)
                 {
                     if (string.IsNullOrWhiteSpace(page.Slug))
@@ -74,7 +86,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $".\\Pages\\{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(siteSettings, page)
+                        Content = pageGen.GenerateContentPage(sidebarContent, siteSettings, page)
                     });
                 }
             }

@@ -77,7 +77,11 @@ namespace PPTail.Generator.T4Html.Test
         {
             var contentTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
-            return new List<Template>() { contentTemplate, postTemplate };
+            var homePageTemplate = new Template() { Content = "<html/>", Name = "main", TemplateType = Enumerations.TemplateType.HomePage };
+            var styleTemplate = new Template() { Content = "body { }", Name = "main", TemplateType = Enumerations.TemplateType.Style };
+            var bootstrapTemplate = new Template() { Content = "/*! * Bootstrap v0.0.0 */", Name = "Main", TemplateType = Enumerations.TemplateType.Bootstrap };
+            var itemTemplate = new Template() { Content = "", Name = "main", TemplateType = Enumerations.TemplateType.Item };
+            return new List<Template>() { contentTemplate, postTemplate, homePageTemplate, styleTemplate, bootstrapTemplate, itemTemplate };
         }
         
         public static SiteSettings Create(this SiteSettings ignore)

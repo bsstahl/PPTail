@@ -8,8 +8,10 @@ namespace PPTail.Interfaces
     public interface IPageGenerator
     {
         string GenerateStylesheet(Entities.SiteSettings siteSettings);
-        string GenerateContentPage(Entities.SiteSettings siteSettings, Entities.ContentItem pageData);
-        string GeneratePostPage(Entities.SiteSettings siteSettings, Entities.ContentItem article);
-        string GenerateHomepage(Entities.SiteSettings settings, IEnumerable<Entities.ContentItem> posts);
+        string GenerateBootstrapPage();
+        string GenerateContentPage(string sidebarContent, Entities.SiteSettings siteSettings, Entities.ContentItem pageData);
+        string GeneratePostPage(string sidebarContent, Entities.SiteSettings siteSettings, Entities.ContentItem article);
+        string GenerateHomepage(string sidebarContent, Entities.SiteSettings siteSettings, IEnumerable<Entities.ContentItem> posts);
+        string GenerateSidebarContent(Entities.SiteSettings siteSettings, IEnumerable<Entities.ContentItem> posts, IEnumerable<Entities.ContentItem> pages, IEnumerable<Entities.Widget> widgets);
     }
 }

@@ -79,5 +79,10 @@ namespace PPTail.Data.FileSystem
             }
             return results;
         }
+
+        public IEnumerable<Widget> GetAllWidgets()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

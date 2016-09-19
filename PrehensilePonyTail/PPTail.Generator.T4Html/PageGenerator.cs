@@ -69,6 +69,15 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        private Template BootstrapTemplate
+        {
+            get
+            {
+                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Bootstrap);
+            }
+        }
+
+
         private string DateTimeFormatSpecifier
         {
             get
@@ -85,9 +94,10 @@ namespace PPTail.Generator.T4Html
             }
         }
 
-        public string GenerateHomepage(SiteSettings siteSettings, IEnumerable<ContentItem> posts)
+
+        public string GenerateHomepage(string sidebarContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            return posts.ProcessTemplate(siteSettings, this.HomePageTemplate.Content, this.ItemTemplate.Content, this.DateTimeFormatSpecifier, this.ItemSeparator);
+            return posts.ProcessTemplate(sidebarContent, siteSettings, this.HomePageTemplate.Content, this.ItemTemplate.Content, this.DateTimeFormatSpecifier, this.ItemSeparator);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -96,34 +106,38 @@ namespace PPTail.Generator.T4Html
             return this.StyleTemplate.Content;
         }
 
-        public string GenerateContentPage(SiteSettings siteSettings, ContentItem pageData)
+        public string GenerateBootstrapPage()
+        {
+            if (this.BootstrapTemplate == null)
+                return string.Empty;
+            else
+                return this.BootstrapTemplate.Content;
+        }
+
+        public string GenerateSidebarContent(SiteSettings settings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets)
+        {
+            // TODO: Implement
+            throw new NotImplementedException();
+        }
+
+        public string GenerateContentPage(string sidebarContent, SiteSettings siteSettings, ContentItem pageData)
         {
             var template = this.ContentPageTemplate;
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
 
-            return pageData.ProcessTemplate(siteSettings, template.Content, this.DateTimeFormatSpecifier);
+            return pageData.ProcessTemplate(sidebarContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
         }
 
-        public string GeneratePostPage(SiteSettings siteSettings, ContentItem article)
+        public string GeneratePostPage(string sidebarContent, SiteSettings siteSettings, ContentItem article)
         {
             var template = this.PostPageTemplate;
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
 
-            return article.ProcessTemplate(siteSettings, template.Content, this.DateTimeFormatSpecifier);
+            return article.ProcessTemplate(sidebarContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
         }
 
-        //public void LoadContentPageTemplate(string path)
-        //{
-        //    throw new NotImplementedException();
-        //    // _contentPageTemplate = System.IO.File.ReadAllText(path);
-        //}
 
-        //public void LoadPostPageTemplate(string path)
-        //{
-        //    throw new NotImplementedException();
-        //    // _postPageTemplate = System.IO.File.ReadAllText(path);
-        //}
     }
 }

@@ -8,6 +8,7 @@ namespace PPTail.Enumerations
     public enum TemplateType
     {
         Style,
+        Bootstrap,
         HomePage,
         ContentPage,
         PostPage,

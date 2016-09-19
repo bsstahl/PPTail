@@ -8,26 +8,28 @@ namespace PPTail.Generator.T4Html
 {
     public static class ContentItemExtensions
     {
-        public static string ProcessTemplate(this ContentItem item, SiteSettings settings, string template, string dateTimeFormatSpecifier)
+        public static string ProcessTemplate(this ContentItem item, string sidebarContent, SiteSettings siteSettings, string template, string dateTimeFormatSpecifier)
         {
-            return template
+            var updatedTemplate = template.Replace("{Sidebar}", sidebarContent);
+            return updatedTemplate
                 .ReplaceContentItemVariables(item, dateTimeFormatSpecifier)
-                .ReplaceSettingsVariables(settings);
+                .ReplaceSettingsVariables(siteSettings);
         }
 
-        public static string ProcessTemplate(this IEnumerable<ContentItem> items, SiteSettings settings, string pageTemplate, string itemTemplate, string dateTimeFormatSpecifier, string itemSeparator)
+        public static string ProcessTemplate(this IEnumerable<ContentItem> items, string sidebarContent, SiteSettings siteSettings, string pageTemplate, string itemTemplate, string dateTimeFormatSpecifier, string itemSeparator)
         {
             string content = string.Empty;
             var recentPosts = items.Where(pub => pub.IsPublished)
                 .OrderByDescending(p => p.PublicationDate)
-                .Take(settings.PostsPerPage);
+                .Take(siteSettings.PostsPerPage);
 
             var contentItems = new List<string>();
             foreach (var post in recentPosts)
-                contentItems.Add(post.ProcessTemplate(settings, itemTemplate, dateTimeFormatSpecifier));
+                contentItems.Add(post.ProcessTemplate(sidebarContent, siteSettings, itemTemplate, dateTimeFormatSpecifier));
 
             return pageTemplate
-            .ReplaceSettingsVariables(settings)
+            .ReplaceSettingsVariables(siteSettings)
+            .Replace("{Sidebar}", sidebarContent)
             .Replace("{Content}", string.Join(itemSeparator, contentItems));
         }
 

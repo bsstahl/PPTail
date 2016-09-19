@@ -21,6 +21,7 @@ namespace PPTail
             string itemSeparator = "<hr/>";
 
             string styleTemplatePath = "..\\Style.template.css";
+            string bootstrapTemplatePath = "..\\bootstrap.min.css";
             string homePageTemplatePath = "..\\HomePage.template.html";
             string contentPageTemplatePath = "..\\ContentPage.template.html";
             string postPageTemplatePath = "..\\PostPage.template.html";
@@ -34,7 +35,7 @@ namespace PPTail
             string outputPath = config[_outputPathSettingName];
 
             var settings = (null as Settings).Create(sourceDataPath, outputPath, dateTimeFormatSpecifier, itemSeparator, outputFileExtension);
-            var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, itemTemplatePath);
+            var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, itemTemplatePath);
 
             var container = (null as IServiceCollection).Create(settings, templates);
 

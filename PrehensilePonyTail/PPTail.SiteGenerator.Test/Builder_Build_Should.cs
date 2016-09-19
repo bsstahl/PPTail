@@ -197,6 +197,18 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
+        public void CreateAnOutputForBootstrap()
+        {
+            // var contentRepo = new Mock<IContentRepository>();
+            var contentRepo = Mock.Of<IContentRepository>();
+            var target = (null as Builder).Create(contentRepo);
+            var actual = target.Build();
+            Assert.Equal(1, actual.Count(ci => ci.SourceTemplateType == Enumerations.TemplateType.Bootstrap));
+        }
+
+
+
+        [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPage()
         {
             var container = new ServiceCollection();
@@ -222,7 +234,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<SiteSettings>(), item), Times.Once);
+                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
             }
         }
 
@@ -253,7 +265,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<SiteSettings>(), item), Times.Once);
+                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
             }
         }
 
@@ -278,6 +290,26 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
+        public void CallGenerateBootstrapFileEactlyOnce()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = new Mock<IPageGenerator>();
+            var settings = new Settings();
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen.Object);
+            container.AddSingleton<Settings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            pageGen.Verify(c => c.GenerateBootstrapPage(), Times.Once);
+        }
+
+        [Fact]
         public void CallGenerateHomepageEactlyOnce()
         {
             var container = new ServiceCollection();
@@ -294,7 +326,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
-            pageGen.Verify(c => c.GenerateHomepage(It.IsAny<SiteSettings>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
+            pageGen.Verify(c => c.GenerateHomepage(It.IsAny<string>(), It.IsAny<SiteSettings>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
         }
 
 
