@@ -84,7 +84,39 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<Widget> GetAllWidgets()
         {
-            throw new NotImplementedException();
+            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+
+            var results = new List<Widget>();
+            string widgetPath = System.IO.Path.Combine(_rootPath, _widgetRelativePath);
+            string zoneFilePath = System.IO.Path.Combine(widgetPath, "be_WIDGET_ZONE.xml");
+
+            var zoneData = fileSystem.ReadAllText(zoneFilePath);
+            var zones = XElement.Parse(zoneData);
+
+            foreach (var widget in zones.Descendants().Where(d => d.Name.LocalName == "widget"))
+            {
+                var thisDictionary = new List<Tuple<string, string>>();
+                var thisWidget = new Widget()
+                {
+                    Id = Guid.Parse(widget.Attributes().Single(a => a.Name == "id").Value),
+                    Title = widget.Attributes().Single(a => a.Name == "title").Value,
+                    ShowTitle = Boolean.Parse(widget.Attributes().Single(a => a.Name == "showTitle").Value),
+                    WidgetType = (Enumerations.WidgetType)Enum.Parse(typeof(Enumerations.WidgetType), widget.Value),
+                    Dictionary = thisDictionary
+                };
+
+                string fileName = $"{thisWidget.Id.ToString()}.xml";
+                string filePath = System.IO.Path.Combine(widgetPath, fileName);
+                string widgetFile = fileSystem.ReadAllText(filePath);
+
+                var w = XElement.Parse(widgetFile);
+                var entry = w.Descendants().Single(n => n.Name.LocalName == "DictionaryEntry");
+                thisDictionary.Add(new Tuple<string, string>(entry.Attribute("Key").Value, entry.Attribute("Value").Value));
+
+                results.Add(thisWidget);
+            }
+
+            return results;
         }
     }
 }
