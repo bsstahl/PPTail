@@ -60,7 +60,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetAllWidgets();
 
-            Assert.Equal(widgets.Count(), actual.Count());
+            Assert.Equal(widgets.Count(w => w.WidgetType != Enumerations.WidgetType.Unknown), actual.Count());
         }
 
         //[Fact]
