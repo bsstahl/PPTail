@@ -19,12 +19,27 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnAllTextboxWidgets()
         {
             const string rootPath = "c:\\";
-            const string widgetPath = ".\\datastore\\widgets";
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.ConfigureWidgets(widgets, rootPath);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetAllWidgets();
+
+            Assert.Equal(widgets.Count(), actual.Count());
+        }
+
+        [Fact]
+        public void NotFailIfAnUnknownWidgetTypeIsFound()
+        {
+            const string rootPath = "c:\\";
+
+            var widgets = (null as IEnumerable<Widget>).Create();
+
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.ConfigureWidgets(widgets, rootPath, true);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetAllWidgets();
