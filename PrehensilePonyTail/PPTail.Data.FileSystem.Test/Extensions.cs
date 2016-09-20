@@ -65,20 +65,26 @@ namespace PPTail.Data.FileSystem.Test
 
             for (int i = 0; i < count; i++)
             {
-                result.Add(new Widget()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = string.Empty.GetRandom(),
-                    ShowTitle = true.GetRandom(),
-                    WidgetType = Enumerations.WidgetType.TextBox,
-                    Dictionary = new List<Tuple<string, string>>()
-                    {
-                        new Tuple<string, string>("content", string.Empty.GetRandom())
-                    }
-                });
+                var widgetType = (Enumerations.WidgetType)3.GetRandom();
+                result.Add(widgetType.CreateWidget());
             }
 
             return result;
+        }
+
+        public static Widget CreateWidget(this Enumerations.WidgetType widgetType)
+        {
+            return new Widget()
+            {
+                Id = Guid.NewGuid(),
+                Title = string.Empty.GetRandom(),
+                ShowTitle = true.GetRandom(),
+                WidgetType = widgetType,
+                Dictionary = new List<Tuple<string, string>>()
+                    {
+                        new Tuple<string, string>("content", string.Empty.GetRandom())
+                    }
+            };
         }
 
         public static void ConfigureWidgets(this Mock<IFileSystem> fileSystem, IEnumerable<Widget> widgets, string rootPath)
@@ -97,11 +103,19 @@ namespace PPTail.Data.FileSystem.Test
             {
                 string fileName = $"{widget.Id}.xml";
                 string thisFilePath = System.IO.Path.Combine(rootPath, widgetPath, fileName);
-                var dictionaryItem = widget.Dictionary.First();
 
-                files.Add(fileName);
-                fileSystem.Setup(f => f.ReadAllText(thisFilePath))
-                    .Returns(string.Format(widgetFileFormat, dictionaryItem.Item1, dictionaryItem.Item2));
+                if (widget.WidgetType == Enumerations.WidgetType.TextBox)
+                {
+                    var dictionaryItem = widget.Dictionary.First();
+                    files.Add(fileName);
+                    fileSystem.Setup(f => f.ReadAllText(thisFilePath))
+                        .Returns(string.Format(widgetFileFormat, dictionaryItem.Item1, dictionaryItem.Item2));
+                }
+                else if (widget.WidgetType == Enumerations.WidgetType.TagCloud)
+                {
+                    fileSystem.Setup(f => f.ReadAllText(thisFilePath))
+                        .Throws(new System.IO.FileNotFoundException("This widget type has no separate files"));
+                }
             }
 
             files.Add(zoneFilename);

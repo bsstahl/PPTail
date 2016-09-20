@@ -28,7 +28,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetAllWidgets();
 
-            Assert.Equal(widgets.Count(), actual.Count());
+            Assert.Equal(widgets.Count(w => w.WidgetType != Enumerations.WidgetType.Unknown), actual.Count());
         }
 
         [Fact]
@@ -40,6 +40,22 @@ namespace PPTail.Data.FileSystem.Test
 
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.ConfigureWidgets(widgets, rootPath, true);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetAllWidgets();
+
+            Assert.Equal(widgets.Count(w => w.WidgetType != Enumerations.WidgetType.Unknown), actual.Count());
+        }
+
+        [Fact]
+        public void NotFailIfASeparateDetailFileIsNotFound()
+        {
+            const string rootPath = "c:\\";
+
+            var widgets = (null as IEnumerable<Widget>).Create();
+
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.ConfigureWidgets(widgets, rootPath, false);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetAllWidgets();
@@ -97,7 +113,7 @@ namespace PPTail.Data.FileSystem.Test
         {
             const string rootPath = "c:\\";
 
-            var widgets = (null as IEnumerable<Widget>).Create(1);
+            var widgets = new List<Widget>() { Enumerations.WidgetType.TextBox.CreateWidget() };
             var fileSystem = new Mock<IFileSystem>();
 
             fileSystem.ConfigureWidgets(widgets, rootPath);
