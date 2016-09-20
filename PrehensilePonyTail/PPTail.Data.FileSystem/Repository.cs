@@ -96,12 +96,16 @@ namespace PPTail.Data.FileSystem
             foreach (var widget in zones.Descendants().Where(d => d.Name.LocalName == "widget"))
             {
                 var thisDictionary = new List<Tuple<string, string>>();
+
+                Enumerations.WidgetType thisWidgetType = Enumerations.WidgetType.Unknown;
+                Enum.TryParse(widget.Value, out thisWidgetType);
+
                 var thisWidget = new Widget()
                 {
                     Id = Guid.Parse(widget.Attributes().Single(a => a.Name == "id").Value),
                     Title = widget.Attributes().Single(a => a.Name == "title").Value,
                     ShowTitle = Boolean.Parse(widget.Attributes().Single(a => a.Name == "showTitle").Value),
-                    WidgetType = (Enumerations.WidgetType)Enum.Parse(typeof(Enumerations.WidgetType), widget.Value),
+                    WidgetType = thisWidgetType,
                     Dictionary = thisDictionary
                 };
 
@@ -109,11 +113,15 @@ namespace PPTail.Data.FileSystem
                 string filePath = System.IO.Path.Combine(widgetPath, fileName);
                 string widgetFile = fileSystem.ReadAllText(filePath);
 
-                var w = XElement.Parse(widgetFile);
-                var entry = w.Descendants().Single(n => n.Name.LocalName == "DictionaryEntry");
-                thisDictionary.Add(new Tuple<string, string>(entry.Attribute("Key").Value, entry.Attribute("Value").Value));
+                if (!string.IsNullOrEmpty(widgetFile))
+                {
+                    var w = XElement.Parse(widgetFile);
+                    var entry = w.Descendants().Single(n => n.Name.LocalName == "DictionaryEntry");
+                    thisDictionary.Add(new Tuple<string, string>(entry.Attribute("Key").Value, entry.Attribute("Value").Value));
+                }
 
-                results.Add(thisWidget);
+                if (thisWidget.WidgetType != Enumerations.WidgetType.Unknown)
+                    results.Add(thisWidget);
             }
 
             return results;

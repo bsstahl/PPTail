@@ -7,6 +7,7 @@ namespace PPTail.Enumerations
 {
     public enum WidgetType
     {
+        Unknown,
         TextBox,
         TagCloud
     }
