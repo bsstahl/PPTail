@@ -117,7 +117,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var pages = new List<ContentItem>();
 
-            string expected = $"href=\"/tags/{tagName}.{extension}\"";
+            string expected = $"href=\"/search/{tagName}.{extension}\"";
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
             var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
@@ -145,7 +145,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var pages = new List<ContentItem>();
 
-            string expected = $"href=\"/tags/{tagName}.{extension}\"";
+            string expected = $"href=\"/search/{tagName}.{extension}\"";
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
             var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);

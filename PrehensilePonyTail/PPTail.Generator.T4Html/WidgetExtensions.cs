@@ -37,7 +37,7 @@ namespace PPTail.Generator.T4Html
             foreach (var post in posts)
                 if (post.Tags != null)
                     foreach (var tag in post.Tags)
-                        results += $"<a href=\"/tags/{tag.Replace(" ", "_")}.{settings.outputFileExtension}\">{tag}</a> ";
+                        results += $"<a href=\"/search/{tag.Replace(" ", "_")}.{settings.outputFileExtension}\">{tag}</a> ";
 
             return results;
         }
