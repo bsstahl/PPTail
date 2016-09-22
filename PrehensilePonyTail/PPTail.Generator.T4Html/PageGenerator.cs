@@ -116,10 +116,10 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateSidebarContent(Settings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets)
         {
-            var results = string.Empty;
+            var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets)
                 results += widget.Render(settings, posts);
-
+            results += "</div>";
             return results;
         }
 

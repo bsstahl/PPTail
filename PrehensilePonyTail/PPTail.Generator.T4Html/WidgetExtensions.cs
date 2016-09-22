@@ -10,12 +10,14 @@ namespace PPTail.Generator.T4Html
     {
         public static string Render(this Widget widget, Settings settings, IEnumerable<ContentItem> posts)
         {
-            string results = "<p class=\"widget\">";
+            string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_","")}\">";
+
             if (widget.WidgetType == Enumerations.WidgetType.TextBox)
                 results += widget.RenderTextBoxWidget();
             if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
                 results += widget.RenderTagCloudWidget(settings, posts);
-            results += "</p>";
+
+            results += "</div>";
             return results;
         }
 
@@ -32,13 +34,15 @@ namespace PPTail.Generator.T4Html
         {
             string results = string.Empty;
             if (widget.ShowTitle)
-                results += $"<p class=\"WidgetTitle\">{widget.Title}</p>";
+                results += $"<h4>{widget.Title}</h4>";
 
+            results += "<div class=\"content\"><ul>";
             foreach (var post in posts)
                 if (post.Tags != null)
                     foreach (var tag in post.Tags)
-                        results += $"<a href=\"/search/{tag.Replace(" ", "_")}.{settings.outputFileExtension}\">{tag}</a> ";
+                        results += $"<li><a title=\"Tag: {tag}\" class=\"smallest\" href=\"/search/{tag.Replace(" ", "_")}.{settings.outputFileExtension}\">{tag}</a></li> ";
 
+            results += "</ul></div>";
             return results;
         }
 

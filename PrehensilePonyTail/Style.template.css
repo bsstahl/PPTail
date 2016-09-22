@@ -107,6 +107,31 @@ a, a:visited {
     font-size: 10px;
 }
 
+.sidebar {
+	float: left;
+	width: 300px;
+	margin: 0px 0px 0px 20px;
+	font-size: 12px;
+}
+
+	.sidebar h1 {
+		font-size: 18px;
+		margin: 20px 0px 5px 0px;
+	}
+
+	.sidebar ul {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.sidebar li {
+		list-style: none;
+	}
+
+	.sidebar .rssButton {
+		margin-right: 5px;
+	}
+
 
 /*
 
