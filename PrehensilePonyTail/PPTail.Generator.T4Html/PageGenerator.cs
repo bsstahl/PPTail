@@ -116,8 +116,11 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateSidebarContent(SiteSettings settings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets)
         {
-            // TODO: Implement
-            throw new NotImplementedException();
+            var results = string.Empty;
+            foreach (var widget in widgets)
+                results += widget.Render();
+
+            return results;
         }
 
         public string GenerateContentPage(string sidebarContent, SiteSettings siteSettings, ContentItem pageData)

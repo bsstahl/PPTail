@@ -32,6 +32,22 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
+        public void ReturnAllTagCloudWidgets()
+        {
+            const string rootPath = "c:\\";
+
+            var widgets = (null as IEnumerable<Widget>).Create();
+
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.ConfigureWidgets(widgets, rootPath);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetAllWidgets();
+
+            Assert.Equal(widgets.Count(w => w.WidgetType != Enumerations.WidgetType.Unknown), actual.Count());
+        }
+
+        [Fact]
         public void NotFailIfAnUnknownWidgetTypeIsFound()
         {
             const string rootPath = "c:\\";

@@ -1,62 +1,114 @@
 ﻿body {
-	color: #000000;
-	text-align: left;
-	line-height: 140%;
-	font-family: Georgia,"Times New Roman",Times,serif;
-	font-size: 13px;
+    color: #000000;
+    text-align: left;
+    line-height: 140%;
+    font-family: Georgia,"Times New Roman",Times,serif;
+    font-size: 13px;
 }
 
 a, a:visited {
-	color: #909090;
+    color: #909090;
 }
 
-	a:hover {
-		color: #000000;
-	}
+    a:hover {
+        color: #000000;
+    }
 
 .header {
-	height: 100px;
+    height: 100px;
 }
 
-	.header h1 {
-		font-size: 48px;
-		padding: 20px 0 5px 0;
-		margin: 0;
-	}
+    .header h1 {
+        font-size: 48px;
+        padding: 20px 0 5px 0;
+        margin: 0;
+    }
 
-		.header h1 a {
-			color: #000000;
-			text-decoration: none;
-		}
+        .header h1 a {
+            color: #000000;
+            text-decoration: none;
+        }
 
-			.header h1 a:hover {
-				color: #909090;
-			}
+            .header h1 a:hover {
+                color: #909090;
+            }
 
-	.header h2 {
-		font-size: 14px;
-		margin-bottom: 0;
-		margin-top: 0;
-	}
+    .header h2 {
+        font-size: 14px;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
 
 .footer {
-	font-size: 12px;
-	background-color: #000000;
-	padding: 10px;
-	color: #ffffff;
+    font-size: 12px;
+    background-color: #000000;
+    padding: 10px;
+    color: #ffffff;
 }
 
-	.footer a, .footer a:visited {
-		text-decoration: none;
-	}
+    .footer a, .footer a:visited {
+        text-decoration: none;
+    }
 
-		.footer a:hover {
-			text-decoration: underline;
-			color: #909090;
-		}
+        .footer a:hover {
+            text-decoration: underline;
+            color: #909090;
+        }
+
+.widget {
+    z-index: 1;
+    min-width: 1px;
+}
+
+    .widget h4 {
+        font-size: 18px;
+        margin: 20px 0px 10px 0px;
+        font-weight: normal;
+    }
+
+    .widget .content {
+        margin: 0px 0px 20px 0px;
+        padding: 0px;
+    }
+
+    .widget .delete {
+        margin-left: 10px;
+        float: right;
+        font-family: Arial,Sans-Serif;
+        font-size: 11px;
+    }
+
+    .widget .edit {
+        float: right;
+    }
+
+.tagcloud li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.tagcloud a.biggest {
+    font-size: 20px;
+}
+
+.tagcloud a.big {
+    font-size: 17px;
+}
+
+.tagcloud a.medium {
+    font-size: 13px;
+}
+
+.tagcloud a.small {
+    font-size: 12px;
+}
+
+.tagcloud a.smallest {
+    font-size: 10px;
+}
 
 
-		/*
+/*
 
 h1, h2, h3 {
 	font-weight: normal;

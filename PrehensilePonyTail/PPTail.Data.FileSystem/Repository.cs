@@ -96,9 +96,7 @@ namespace PPTail.Data.FileSystem
             foreach (var widget in zones.Descendants().Where(d => d.Name.LocalName == "widget"))
             {
                 var thisDictionary = new List<Tuple<string, string>>();
-
-                Enumerations.WidgetType thisWidgetType = Enumerations.WidgetType.Unknown;
-                Enum.TryParse(widget.Value, out thisWidgetType);
+                Enumerations.WidgetType thisWidgetType = widget.Deserialize();
 
                 var thisWidget = new Widget()
                 {
@@ -136,5 +134,6 @@ namespace PPTail.Data.FileSystem
 
             return results;
         }
+
     }
 }

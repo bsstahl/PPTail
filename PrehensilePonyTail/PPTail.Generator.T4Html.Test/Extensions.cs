@@ -98,5 +98,20 @@ namespace PPTail.Generator.T4Html.Test
                 PostsPerPage = postsPerPage
             };
         }
+
+        public static Widget CreateWidget(this Enumerations.WidgetType widgetType)
+        {
+            return new Widget()
+            {
+                Id = Guid.NewGuid(),
+                Title = string.Empty.GetRandom(),
+                ShowTitle = true.GetRandom(),
+                WidgetType = widgetType,
+                Dictionary = new List<Tuple<string, string>>()
+                    {
+                        new Tuple<string, string>("content", string.Empty.GetRandom())
+                    }
+            };
+        }
     }
 }

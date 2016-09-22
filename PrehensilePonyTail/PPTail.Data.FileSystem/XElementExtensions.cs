@@ -17,6 +17,12 @@ namespace PPTail.Data.FileSystem
             return result;
         }
 
+        public static Enumerations.WidgetType Deserialize(this XElement widgetType)
+        {
+            Enumerations.WidgetType thisWidgetType = Enumerations.WidgetType.Unknown;
+            Enum.TryParse(widgetType.Value.Replace(" ", "_"), out thisWidgetType);
+            return thisWidgetType;
+        }
 
     }
 }

@@ -8,6 +8,7 @@ using Moq;
 using PPTail.Entities;
 using System.Xml.Linq;
 using TestHelperExtensions;
+using PPTail.Enumerations;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -111,7 +112,7 @@ namespace PPTail.Data.FileSystem.Test
                     fileSystem.Setup(f => f.ReadAllText(thisFilePath))
                         .Returns(string.Format(widgetFileFormat, dictionaryItem.Item1, dictionaryItem.Item2));
                 }
-                else if (widget.WidgetType == Enumerations.WidgetType.TagCloud)
+                else if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
                 {
                     fileSystem.Setup(f => f.ReadAllText(thisFilePath))
                         .Throws(new System.IO.FileNotFoundException("This widget type has no separate files"));
@@ -137,11 +138,16 @@ namespace PPTail.Data.FileSystem.Test
             var widgetNode = XElement.Parse("<?xml version=\"1.0\" encoding=\"utf-8\"?><widgets></widgets>");
             foreach (var widget in widgets)
             {
-                string nodeText = string.Format(_widgetZoneNodeFormat, widget.Id.ToString(), widget.Title, widget.ShowTitle.ToString(), widget.WidgetType.ToString());
+                string nodeText = string.Format(_widgetZoneNodeFormat, widget.Id.ToString(), widget.Title, widget.ShowTitle.ToString(), widget.WidgetType.Serialize());
                 widgetNode.Add(XElement.Parse(nodeText));
             }
 
             return widgetNode;
+        }
+
+        public static string Serialize(this WidgetType widgetType)
+        {
+            return widgetType.ToString().Replace("_", " ");
         }
 
         public static string Serialize(this Widget widget)
