@@ -243,6 +243,58 @@ namespace PPTail.Data.FileSystem.Test
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
+        [Fact]
+        public void ReturnTheTagFromASingleTagPost()
+        {
+            string expected = string.Empty.GetRandom();
+            string xml = $"<post><tags><tag>{expected}</tag></tags></post>";
+
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+                    .Returns(files);
+
+            foreach (var file in files)
+                fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                    .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var pages = target.GetAllPosts();
+            var actual = pages.Single().Tags.Single();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectNumberOfTags()
+        {
+            var expected = 10.GetRandom(3);
+
+            string tagNodes = string.Empty;
+            for (int i = 0; i < expected; i++)
+                tagNodes += $"<tag>{string.Empty.GetRandom()}</tag>";
+            string xml = $"<post><tags>{tagNodes}</tags></post>";
+
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+                    .Returns(files);
+
+            foreach (var file in files)
+                fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                    .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var pages = target.GetAllPosts();
+            var actual = pages.Single().Tags.Count();
+
+            Assert.Equal(expected, actual);
+        }
+
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             // Added a "decoy" value to make sure we are getting the right elements

@@ -49,8 +49,14 @@ namespace PPTail.Generator.T4Html.Test
 
         public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)
         {
+            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
+        }
+
+        public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
+            settings.outputFileExtension = outputFileExtension;
             return settings;
         }
 

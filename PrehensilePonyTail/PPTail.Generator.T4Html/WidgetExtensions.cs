@@ -8,13 +8,13 @@ namespace PPTail.Generator.T4Html
 {
     public static class WidgetExtensions
     {
-        public static string Render(this Widget widget)
+        public static string Render(this Widget widget, Settings settings, IEnumerable<ContentItem> posts)
         {
             string results = "<p class=\"widget\">";
             if (widget.WidgetType == Enumerations.WidgetType.TextBox)
                 results += widget.RenderTextBoxWidget();
             if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
-                results += widget.RenderTagCloudWidget();
+                results += widget.RenderTagCloudWidget(settings, posts);
             results += "</p>";
             return results;
         }
@@ -28,12 +28,17 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTagCloudWidget(this Widget widget)
+        private static string RenderTagCloudWidget(this Widget widget, Settings settings, IEnumerable<ContentItem> posts)
         {
             string results = string.Empty;
             if (widget.ShowTitle)
                 results += $"<p class=\"WidgetTitle\">{widget.Title}</p>";
-            results += $"<p>Tag Cloud</p>";
+
+            foreach (var post in posts)
+                if (post.Tags != null)
+                    foreach (var tag in post.Tags)
+                        results += $"<a href=\"/tags/{tag}.{settings.outputFileExtension}\">{tag}</a> ";
+
             return results;
         }
 

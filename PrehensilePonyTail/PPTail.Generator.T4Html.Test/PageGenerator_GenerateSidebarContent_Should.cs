@@ -24,7 +24,7 @@ namespace PPTail.Generator.T4Html.Test
             var pages = new List<ContentItem>();
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
             var expected = widget.Dictionary.First().Item2;
 
             Assert.Contains(expected, actual);
@@ -44,7 +44,7 @@ namespace PPTail.Generator.T4Html.Test
             var pages = new List<ContentItem>();
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
             var expected = posts.Single().Tags.Single();
 
             Assert.Contains(expected, actual);
@@ -70,7 +70,7 @@ namespace PPTail.Generator.T4Html.Test
             var pages = new List<ContentItem>();
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
 
             Assert.Contains(tag1, actual);
             Assert.Contains(tag2, actual);
@@ -95,7 +95,7 @@ namespace PPTail.Generator.T4Html.Test
             var pages = new List<ContentItem>();
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
 
             Assert.Contains(tag1, actual);
             Assert.Contains(tag2, actual);
@@ -120,7 +120,7 @@ namespace PPTail.Generator.T4Html.Test
             string expected = $"href=\"/tags/{tagName}.{extension}\"";
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
 
             Assert.Contains(expected, actual);
         }
@@ -141,7 +141,7 @@ namespace PPTail.Generator.T4Html.Test
             var pages = new List<ContentItem>();
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
             var expected = widget.Title;
 
             Assert.Contains(expected, actual);
@@ -163,7 +163,7 @@ namespace PPTail.Generator.T4Html.Test
             var pages = new List<ContentItem>();
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
-            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
             var expected = widget.Title;
 
             Assert.DoesNotContain(expected, actual);

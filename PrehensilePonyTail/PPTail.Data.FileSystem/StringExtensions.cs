@@ -36,6 +36,9 @@ namespace PPTail.Data.FileSystem
                 DateTime lastModificationDate = DateTime.MinValue;
                 DateTime.TryParse(node.GetElementValue("lastModified"), out lastModificationDate);
 
+                var tagElements = node.Descendants().Where(n => n.Name.LocalName == "tag");
+                var tags = tagElements.Select(e => e.Value);
+
                 result = new ContentItem()
                 {
                     IsPublished = isPublished,
@@ -46,6 +49,7 @@ namespace PPTail.Data.FileSystem
                     Author = author,
                     PublicationDate = publicationDate,
                     LastModificationDate = lastModificationDate,
+                    Tags = tags,
                     ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
                 };
             }

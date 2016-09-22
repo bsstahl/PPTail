@@ -114,11 +114,11 @@ namespace PPTail.Generator.T4Html
                 return this.BootstrapTemplate.Content;
         }
 
-        public string GenerateSidebarContent(SiteSettings settings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets)
+        public string GenerateSidebarContent(Settings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets)
         {
             var results = string.Empty;
             foreach (var widget in widgets)
-                results += widget.Render();
+                results += widget.Render(settings, posts);
 
             return results;
         }

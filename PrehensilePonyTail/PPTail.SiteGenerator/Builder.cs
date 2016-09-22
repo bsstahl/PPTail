@@ -31,7 +31,7 @@ namespace PPTail.SiteGenerator
 
             var widgets = contentRepo.GetAllWidgets();
 
-            var sidebarContent = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
 
             // Create bootstrap file
             result.Add(new SiteFile()
