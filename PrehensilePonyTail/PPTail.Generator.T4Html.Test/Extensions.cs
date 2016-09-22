@@ -113,5 +113,15 @@ namespace PPTail.Generator.T4Html.Test
                     }
             };
         }
+
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        {
+            var contentItems = new List<ContentItem>();
+            for (int i = 0; i < count; i++)
+                contentItems.Add((null as ContentItem).Create());
+            return contentItems;
+        }
+
+
     }
 }

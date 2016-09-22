@@ -31,6 +31,101 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
+        public void RenderATagInATagCloudWidgetsContent()
+        {
+            var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
+            var widgets = new List<Widget>() { widget };
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
+
+            var siteSettings = (null as SiteSettings).Create();
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var pages = new List<ContentItem>();
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+            var expected = posts.Single().Tags.Single();
+
+            Assert.Contains(expected, actual);
+        }
+
+        [Fact]
+        public void RenderTwoTagsInATagCloudFromASinglePost()
+        {
+            var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
+            var widgets = new List<Widget>() { widget };
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
+
+            var siteSettings = (null as SiteSettings).Create();
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+
+            var thisPost = posts.Single();
+            string tag1 = string.Empty.GetRandom();
+            string tag2 = string.Empty.GetRandom();
+            thisPost.Tags = new List<string>() { tag1, tag2 };
+
+            var pages = new List<ContentItem>();
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+
+            Assert.Contains(tag1, actual);
+            Assert.Contains(tag2, actual);
+        }
+
+        [Fact]
+        public void RenderTagsInATagCloudFromMultiplePosts()
+        {
+            var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
+            var widgets = new List<Widget>() { widget };
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
+
+            var siteSettings = (null as SiteSettings).Create();
+            var posts = (null as IEnumerable<ContentItem>).Create(2);
+
+            string tag1 = posts.First().Tags.Single();
+            string tag2 = posts.Last().Tags.Single();
+            System.Diagnostics.Debug.Assert(tag1 != tag2);
+
+            var pages = new List<ContentItem>();
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+
+            Assert.Contains(tag1, actual);
+            Assert.Contains(tag2, actual);
+        }
+
+        [Fact]
+        public void RendersTagsLinkedToTheTagPage()
+        {
+            var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
+            var widgets = new List<Widget>() { widget };
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
+
+            var siteSettings = (null as SiteSettings).Create();
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var tagName = posts.Single().Tags.Single();
+            var extension = settings.outputFileExtension;
+
+            var pages = new List<ContentItem>();
+
+            string expected = $"href=\"/tags/{tagName}.{extension}\"";
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var actual = pageGen.GenerateSidebarContent(siteSettings, posts, pages, widgets);
+
+            Assert.Contains(expected, actual);
+        }
+
+        [Fact]
         public void RenderWidgetTitleIfShowTitleIsTrue()
         {
             var widget = Enumerations.WidgetType.TextBox.CreateWidget();
