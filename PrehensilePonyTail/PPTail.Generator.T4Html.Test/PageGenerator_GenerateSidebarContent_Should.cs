@@ -126,6 +126,34 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
+        public void RendersTagLinksWithoutSpaces()
+        {
+            var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
+            var widgets = new List<Widget>() { widget };
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
+
+            var siteSettings = (null as SiteSettings).Create();
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var thisPost = posts.Single();
+            var tagValue = $"{String.Empty.GetRandom()} {string.Empty.GetRandom()}";
+            thisPost.Tags = new List<string>() { tagValue };
+
+            var tagName = tagValue.Replace(" ", "_");
+            var extension = settings.outputFileExtension;
+
+            var pages = new List<ContentItem>();
+
+            string expected = $"href=\"/tags/{tagName}.{extension}\"";
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var actual = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
+
+            Assert.Contains(expected, actual);
+        }
+
+        [Fact]
         public void RenderWidgetTitleIfShowTitleIsTrue()
         {
             var widget = Enumerations.WidgetType.TextBox.CreateWidget();
