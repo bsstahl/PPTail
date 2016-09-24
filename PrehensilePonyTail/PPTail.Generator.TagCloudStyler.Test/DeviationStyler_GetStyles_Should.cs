@@ -18,6 +18,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
             var tag1 = string.Empty.GetRandom();
             var tag2 = string.Empty.GetRandom();
             var tags = new List<string>() { tag1, tag1, tag2 };
+
             var actual = styler.GetStyles(tags);
             Assert.Equal(1, actual.Count(s => s.Item1 == tag1));
             Assert.Equal(1, actual.Count(s => s.Item1 == tag2));
@@ -40,12 +41,40 @@ namespace PPTail.Generator.TagCloudStyler.Test
                 Assert.Equal("smallest", actualValue.Item2);
         }
 
-        [Fact]
-        public void ANormallyDistributedTagListShouldProduceOutputInAllSizeRanges()
+        [Theory]
+        [InlineData(1, "smallest")]
+        [InlineData(2, "small")]
+        [InlineData(3, "medium")]
+        [InlineData(5, "big")]
+        public void ItemsUsedWithinOnceOfEachOtherShouldNotBeMoreThanOneSizeDifferent(int n, string expected)
         {
             var serviceProvider = new ServiceCollection().BuildServiceProvider();
             var styler = new DeviationStyler(serviceProvider);
-            var tagList = new List<string>() { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
+
+            // Tag 1 should be used once, Tag 2 twice, etc...
+            var tagUnderTest = string.Empty;
+            var tags = new List<string>();
+            for (int i = 0; i < 5; i++)
+            {
+                var tag = string.Empty.GetRandom();
+                if (n == (i + 1))
+                    tagUnderTest = tag;
+
+                for (int j = 0; j <= i; j++)
+                    tags.Add(tag);
+            }
+
+            var actualStyles = styler.GetStyles(tags);
+            var actualStyle = actualStyles.Single(s => s.Item1 == tagUnderTest).Item2;
+            Assert.Equal(expected, actualStyle);
+        }
+
+        [Fact]
+        public void ANormallyDistributedTagListShouldProduceSomeSmallestSizes()
+        {
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            var styler = new DeviationStyler(serviceProvider);
+            var tagList = (null as IEnumerable<string>).GetTagList(50);
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
@@ -54,10 +83,75 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             var actual = styler.GetStyles(tags);
             Assert.True(actual.Count(i => i.Item2 == "smallest") > 0);
+        }
+
+        [Fact]
+        public void ANormallyDistributedTagListShouldProduceSomeSmallSizes()
+        {
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            var styler = new DeviationStyler(serviceProvider);
+            var tagList = (null as IEnumerable<string>).GetTagList();
+
+            // Each tag should be used a random # of times
+            var tags = new List<string>();
+            for (int i = 0; i < 300.GetRandom(100); i++)
+                tags.Add(tagList.GetRandom());
+
+            var actual = styler.GetStyles(tags);
             Assert.True(actual.Count(i => i.Item2 == "small") > 0);
+        }
+
+        [Fact]
+        public void ANormallyDistributedTagListShouldProduceSomeMediumSizes()
+        {
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            var styler = new DeviationStyler(serviceProvider);
+            var tagList = (null as IEnumerable<string>).GetTagList();
+
+            // Each tag should be used a random # of times
+            var tags = new List<string>();
+            for (int i = 0; i < 300.GetRandom(100); i++)
+                tags.Add(tagList.GetRandom());
+
+            var actual = styler.GetStyles(tags);
             Assert.True(actual.Count(i => i.Item2 == "medium") > 0);
+        }
+
+        [Fact]
+        public void ANormallyDistributedTagListShouldProduceSomeBigSizes()
+        {
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            var styler = new DeviationStyler(serviceProvider);
+            var tagList = (null as IEnumerable<string>).GetTagList();
+
+            // Each tag should be used a random # of times
+            var tags = new List<string>();
+            for (int i = 0; i < 300.GetRandom(100); i++)
+                tags.Add(tagList.GetRandom());
+
+            var actual = styler.GetStyles(tags);
             Assert.True(actual.Count(i => i.Item2 == "big") > 0);
-            Assert.True(actual.Count(i => i.Item2 == "biggest") > 0);
+        }
+
+        [Fact]
+        public void ATagThatHasSuperHighUsageShouldReturnABiggestSize()
+        {
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            var styler = new DeviationStyler(serviceProvider);
+            var tagList = (null as IEnumerable<string>).GetTagList();
+            var tagUnderTest = string.Empty.GetRandom();
+
+            // Each tag should be used a random # of times
+            var tags = new List<string>();
+            for (int i = 0; i < 300.GetRandom(100); i++)
+            {
+                tags.Add(tagList.GetRandom());
+                tags.Add(tagUnderTest);
+            }
+
+            var actual = styler.GetStyles(tags);
+            var actualStyle = actual.Single(s => s.Item1 == tagUnderTest).Item2;
+            Assert.Equal("biggest", actualStyle);
         }
 
         [Fact]
@@ -65,7 +159,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
         {
             var serviceProvider = new ServiceCollection().BuildServiceProvider();
             var styler = new DeviationStyler(serviceProvider);
-            var tagList = new List<string>() { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
+            var tagList = (null as IEnumerable<string>).GetTagList();
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
@@ -87,7 +181,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
         {
             var serviceProvider = new ServiceCollection().BuildServiceProvider();
             var styler = new DeviationStyler(serviceProvider);
-            var tagList = new List<string>() { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
+            var tagList = (null as IEnumerable<string>).GetTagList();
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
