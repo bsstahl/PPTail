@@ -13,19 +13,15 @@ namespace PPTail.Common.Test
 
 
         [Fact]
-        public void ReturnZeroIfNoValuesAreProvided()
+        public void ThrowAnInvalidOperationExceptionIfNoValuesAreProvided()
         {
-            var expected = 0.0;
-            var actual = (new List<int>()).StdDev();
-            Assert.Equal(expected, actual);
+            Assert.Throws<InvalidOperationException>(() => (new List<int>()).StdDev());
         }
 
         [Fact]
-        public void ReturnTheValueIfOneValueIsProvided()
+        public void ThrowAnInvalidOperationExceptionIfOneValueIsProvided()
         {
-            var expected = 5730;
-            var actual = (new List<int>() { expected }).StdDev();
-            Assert.Equal(expected, actual);
+            Assert.Throws<InvalidOperationException>(() => (new List<int>() { 5730 }).StdDev());
         }
 
         [Fact]
