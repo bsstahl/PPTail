@@ -48,5 +48,20 @@ namespace PPTail.Generator.T4Html.Test
 
             Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
         }
+
+        [Fact]
+        public void ThrowADependencyNotFoundExceptionIfTheNavigationProviderIsNotProvided()
+        {
+            var container = new ServiceCollection();
+
+            var settings = new Settings();
+            settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
+            container.AddSingleton<Settings>(settings);
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+
+            Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
+        }
     }
 }

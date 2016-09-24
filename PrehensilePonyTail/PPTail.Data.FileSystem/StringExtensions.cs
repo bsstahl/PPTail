@@ -30,6 +30,9 @@ namespace PPTail.Data.FileSystem
                 bool isPublished = false;
                 bool.TryParse(node.GetElementValue("ispublished"), out isPublished);
 
+                bool isShowInList = false;
+                bool.TryParse(node.GetElementValue("showinlist"), out isShowInList);
+
                 DateTime publicationDate = DateTime.MinValue;
                 DateTime.TryParse(node.GetElementValue("pubDate"), out publicationDate);
 
@@ -42,6 +45,7 @@ namespace PPTail.Data.FileSystem
                 result = new ContentItem()
                 {
                     IsPublished = isPublished,
+                    ShowInList = isShowInList,
                     Title = node.GetElementValue("title"),
                     Description = node.GetElementValue("description"),
                     Content = node.GetElementValue("content"),

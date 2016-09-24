@@ -19,15 +19,26 @@ namespace PPTail.Generator.T4Html.Test
         {
             var cpt = System.IO.File.ReadAllText(_contentPageTemplatePath);
             var ppt = System.IO.File.ReadAllText(_postPageTemplatePath);
-            return ignore.Create(cpt, ppt);
+            var nav = new FakeNavProvider();
+            return ignore.Create(cpt, ppt, nav);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate)
         {
-            return ignore.Create(contentPageTemplate, postPageTemplate, _defaultDateTimeFormatSpecifier);
+            return ignore.Create(contentPageTemplate, postPageTemplate, new FakeNavProvider());
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, INavigationProvider navProvider)
+        {
+            return ignore.Create(contentPageTemplate, postPageTemplate, _defaultDateTimeFormatSpecifier, navProvider);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
+        {
+            return ignore.Create(contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier, new FakeNavProvider());
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier, INavigationProvider navProvider)
         {
             var contentTemplate = new Template() { Content = contentPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = postPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
@@ -35,15 +46,21 @@ namespace PPTail.Generator.T4Html.Test
 
             var settings = (null as Settings).CreateDefault(dateTimeFormatSpecifier);
 
-            return ignore.Create(templates, settings);
+            return ignore.Create(templates, settings, navProvider);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, Settings settings)
+        {
+            return ignore.Create(templates, settings, new FakeNavProvider());
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, Settings settings, INavigationProvider navProvider)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
+            container.AddSingleton<INavigationProvider>(navProvider);
             return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
         }
 
@@ -89,7 +106,7 @@ namespace PPTail.Generator.T4Html.Test
             var itemTemplate = new Template() { Content = "", Name = "main", TemplateType = Enumerations.TemplateType.Item };
             return new List<Template>() { contentTemplate, postTemplate, homePageTemplate, styleTemplate, bootstrapTemplate, itemTemplate };
         }
-        
+
         public static SiteSettings Create(this SiteSettings ignore)
         {
             return ignore.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2));

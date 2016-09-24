@@ -26,7 +26,9 @@ namespace PPTail.Generator.Navigation.Test
                 result.Add(new ContentItem()
                 {
                     Title = string.Empty.GetRandom(),
-                    Slug = string.Empty.GetRandom()
+                    Slug = string.Empty.GetRandom(),
+                    IsPublished = true,
+                    ShowInList = true
                 });
             return result;
         }

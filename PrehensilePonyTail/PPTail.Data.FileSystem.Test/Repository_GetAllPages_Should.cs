@@ -191,6 +191,32 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
+        public void ReturnTrueIfThePageIsMarkedShowInList()
+        {
+            string fieldName = "showinlist";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ShowInList.ToString();
+
+            bool expectedValue = true;
+            string expected = expectedValue.ToString();
+            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
+        }
+
+        [Fact]
+        public void ReturnFalseIfThePageIsNotMarkedShowInList()
+        {
+            string fieldName = "showinlist";
+            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ShowInList.ToString();
+
+            bool expectedValue = false;
+            string expected = expectedValue.ToString();
+            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+
+            ExecutePropertyTest(expected, fieldValueDelegate, xml);
+        }
+
+        [Fact]
         public void ReturnTheProperValueInThePubDateField()
         {
             string fieldName = "pubDate";

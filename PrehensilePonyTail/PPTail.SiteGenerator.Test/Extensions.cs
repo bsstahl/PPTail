@@ -25,9 +25,12 @@ namespace PPTail.SiteGenerator.Test
             var settings = new Settings();
             settings.outputFileExtension = pageFilenameExtension;
 
+            var navProvider = Mock.Of<INavigationProvider>();
+
             container.AddSingleton<IContentRepository>(contentRepo);
             container.AddSingleton<IPageGenerator>(pageGen);
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<INavigationProvider>(navProvider);
 
             return ignore.Create(container);
         }

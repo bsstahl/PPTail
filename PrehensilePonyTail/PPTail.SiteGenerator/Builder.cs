@@ -26,6 +26,7 @@ namespace PPTail.SiteGenerator
             var contentRepo = ServiceProvider.GetService<IContentRepository>();
             var pageGen = ServiceProvider.GetService<IPageGenerator>();
             var settings = ServiceProvider.GetService<Settings>();
+            var navProvider = ServiceProvider.GetService<INavigationProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
@@ -33,6 +34,7 @@ namespace PPTail.SiteGenerator
             var widgets = contentRepo.GetAllWidgets();
 
             var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
+            var navigationContent = navProvider.CreateNavigation(pages, "/index.html", settings.outputFileExtension);
 
             // Create bootstrap file
             result.Add(new SiteFile()
@@ -55,7 +57,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $".\\index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = pageGen.GenerateHomepage(sidebarContent, siteSettings, posts)
+                Content = pageGen.GenerateHomepage(sidebarContent, navigationContent, siteSettings, posts)
             });
 
             foreach (var post in posts)
@@ -70,7 +72,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $".\\Posts\\{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(sidebarContent, siteSettings, post)
+                        Content = pageGen.GeneratePostPage(sidebarContent, navigationContent, siteSettings, post)
                     });
                 }
             }
@@ -87,7 +89,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $".\\Pages\\{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(sidebarContent, siteSettings, page)
+                        Content = pageGen.GenerateContentPage(sidebarContent, navigationContent, siteSettings, page)
                     });
                 }
             }

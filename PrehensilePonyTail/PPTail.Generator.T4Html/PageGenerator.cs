@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using PPTail.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Exceptions;
+using PPTail.Interfaces;
 
 namespace PPTail.Generator.T4Html
 {
     public class PageGenerator : Interfaces.IPageGenerator
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly INavigationProvider _navProvider;
         private readonly Settings _settings;
         private readonly IEnumerable<Template> _templates;
 
@@ -27,6 +29,10 @@ namespace PPTail.Generator.T4Html
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
             if (!_templates.Any())
                 throw new Exceptions.DependencyNotFoundException("IEnumerable<Template>");
+
+            _navProvider = _serviceProvider.GetService<INavigationProvider>();
+            if (_navProvider == null)
+                throw new Exceptions.DependencyNotFoundException("INavigationProvider");
         }
 
         private Template ContentPageTemplate
@@ -95,9 +101,9 @@ namespace PPTail.Generator.T4Html
         }
 
 
-        public string GenerateHomepage(string sidebarContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
+        public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            return posts.ProcessTemplate(sidebarContent, siteSettings, this.HomePageTemplate.Content, this.ItemTemplate.Content, this.DateTimeFormatSpecifier, this.ItemSeparator);
+            return posts.ProcessTemplate(sidebarContent, navigationContent, siteSettings, this.HomePageTemplate.Content, this.ItemTemplate.Content, this.DateTimeFormatSpecifier, this.ItemSeparator);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -123,24 +129,23 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        public string GenerateContentPage(string sidebarContent, SiteSettings siteSettings, ContentItem pageData)
+        public string GenerateContentPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem pageData)
         {
             var template = this.ContentPageTemplate;
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
 
-            return pageData.ProcessTemplate(sidebarContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
+            return pageData.ProcessTemplate(sidebarContent, navContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
         }
 
-        public string GeneratePostPage(string sidebarContent, SiteSettings siteSettings, ContentItem article)
+        public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
         {
             var template = this.PostPageTemplate;
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
 
-            return article.ProcessTemplate(sidebarContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
+            return article.ProcessTemplate(sidebarContent, navContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
         }
-
 
     }
 }

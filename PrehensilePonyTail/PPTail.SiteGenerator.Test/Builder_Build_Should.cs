@@ -222,10 +222,12 @@ namespace PPTail.SiteGenerator.Test
                 item.IsPublished = true.GetRandom();
 
             var settings = new Settings();
+            var navProvider = Mock.Of<INavigationProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<INavigationProvider>(navProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
@@ -234,7 +236,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
+                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
             }
         }
 
@@ -252,10 +254,12 @@ namespace PPTail.SiteGenerator.Test
                 item.IsPublished = true.GetRandom();
 
             var settings = new Settings();
+            var navProvider = Mock.Of<INavigationProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<INavigationProvider>(navProvider);
 
             var siteSettings = (null as SiteSettings).Create();
 
@@ -265,7 +269,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
+                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
             }
         }
 
@@ -277,10 +281,12 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             var pageGen = new Mock<IPageGenerator>();
             var settings = new Settings();
+            var navProvider = Mock.Of<INavigationProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<INavigationProvider>(navProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
@@ -297,10 +303,12 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             var pageGen = new Mock<IPageGenerator>();
             var settings = new Settings();
+            var navProvider = Mock.Of<INavigationProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<INavigationProvider>(navProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
@@ -317,16 +325,18 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             var pageGen = new Mock<IPageGenerator>();
             var settings = new Settings();
+            var navProvider = Mock.Of<INavigationProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
+            container.AddSingleton<INavigationProvider>(navProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
-            pageGen.Verify(c => c.GenerateHomepage(It.IsAny<string>(), It.IsAny<SiteSettings>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
+            pageGen.Verify(c => c.GenerateHomepage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
         }
 
 
