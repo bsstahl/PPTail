@@ -86,7 +86,7 @@ namespace PPTail.Data.FileSystem.Test
             container.AddSingleton<IFileSystem>(fileSystem.Object);
             container.AddSingleton<Settings>(settings);
 
-            var target = (null as IContentRepository).Create(container);
+            var target = (null as IContentRepository).Create(container.BuildServiceProvider());
             var posts = target.GetAllPosts();
 
             fileSystem.VerifyAll();

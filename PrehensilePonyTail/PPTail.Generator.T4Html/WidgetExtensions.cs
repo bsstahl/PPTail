@@ -1,21 +1,23 @@
 ﻿using PPTail.Entities;
+using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Generator.T4Html
 {
     public static class WidgetExtensions
     {
-        public static string Render(this Widget widget, Settings settings, IEnumerable<ContentItem> posts)
+        public static string Render(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts)
         {
-            string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_","")}\">";
+            string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
 
             if (widget.WidgetType == Enumerations.WidgetType.TextBox)
                 results += widget.RenderTextBoxWidget();
             if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
-                results += widget.RenderTagCloudWidget(settings, posts);
+                results += widget.RenderTagCloudWidget(serviceProvider, settings, posts);
 
             results += "</div>";
             return results;
@@ -30,17 +32,20 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTagCloudWidget(this Widget widget, Settings settings, IEnumerable<ContentItem> posts)
+        private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts)
         {
             string results = string.Empty;
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
 
+            var tags = posts.SelectMany(p => p.Tags);
+
+            var styler = serviceProvider.GetService<ITagCloudStyler>();
+            var styles = styler.GetStyles(tags).OrderBy(s => s.Item1).Distinct();
+
             results += "<div class=\"content\"><ul>";
-            foreach (var post in posts)
-                if (post.Tags != null)
-                    foreach (var tag in post.Tags)
-                        results += $"<li><a title=\"Tag: {tag}\" class=\"smallest\" href=\"/search/{tag.Replace(" ", "_")}.{settings.outputFileExtension}\">{tag}</a></li> ";
+            foreach (var style in styles)
+                results += $"<li><a title=\"Tag: {style.Item1}\" class=\"{style.Item2}\" href=\"/search/{style.Item1.Replace(" ", "_")}.{settings.outputFileExtension}\">{style.Item1}</a></li> ";
 
             results += "</ul></div>";
             return results;

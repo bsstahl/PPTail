@@ -17,9 +17,9 @@ namespace PPTail.Data.FileSystem
         private readonly IServiceProvider _serviceProvider;
         private readonly string _rootPath;
 
-        public Repository(IServiceCollection container)
+        public Repository(IServiceProvider serviceProvider)
         {
-            _serviceProvider = container.BuildServiceProvider();
+            _serviceProvider = serviceProvider;
 
             var settings = _serviceProvider.GetService<Settings>();
             if (settings == null)

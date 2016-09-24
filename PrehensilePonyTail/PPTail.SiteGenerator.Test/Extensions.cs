@@ -34,7 +34,7 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IServiceCollection container)
         {
-            return new Builder(container);
+            return new Builder(container.BuildServiceProvider());
         }
 
         public static ContentItem Create(this ContentItem ignore)

@@ -10,20 +10,22 @@ namespace PPTail.SiteGenerator
 {
     public class Builder
     {
-        private readonly IServiceProvider _serviceProvider;
+        private IServiceProvider _serviceProvider;
 
-        public Builder(IServiceCollection container)
+        public Builder(IServiceProvider serviceProvider)
         {
-            _serviceProvider = container.BuildServiceProvider();
+            _serviceProvider = serviceProvider;
         }
+
+        private IServiceProvider ServiceProvider { get { return _serviceProvider; } }
 
         public IEnumerable<SiteFile> Build()
         {
             var result = new List<SiteFile>();
 
-            var contentRepo = _serviceProvider.GetService<IContentRepository>();
-            var pageGen = _serviceProvider.GetService<IPageGenerator>();
-            var settings = _serviceProvider.GetService<Settings>();
+            var contentRepo = ServiceProvider.GetService<IContentRepository>();
+            var pageGen = ServiceProvider.GetService<IPageGenerator>();
+            var settings = ServiceProvider.GetService<Settings>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();

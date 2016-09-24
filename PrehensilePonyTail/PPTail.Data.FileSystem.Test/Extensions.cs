@@ -35,12 +35,12 @@ namespace PPTail.Data.FileSystem.Test
 
             container.AddSingleton<IFileSystem>(fileSystem);
 
-            return ignore.Create(container);
+            return ignore.Create(container.BuildServiceProvider());
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IServiceCollection container)
+        public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
         {
-            return new PPTail.Data.FileSystem.Repository(container);
+            return new PPTail.Data.FileSystem.Repository(serviceProvider);
         }
 
         public static string BuildXml(this SiteSettings ignore, string title, string description, int postsPerPage)

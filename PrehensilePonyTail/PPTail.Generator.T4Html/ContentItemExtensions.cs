@@ -12,6 +12,7 @@ namespace PPTail.Generator.T4Html
         {
             var updatedTemplate = template.Replace("{Sidebar}", sidebarContent);
             return updatedTemplate
+                .Replace("{NavigationMenu}", GetNavigationContent())
                 .ReplaceContentItemVariables(item, dateTimeFormatSpecifier)
                 .ReplaceSettingsVariables(siteSettings);
         }
@@ -29,8 +30,14 @@ namespace PPTail.Generator.T4Html
 
             return pageTemplate
             .ReplaceSettingsVariables(siteSettings)
+            .Replace("{NavigationMenu}", GetNavigationContent())
             .Replace("{Sidebar}", sidebarContent)
             .Replace("{Content}", string.Join(itemSeparator, contentItems));
+        }
+
+        public static string GetNavigationContent()
+        {
+            return "<div class=\"menu\">Place Nav Here</div>";
         }
 
     }

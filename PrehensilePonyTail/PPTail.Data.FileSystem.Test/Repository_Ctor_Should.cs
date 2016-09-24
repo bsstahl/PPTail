@@ -23,7 +23,7 @@ namespace PPTail.Data.FileSystem.Test
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<IFileSystem>(fileSystem);
 
-            var target = new Repository(container);
+            var target = new Repository(container.BuildServiceProvider());
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace PPTail.Data.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFileSystem>(fileSystem);
 
-            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container));
+            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace PPTail.Data.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<Settings>(settings);
 
-            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container));
+            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace PPTail.Data.FileSystem.Test
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<IFileSystem>(fileSystem);
 
-            Assert.Throws<Exceptions.SettingNotFoundException>(() => new Repository(container));
+            Assert.Throws<Exceptions.SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
     }
 }

@@ -23,8 +23,7 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void ThrowAnArgumentNullExceptionIfTheContainerIsNotProvided()
         {
-            ServiceCollection container = null;
-            Assert.Throws<ArgumentNullException>(() => new PPTail.Generator.T4Html.PageGenerator(container));
+            Assert.Throws<ArgumentNullException>(() => new PPTail.Generator.T4Html.PageGenerator(null));
         }
 
         [Fact]
@@ -35,7 +34,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             container.AddSingleton<IEnumerable<Template>>(templates);
 
-            Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container));
+            Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
         }
 
         [Fact]
@@ -47,7 +46,7 @@ namespace PPTail.Generator.T4Html.Test
             settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
             container.AddSingleton<Settings>(settings);
 
-            Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container));
+            Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
         }
     }
 }

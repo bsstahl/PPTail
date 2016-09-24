@@ -43,8 +43,8 @@ namespace PPTail.Generator.T4Html.Test
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<Settings>(settings);
-
-            return new PPTail.Generator.T4Html.PageGenerator(container);
+            container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
+            return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
         }
 
         public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)

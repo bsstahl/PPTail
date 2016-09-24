@@ -14,12 +14,12 @@ namespace PPTail.Generator.T4Html
         private readonly Settings _settings;
         private readonly IEnumerable<Template> _templates;
 
-        public PageGenerator(IServiceCollection container)
+        public PageGenerator(IServiceProvider serviceProvider)
         {
-            if (container == null)
-                throw new ArgumentNullException(nameof(container));
+            if (serviceProvider == null)
+                throw new ArgumentNullException(nameof(serviceProvider));
 
-            _serviceProvider = container.BuildServiceProvider();
+            _serviceProvider = serviceProvider;
             _settings = _serviceProvider.GetService<Settings>();
             if (_settings == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(Settings));
@@ -118,7 +118,7 @@ namespace PPTail.Generator.T4Html
         {
             var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets)
-                results += widget.Render(settings, posts);
+                results += widget.Render(_serviceProvider, settings, posts);
             results += "</div>";
             return results;
         }
