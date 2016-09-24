@@ -17,9 +17,10 @@ namespace PPTail.Generator.Navigation.Test
 
             var pages = (null as IEnumerable<ContentItem>).Create();
             string currentUrl = "/";
-            string homeUrl = "index.html";
+            string outputFileExtension = "html";
+            string homeUrl = $"index.{outputFileExtension}";
 
-            var actual = target.CreateNavigation(pages, currentUrl, homeUrl);
+            var actual = target.CreateNavigation(pages, currentUrl, homeUrl, outputFileExtension);
             Assert.Contains("home", actual.ToLower());
         }
 
@@ -31,9 +32,10 @@ namespace PPTail.Generator.Navigation.Test
 
             var pages = (null as IEnumerable<ContentItem>).Create(4);
             string currentUrl = "/";
-            string homeUrl = "index.html";
+            string outputFileExtension = "html";
+            string homeUrl = $"index.{outputFileExtension}";
 
-            var actual = target.CreateNavigation(pages, currentUrl, homeUrl);
+            var actual = target.CreateNavigation(pages, currentUrl, homeUrl, outputFileExtension);
             foreach (var page in pages)
                 Assert.Contains(page.Title, actual);
         }
@@ -46,9 +48,10 @@ namespace PPTail.Generator.Navigation.Test
 
             var pages = (null as IEnumerable<ContentItem>).Create();
             string currentUrl = "/";
-            string homeUrl = "index.html";
+            string outputFileExtension = "html";
+            string homeUrl = $"index.{outputFileExtension}";
 
-            var actual = target.CreateNavigation(pages, currentUrl, homeUrl);
+            var actual = target.CreateNavigation(pages, currentUrl, homeUrl, outputFileExtension);
             string href = $"{homeUrl}\"";
             Assert.Contains(href, actual);
         }
@@ -61,9 +64,10 @@ namespace PPTail.Generator.Navigation.Test
 
             var pages = (null as IEnumerable<ContentItem>).Create(4);
             string currentUrl = "/";
-            string homeUrl = "index.html";
+            string outputFileExtension = "html";
+            string homeUrl = $"index.{outputFileExtension}";
 
-            var actual = target.CreateNavigation(pages, currentUrl, homeUrl);
+            var actual = target.CreateNavigation(pages, currentUrl, homeUrl, outputFileExtension);
             foreach (var page in pages)
             {
                 string href = $"{page.Slug}.html\"";

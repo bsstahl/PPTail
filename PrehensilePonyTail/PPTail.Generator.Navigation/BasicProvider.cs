@@ -16,9 +16,17 @@ namespace PPTail.Generator.Navigation
             _serviceProvider = serviceProvider;
         }
 
-        public string CreateNavigation(IEnumerable<ContentItem> pages, string currentUrl, string homeUrl)
+        public string CreateNavigation(IEnumerable<ContentItem> pages, string currentUrl, string homeUrl, string outputFileExtension)
         {
-            throw new NotImplementedException();
+            string result = "<div class=\"menu\">";
+
+            result += $"<a href=\"{homeUrl}\">Home</a>";
+            foreach (var page in pages)
+                result += $"<a href=\"{page.Slug}.{outputFileExtension}\">{page.Title}</a>";
+
+            result += "</div>";
+
+            return result;
         }
     }
 }
