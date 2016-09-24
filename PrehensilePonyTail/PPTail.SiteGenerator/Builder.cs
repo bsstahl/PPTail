@@ -30,7 +30,6 @@ namespace PPTail.SiteGenerator
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
             var pages = contentRepo.GetAllPages();
-
             var widgets = contentRepo.GetAllWidgets();
 
             var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);

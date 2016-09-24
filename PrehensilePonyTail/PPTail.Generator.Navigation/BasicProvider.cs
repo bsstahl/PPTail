@@ -16,7 +16,7 @@ namespace PPTail.Generator.Navigation
             _serviceProvider = serviceProvider;
         }
 
-        public string CreateNavigation(IEnumerable<ContentItem> pages, string currentUrl)
+        public string CreateNavigation(IEnumerable<ContentItem> pages, string currentUrl, string homeUrl)
         {
             throw new NotImplementedException();
         }
