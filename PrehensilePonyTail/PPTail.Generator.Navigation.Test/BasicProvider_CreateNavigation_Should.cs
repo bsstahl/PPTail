@@ -25,6 +25,20 @@ namespace PPTail.Generator.Navigation.Test
         }
 
         [Fact]
+        public void IncludeAnArchiveMenuItem()
+        {
+            IServiceProvider serviceProvider = null;
+            var target = (null as BasicProvider).Create(serviceProvider);
+
+            var pages = (null as IEnumerable<ContentItem>).Create();
+            string outputFileExtension = "html";
+            string homeUrl = $"index.{outputFileExtension}";
+
+            var actual = target.CreateNavigation(pages, homeUrl, outputFileExtension);
+            Assert.Contains("archive", actual.ToLower());
+        }
+
+        [Fact]
         public void IncludeAMenuItemForEachPublishedContentPage()
         {
             IServiceProvider serviceProvider = null;
@@ -85,6 +99,21 @@ namespace PPTail.Generator.Navigation.Test
 
             var actual = target.CreateNavigation(pages, homeUrl, outputFileExtension);
             string href = $"{homeUrl}\"";
+            Assert.Contains(href, actual);
+        }
+
+        [Fact]
+        public void IncludeALinkToTheArchive()
+        {
+            IServiceProvider serviceProvider = null;
+            var target = (null as BasicProvider).Create(serviceProvider);
+
+            var pages = (null as IEnumerable<ContentItem>).Create();
+            string outputFileExtension = "html";
+            string homeUrl = $"index.{outputFileExtension}";
+
+            var actual = target.CreateNavigation(pages, homeUrl, outputFileExtension);
+            string href = $"archive.{outputFileExtension}\"";
             Assert.Contains(href, actual);
         }
 
