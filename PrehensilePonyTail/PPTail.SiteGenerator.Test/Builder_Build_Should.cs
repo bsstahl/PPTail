@@ -39,7 +39,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains("\\Pages\\")));
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains("pages/")));
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains("\\Posts\\")));
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains("posts/")));
         }
 
         [Fact]
@@ -59,13 +59,13 @@ namespace PPTail.SiteGenerator.Test
             string extension = string.Empty.GetRandom(4);
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
-            var expected = $"\\Pages\\{contentItem.Slug}.{extension}";
+            var expected = $"pages/{contentItem.Slug}.{extension}";
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
 
             var target = (null as Builder).Create(contentRepo.Object, extension);
             var actual = target.Build();
 
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains(expected)));
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains(expected)));
         }
 
         [Fact]
@@ -74,13 +74,13 @@ namespace PPTail.SiteGenerator.Test
             string extension = string.Empty.GetRandom(4);
             var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
-            var expected = $"\\Posts\\{contentItem.Slug}.{extension}";
+            var expected = $"posts/{contentItem.Slug}.{extension}";
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
 
             var target = (null as Builder).Create(contentRepo.Object, extension);
             var actual = target.Build();
 
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.Contains(expected)));
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains(expected)));
         }
 
         [Fact]

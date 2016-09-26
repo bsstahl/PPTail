@@ -16,14 +16,20 @@ namespace PPTail.Generator.Navigation
             _serviceProvider = serviceProvider;
         }
 
-        public string CreateNavigation(IEnumerable<ContentItem> pages, string homeUrl, string outputFileExtension)
+        public string CreateNavigation(IEnumerable<ContentItem> pages, string relativePathToRootFolder, string outputFileExtension)
         {
             string result = "<div class=\"menu\">";
 
-            result += $"<a href=\"{homeUrl}\">Home</a>";
-            result += $"<a href=\"/archive.{outputFileExtension}\">Archive</a>";
+            var homePageUri = System.IO.Path.Combine(relativePathToRootFolder, $"index.{outputFileExtension}");
+            var archiveUri = System.IO.Path.Combine(relativePathToRootFolder, $"archive.{outputFileExtension}");
+
+            result += $"<a href=\"{homePageUri}\">Home</a>";
+            result += $"<a href=\"{archiveUri}\">Archive</a>";
             foreach (var page in pages.Where(p => p.IsPublished && p.ShowInList))
-                result += $"<a href=\"{page.Slug}.{outputFileExtension}\">{page.Title}</a>";
+            {
+                var pageUri = System.IO.Path.Combine(relativePathToRootFolder, "pages", $"{page.Slug}.{outputFileExtension}");
+                result += $"<a href=\"{pageUri}\">{page.Title}</a>";
+            }
 
             result += "</div>";
 

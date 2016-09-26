@@ -34,12 +34,15 @@ namespace PPTail.SiteGenerator
             var widgets = contentRepo.GetAllWidgets();
 
             var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
-            var navigationContent = navProvider.CreateNavigation(pages, "/index.html", settings.outputFileExtension);
+
+            // Create navbars
+            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.outputFileExtension);
+            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.outputFileExtension);
 
             // Create bootstrap file
             result.Add(new SiteFile()
             {
-                RelativeFilePath = $".\\bootstrap.min.css",
+                RelativeFilePath = $"./bootstrap.min.css",
                 SourceTemplateType = Enumerations.TemplateType.Bootstrap,
                 Content = pageGen.GenerateBootstrapPage()
             });
@@ -47,7 +50,7 @@ namespace PPTail.SiteGenerator
             // Create Style page
             result.Add(new SiteFile()
             {
-                RelativeFilePath = $".\\Style.css",
+                RelativeFilePath = $"./Style.css",
                 SourceTemplateType = Enumerations.TemplateType.Style,
                 Content = pageGen.GenerateStylesheet(siteSettings)
             });
@@ -55,9 +58,9 @@ namespace PPTail.SiteGenerator
             // Create home page
             result.Add(new SiteFile()
             {
-                RelativeFilePath = $".\\index.html",
+                RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = pageGen.GenerateHomepage(sidebarContent, navigationContent, siteSettings, posts)
+                Content = pageGen.GenerateHomepage(sidebarContent, rootLevelNavigationContent, siteSettings, posts)
             });
 
             foreach (var post in posts)
@@ -70,9 +73,9 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $".\\Posts\\{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
+                        RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(sidebarContent, navigationContent, siteSettings, post)
+                        Content = pageGen.GeneratePostPage(sidebarContent, childLevelNavigationContent, siteSettings, post)
                     });
                 }
             }
@@ -87,9 +90,9 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $".\\Pages\\{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
+                        RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(sidebarContent, navigationContent, siteSettings, page)
+                        Content = pageGen.GenerateContentPage(sidebarContent, childLevelNavigationContent, siteSettings, page)
                     });
                 }
             }
