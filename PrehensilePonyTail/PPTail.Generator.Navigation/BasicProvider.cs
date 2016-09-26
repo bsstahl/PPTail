@@ -21,6 +21,7 @@ namespace PPTail.Generator.Navigation
             string result = "<div class=\"menu\">";
 
             result += $"<a href=\"{homeUrl}\">Home</a>";
+            result += $"<a href=\"/archive.{outputFileExtension}\">Archive</a>";
             foreach (var page in pages.Where(p => p.IsPublished && p.ShowInList))
                 result += $"<a href=\"{page.Slug}.{outputFileExtension}\">{page.Title}</a>";
 

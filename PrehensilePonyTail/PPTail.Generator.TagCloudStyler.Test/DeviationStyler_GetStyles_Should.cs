@@ -70,22 +70,6 @@ namespace PPTail.Generator.TagCloudStyler.Test
         }
 
         [Fact]
-        public void ANormallyDistributedTagListShouldProduceSomeSmallestSizes()
-        {
-            var serviceProvider = new ServiceCollection().BuildServiceProvider();
-            var styler = new DeviationStyler(serviceProvider);
-            var tagList = (null as IEnumerable<string>).GetTagList(50);
-
-            // Each tag should be used a random # of times
-            var tags = new List<string>();
-            for (int i = 0; i < 300.GetRandom(100); i++)
-                tags.Add(tagList.GetRandom());
-
-            var actual = styler.GetStyles(tags);
-            Assert.True(actual.Count(i => i.Item2 == "smallest") > 0);
-        }
-
-        [Fact]
         public void ANormallyDistributedTagListShouldProduceSomeSmallSizes()
         {
             var serviceProvider = new ServiceCollection().BuildServiceProvider();
