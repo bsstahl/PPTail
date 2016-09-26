@@ -1,4 +1,30 @@
-﻿body {
+﻿h1, h2, h3 {
+	font-weight: normal;
+}
+
+
+a, a:visited {
+	color: #909090;
+}
+
+	a:hover {
+		color: #000000;
+	}
+
+.main {
+	margin: 0px auto;
+	text-align: left;
+	width: 960px;
+}
+
+
+.content {
+	overflow: auto;
+	width: 100%;
+	padding: 20px 0px;
+}
+
+body {
     color: #000000;
     text-align: left;
     line-height: 140%;
@@ -154,34 +180,20 @@ a, a:visited {
 		margin-right: 5px;
 	}
 
-
-/*
-
-h1, h2, h3 {
-	font-weight: normal;
+.pagelist {
+	display: inline;
+	margin: 0px;
+	padding: 5px;
 }
 
-
-a, a:visited {
-	color: #909090;
-}
-
-	a:hover {
-		color: #000000;
+	.pagelist li {
+		list-style-type: none;
+		display: inline;
+		margin: 0px 5px 0px 0px;
 	}
 
-.main {
-	margin: 0px auto;
-	text-align: left;
-	width: 960px;
-}
 
-
-.content {
-	overflow: auto;
-	width: 100%;
-	padding: 20px 0px;
-}
+/*
 
 .clear {
 	clear: both;
@@ -236,18 +248,6 @@ blockquote {
 
 	.menu img {
 		margin-right: 5px;
-	}
-
-.pagelist {
-	display: inline;
-	margin: 0px;
-	padding: 5px;
-}
-
-	.pagelist li {
-		list-style-type: none;
-		display: inline;
-		margin: 0px 5px 0px 0px;
 	}
 
 .postContent h1 {

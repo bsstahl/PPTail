@@ -25,13 +25,15 @@ namespace PPTail.Generator.Navigation
 
             result += $"<a href=\"{homePageUri}\">Home</a>";
             result += $"<a href=\"{archiveUri}\">Archive</a>";
+
+            result += "<ul class=\"pagelist\" id=\"pagelist\">";
             foreach (var page in pages.Where(p => p.IsPublished && p.ShowInList))
             {
                 var pageUri = System.IO.Path.Combine(relativePathToRootFolder, "pages", $"{page.Slug}.{outputFileExtension}");
-                result += $"<a href=\"{pageUri}\">{page.Title}</a>";
+                result += $"<li><a href=\"{pageUri}\">{page.Title}</a></li>";
             }
 
-            result += "</div>";
+            result += "</ul></div>";
 
             return result;
         }
