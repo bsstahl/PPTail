@@ -22,9 +22,11 @@ namespace PPTail.Generator.Navigation
 
             var homePageUri = System.IO.Path.Combine(relativePathToRootFolder, $"index.{outputFileExtension}");
             var archiveUri = System.IO.Path.Combine(relativePathToRootFolder, $"archive.{outputFileExtension}");
+            var contactUri = System.IO.Path.Combine(relativePathToRootFolder, $"contact.{outputFileExtension}");
 
             result += $"<a href=\"{homePageUri}\">Home</a>";
             result += $"<a href=\"{archiveUri}\">Archive</a>";
+            result += $"<a href=\"{contactUri}\">Contact</a>";
 
             result += "<ul class=\"pagelist\" id=\"pagelist\">";
             foreach (var page in pages.Where(p => p.IsPublished && p.ShowInList))

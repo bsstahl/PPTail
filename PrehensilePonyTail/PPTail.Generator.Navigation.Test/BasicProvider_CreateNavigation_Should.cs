@@ -118,6 +118,21 @@ namespace PPTail.Generator.Navigation.Test
         }
 
         [Fact]
+        public void IncludeALinkToTheContactPage()
+        {
+            IServiceProvider serviceProvider = null;
+            var target = (null as BasicProvider).Create(serviceProvider);
+
+            var pages = (null as IEnumerable<ContentItem>).Create();
+            string outputFileExtension = "html";
+            string pathToRoot = string.Empty;
+
+            var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
+            string href = $"contact.{outputFileExtension}\"";
+            Assert.Contains(href, actual);
+        }
+
+        [Fact]
         public void IncludeALinkToEachContentPage()
         {
             IServiceProvider serviceProvider = null;
