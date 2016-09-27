@@ -35,6 +35,11 @@ namespace PPTail.Generator.Navigation
                 result += $"<li><a href=\"{pageUri}\">{page.Title}</a></li>";
             }
 
+            var syndicationUri = System.IO.Path.Combine(relativePathToRootFolder, $"syndication.xml");
+            var syndicationImageUri = System.IO.Path.Combine(relativePathToRootFolder, $"Images/rssicon.gif");
+            result += $"<img align=\"absbottom\" id=\"rssIcon\" src=\"{syndicationImageUri}\" />";
+            result += $"<a href=\"{syndicationUri}\">Subscribe</a>";
+
             result += "</ul></div>";
 
             return result;
