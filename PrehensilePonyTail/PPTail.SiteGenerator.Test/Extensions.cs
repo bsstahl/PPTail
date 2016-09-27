@@ -19,6 +19,11 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
         {
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), pageFilenameExtension);
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, string pageFilenameExtension)
+        {
             IServiceCollection container = new ServiceCollection();
             var pageGen = Mock.Of<IPageGenerator>();
 
@@ -31,6 +36,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IPageGenerator>(pageGen);
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
 
             return ignore.Create(container);
         }

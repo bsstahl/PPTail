@@ -19,6 +19,7 @@
     },
     "PPTail.Common": "1.0.0-*",
     "PPTail.Data.FileSystem": "1.0.0-*",
+    "PPTail.Generator.Archive": "1.0.0-*",
     "PPTail.Generator.Navigation": "1.0.0-*",
     "PPTail.Generator.T4Html": "1.0.0-*",
     "PPTail.Generator.TagCloudStyler": "1.0.0-*",

@@ -27,6 +27,7 @@ namespace PPTail.SiteGenerator
             var pageGen = ServiceProvider.GetService<IPageGenerator>();
             var settings = ServiceProvider.GetService<Settings>();
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
+            var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
@@ -61,6 +62,15 @@ namespace PPTail.SiteGenerator
                 RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
                 Content = pageGen.GenerateHomepage(sidebarContent, rootLevelNavigationContent, siteSettings, posts)
+            });
+
+            // Create Archive
+            // TODO: Add Sidebar content
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $"./archive.html",
+                SourceTemplateType = Enumerations.TemplateType.Archive,
+                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, "./")
             });
 
             foreach (var post in posts)
