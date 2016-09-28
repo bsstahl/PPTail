@@ -8,7 +8,7 @@ namespace PPTail.Generator.Contact
 {
     public class TemplateProvider: IContactProvider
     {
-        public TemplateProvider()
+        public TemplateProvider(IServiceProvider serviceProvider)
         {
         }
 
