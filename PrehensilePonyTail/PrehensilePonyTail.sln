@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B28258E1-3587-4F84-B41F-1EE3A9139868}"
 	ProjectSection(SolutionItems) = preProject
 		bootstrap.min.css = bootstrap.min.css
+		ContactPage.template.html = ContactPage.template.html
 		ContentItem.template.html = ContentItem.template.html
 		ContentPage.template.html = ContentPage.template.html
 		global.json = global.json
@@ -47,6 +48,10 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Archive", "PPTail.Generator.Archive\PPTail.Generator.Archive.xproj", "{B52A88C8-427A-4676-8668-C7576F531450}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Archive.Test", "PPTail.Generator.Archive.Test\PPTail.Generator.Archive.Test.xproj", "{D0B7399C-796A-4CD7-AD21-B91435982617}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Contact", "PPTail.Generator.Contact\PPTail.Generator.Contact.xproj", "{2B1889EB-DF28-44B9-9160-2E4ECDC40085}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Contact.Test", "PPTail.Generator.Contact.Test\PPTail.Generator.Contact.Test.xproj", "{30F6DD9B-A671-48D8-B674-6287BC98408C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +119,14 @@ Global
 		{D0B7399C-796A-4CD7-AD21-B91435982617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0B7399C-796A-4CD7-AD21-B91435982617}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0B7399C-796A-4CD7-AD21-B91435982617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B1889EB-DF28-44B9-9160-2E4ECDC40085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B1889EB-DF28-44B9-9160-2E4ECDC40085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B1889EB-DF28-44B9-9160-2E4ECDC40085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B1889EB-DF28-44B9-9160-2E4ECDC40085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30F6DD9B-A671-48D8-B674-6287BC98408C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F6DD9B-A671-48D8-B674-6287BC98408C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F6DD9B-A671-48D8-B674-6287BC98408C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F6DD9B-A671-48D8-B674-6287BC98408C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,5 +147,7 @@ Global
 		{1657256C-4498-4906-A346-D954304080C3} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 		{B52A88C8-427A-4676-8668-C7576F531450} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{D0B7399C-796A-4CD7-AD21-B91435982617} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{2B1889EB-DF28-44B9-9160-2E4ECDC40085} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{30F6DD9B-A671-48D8-B674-6287BC98408C} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 	EndGlobalSection
 EndGlobal
