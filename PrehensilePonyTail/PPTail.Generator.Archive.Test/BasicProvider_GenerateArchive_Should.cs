@@ -14,6 +14,8 @@ namespace PPTail.Generator.Archive.Test
         public void GenerateAtLeastOneLinkToEveryPublishedPost()
         {
             string pathToRoot = "/";
+            string navContent = "Place Navigation Here";
+            string sidebarContent = "Place Sidebar Here";
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -22,11 +24,11 @@ namespace PPTail.Generator.Archive.Test
             var siteSettings = (null as SiteSettings).Create();
 
             var target = (null as BasicProvider).Create();
-            var actual = target.GenerateArchive(settings, siteSettings, posts, pages, pathToRoot);
+            var actual = target.GenerateArchive(settings, siteSettings, posts, pages, navContent, sidebarContent, pathToRoot);
 
             foreach (var post in posts)
             {
-                var href = $"href=\"{pathToRoot}/Posts/{post.Slug}.{settings.outputFileExtension}\"";
+                var href = System.IO.Path.Combine(pathToRoot, "Posts" , $"{post.Slug}.{settings.outputFileExtension}");
                 Assert.Contains(href, actual);
             }
         }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PPTail.Generator.T4Html
+namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
@@ -24,6 +24,6 @@ namespace PPTail.Generator.T4Html
             return template.Replace("{SiteTitle}", settings.Title)
                 .Replace("{SiteDescription}", settings.Description);
         }
+
     }
 }
-

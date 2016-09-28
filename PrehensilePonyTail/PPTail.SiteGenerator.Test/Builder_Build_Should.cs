@@ -217,6 +217,8 @@ namespace PPTail.SiteGenerator.Test
                 It.IsAny<SiteSettings>(),
                 It.IsAny<IEnumerable<ContentItem>>(),
                 It.IsAny<IEnumerable<ContentItem>>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
                 It.IsAny<string>())).Returns("Place archive here");
 
             var target = (null as Builder).Create(contentRepo);

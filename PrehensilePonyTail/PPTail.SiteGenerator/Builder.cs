@@ -70,7 +70,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./archive.html",
                 SourceTemplateType = Enumerations.TemplateType.Archive,
-                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, "./")
+                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, sidebarContent, "./")
             });
 
             foreach (var post in posts)

@@ -14,6 +14,18 @@ namespace PPTail.Generator.Archive.Test
         public static IArchiveProvider Create(this IArchiveProvider ignore)
         {
             var container = new ServiceCollection();
+
+            var template = new Template()
+            {
+                Content = "{Content}",
+                Name = string.Empty.GetRandom(),
+                TemplateType = Enumerations.TemplateType.HomePage
+            };
+
+            var templates = new List<Template>();
+            templates.Add(template);
+            container.AddSingleton<IEnumerable<Template>>(templates);
+
             // Add dependencies here as needed
             return ignore.Create(container.BuildServiceProvider());
         }

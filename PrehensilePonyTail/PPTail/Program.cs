@@ -17,7 +17,8 @@ namespace PPTail
             const string _outputPathSettingName = "outputPath";
 
             string outputFileExtension = "html";
-            string dateTimeFormatSpecifier = "MM/dd/yy H:mm UTC";
+            string dateFormatSpecifier = "yyyy-MM-dd";
+            string dateTimeFormatSpecifier = "yyyy-MM-dd H:mm UTC";
             string itemSeparator = "<hr/>";
 
             string styleTemplatePath = "..\\Style.template.css";
@@ -34,7 +35,7 @@ namespace PPTail
             string sourceDataPath = config[_sourceDataPathSettingName];
             string outputPath = config[_outputPathSettingName];
 
-            var settings = (null as Settings).Create(sourceDataPath, outputPath, dateTimeFormatSpecifier, itemSeparator, outputFileExtension);
+            var settings = (null as Settings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension);
             var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, itemTemplatePath);
 
             var container = (null as IServiceCollection).Create(settings, templates);

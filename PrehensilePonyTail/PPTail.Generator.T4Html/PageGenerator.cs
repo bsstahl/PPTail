@@ -6,6 +6,7 @@ using PPTail.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
+using PPTail.Extensions;
 
 namespace PPTail.Generator.T4Html
 {
@@ -103,7 +104,7 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            return posts.ProcessTemplate(sidebarContent, navigationContent, siteSettings, this.HomePageTemplate.Content, this.ItemTemplate.Content, this.DateTimeFormatSpecifier, this.ItemSeparator);
+            return posts.ProcessTemplate(sidebarContent, navigationContent, siteSettings, this.HomePageTemplate, this.ItemTemplate, this.DateTimeFormatSpecifier, this.ItemSeparator);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -135,7 +136,7 @@ namespace PPTail.Generator.T4Html
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
 
-            return pageData.ProcessTemplate(sidebarContent, navContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
+            return template.ProcessTemplate(pageData, sidebarContent, navContent, siteSettings, this.DateTimeFormatSpecifier);
         }
 
         public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
@@ -144,7 +145,7 @@ namespace PPTail.Generator.T4Html
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
 
-            return article.ProcessTemplate(sidebarContent, navContent, siteSettings, template.Content, this.DateTimeFormatSpecifier);
+            return template.ProcessTemplate(article, sidebarContent, navContent, siteSettings, this.DateTimeFormatSpecifier);
         }
 
     }

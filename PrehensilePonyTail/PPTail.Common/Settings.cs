@@ -8,6 +8,8 @@ namespace PPTail
     public class Settings
     {
         public string DateTimeFormatSpecifier { get; set; }
+        public string DateFormatSpecifier { get; set; }
+
         public string ItemSeparator { get; set; }
 
         public string outputFileExtension { get; set; }
