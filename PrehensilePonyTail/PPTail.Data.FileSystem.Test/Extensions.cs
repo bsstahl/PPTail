@@ -21,11 +21,11 @@ namespace PPTail.Data.FileSystem.Test
 
         public static IContentRepository Create(this IContentRepository ignore)
         {
-            IFileSystem mockFileSystem = Mock.Of<IFileSystem>();
+            IFile mockFileSystem = Mock.Of<IFile>();
             return ignore.Create(mockFileSystem, "c:\\");
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IFileSystem fileSystem, string sourcePath)
+        public static IContentRepository Create(this IContentRepository ignore, IFile fileSystem, string sourcePath)
         {
             var container = new ServiceCollection();
 
@@ -33,7 +33,7 @@ namespace PPTail.Data.FileSystem.Test
             container.AddSingleton<Settings>(settings);
             settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourcePath);
 
-            container.AddSingleton<IFileSystem>(fileSystem);
+            container.AddSingleton<IFile>(fileSystem);
 
             return ignore.Create(container.BuildServiceProvider());
         }
@@ -88,12 +88,12 @@ namespace PPTail.Data.FileSystem.Test
             };
         }
 
-        public static void ConfigureWidgets(this Mock<IFileSystem> fileSystem, IEnumerable<Widget> widgets, string rootPath)
+        public static void ConfigureWidgets(this Mock<IFile> fileSystem, IEnumerable<Widget> widgets, string rootPath)
         {
             fileSystem.ConfigureWidgets(widgets, rootPath, false);
         }
 
-        public static void ConfigureWidgets(this Mock<IFileSystem> fileSystem, IEnumerable<Widget> widgets, string rootPath, bool addInvalidTypes)
+        public static void ConfigureWidgets(this Mock<IFile> fileSystem, IEnumerable<Widget> widgets, string rootPath, bool addInvalidTypes)
         {
             const string widgetPath = ".\\datastore\\widgets";
             const string zoneFilename = "be_WIDGET_ZONE.xml";

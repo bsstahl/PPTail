@@ -1,0 +1,32 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable"
+  },
+  "runtimes": {
+    "win10-x86": {},
+    "win10-x64": {},
+    "win7-x64": {},
+    "win7-x86": {}
+  },
+  "dependencies": {
+    "System.Runtime.Serialization.Primitives": "4.1.1",
+    "xunit": "2.2.0-beta2-build3300",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "PPTail.Output.FileSystem": "1.0.0-*",
+    "TestHelperExtensions": "1.1.5",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Moq": "4.6.38-alpha"
+  },
+  "testRunner": "xunit",
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+      },
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
+    }
+  }
+}

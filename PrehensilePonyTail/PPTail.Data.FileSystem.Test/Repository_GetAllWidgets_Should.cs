@@ -22,7 +22,7 @@ namespace PPTail.Data.FileSystem.Test
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureWidgets(widgets, rootPath);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
@@ -38,7 +38,7 @@ namespace PPTail.Data.FileSystem.Test
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureWidgets(widgets, rootPath);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
@@ -54,7 +54,7 @@ namespace PPTail.Data.FileSystem.Test
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureWidgets(widgets, rootPath, true);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
@@ -70,7 +70,7 @@ namespace PPTail.Data.FileSystem.Test
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureWidgets(widgets, rootPath, false);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
@@ -130,7 +130,7 @@ namespace PPTail.Data.FileSystem.Test
             const string rootPath = "c:\\";
 
             var widgets = new List<Widget>() { Enumerations.WidgetType.TextBox.CreateWidget() };
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
 
             fileSystem.ConfigureWidgets(widgets, rootPath);
 

@@ -46,17 +46,8 @@ namespace PPTail
             var siteBuilder = serviceProvider.GetService<PPTail.SiteGenerator.Builder>();
             var sitePages = siteBuilder.Build();
 
-            //TODO: Produce the output via a separate repository
-            foreach (var sitePage in sitePages)
-            {
-                string fullPath = System.IO.Path.Combine(outputPath, sitePage.RelativeFilePath);
-                string folderPath = System.IO.Path.GetDirectoryName(fullPath);
-
-                if (!System.IO.Directory.Exists(folderPath))
-                    System.IO.Directory.CreateDirectory(folderPath);
-
-                System.IO.File.WriteAllText(fullPath, sitePage.Content);
-            }
+            var outputRepo = serviceProvider.GetService<Interfaces.IOutputRepository>();
+            outputRepo.Save(sitePages);
         }
 
     }

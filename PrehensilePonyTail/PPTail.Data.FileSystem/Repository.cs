@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PPTail.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System.Xml.Linq;
+using PPTail.Interfaces;
 
 namespace PPTail.Data.FileSystem
 {
@@ -25,9 +26,9 @@ namespace PPTail.Data.FileSystem
             if (settings == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(Settings));
 
-            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            var fileSystem = _serviceProvider.GetService<IFile>();
             if (fileSystem == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(IFileSystem));
+                throw new Exceptions.DependencyNotFoundException(nameof(IFile));
 
             if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
                 throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
@@ -37,7 +38,7 @@ namespace PPTail.Data.FileSystem
 
         public SiteSettings GetSiteSettings()
         {
-            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            var fileSystem = _serviceProvider.GetService<IFile>();
             string settingsPath = System.IO.Path.Combine(_rootPath, "settings.xml");
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
 
@@ -52,7 +53,7 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<ContentItem> GetAllPages()
         {
-            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<ContentItem>();
             string pagePath = System.IO.Path.Combine(_rootPath, "pages");
@@ -68,7 +69,7 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<ContentItem> GetAllPosts()
         {
-            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<ContentItem>();
             string pagePath = System.IO.Path.Combine(_rootPath, "posts");
@@ -84,7 +85,7 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<Widget> GetAllWidgets()
         {
-            var fileSystem = _serviceProvider.GetService<IFileSystem>();
+            var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Widget>();
             string widgetPath = System.IO.Path.Combine(_rootPath, _widgetRelativePath);

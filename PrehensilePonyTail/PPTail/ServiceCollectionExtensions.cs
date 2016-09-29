@@ -17,13 +17,14 @@ namespace PPTail
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<IEnumerable<Template>>(templates);
 
-            container.AddSingleton<Data.FileSystem.IFileSystem>(c => new PPTail.Data.FileSystem.FileSystemAbstraction.Provider());
+            container.AddSingleton<Interfaces.IFile>(c => new PPTail.Io.File());
             container.AddSingleton<Interfaces.IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
             container.AddSingleton<Interfaces.ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<Interfaces.INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
             container.AddSingleton<Interfaces.IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
             container.AddSingleton<Interfaces.IContactProvider>(c => new PPTail.Generator.Contact.TemplateProvider(c));
             container.AddSingleton<Interfaces.IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
+            container.AddSingleton<Interfaces.IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
             container.AddSingleton<SiteGenerator.Builder>(c => new PPTail.SiteGenerator.Builder(c));
 
             var contentRepo = container.BuildServiceProvider().GetService<Interfaces.IContentRepository>();

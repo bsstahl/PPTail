@@ -23,7 +23,7 @@ namespace PPTail.Data.FileSystem.Test
             string expectedPath = System.IO.Path.Combine(rootPath, "settings.xml");
             string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 0);
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)))
                 .Returns(xml).Verifiable();
 
@@ -39,7 +39,7 @@ namespace PPTail.Data.FileSystem.Test
             string expected = string.Empty.GetRandom();
             string xml = (null as SiteSettings).BuildXml(expected, string.Empty, 0);
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml);
 
@@ -55,7 +55,7 @@ namespace PPTail.Data.FileSystem.Test
             var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
             xml.RemoveDescendants("name");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml.ToString());
 
@@ -69,7 +69,7 @@ namespace PPTail.Data.FileSystem.Test
             string expected = string.Empty.GetRandom();
             string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), expected, 0);
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml);
 
@@ -85,7 +85,7 @@ namespace PPTail.Data.FileSystem.Test
             var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
             xml.RemoveDescendants("description");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml.ToString());
 
@@ -101,7 +101,7 @@ namespace PPTail.Data.FileSystem.Test
             int expected = 25.GetRandom(5);
             string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty, expected);
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml);
 
@@ -117,7 +117,7 @@ namespace PPTail.Data.FileSystem.Test
             var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
             xml.RemoveDescendants("postsperpage");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml.ToString());
 

@@ -17,11 +17,11 @@ namespace PPTail.Data.FileSystem.Test
             var settings = new Settings();
             settings.ExtendedSettings.Set(_sourceDataPathSettingName, string.Empty.GetRandom());
 
-            var fileSystem = Mock.Of<IFileSystem>();
+            var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
             container.AddSingleton<Settings>(settings);
-            container.AddSingleton<IFileSystem>(fileSystem);
+            container.AddSingleton<IFile>(fileSystem);
 
             var target = new Repository(container.BuildServiceProvider());
         }
@@ -29,10 +29,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ThrowADependencyNotFoundExceptionIfSettingsAreNotProvided()
         {
-            var fileSystem = Mock.Of<IFileSystem>();
+            var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
-            container.AddSingleton<IFileSystem>(fileSystem);
+            container.AddSingleton<IFile>(fileSystem);
 
             Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
@@ -53,11 +53,11 @@ namespace PPTail.Data.FileSystem.Test
         public void ThrowASettingNotFoundExceptionIfTheSourceDataPathIsNotSpecified()
         {
             var settings = new Settings();
-            var fileSystem = Mock.Of<IFileSystem>();
+            var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
             container.AddSingleton<Settings>(settings);
-            container.AddSingleton<IFileSystem>(fileSystem);
+            container.AddSingleton<IFile>(fileSystem);
 
             Assert.Throws<Exceptions.SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }

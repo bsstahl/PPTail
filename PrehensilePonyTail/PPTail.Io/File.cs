@@ -1,13 +1,14 @@
-﻿using System;
+﻿using PPTail.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PPTail.Data.FileSystem.FileSystemAbstraction
+namespace PPTail.Io
 {
     // TODO: Replace with a more mature implementation
     // such as the System.IO.Abstraction project
-    public class Provider : IFileSystem
+    public class File : IFile
     {
         public IEnumerable<string> EnumerateFiles(string path)
         {
@@ -17,6 +18,11 @@ namespace PPTail.Data.FileSystem.FileSystemAbstraction
         public string ReadAllText(string path)
         {
             return System.IO.File.ReadAllText(path);
+        }
+
+        public void WriteAllTest(string path, string data)
+        {
+            System.IO.File.WriteAllText(path, data);
         }
     }
 }

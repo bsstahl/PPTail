@@ -22,7 +22,7 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("8EE89C80-760E-4980-B980-5A4B70A563E2.xml");
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
@@ -48,7 +48,7 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
             files.Add("86F29FA4-29CD-4292-8000-CEAFEA7A2315.com");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
@@ -74,7 +74,7 @@ namespace PPTail.Data.FileSystem.Test
             var settings = new Settings();
             settings.ExtendedSettings.Set("sourceDataPath", rootPath);
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(expectedPath))
                 .Returns(files).Verifiable();
 
@@ -83,7 +83,7 @@ namespace PPTail.Data.FileSystem.Test
                     .Returns("<post/>");
 
             var container = new ServiceCollection();
-            container.AddSingleton<IFileSystem>(fileSystem.Object);
+            container.AddSingleton<IFile>(fileSystem.Object);
             container.AddSingleton<Settings>(settings);
 
             var target = (null as IContentRepository).Create(container.BuildServiceProvider());
@@ -98,7 +98,7 @@ namespace PPTail.Data.FileSystem.Test
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
@@ -118,7 +118,7 @@ namespace PPTail.Data.FileSystem.Test
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
@@ -252,7 +252,7 @@ namespace PPTail.Data.FileSystem.Test
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
@@ -280,7 +280,7 @@ namespace PPTail.Data.FileSystem.Test
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
@@ -308,7 +308,7 @@ namespace PPTail.Data.FileSystem.Test
             var files = new List<string>();
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
-            var fileSystem = new Mock<IFileSystem>();
+            var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
