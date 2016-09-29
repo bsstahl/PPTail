@@ -12,6 +12,13 @@ namespace PPTail.SiteGenerator.Test
 {
     public static class Extensions
     {
+
+        public static Builder Create(this Builder ignore)
+        {
+            var contentRepo = Mock.Of<IContentRepository>();
+            return ignore.Create(contentRepo, string.Empty.GetRandom());
+        }
+
         public static Builder Create(this Builder ignore, IContentRepository contentRepo)
         {
             return ignore.Create(contentRepo, string.Empty.GetRandom());
@@ -23,6 +30,12 @@ namespace PPTail.SiteGenerator.Test
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, string pageFilenameExtension)
+        {
+            var contactProvider = Mock.Of<IContactProvider>();
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, pageFilenameExtension);
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, string pageFilenameExtension)
         {
             IServiceCollection container = new ServiceCollection();
             var pageGen = Mock.Of<IPageGenerator>();
@@ -37,6 +50,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
 
             return ignore.Create(container);
         }

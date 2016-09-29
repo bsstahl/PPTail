@@ -199,9 +199,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateAnOutputForBootstrap()
         {
-            // var contentRepo = new Mock<IContentRepository>();
-            var contentRepo = Mock.Of<IContentRepository>();
-            var target = (null as Builder).Create(contentRepo);
+            var target = (null as Builder).Create();
             var actual = target.Build();
             Assert.Equal(1, actual.Count(ci => ci.SourceTemplateType == Enumerations.TemplateType.Bootstrap));
         }
@@ -209,21 +207,17 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateAnOutputForTheArchive()
         {
-            var contentRepo = Mock.Of<IContentRepository>();
-
-            var archiveProvider = new Mock<IArchiveProvider>();
-            archiveProvider.Setup(p => p.GenerateArchive(
-                It.IsAny<Settings>(),
-                It.IsAny<SiteSettings>(),
-                It.IsAny<IEnumerable<ContentItem>>(),
-                It.IsAny<IEnumerable<ContentItem>>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<string>())).Returns("Place archive here");
-
-            var target = (null as Builder).Create(contentRepo);
+            var target = (null as Builder).Create();
             var actual = target.Build();
             Assert.Equal(1, actual.Count(ci => ci.SourceTemplateType == Enumerations.TemplateType.Archive));
+        }
+
+        [Fact]
+        public void CreateAnOutputForTheContactPage()
+        {
+            var target = (null as Builder).Create();
+            var actual = target.Build();
+            Assert.Equal(1, actual.Count(ci => ci.SourceTemplateType == Enumerations.TemplateType.ContactPage));
         }
 
         [Fact]
@@ -235,6 +229,7 @@ namespace PPTail.SiteGenerator.Test
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
             var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
 
             var pageGen = new Mock<IPageGenerator>();
             foreach (var item in contentItems)
@@ -248,6 +243,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
@@ -276,12 +272,14 @@ namespace PPTail.SiteGenerator.Test
 
             var settings = new Settings();
             var navProvider = Mock.Of<INavigationProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
 
             var siteSettings = (null as SiteSettings).Create();
 
@@ -305,12 +303,14 @@ namespace PPTail.SiteGenerator.Test
             var settings = new Settings();
             var navProvider = Mock.Of<INavigationProvider>();
             var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
@@ -329,12 +329,14 @@ namespace PPTail.SiteGenerator.Test
             var settings = new Settings();
             var navProvider = Mock.Of<INavigationProvider>();
             var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
@@ -353,12 +355,14 @@ namespace PPTail.SiteGenerator.Test
             var settings = new Settings();
             var navProvider = Mock.Of<INavigationProvider>();
             var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
             container.AddSingleton<Settings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
 
             var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);

@@ -28,6 +28,7 @@ namespace PPTail.SiteGenerator
             var settings = ServiceProvider.GetService<Settings>();
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
             var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
+            var contactProvider = ServiceProvider.GetService<IContactProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
@@ -65,12 +66,19 @@ namespace PPTail.SiteGenerator
             });
 
             // Create Archive
-            // TODO: Add Sidebar content
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $"./archive.html",
                 SourceTemplateType = Enumerations.TemplateType.Archive,
                 Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, sidebarContent, "./")
+            });
+
+            // Create Contact Page
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = $"./contact.html",
+                SourceTemplateType = Enumerations.TemplateType.ContactPage,
+                Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, sidebarContent, "./")
             });
 
             foreach (var post in posts)
