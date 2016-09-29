@@ -104,7 +104,7 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            return posts.ProcessTemplate(sidebarContent, navigationContent, siteSettings, this.HomePageTemplate, this.ItemTemplate, this.DateTimeFormatSpecifier, this.ItemSeparator);
+            return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -136,7 +136,7 @@ namespace PPTail.Generator.T4Html
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
 
-            return template.ProcessTemplate(pageData, sidebarContent, navContent, siteSettings, this.DateTimeFormatSpecifier);
+            return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings);
         }
 
         public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
@@ -145,7 +145,7 @@ namespace PPTail.Generator.T4Html
             if (template == null)
                 throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
 
-            return template.ProcessTemplate(article, sidebarContent, navContent, siteSettings, this.DateTimeFormatSpecifier);
+            return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings);
         }
 
     }

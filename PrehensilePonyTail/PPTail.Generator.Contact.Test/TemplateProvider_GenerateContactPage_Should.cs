@@ -40,39 +40,5 @@ namespace PPTail.Generator.Contact.Test
             Assert.Contains(sidebarContent, actual);
         }
 
-        [Fact]
-        public void ThrowsDependencyNotFoundExceptionIfSiteSettingsAreNotProvided()
-        {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
-
-            var template = (null as Template).Create();
-            var templates = new List<Template>() { template };
-
-            var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
-
-            var target = (null as IContactProvider).Create(container.BuildServiceProvider());
-            Assert.Throws(typeof(DependencyNotFoundException), () => target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot));
-        }
-
-        [Fact]
-        public void ThrowsTemplateNotFoundExceptionIfContactPageTemplateNotProvided()
-        {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
-
-            var templates = new List<Template>();
-            var siteSettings = (null as SiteSettings).Create();
-
-            var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<SiteSettings>(siteSettings);
-
-            var target = (null as IContactProvider).Create(container.BuildServiceProvider());
-            Assert.Throws(typeof(DependencyNotFoundException), () => target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot));
-        }
     }
 }

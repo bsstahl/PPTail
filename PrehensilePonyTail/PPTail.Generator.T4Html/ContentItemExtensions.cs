@@ -10,7 +10,7 @@ namespace PPTail.Generator.T4Html
 {
     public static class ContentItemExtensions
     {
-        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, string sidebarContent, string navContent, SiteSettings siteSettings, Template pageTemplate, Template itemTemplate, string dateTimeFormatSpecifier, string itemSeparator)
+        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, Settings settings, SiteSettings siteSettings, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent)
         {
             string content = string.Empty;
             var recentPosts = posts.Where(pub => pub.IsPublished)
@@ -19,13 +19,10 @@ namespace PPTail.Generator.T4Html
 
             var contentItems = new List<string>();
             foreach (var post in recentPosts)
-                contentItems.Add(itemTemplate.ProcessTemplate(post, sidebarContent, navContent, siteSettings, dateTimeFormatSpecifier));
+                contentItems.Add(itemTemplate.ProcessContentItemTemplate(post, sidebarContent, navContent, siteSettings, settings));
 
-            return pageTemplate.Content
-            .ReplaceSettingsVariables(siteSettings)
-            .Replace("{NavigationMenu}", navContent)
-            .Replace("{Sidebar}", sidebarContent)
-            .Replace("{Content}", string.Join(itemSeparator, contentItems));
+            var pageContent = string.Join(settings.ItemSeparator, contentItems);
+            return pageTemplate.ProcessNonContentItemTemplate(sidebarContent, navContent, siteSettings, settings, pageContent);
         }
 
     }

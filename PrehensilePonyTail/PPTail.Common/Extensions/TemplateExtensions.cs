@@ -8,16 +8,18 @@ namespace PPTail.Extensions
 {
     public static class TemplateExtensions
     {
-        public static string ProcessTemplate(this Template template, ContentItem item, string sidebarContent, string navContent, SiteSettings siteSettings, string dateTimeFormatSpecifier)
+        public static string ProcessContentItemTemplate(this Template template, ContentItem item, string sidebarContent, string navContent, SiteSettings siteSettings, Settings settings)
         {
-            var updatedTemplate = template.Content.Replace("{Sidebar}", sidebarContent);
-            return updatedTemplate
-                .Replace("{NavigationMenu}", navContent)
-                .ReplaceContentItemVariables(item, dateTimeFormatSpecifier)
-                .ReplaceSettingsVariables(siteSettings);
+            return template.Content
+                .ReplaceContentItemVariables(settings, siteSettings, item)
+                .ReplaceNonContentItemSpecificVariables(settings, siteSettings, sidebarContent, navContent, string.Empty);
         }
 
-
+        public static string ProcessNonContentItemTemplate(this Template template, string sidebarContent, string navContent, SiteSettings siteSettings, Settings settings, string content)
+        {
+            return template.Content
+                .ReplaceNonContentItemSpecificVariables(settings, siteSettings, sidebarContent, navContent, content);
+        }
 
     }
 }

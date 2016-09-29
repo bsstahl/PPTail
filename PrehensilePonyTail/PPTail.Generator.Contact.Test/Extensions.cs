@@ -14,7 +14,17 @@ namespace PPTail.Generator.Contact.Test
         public static IContactProvider Create(this IContactProvider ignore)
         {
             var container = new ServiceCollection();
-            // Add dependencies here as needed
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.AddSingleton<SiteSettings>(siteSettings);
+
+            var settings = (null as Settings).Create();
+            container.AddSingleton<Settings>(settings);
+
+            var template = (null as Template).Create();
+            var templates = new List<Template>() { template };
+            container.AddSingleton<IEnumerable<Template>>(templates);
+
             return ignore.Create(container.BuildServiceProvider());
         }
 
@@ -25,7 +35,7 @@ namespace PPTail.Generator.Contact.Test
 
         public static Template Create(this Template ignore)
         {
-            return ignore.Create(string.Empty.GetRandom(), string.Empty.GetRandom(), Enumerations.TemplateType.ContactPage);
+            return ignore.Create("{NavigationMenu} {Sidebar} {Content}", string.Empty.GetRandom(), Enumerations.TemplateType.ContactPage);
         }
 
         public static Template Create(this Template ignore, string content, string name, Enumerations.TemplateType templateType)
@@ -53,6 +63,20 @@ namespace PPTail.Generator.Contact.Test
             };
         }
 
+        public static Settings Create(this Settings ignore)
+        {
+            return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html");
+        }
 
+        public static Settings Create(this Settings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
+        {
+            return new Settings()
+            {
+                DateFormatSpecifier = dateFormatSpecifier,
+                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
+                ItemSeparator = itemSeparator,
+                outputFileExtension = outputFileExtension
+            };
+        }
     }
 }

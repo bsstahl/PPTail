@@ -8,21 +8,30 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        public static string ReplaceContentItemVariables(this string template, ContentItem item, string dateTimeFormatSpecifier)
+        internal static string ReplaceContentItemVariables(this string template, Settings settings, SiteSettings siteSettings, ContentItem item)
         {
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", item.Content)
                 .Replace("{Author}", item.Author)
                 .Replace("{Description}", item.Description)
-                .Replace("{PublicationDate}", item.PublicationDate.ToString(dateTimeFormatSpecifier))
-                .Replace("{LastModificationDate}", item.LastModificationDate.ToString(dateTimeFormatSpecifier))
+                .Replace("{PublicationDate}", item.PublicationDate.ToString(settings.DateTimeFormatSpecifier))
+                .Replace("{LastModificationDate}", item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier))
                 .Replace("{ByLine}", item.ByLine);
         }
 
-        public static string ReplaceSettingsVariables(this string template, SiteSettings settings)
+        internal static string ReplaceNonContentItemSpecificVariables(this string template, Settings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)
         {
-            return template.Replace("{SiteTitle}", settings.Title)
-                .Replace("{SiteDescription}", settings.Description);
+            return template
+                .ReplaceSettingsVariables(settings, siteSettings)
+                .Replace("{NavigationMenu}", navContent)
+                .Replace("{Sidebar}", sidebarContent)
+                .Replace("{Content}", content);
+        }
+
+        internal static string ReplaceSettingsVariables(this string template, Settings settings, SiteSettings siteSettings)
+        {
+            return template.Replace("{SiteTitle}", siteSettings.Title)
+                .Replace("{SiteDescription}", siteSettings.Description);
         }
 
     }

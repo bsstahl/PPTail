@@ -36,11 +36,7 @@ namespace PPTail.Generator.Archive
                 content += $"<tr><td class=\"date\">{post.PublicationDate.ToString(settings.DateFormatSpecifier)}</td><td class=\"title\"><a href=\"{GetPath(post, settings, pathToRoot)}\">{post.Title}</a></td></tr>";
             content += "</tbody></table></div>";
 
-            return _template.Content
-                .ReplaceSettingsVariables(siteSettings)
-                .Replace("{NavigationMenu}", navContent)
-                .Replace("{Sidebar}", sidebarContent)
-                .Replace("{Content}", content);
+            return _template.ProcessNonContentItemTemplate(sidebarContent, navContent, siteSettings, settings, content);
         }
 
         public string GetPath(ContentItem item, Settings settings, string pathToRoot)
