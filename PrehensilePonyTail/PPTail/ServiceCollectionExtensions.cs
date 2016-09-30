@@ -18,6 +18,7 @@ namespace PPTail
             container.AddSingleton<IEnumerable<Template>>(templates);
 
             container.AddSingleton<Interfaces.IFile>(c => new PPTail.Io.File());
+            container.AddSingleton<Interfaces.IDirectory>(c => new PPTail.Io.Directory());
             container.AddSingleton<Interfaces.IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
             container.AddSingleton<Interfaces.ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<Interfaces.INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
