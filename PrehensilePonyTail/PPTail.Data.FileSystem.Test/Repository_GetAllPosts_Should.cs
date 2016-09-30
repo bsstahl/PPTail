@@ -25,14 +25,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<post/>");
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(files.Count(), posts.Count());
@@ -51,14 +53,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("86F29FA4-29CD-4292-8000-CEAFEA7A2315.com");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<post/>");
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(3, posts.Count());
@@ -77,7 +81,9 @@ namespace PPTail.Data.FileSystem.Test
             settings.ExtendedSettings.Set("sourceDataPath", rootPath);
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(expectedPath))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(expectedPath))
                 .Returns(files).Verifiable();
 
             foreach (var file in files)
@@ -86,6 +92,7 @@ namespace PPTail.Data.FileSystem.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystem.Object);
+            container.AddSingleton<IDirectory>(directoryProvider.Object);
             container.AddSingleton<Settings>(settings);
 
             var target = (null as IContentRepository).Create(container.BuildServiceProvider());
@@ -101,14 +108,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("Not valid XML");
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(0, posts.Count());
@@ -121,14 +130,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                 .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns("<posts/>");
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var posts = target.GetAllPosts();
 
             Assert.Equal(0, posts.Count());
@@ -255,14 +266,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns(xml);
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.Single();
 
@@ -283,14 +296,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns(xml);
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.Count();
 
@@ -311,14 +326,16 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
             foreach (var file in files)
                 fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                     .Returns(xml);
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var pages = target.GetAllPosts();
             var actual = pages.ToArray()[0];
 

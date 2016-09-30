@@ -56,10 +56,11 @@ namespace PPTail.Data.FileSystem
         public IEnumerable<ContentItem> GetAllPages()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
             string pagePath = System.IO.Path.Combine(_rootDataPath, "pages");
-            var files = fileSystem.EnumerateFiles(pagePath);
+            var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
                 var contentItem = fileSystem.ReadAllText(file).ParseContentItem("page");
@@ -72,10 +73,11 @@ namespace PPTail.Data.FileSystem
         public IEnumerable<ContentItem> GetAllPosts()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
             string pagePath = System.IO.Path.Combine(_rootDataPath, "posts");
-            var files = fileSystem.EnumerateFiles(pagePath);
+            var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
                 var contentItem = fileSystem.ReadAllText(file).ParseContentItem("post");
@@ -130,5 +132,9 @@ namespace PPTail.Data.FileSystem
             return results;
         }
 
+        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,14 +10,14 @@ namespace PPTail.Io
     // such as the System.IO.Abstraction project
     public class File : IFile
     {
-        public IEnumerable<string> EnumerateFiles(string path)
-        {
-            return System.IO.Directory.EnumerateFiles(path);
-        }
-
         public string ReadAllText(string path)
         {
             return System.IO.File.ReadAllText(path);
+        }
+
+        public byte[] ReadAllBytes(string path)
+        {
+            return System.IO.File.ReadAllBytes(path);
         }
 
         public void WriteAllText(string path, string data)
