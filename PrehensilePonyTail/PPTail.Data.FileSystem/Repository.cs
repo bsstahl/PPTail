@@ -138,18 +138,21 @@ namespace PPTail.Data.FileSystem
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var folderPath = System.IO.Path.Combine(_rootSitePath, relativePath);
-
-            var sourceFiles = directory.EnumerateFiles(folderPath);
             var results = new List<SourceFile>();
-            foreach (var sourceFile in sourceFiles)
+
+            if (directory.Exists(folderPath))
             {
-                string fullPath = System.IO.Path.Combine(folderPath, sourceFile);
-                results.Add(new SourceFile()
+                var sourceFiles = directory.EnumerateFiles(folderPath);
+                foreach (var sourceFile in sourceFiles)
                 {
-                    Contents = fileSystem.ReadAllBytes(fullPath),
-                    FileName = sourceFile,
-                    RelativePath = relativePath
-                });
+                    string fullPath = System.IO.Path.Combine(folderPath, sourceFile);
+                    results.Add(new SourceFile()
+                    {
+                        Contents = fileSystem.ReadAllBytes(fullPath),
+                        FileName = sourceFile,
+                        RelativePath = relativePath
+                    });
+                }
             }
 
             return results;
