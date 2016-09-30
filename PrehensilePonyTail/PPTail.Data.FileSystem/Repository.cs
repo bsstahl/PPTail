@@ -13,10 +13,11 @@ namespace PPTail.Data.FileSystem
     {
         const int _defaultPostsPerPage = 3;
         const string _sourceDataPathSettingName = "sourceDataPath";
-        const string _widgetRelativePath = ".\\datastore\\widgets";
+        const string _widgetRelativePath = "datastore\\widgets";
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly string _rootPath;
+        private readonly string _rootDataPath;
+        private readonly string _rootSitePath;
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -33,13 +34,14 @@ namespace PPTail.Data.FileSystem
             if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
                 throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
 
-            _rootPath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
+            _rootSitePath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
+            _rootDataPath = System.IO.Path.Combine(_rootSitePath, "App_Data");
         }
 
         public SiteSettings GetSiteSettings()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
-            string settingsPath = System.IO.Path.Combine(_rootPath, "settings.xml");
+            string settingsPath = System.IO.Path.Combine(_rootDataPath, "settings.xml");
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
 
             if (string.IsNullOrWhiteSpace(result.Title))
@@ -56,7 +58,7 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootPath, "pages");
+            string pagePath = System.IO.Path.Combine(_rootDataPath, "pages");
             var files = fileSystem.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
@@ -72,7 +74,7 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootPath, "posts");
+            string pagePath = System.IO.Path.Combine(_rootDataPath, "posts");
             var files = fileSystem.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
@@ -88,7 +90,7 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Widget>();
-            string widgetPath = System.IO.Path.Combine(_rootPath, _widgetRelativePath);
+            string widgetPath = System.IO.Path.Combine(_rootDataPath, _widgetRelativePath);
             string zoneFilePath = System.IO.Path.Combine(widgetPath, "be_WIDGET_ZONE.xml");
 
             var zoneData = fileSystem.ReadAllText(zoneFilePath);

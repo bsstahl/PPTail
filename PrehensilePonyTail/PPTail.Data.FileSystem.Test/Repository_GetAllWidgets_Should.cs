@@ -50,7 +50,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void NotFailIfAnUnknownWidgetTypeIsFound()
         {
-            const string rootPath = "c:\\";
+            string rootPath = "c:\\";
 
             var widgets = (null as IEnumerable<Widget>).Create();
 

@@ -95,7 +95,7 @@ namespace PPTail.Data.FileSystem.Test
 
         public static void ConfigureWidgets(this Mock<IFile> fileSystem, IEnumerable<Widget> widgets, string rootPath, bool addInvalidTypes)
         {
-            const string widgetPath = ".\\datastore\\widgets";
+            const string widgetPath = "App_Data\\datastore\\widgets";
             const string zoneFilename = "be_WIDGET_ZONE.xml";
             const string widgetFileFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><SerializableStringDictionary><SerializableStringDictionary><DictionaryEntry Key=\"{0}\" Value=\"{1}\" /></SerializableStringDictionary></SerializableStringDictionary>";
 

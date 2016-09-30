@@ -14,6 +14,8 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetAllPosts_Should
     {
+        const string _dataFolder = "App_Data";
+
         [Fact]
         public void ReturnAllPostsIfAllAreValid()
         {
@@ -69,7 +71,7 @@ namespace PPTail.Data.FileSystem.Test
             files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
 
             string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string expectedPath = rootPath + "\\posts";
+            string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "posts");
 
             var settings = new Settings();
             settings.ExtendedSettings.Set("sourceDataPath", rootPath);
