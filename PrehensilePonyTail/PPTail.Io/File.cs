@@ -24,5 +24,10 @@ namespace PPTail.Io
         {
             System.IO.File.WriteAllText(path, data);
         }
+
+        public bool Exists(string path)
+        {
+            return System.IO.File.Exists(path);
+        }
     }
 }

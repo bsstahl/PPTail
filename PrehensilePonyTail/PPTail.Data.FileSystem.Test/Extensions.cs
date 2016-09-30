@@ -109,11 +109,13 @@ namespace PPTail.Data.FileSystem.Test
                 {
                     var dictionaryItem = widget.Dictionary.First();
                     files.Add(fileName);
+                    fileSystem.Setup(f => f.Exists(thisFilePath)).Returns(true);
                     fileSystem.Setup(f => f.ReadAllText(thisFilePath))
                         .Returns(string.Format(widgetFileFormat, dictionaryItem.Item1, dictionaryItem.Item2));
                 }
                 else if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
                 {
+                    fileSystem.Setup(f => f.Exists(thisFilePath)).Returns(false);
                     fileSystem.Setup(f => f.ReadAllText(thisFilePath))
                         .Throws(new System.IO.FileNotFoundException("This widget type has no separate files"));
                 }

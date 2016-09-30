@@ -111,16 +111,8 @@ namespace PPTail.Data.FileSystem
                 string fileName = $"{thisWidget.Id.ToString()}.xml";
                 string filePath = System.IO.Path.Combine(widgetPath, fileName);
                 string widgetFile = string.Empty;
-
-                try
-                {
+                if (fileSystem.Exists(filePath))
                     widgetFile = fileSystem.ReadAllText(filePath);
-                }
-                catch (System.IO.FileNotFoundException)
-                {
-                    // No need to take any action here, this is a valid occurance
-                    // TODO: Rather than trapping the exception, test for existance first
-                }
 
                 if (!string.IsNullOrEmpty(widgetFile))
                 {

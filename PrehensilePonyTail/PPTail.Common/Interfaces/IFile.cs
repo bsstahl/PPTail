@@ -12,5 +12,6 @@ namespace PPTail.Interfaces
         string ReadAllText(string path);
         void WriteAllText(string path, string data);
         IEnumerable<string> EnumerateFiles(string path);
+        bool Exists(string path);
     }
 }

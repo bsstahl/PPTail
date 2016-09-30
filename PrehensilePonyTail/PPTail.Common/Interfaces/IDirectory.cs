@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace PPTail.Interfaces
 {
+    // TODO: Replace with a more mature implementation
+    // such as the System.IO.Abstraction project
+
     public interface IDirectory
     {
         bool Exists(string path);
