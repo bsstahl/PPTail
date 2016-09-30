@@ -12,6 +12,12 @@ namespace PPTail.Output.FileSystem.Test
 {
     public static class Extensions
     {
+
+        public static Repository Create(this IOutputRepository ignore)
+        {
+            return ignore.Create(Mock.Of<IFile>(), Mock.Of<Settings>());
+        }
+
         public static Repository Create(this IOutputRepository ignore, IFile file, Settings settings)
         {
             return ignore.Create(file, Mock.Of<IDirectory>(), settings);
@@ -23,6 +29,11 @@ namespace PPTail.Output.FileSystem.Test
             container.AddSingleton<IFile>(file);
             container.AddSingleton<IDirectory>(directory);
             container.AddSingleton<Settings>(settings);
+            return ignore.Create(container);
+        }
+
+        public static Repository Create(this IOutputRepository ignore, IServiceCollection container)
+        {
             var serviceProvider = container.BuildServiceProvider();
             return new PPTail.Output.FileSystem.Repository(serviceProvider);
         }

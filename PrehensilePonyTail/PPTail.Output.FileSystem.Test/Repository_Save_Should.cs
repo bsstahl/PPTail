@@ -16,13 +16,13 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void CallWriteAllTextOnTheFileSystemOnceForEachFile()
         {
-            var settings = (null as Settings).Create();
-
-            var file = new Mock<IFile>();
-            var target = (null as IOutputRepository).Create(file.Object, settings);
             int expected = 25.GetRandom(10);
 
+            var settings = (null as Settings).Create();
+            var file = new Mock<IFile>();
             var files = (null as IEnumerable<SiteFile>).Create(expected);
+
+            var target = (null as IOutputRepository).Create(file.Object, settings);
             target.Save(files);
 
             file.Verify(f => f.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(files.Count()));
