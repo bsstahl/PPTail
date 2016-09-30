@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using System;
@@ -13,8 +14,14 @@ namespace PPTail.Output.FileSystem.Test
     {
         public static Repository Create(this IOutputRepository ignore, IFile file, Settings settings)
         {
+            return ignore.Create(file, Mock.Of<IDirectory>(), settings);
+        }
+
+        public static Repository Create(this IOutputRepository ignore, IFile file, IDirectory directory, Settings settings)
+        {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(file);
+            container.AddSingleton<IDirectory>(directory);
             container.AddSingleton<Settings>(settings);
             var serviceProvider = container.BuildServiceProvider();
             return new PPTail.Output.FileSystem.Repository(serviceProvider);

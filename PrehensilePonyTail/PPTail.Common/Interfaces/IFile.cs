@@ -10,7 +10,7 @@ namespace PPTail.Interfaces
     public interface IFile
     {
         string ReadAllText(string path);
-        void WriteAllTest(string path, string data);
+        void WriteAllText(string path, string data);
         IEnumerable<string> EnumerateFiles(string path);
     }
 }

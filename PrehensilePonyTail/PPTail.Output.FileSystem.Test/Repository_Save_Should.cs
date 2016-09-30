@@ -25,7 +25,7 @@ namespace PPTail.Output.FileSystem.Test
             var files = (null as IEnumerable<SiteFile>).Create(expected);
             target.Save(files);
 
-            file.Verify(f => f.WriteAllTest(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(files.Count()));
+            file.Verify(f => f.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(files.Count()));
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace PPTail.Output.FileSystem.Test
             foreach (var siteFile in files)
             {
                 string expected = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
-                file.Verify(f => f.WriteAllTest(expected, It.IsAny<string>()), Times.Once);
+                file.Verify(f => f.WriteAllText(expected, It.IsAny<string>()), Times.Once);
             }
         }
 
@@ -59,7 +59,7 @@ namespace PPTail.Output.FileSystem.Test
             target.Save(files);
 
             foreach (var siteFile in files)
-                file.Verify(f => f.WriteAllTest(It.IsAny<string>(), siteFile.Content), Times.Once);
+                file.Verify(f => f.WriteAllText(It.IsAny<string>(), siteFile.Content), Times.Once);
         }
 
         [Fact]
@@ -69,18 +69,19 @@ namespace PPTail.Output.FileSystem.Test
             var settings = (null as Settings).Create(outputPath);
 
             var file = Mock.Of<IFile>();
-            var target = (null as IOutputRepository).Create(file, settings);
+            var directory = new Mock<IDirectory>();
+
+            var target = (null as IOutputRepository).Create(file, directory.Object, settings);
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
-            string fullPath = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
+            string folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
 
-            var directory = new Mock<IDirectory>();
-            directory.Setup(d => d.Exists(fullPath)).Returns(false);
+            directory.Setup(d => d.Exists(folderPath)).Returns(false);
 
             target.Save(files);
 
-            directory.Verify(d => d.CreateDirectory(fullPath), Times.Once);
+            directory.Verify(d => d.CreateDirectory(folderPath), Times.Once);
         }
 
         [Fact]
@@ -90,18 +91,19 @@ namespace PPTail.Output.FileSystem.Test
             var settings = (null as Settings).Create(outputPath);
 
             var file = Mock.Of<IFile>();
-            var target = (null as IOutputRepository).Create(file, settings);
+            var directory = new Mock<IDirectory>();
+
+            var target = (null as IOutputRepository).Create(file, directory.Object, settings);
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
-            string fullPath = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
+            string folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
 
-            var directory = new Mock<IDirectory>();
-            directory.Setup(d => d.Exists(fullPath)).Returns(true);
+            directory.Setup(d => d.Exists(folderPath)).Returns(true);
 
             target.Save(files);
 
-            directory.Verify(d => d.CreateDirectory(It.IsAny<string>()), Times.Never);
+            directory.Verify(d => d.CreateDirectory(folderPath), Times.Never);
         }
     }
 }

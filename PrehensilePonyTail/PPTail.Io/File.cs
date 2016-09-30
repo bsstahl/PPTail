@@ -20,7 +20,7 @@ namespace PPTail.Io
             return System.IO.File.ReadAllText(path);
         }
 
-        public void WriteAllTest(string path, string data)
+        public void WriteAllText(string path, string data)
         {
             System.IO.File.WriteAllText(path, data);
         }
