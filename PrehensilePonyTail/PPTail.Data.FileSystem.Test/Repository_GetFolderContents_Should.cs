@@ -13,6 +13,26 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetFolderContents_Should
     {
+
+        [Fact]
+        public void RequestTheContentsOfTheCorrectFolderPath()
+        {
+            int expected = 25.GetRandom(10);
+            string relativePath = string.Empty.GetRandom();
+            string rootPath = "c:\\";
+            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+
+            var files = (null as IEnumerable<SourceFile>).Create(relativePath, expected);
+
+            var directoryProvider = new Mock<IDirectory>();
+
+            var fileProvider = Mock.Of<IFile>();
+            var target = (null as IContentRepository).Create(fileProvider, directoryProvider.Object, rootPath);
+            var actual = target.GetFolderContents(relativePath);
+
+            directoryProvider.Verify(fs => fs.EnumerateFiles(folderPath), Times.Once);
+        }
+
         [Fact]
         public void ReturnOneEntityForEachItemInTheFolder()
         {
@@ -33,7 +53,7 @@ namespace PPTail.Data.FileSystem.Test
                 fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Returns(file.Contents);
             }
 
-            var target = (null as IContentRepository).Create(fileProvider.Object, directoryProvider.Object, string.Empty.GetRandom());
+            var target = (null as IContentRepository).Create(fileProvider.Object, directoryProvider.Object, rootPath);
             var actual = target.GetFolderContents(relativePath);
 
             Assert.Equal(expected, actual.Count());

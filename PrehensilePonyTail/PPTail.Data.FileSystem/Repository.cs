@@ -134,7 +134,19 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<SourceFile> GetFolderContents(string relativePath)
         {
-            throw new NotImplementedException();
+            var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
+
+            var folderPath = System.IO.Path.Combine(_rootSitePath, relativePath);
+
+            var sourceFiles = directory.EnumerateFiles(folderPath);
+            var results = new List<SourceFile>();
+            foreach (var sourceFile in sourceFiles)
+            {
+                results.Add(new SourceFile());
+            }
+
+            return results;
         }
     }
 }
