@@ -143,7 +143,13 @@ namespace PPTail.Data.FileSystem
             var results = new List<SourceFile>();
             foreach (var sourceFile in sourceFiles)
             {
-                results.Add(new SourceFile());
+                string fullPath = System.IO.Path.Combine(folderPath, sourceFile);
+                results.Add(new SourceFile()
+                {
+                    Contents = fileSystem.ReadAllBytes(fullPath),
+                    FileName = sourceFile,
+                    RelativePath = relativePath
+                });
             }
 
             return results;
