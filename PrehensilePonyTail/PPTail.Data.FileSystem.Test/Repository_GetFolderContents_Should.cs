@@ -164,6 +164,22 @@ namespace PPTail.Data.FileSystem.Test
                 Assert.Equal(file.Contents, actual.Single(a => a.FileName == file.FileName).Contents);
         }
 
+        [Fact]
+        public void ReturnAnEmptyCollectionIfTheFolderDoesNotExist()
+        {
+            string relativePath = string.Empty.GetRandom();
+            string rootPath = "c:\\";
+            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+
+            var directoryProvider = new Mock<IDirectory>();
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath))
+                .Throws(new System.IO.DirectoryNotFoundException());
+
+            var target = (null as IContentRepository).Create(Mock.Of<IFile>(), directoryProvider.Object, rootPath);
+            var actual = target.GetFolderContents(relativePath);
+
+            Assert.Equal(0, actual.Count());
+        }
 
     }
 }
