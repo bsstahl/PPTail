@@ -14,6 +14,7 @@ namespace PPTail.Enumerations
         PostPage,
         ContactPage,
         Archive,
-        Item
+        Item,
+        Raw
     }
 }

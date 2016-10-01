@@ -29,6 +29,21 @@ namespace PPTail.Output.FileSystem.Test
         }
 
         [Fact]
+        public void SkipAFileThatRequiresAuthorizationToWrite()
+        {
+            var settings = (null as Settings).Create();
+            var fileSystem = new Mock<IFile>();
+            var file = (null as SiteFile).Create(true);
+            var files = new List<SiteFile>() { file };
+
+            fileSystem.Setup(f => f.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Throws(new System.UnauthorizedAccessException());
+
+            var target = (null as IOutputRepository).Create(fileSystem.Object, settings);
+            target.Save(files);
+        }
+
+        [Fact]
         public void PassTheCorrectPathsToTheWriteMethod()
         {
             var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
@@ -60,6 +75,24 @@ namespace PPTail.Output.FileSystem.Test
 
             foreach (var siteFile in files)
                 file.Verify(f => f.WriteAllText(It.IsAny<string>(), siteFile.Content), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheDecodedDataToTheFileSystemIfTheFileIsEncoded()
+        {
+            var settings = (null as Settings).Create();
+
+            var file = new Mock<IFile>();
+            var target = (null as IOutputRepository).Create(file.Object, settings);
+
+            var files = (null as IEnumerable<SiteFile>).Create(10.GetRandom(3), true);
+            target.Save(files);
+
+            foreach (var siteFile in files)
+            {
+                byte[] content = Convert.FromBase64String(siteFile.Content);
+                file.Verify(f => f.WriteAllBytes(It.IsAny<string>(), content), Times.Once);
+            }
         }
 
         [Fact]

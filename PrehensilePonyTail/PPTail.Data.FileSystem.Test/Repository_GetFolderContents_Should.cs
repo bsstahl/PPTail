@@ -74,7 +74,7 @@ namespace PPTail.Data.FileSystem.Test
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
             directoryProvider.Setup(dp => dp.EnumerateFiles(It.IsAny<string>()))
-                .Returns(files.Select(f => f.FileName));
+                .Returns(files.Select(f => System.IO.Path.Combine(rootPath, relativePath, f.FileName)));
 
             var fileProvider = new Mock<IFile>();
             var target = (null as IContentRepository).Create(fileProvider.Object, directoryProvider.Object, rootPath);
@@ -154,7 +154,7 @@ namespace PPTail.Data.FileSystem.Test
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
-            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(files.Select(f => f.FileName));
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(files.Select(f => System.IO.Path.Combine(folderPath, f.FileName)));
 
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
@@ -186,6 +186,43 @@ namespace PPTail.Data.FileSystem.Test
             var actual = target.GetFolderContents(relativePath);
 
             Assert.Equal(0, actual.Count());
+        }
+
+        [Fact]
+        public void SkipItemsThatRequireAuthorizationToAccess()
+        {
+            int count = 35.GetRandom(20);
+            string relativePath = string.Empty.GetRandom();
+            string rootPath = "c:\\";
+            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+
+            var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
+            var fileNames = new List<string>();
+            fileNames.AddRange(files.Select(f => System.IO.Path.Combine(folderPath, f.FileName)));
+
+            var directoryProvider = new Mock<IDirectory>();
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(fileNames);
+            directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
+
+            var fileProvider = new Mock<IFile>();
+            int expected = 0;
+            foreach (var file in files)
+            {
+                string fullPath = System.IO.Path.Combine(folderPath, file.FileName);
+                bool bad = true.GetRandom();
+                if (bad)
+                    fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Throws(new System.UnauthorizedAccessException());
+                else
+                {
+                    expected++;
+                    fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Returns(file.Contents);
+                }
+            }
+
+            var target = (null as IContentRepository).Create(fileProvider.Object, directoryProvider.Object, rootPath);
+            var actual = target.GetFolderContents(relativePath);
+
+            Assert.Equal(expected, actual.Count());
         }
 
     }

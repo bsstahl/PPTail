@@ -13,6 +13,8 @@ namespace PPTail.SiteGenerator.Test
 {
     public class Builder_Build_Should
     {
+        const string _additionalFilePathsSettingName = "additionalFilePaths";
+
         [Fact]
         public void RequestAllPagesFromTheRepository()
         {
@@ -371,6 +373,215 @@ namespace PPTail.SiteGenerator.Test
             pageGen.Verify(c => c.GenerateHomepage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
         }
 
+        [Fact]
+        public void CreateOneRawSiteFileForEachSourceFile()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = Mock.Of<IPageGenerator>();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
+            var siteSettings = Mock.Of<SiteSettings>();
+
+            var settings = new Settings();
+            string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
+            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
+
+            var additionalPaths = additionalPathSettingsValue.Split(',');
+            int expected = 0;
+            foreach (var additionalPath in additionalPaths)
+            {
+                int count = 10.GetRandom(3);
+                var additionalFiles = (null as IEnumerable<SourceFile>).Create(count);
+                expected += count;
+                contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
+            }
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(expected, actual.Count(a => a.SourceTemplateType == Enumerations.TemplateType.Raw));
+        }
+
+        [Fact]
+        public void ProperlyBase64EncodeAllFileContents()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = Mock.Of<IPageGenerator>();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
+            var siteSettings = Mock.Of<SiteSettings>();
+
+            var settings = new Settings();
+            string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
+            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
+
+            var additionalPaths = additionalPathSettingsValue.Split(',');
+            var sourceFiles = new List<SourceFile>();
+            foreach (var additionalPath in additionalPaths)
+            {
+                var additionalFiles = (null as IEnumerable<SourceFile>).Create();
+                sourceFiles.AddRange(additionalFiles);
+                contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
+            }
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            foreach (var sourceFile in sourceFiles)
+            {
+                var filePath = System.IO.Path.Combine(sourceFile.RelativePath, sourceFile.FileName);
+                var expected = Convert.ToBase64String(sourceFile.Contents);
+                Assert.Equal(expected, actual.Single(f => f.RelativeFilePath == filePath).Content);
+            }
+        }
+
+        [Fact]
+        public void ProperlyMarkAllRawFilesAsBase64Encoded()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = Mock.Of<IPageGenerator>();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
+            var siteSettings = Mock.Of<SiteSettings>();
+
+            var settings = new Settings();
+            string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
+            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
+
+            var additionalPaths = additionalPathSettingsValue.Split(',');
+            int expected = 0;
+            foreach (var additionalPath in additionalPaths)
+            {
+                int count = 10.GetRandom(3);
+                var additionalFiles = (null as IEnumerable<SourceFile>).Create(count);
+                expected += count;
+                contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
+            }
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(expected, actual.Count(a => a.IsBase64Encoded));
+        }
+
+        [Fact]
+        public void ReturnNoRawFilesIfTheSettingDoesNotExist()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = Mock.Of<IPageGenerator>();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
+            var siteSettings = Mock.Of<SiteSettings>();
+
+            var settings = new Settings();
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(f => f.SourceTemplateType == Enumerations.TemplateType.Raw));
+        }
+
+        [Fact]
+        public void ReturnNoRawFilesIfTheSettingIsEmpty()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = Mock.Of<IPageGenerator>();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
+            var siteSettings = Mock.Of<SiteSettings>();
+
+            var settings = new Settings();
+            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, string.Empty);
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(f => f.SourceTemplateType == Enumerations.TemplateType.Raw));
+        }
+
+        [Fact]
+        public void ReturnNoRawFilesIfTheSettingIsNull()
+        {
+            var container = new ServiceCollection();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var pageGen = Mock.Of<IPageGenerator>();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+            var contactProvider = Mock.Of<IContactProvider>();
+            var siteSettings = Mock.Of<SiteSettings>();
+
+            var settings = new Settings();
+            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, null);
+
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IArchiveProvider>(archiveProvider);
+            container.AddSingleton<IContactProvider>(contactProvider);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(f => f.SourceTemplateType == Enumerations.TemplateType.Raw));
+        }
 
     }
 }

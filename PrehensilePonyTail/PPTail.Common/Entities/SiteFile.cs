@@ -11,5 +11,6 @@ namespace PPTail.Entities
         public string RelativeFilePath { get; set; }
         public string Content { get; set; }
         public TemplateType SourceTemplateType { get; set; }
+        public bool IsBase64Encoded { get; set; }
     }
 }

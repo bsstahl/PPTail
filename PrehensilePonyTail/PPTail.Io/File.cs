@@ -25,6 +25,11 @@ namespace PPTail.Io
             System.IO.File.WriteAllText(path, data);
         }
 
+        public void WriteAllBytes(string path, byte[] data)
+        {
+            System.IO.File.WriteAllBytes(path, data);
+        }
+
         public bool Exists(string path)
         {
             return System.IO.File.Exists(path);

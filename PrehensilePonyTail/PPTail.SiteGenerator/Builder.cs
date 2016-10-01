@@ -10,6 +10,7 @@ namespace PPTail.SiteGenerator
 {
     public class Builder
     {
+        const string _additionalFilePathsSettingName = "additionalFilePaths";
         private IServiceProvider _serviceProvider;
 
         public Builder(IServiceProvider serviceProvider)
@@ -111,6 +112,24 @@ namespace PPTail.SiteGenerator
                         RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
                         Content = pageGen.GenerateContentPage(sidebarContent, childLevelNavigationContent, siteSettings, page)
+                    });
+                }
+            }
+
+            // Add additional raw files
+            string relativePathString = settings.ExtendedSettings.Get(_additionalFilePathsSettingName);
+            if (!string.IsNullOrEmpty(relativePathString))
+            {
+                var additionalFilePaths = relativePathString.Split(',');
+                var additionalFiles = contentRepo.GetFoldersContents(additionalFilePaths);
+                foreach (var rawFile in additionalFiles)
+                {
+                    result.Add(new SiteFile()
+                    {
+                        RelativeFilePath = System.IO.Path.Combine(rawFile.RelativePath, rawFile.FileName),
+                        SourceTemplateType = Enumerations.TemplateType.Raw,
+                        Content = System.Convert.ToBase64String(rawFile.Contents),
+                        IsBase64Encoded = true
                     });
                 }
             }

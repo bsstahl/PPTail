@@ -12,6 +12,7 @@ namespace PPTail.Interfaces
         string ReadAllText(string path);
         byte[] ReadAllBytes(string path);
         void WriteAllText(string path, string data);
+        void WriteAllBytes(string path, byte[] data);
         bool Exists(string path);
     }
 }

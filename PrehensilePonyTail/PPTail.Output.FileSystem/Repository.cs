@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Output.FileSystem
 {
-    public class Repository: IOutputRepository
+    public class Repository : IOutputRepository
     {
         const string outputPathSettingName = "outputPath";
 
@@ -51,7 +51,19 @@ namespace PPTail.Output.FileSystem
                 if (!_directory.Exists(folderPath))
                     _directory.CreateDirectory(folderPath);
 
-                _file.WriteAllText(fullPath, sitePage.Content);
+                if (sitePage.IsBase64Encoded)
+                {
+                    try
+                    {
+                        _file.WriteAllBytes(fullPath, Convert.FromBase64String(sitePage.Content));
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        //TODO: Log the fact that this file was skipped
+                    }
+                }
+                else
+                    _file.WriteAllText(fullPath, sitePage.Content);
             }
         }
     }

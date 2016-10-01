@@ -7,6 +7,7 @@ using Moq;
 using PPTail.Entities;
 using TestHelperExtensions;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Enumerations;
 
 namespace PPTail.SiteGenerator.Test
 {
@@ -97,6 +98,40 @@ namespace PPTail.SiteGenerator.Test
                 Title = title,
                 Description = description,
                 PostsPerPage = postsPerPage
+            };
+        }
+
+
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore)
+        {
+            return ignore.Create(10.GetRandom(3));
+        }
+
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, int count)
+        {
+            var result = new List<SourceFile>();
+
+            for (int i = 0; i < count; i++)
+                result.Add((null as SourceFile).Create());
+
+            return result;
+        }
+
+        public static SourceFile Create(this SourceFile ignore)
+        {
+            return ignore.Create(
+                string.Empty.GetRandom().Select(s => Convert.ToByte(s)).ToArray(),
+                string.Empty.GetRandom(),
+                string.Empty.GetRandom());
+        }
+
+        public static SourceFile Create(this SourceFile ignore, byte[] content, string relativePath, string fileName)
+        {
+            return new SourceFile()
+            {
+                Contents = content,
+                RelativePath = relativePath,
+                FileName = fileName
             };
         }
 

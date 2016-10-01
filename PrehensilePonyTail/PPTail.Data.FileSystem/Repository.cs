@@ -145,13 +145,21 @@ namespace PPTail.Data.FileSystem
                 var sourceFiles = directory.EnumerateFiles(folderPath);
                 foreach (var sourceFile in sourceFiles)
                 {
-                    string fullPath = System.IO.Path.Combine(folderPath, sourceFile);
-                    results.Add(new SourceFile()
+                    byte[] contents = null;
+                    try
                     {
-                        Contents = fileSystem.ReadAllBytes(fullPath),
-                        FileName = sourceFile,
-                        RelativePath = relativePath
-                    });
+                        contents = fileSystem.ReadAllBytes(sourceFile);
+                    }
+                    catch (System.UnauthorizedAccessException)
+                    { }
+
+                    if (contents != null)
+                        results.Add(new SourceFile()
+                        {
+                            Contents = contents,
+                            FileName = System.IO.Path.GetFileName(sourceFile),
+                            RelativePath = relativePath
+                        });
                 }
             }
 
