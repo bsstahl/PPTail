@@ -58,31 +58,35 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SetTheFilenameOfTheContentPageToTheSlugPlusTheExtension()
         {
-            string extension = string.Empty.GetRandom(4);
-            var contentRepo = new Mock<IContentRepository>();
+            string extension = string.Empty.GetRandom(3);
             var contentItem = (null as ContentItem).Create();
-            var expected = $"pages/{contentItem.Slug}.{extension}";
+
+            var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
 
             var target = (null as Builder).Create(contentRepo.Object, extension);
-            var actual = target.Build();
+            var actualPages = target.Build();
+            var actualPage = actualPages.Single(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage);
 
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains(expected)));
+            var expected = $"pages/{contentItem.Slug}.{extension}".ToLowerInvariant();
+            Assert.Equal(expected, actualPage.RelativeFilePath.ToLowerInvariant());
         }
 
         [Fact]
         public void SetTheFilenameOfThePostPageToTheSlugPlusTheExtension()
         {
             string extension = string.Empty.GetRandom(4);
-            var contentRepo = new Mock<IContentRepository>();
             var contentItem = (null as ContentItem).Create();
-            var expected = $"posts/{contentItem.Slug}.{extension}";
+
+            var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
 
             var target = (null as Builder).Create(contentRepo.Object, extension);
-            var actual = target.Build();
+            var actualPages = target.Build();
+            var actualPage = actualPages.Single(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage);
 
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains(expected)));
+            var expected = $"posts/{contentItem.Slug}.{extension}";
+            Assert.Equal(expected, actualPage.RelativeFilePath.ToLowerInvariant());
         }
 
         [Fact]
@@ -261,8 +265,6 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPost()
         {
-            var container = new ServiceCollection();
-
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
@@ -272,20 +274,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
 
-            var settings = new Settings();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<Settings>(settings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
-
-            var siteSettings = (null as SiteSettings).Create();
-
-            var target = (null as Builder).Create(container);
+            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
             var actual = target.Build();
 
             foreach (var item in contentItems)
@@ -583,5 +572,172 @@ namespace PPTail.SiteGenerator.Test
             Assert.Equal(0, actual.Count(f => f.SourceTemplateType == Enumerations.TemplateType.Raw));
         }
 
+        [Fact]
+        public void ReturnOneSearchPageForEachKeyword()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var actual = target.Build();
+
+            foreach (var tag in tags)
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(tag, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void SupplyTheFullListOfPostsToEachSearchPage()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var actual = target.Build();
+
+            foreach (var tag in tags)
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void SupplyTheNavigationContentToEachSearchPage()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var navContent = string.Empty.GetRandom();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var navigationProvider = new Mock<INavigationProvider>();
+            navigationProvider.Setup(n => n.CreateNavigation(It.IsAny<IEnumerable<ContentItem>>(), "../", It.IsAny<string>()))
+                .Returns(navContent);
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, navigationProvider.Object);
+            var actual = target.Build();
+
+            foreach (var tag in tags)
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), navContent, It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void SupplyTheSidebarContentToEachSearchPage()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var sidebarContent = string.Empty.GetRandom();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var pageGen = new Mock<IPageGenerator>();
+            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<Settings>(), It.IsAny<SiteSettings>(),
+                    It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<ContentItem>>(),
+                    It.IsAny<IEnumerable<Widget>>()))
+                .Returns(sidebarContent);
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, pageGen.Object);
+            var actual = target.Build();
+
+            foreach (var tag in tags)
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), sidebarContent, It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void SupplyTheCorrectPathToRootToEachSearchPage()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var pathToRoot = "../";
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var actual = target.Build();
+
+            foreach (var tag in tags)
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), pathToRoot));
+        }
+
+        [Fact]
+        public void ReturnTheCorrectContentOfTheSearchPage()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+            foreach (var tag in tags)
+            {
+                searchProvider.Setup(s => s.GenerateSearchResultsPage(tag, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<String>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(tag.ToBase64());
+            }
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var actual = target.Build();
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
+
+            foreach (var tag in tags)
+            {
+                var tagPage = actualPages.Single(p => p.RelativeFilePath.Contains(tag));
+                Assert.Equal(tag, tagPage.Content.FromBase64());
+            }
+        }
+
+        [Fact]
+        public void ReturnTheCorrectRelativeFilePathOfEachSearchPage()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            string filenameExtension = string.Empty.GetRandom();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var actual = target.Build();
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
+
+            foreach (var tag in tags)
+            {
+                var relativeFilePath = $"Search/{tag.HTMLEncode()}.{filenameExtension}";
+                Assert.Equal(1, actualPages.Count(p => p.RelativeFilePath == relativeFilePath));
+            }
+        }
+
+        [Fact]
+        public void ReturnContentMarkedAsUnEncoded()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            string filenameExtension = string.Empty.GetRandom();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var actual = target.Build();
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
+
+            Assert.False(actualPages.Any(p => p.IsBase64Encoded));
+        }
     }
 }

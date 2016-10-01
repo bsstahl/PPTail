@@ -73,7 +73,7 @@ namespace PPTail.Generator.T4Html.Test
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
-            settings.outputFileExtension = outputFileExtension;
+            settings.OutputFileExtension = outputFileExtension;
             return settings;
         }
 

@@ -75,7 +75,7 @@ namespace PPTail.Generator.Contact.Test
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                outputFileExtension = outputFileExtension
+                OutputFileExtension = outputFileExtension
             };
         }
     }

@@ -113,7 +113,7 @@ namespace PPTail.Generator.T4Html.Test
             var siteSettings = (null as SiteSettings).Create();
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var tagName = posts.Single().Tags.Single();
-            var extension = settings.outputFileExtension;
+            var extension = settings.OutputFileExtension;
 
             var pages = new List<ContentItem>();
 
@@ -141,7 +141,7 @@ namespace PPTail.Generator.T4Html.Test
             thisPost.Tags = new List<string>() { tagValue };
 
             var tagName = tagValue.Replace(" ", "_");
-            var extension = settings.outputFileExtension;
+            var extension = settings.OutputFileExtension;
 
             var pages = new List<ContentItem>();
 

@@ -41,7 +41,7 @@ namespace PPTail.Generator.Archive
 
         public string GetPath(ContentItem item, Settings settings, string pathToRoot)
         {
-            return System.IO.Path.Combine(pathToRoot, "Posts", $"{item.Slug}.{settings.outputFileExtension}");
+            return System.IO.Path.Combine(pathToRoot, "Posts", $"{item.Slug}.{settings.OutputFileExtension}");
         }
 
     }

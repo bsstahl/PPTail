@@ -45,7 +45,7 @@ namespace PPTail.Generator.T4Html
 
             results += "<div class=\"content\"><ul>";
             foreach (var style in styles)
-                results += $"<li><a title=\"Tag: {style.Item1}\" class=\"{style.Item2}\" href=\"/search/{style.Item1.Replace(" ", "_")}.{settings.outputFileExtension}\">{style.Item1}</a></li> ";
+                results += $"<li><a title=\"Tag: {style.Item1}\" class=\"{style.Item2}\" href=\"/search/{style.Item1.Replace(" ", "_")}.{settings.OutputFileExtension}\">{style.Item1}</a></li> ";
 
             results += "</ul></div>";
             return results;

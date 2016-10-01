@@ -30,6 +30,7 @@ namespace PPTail.SiteGenerator
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
             var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
             var contactProvider = ServiceProvider.GetService<IContactProvider>();
+            var searchProvider = ServiceProvider.GetService<ISearchProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
@@ -39,8 +40,8 @@ namespace PPTail.SiteGenerator
             var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
 
             // Create navbars
-            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.outputFileExtension);
-            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.outputFileExtension);
+            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.OutputFileExtension);
+            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.OutputFileExtension);
 
             // Create bootstrap file
             result.Add(new SiteFile()
@@ -92,7 +93,7 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
+                        RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
                         Content = pageGen.GeneratePostPage(sidebarContent, childLevelNavigationContent, siteSettings, post)
                     });
@@ -109,11 +110,24 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
+                        RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
                         Content = pageGen.GenerateContentPage(sidebarContent, childLevelNavigationContent, siteSettings, page)
                     });
                 }
+            }
+
+            // Add Search Pages
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            foreach (var tag in tags)
+            {
+                result.Add(new SiteFile()
+                {
+                    Content = searchProvider.GenerateSearchResultsPage(tag, posts, childLevelNavigationContent, sidebarContent, "../"),
+                    RelativeFilePath = $"Search/{tag.HTMLEncode()}.{settings.OutputFileExtension}",
+                    SourceTemplateType = Enumerations.TemplateType.SearchPage,
+                    IsBase64Encoded = false
+                });
             }
 
             // Add additional raw files
