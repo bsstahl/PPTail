@@ -6,6 +6,7 @@ using Xunit;
 using Moq;
 using PPTail.Interfaces;
 using PPTail.Entities;
+using PPTail.Extensions;
 using TestHelperExtensions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -646,7 +647,7 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = new Mock<IPageGenerator>();
             pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<Settings>(), It.IsAny<SiteSettings>(),
                     It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<ContentItem>>(),
-                    It.IsAny<IEnumerable<Widget>>()))
+                    It.IsAny<IEnumerable<Widget>>(), It.IsAny<string>()))
                 .Returns(sidebarContent);
 
             var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, pageGen.Object);
@@ -705,7 +706,13 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnTheCorrectRelativeFilePathOfEachSearchPage()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
+            string tagPart1 = string.Empty.GetRandom(4);
+            string tagPart2 = string.Empty.GetRandom(4);
+            string testTag = $".{tagPart1} {tagPart2}";
+
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            posts.Single().Tags = new List<string>() { testTag };
+
             var tags = posts.SelectMany(p => p.Tags).Distinct();
             string filenameExtension = string.Empty.GetRandom();
 
@@ -716,11 +723,33 @@ namespace PPTail.SiteGenerator.Test
             var actual = target.Build();
             var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
 
-            foreach (var tag in tags)
-            {
-                var relativeFilePath = $"Search/{tag.HTMLEncode()}.{filenameExtension}";
-                Assert.Equal(1, actualPages.Count(p => p.RelativeFilePath == relativeFilePath));
-            }
+            var expected = $"Search/{testTag.CreateSlug()}.{filenameExtension}";
+            Assert.Equal(expected, actualPages.Single().RelativeFilePath);
+        }
+
+        [Fact]
+        public void NotProcessAnEmptyTag()
+        {
+            string testTag = string.Empty.GetRandom();
+
+            var post1 = (null as ContentItem).Create();
+            post1.Tags = new List<string>() { testTag };
+
+            var post2 = (null as ContentItem).Create();
+            post2.Tags = new List<string>() { string.Empty };
+
+            var posts = new List<ContentItem>() { post1, post2 };
+
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            string filenameExtension = string.Empty.GetRandom();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage));
         }
 
         [Fact]

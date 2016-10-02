@@ -1,5 +1,6 @@
 ﻿using PPTail.Entities;
 using PPTail.Interfaces;
+using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,14 @@ namespace PPTail.Generator.T4Html
 {
     public static class WidgetExtensions
     {
-        public static string Render(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts)
+        public static string Render(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts, string pathToRoot)
         {
             string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
 
             if (widget.WidgetType == Enumerations.WidgetType.TextBox)
                 results += widget.RenderTextBoxWidget();
             if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
-                results += widget.RenderTagCloudWidget(serviceProvider, settings, posts);
+                results += widget.RenderTagCloudWidget(serviceProvider, settings, posts, pathToRoot);
 
             results += "</div>";
             return results;
@@ -32,7 +33,7 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts)
+        private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts, string pathToRoot)
         {
             string results = string.Empty;
             if (widget.ShowTitle)
@@ -45,7 +46,10 @@ namespace PPTail.Generator.T4Html
 
             results += "<div class=\"content\"><ul>";
             foreach (var style in styles)
-                results += $"<li><a title=\"Tag: {style.Item1}\" class=\"{style.Item2}\" href=\"/search/{style.Item1.Replace(" ", "_")}.{settings.OutputFileExtension}\">{style.Item1}</a></li> ";
+            {
+                string url = System.IO.Path.Combine(pathToRoot, "search",  $"{style.Item1.CreateSlug()}.{settings.OutputFileExtension}");
+                results += $"<li><a title=\"Tag: {style.Item1}\" class=\"{style.Item2}\" href=\"{url}\">{style.Item1}</a></li> ";
+            }
 
             results += "</ul></div>";
             return results;

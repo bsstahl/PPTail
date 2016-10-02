@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Extensions;
 
 namespace PPTail.SiteGenerator
 {
@@ -37,7 +38,9 @@ namespace PPTail.SiteGenerator
             var pages = contentRepo.GetAllPages();
             var widgets = contentRepo.GetAllWidgets();
 
-            var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
+            // Create Sidebar Content
+            var rootLevelSidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets, ".");
+            var childLevelSidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets, "../");
 
             // Create navbars
             var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.OutputFileExtension);
@@ -64,7 +67,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = pageGen.GenerateHomepage(sidebarContent, rootLevelNavigationContent, siteSettings, posts)
+                Content = pageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, siteSettings, posts)
             });
 
             // Create Archive
@@ -72,7 +75,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./archive.html",
                 SourceTemplateType = Enumerations.TemplateType.Archive,
-                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, sidebarContent, "./")
+                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
 
             // Create Contact Page
@@ -80,7 +83,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./contact.html",
                 SourceTemplateType = Enumerations.TemplateType.ContactPage,
-                Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, sidebarContent, "./")
+                Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
 
             foreach (var post in posts)
@@ -95,7 +98,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(sidebarContent, childLevelNavigationContent, siteSettings, post)
+                        Content = pageGen.GeneratePostPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, post)
                     });
                 }
             }
@@ -112,19 +115,19 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(sidebarContent, childLevelNavigationContent, siteSettings, page)
+                        Content = pageGen.GenerateContentPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, page)
                     });
                 }
             }
 
             // Add Search Pages
             var tags = posts.SelectMany(p => p.Tags).Distinct();
-            foreach (var tag in tags)
+            foreach (var tag in tags.Where(t => !string.IsNullOrEmpty(t)))
             {
                 result.Add(new SiteFile()
                 {
-                    Content = searchProvider.GenerateSearchResultsPage(tag, posts, childLevelNavigationContent, sidebarContent, "../"),
-                    RelativeFilePath = $"Search/{tag.HTMLEncode()}.{settings.OutputFileExtension}",
+                    Content = searchProvider.GenerateSearchResultsPage(tag, posts, childLevelNavigationContent, childLevelSidebarContent, "../"),
+                    RelativeFilePath = $"Search/{tag.CreateSlug()}.{settings.OutputFileExtension}",
                     SourceTemplateType = Enumerations.TemplateType.SearchPage,
                     IsBase64Encoded = false
                 });

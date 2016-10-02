@@ -104,7 +104,7 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent);
+            return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -121,11 +121,11 @@ namespace PPTail.Generator.T4Html
                 return this.BootstrapTemplate.Content;
         }
 
-        public string GenerateSidebarContent(Settings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets)
+        public string GenerateSidebarContent(Settings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
         {
             var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets)
-                results += widget.Render(_serviceProvider, settings, posts);
+                results += widget.Render(_serviceProvider, settings, posts, pathToRoot);
             results += "</div>";
             return results;
         }
