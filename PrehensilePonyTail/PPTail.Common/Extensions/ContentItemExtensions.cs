@@ -13,12 +13,10 @@ namespace PPTail.Extensions
         public static string ProcessTemplate(this IEnumerable<ContentItem> posts, Settings settings, SiteSettings siteSettings, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, int maxPostCount)
         {
             string content = string.Empty;
-            var recentPosts = posts.Where(pub => pub.IsPublished);
+            var recentPosts = posts.OrderByDescending(p => p.PublicationDate).Where(pub => pub.IsPublished);
 
             if (maxPostCount > 0)
                 recentPosts = recentPosts.Take(maxPostCount);
-
-            recentPosts = recentPosts.OrderByDescending(p => p.PublicationDate);
 
             var contentItems = new List<string>();
             foreach (var post in recentPosts)
