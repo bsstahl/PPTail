@@ -15,12 +15,13 @@ namespace PPTail.Data.FileSystem.Test
     public class Repository_GetSiteSettings_Should
     {
         const int _defaultPostsPerPage = 3;
+        const string _dataFolder = "App_Data";
 
         [Fact]
         public void ReadsTheProperFileFromTheFileSystem()
         {
             string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            string expectedPath = System.IO.Path.Combine(rootPath, "settings.xml");
+            string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "settings.xml");
             string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 0);
 
             var fileSystem = new Mock<IFile>();

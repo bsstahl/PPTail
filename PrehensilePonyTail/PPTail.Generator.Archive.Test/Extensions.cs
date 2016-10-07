@@ -44,7 +44,7 @@ namespace PPTail.Generator.Archive.Test
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
-            settings.outputFileExtension = outputFileExtension;
+            settings.OutputFileExtension = outputFileExtension;
             return settings;
         }
 

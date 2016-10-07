@@ -13,10 +13,11 @@ namespace PPTail.Data.FileSystem
     {
         const int _defaultPostsPerPage = 3;
         const string _sourceDataPathSettingName = "sourceDataPath";
-        const string _widgetRelativePath = ".\\datastore\\widgets";
+        const string _widgetRelativePath = "datastore\\widgets";
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly string _rootPath;
+        private readonly string _rootDataPath;
+        private readonly string _rootSitePath;
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -33,13 +34,14 @@ namespace PPTail.Data.FileSystem
             if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
                 throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
 
-            _rootPath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
+            _rootSitePath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
+            _rootDataPath = System.IO.Path.Combine(_rootSitePath, "App_Data");
         }
 
         public SiteSettings GetSiteSettings()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
-            string settingsPath = System.IO.Path.Combine(_rootPath, "settings.xml");
+            string settingsPath = System.IO.Path.Combine(_rootDataPath, "settings.xml");
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
 
             if (string.IsNullOrWhiteSpace(result.Title))
@@ -54,10 +56,11 @@ namespace PPTail.Data.FileSystem
         public IEnumerable<ContentItem> GetAllPages()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootPath, "pages");
-            var files = fileSystem.EnumerateFiles(pagePath);
+            string pagePath = System.IO.Path.Combine(_rootDataPath, "pages");
+            var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
                 var contentItem = fileSystem.ReadAllText(file).ParseContentItem("page");
@@ -70,10 +73,11 @@ namespace PPTail.Data.FileSystem
         public IEnumerable<ContentItem> GetAllPosts()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootPath, "posts");
-            var files = fileSystem.EnumerateFiles(pagePath);
+            string pagePath = System.IO.Path.Combine(_rootDataPath, "posts");
+            var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
                 var contentItem = fileSystem.ReadAllText(file).ParseContentItem("post");
@@ -88,7 +92,7 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Widget>();
-            string widgetPath = System.IO.Path.Combine(_rootPath, _widgetRelativePath);
+            string widgetPath = System.IO.Path.Combine(_rootDataPath, _widgetRelativePath);
             string zoneFilePath = System.IO.Path.Combine(widgetPath, "be_WIDGET_ZONE.xml");
 
             var zoneData = fileSystem.ReadAllText(zoneFilePath);
@@ -111,16 +115,8 @@ namespace PPTail.Data.FileSystem
                 string fileName = $"{thisWidget.Id.ToString()}.xml";
                 string filePath = System.IO.Path.Combine(widgetPath, fileName);
                 string widgetFile = string.Empty;
-
-                try
-                {
+                if (fileSystem.Exists(filePath))
                     widgetFile = fileSystem.ReadAllText(filePath);
-                }
-                catch (System.IO.FileNotFoundException)
-                {
-                    // No need to take any action here, this is a valid occurance
-                    // TODO: Rather than trapping the exception, test for existance first
-                }
 
                 if (!string.IsNullOrEmpty(widgetFile))
                 {
@@ -136,5 +132,38 @@ namespace PPTail.Data.FileSystem
             return results;
         }
 
+        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        {
+            var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
+
+            var folderPath = System.IO.Path.Combine(_rootSitePath, relativePath);
+            var results = new List<SourceFile>();
+
+            if (directory.Exists(folderPath))
+            {
+                var sourceFiles = directory.EnumerateFiles(folderPath);
+                foreach (var sourceFile in sourceFiles)
+                {
+                    byte[] contents = null;
+                    try
+                    {
+                        contents = fileSystem.ReadAllBytes(sourceFile);
+                    }
+                    catch (System.UnauthorizedAccessException)
+                    { }
+
+                    if (contents != null)
+                        results.Add(new SourceFile()
+                        {
+                            Contents = contents,
+                            FileName = System.IO.Path.GetFileName(sourceFile),
+                            RelativePath = relativePath
+                        });
+                }
+            }
+
+            return results;
+        }
     }
 }

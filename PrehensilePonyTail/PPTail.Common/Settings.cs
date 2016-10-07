@@ -12,7 +12,7 @@ namespace PPTail
 
         public string ItemSeparator { get; set; }
 
-        public string outputFileExtension { get; set; }
+        public string OutputFileExtension { get; set; }
 
         public ExtendedSettingsCollection ExtendedSettings { get; private set; }
 

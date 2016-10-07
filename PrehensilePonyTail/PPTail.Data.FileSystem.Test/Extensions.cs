@@ -27,6 +27,11 @@ namespace PPTail.Data.FileSystem.Test
 
         public static IContentRepository Create(this IContentRepository ignore, IFile fileSystem, string sourcePath)
         {
+            return ignore.Create(fileSystem, Mock.Of<IDirectory>(), sourcePath);
+        }
+
+        public static IContentRepository Create(this IContentRepository ignore, IFile fileSystem, IDirectory directoryProvider, string sourcePath)
+        {
             var container = new ServiceCollection();
 
             var settings = new Settings();
@@ -34,6 +39,7 @@ namespace PPTail.Data.FileSystem.Test
             settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourcePath);
 
             container.AddSingleton<IFile>(fileSystem);
+            container.AddSingleton<IDirectory>(directoryProvider);
 
             return ignore.Create(container.BuildServiceProvider());
         }
@@ -95,7 +101,7 @@ namespace PPTail.Data.FileSystem.Test
 
         public static void ConfigureWidgets(this Mock<IFile> fileSystem, IEnumerable<Widget> widgets, string rootPath, bool addInvalidTypes)
         {
-            const string widgetPath = ".\\datastore\\widgets";
+            const string widgetPath = "App_Data\\datastore\\widgets";
             const string zoneFilename = "be_WIDGET_ZONE.xml";
             const string widgetFileFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><SerializableStringDictionary><SerializableStringDictionary><DictionaryEntry Key=\"{0}\" Value=\"{1}\" /></SerializableStringDictionary></SerializableStringDictionary>";
 
@@ -109,11 +115,13 @@ namespace PPTail.Data.FileSystem.Test
                 {
                     var dictionaryItem = widget.Dictionary.First();
                     files.Add(fileName);
+                    fileSystem.Setup(f => f.Exists(thisFilePath)).Returns(true);
                     fileSystem.Setup(f => f.ReadAllText(thisFilePath))
                         .Returns(string.Format(widgetFileFormat, dictionaryItem.Item1, dictionaryItem.Item2));
                 }
                 else if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
                 {
+                    fileSystem.Setup(f => f.Exists(thisFilePath)).Returns(false);
                     fileSystem.Setup(f => f.ReadAllText(thisFilePath))
                         .Throws(new System.IO.FileNotFoundException("This widget type has no separate files"));
                 }
@@ -154,6 +162,26 @@ namespace PPTail.Data.FileSystem.Test
         {
             //             const string widgetFileFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><SerializableStringDictionary><SerializableStringDictionary><DictionaryEntry Key=\"{0}\" Value=\"{1}\" /></SerializableStringDictionary></SerializableStringDictionary>";
             throw new NotImplementedException();
+        }
+
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, string relativePath, int count)
+        {
+            var result = new List<SourceFile>();
+
+            for (int i = 0; i < count; i++)
+                result.Add((null as SourceFile).Create(relativePath));
+
+            return result;
+        }
+
+        private static SourceFile Create(this SourceFile ignore, string relativePath)
+        {
+            return new SourceFile()
+            {
+                Contents = string.Empty.GetRandom().Select(c => Convert.ToByte(c)).ToArray(),
+                FileName = $"{string.Empty.GetRandom()}.{string.Empty.GetRandom(3)}",
+                RelativePath = relativePath
+            };
         }
     }
 }

@@ -12,5 +12,6 @@ namespace PPTail.Interfaces
         IEnumerable<ContentItem> GetAllPages();
         IEnumerable<ContentItem> GetAllPosts();
         IEnumerable<Widget> GetAllWidgets();
+        IEnumerable<SourceFile> GetFolderContents(string relativePath);
     }
 }

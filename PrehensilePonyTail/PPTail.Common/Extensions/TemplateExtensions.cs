@@ -15,10 +15,11 @@ namespace PPTail.Extensions
                 .ReplaceNonContentItemSpecificVariables(settings, siteSettings, sidebarContent, navContent, string.Empty);
         }
 
-        public static string ProcessNonContentItemTemplate(this Template template, string sidebarContent, string navContent, SiteSettings siteSettings, Settings settings, string content)
+        public static string ProcessNonContentItemTemplate(this Template template, string sidebarContent, string navContent, SiteSettings siteSettings, Settings settings, string content, string pageTitle)
         {
             return template.Content
-                .ReplaceNonContentItemSpecificVariables(settings, siteSettings, sidebarContent, navContent, content);
+                .ReplaceNonContentItemSpecificVariables(settings, siteSettings, sidebarContent, navContent, content)
+                .Replace("{Title}", pageTitle);
         }
 
     }

@@ -7,20 +7,25 @@ namespace PPTail
 {
     public static class SettingsExtensions
     {
-        public static Settings Create(this Settings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
+        const string _sourceDataPathSettingName = "sourceDataPath";
+        const string _outputPathSettingName = "outputPath";
+        const string _additionalFilePathsSettingName = "additionalFilePaths";
+
+        public static Settings Create(this Settings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths)
         {
             var settings = new Settings()
             {
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                outputFileExtension = outputFileExtension
+                OutputFileExtension = outputFileExtension
             };
 
-            settings.ExtendedSettings.Set("sourceDataPath", sourceDataPath);
-            settings.ExtendedSettings.Set("outputPath", outputPath);
-            return settings;
+            settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourceDataPath);
+            settings.ExtendedSettings.Set(_outputPathSettingName, outputPath);
+            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
 
+            return settings;
         }
     }
 }

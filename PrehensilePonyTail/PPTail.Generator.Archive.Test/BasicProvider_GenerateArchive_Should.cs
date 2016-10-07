@@ -28,7 +28,7 @@ namespace PPTail.Generator.Archive.Test
 
             foreach (var post in posts)
             {
-                var href = System.IO.Path.Combine(pathToRoot, "Posts" , $"{post.Slug}.{settings.outputFileExtension}");
+                var href = System.IO.Path.Combine(pathToRoot, "Posts" , $"{post.Slug}.{settings.OutputFileExtension}");
                 Assert.Contains(href, actual);
             }
         }

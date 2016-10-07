@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Extensions;
 
 namespace PPTail.SiteGenerator
 {
     public class Builder
     {
+        const string _additionalFilePathsSettingName = "additionalFilePaths";
         private IServiceProvider _serviceProvider;
 
         public Builder(IServiceProvider serviceProvider)
@@ -29,17 +31,20 @@ namespace PPTail.SiteGenerator
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
             var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
             var contactProvider = ServiceProvider.GetService<IContactProvider>();
+            var searchProvider = ServiceProvider.GetService<ISearchProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
             var pages = contentRepo.GetAllPages();
             var widgets = contentRepo.GetAllWidgets();
 
-            var sidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets);
+            // Create Sidebar Content
+            var rootLevelSidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets, ".");
+            var childLevelSidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets, "../");
 
             // Create navbars
-            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.outputFileExtension);
-            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.outputFileExtension);
+            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.OutputFileExtension);
+            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.OutputFileExtension);
 
             // Create bootstrap file
             result.Add(new SiteFile()
@@ -62,7 +67,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = pageGen.GenerateHomepage(sidebarContent, rootLevelNavigationContent, siteSettings, posts)
+                Content = pageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, siteSettings, posts)
             });
 
             // Create Archive
@@ -70,7 +75,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./archive.html",
                 SourceTemplateType = Enumerations.TemplateType.Archive,
-                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, sidebarContent, "./")
+                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
 
             // Create Contact Page
@@ -78,7 +83,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./contact.html",
                 SourceTemplateType = Enumerations.TemplateType.ContactPage,
-                Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, sidebarContent, "./")
+                Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
 
             foreach (var post in posts)
@@ -91,9 +96,9 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.outputFileExtension}",
+                        RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(sidebarContent, childLevelNavigationContent, siteSettings, post)
+                        Content = pageGen.GeneratePostPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, post)
                     });
                 }
             }
@@ -108,9 +113,40 @@ namespace PPTail.SiteGenerator
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.outputFileExtension}",
+                        RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(sidebarContent, childLevelNavigationContent, siteSettings, page)
+                        Content = pageGen.GenerateContentPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, page)
+                    });
+                }
+            }
+
+            // Add Search Pages
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            foreach (var tag in tags.Where(t => !string.IsNullOrEmpty(t)))
+            {
+                result.Add(new SiteFile()
+                {
+                    Content = searchProvider.GenerateSearchResultsPage(tag, posts, childLevelNavigationContent, childLevelSidebarContent, "../"),
+                    RelativeFilePath = $"Search/{tag.CreateSlug()}.{settings.OutputFileExtension}",
+                    SourceTemplateType = Enumerations.TemplateType.SearchPage,
+                    IsBase64Encoded = false
+                });
+            }
+
+            // Add additional raw files
+            string relativePathString = settings.ExtendedSettings.Get(_additionalFilePathsSettingName);
+            if (!string.IsNullOrEmpty(relativePathString))
+            {
+                var additionalFilePaths = relativePathString.Split(',');
+                var additionalFiles = contentRepo.GetFoldersContents(additionalFilePaths);
+                foreach (var rawFile in additionalFiles)
+                {
+                    result.Add(new SiteFile()
+                    {
+                        RelativeFilePath = System.IO.Path.Combine(rawFile.RelativePath, rawFile.FileName),
+                        SourceTemplateType = Enumerations.TemplateType.Raw,
+                        Content = System.Convert.ToBase64String(rawFile.Contents),
+                        IsBase64Encoded = true
                     });
                 }
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PPTail.SiteGenerator;
+using PPTail.Extensions;
 using Xunit;
 
 namespace PPTail.SiteGenerator.Test
@@ -26,12 +27,14 @@ namespace PPTail.SiteGenerator.Test
         [InlineData("<html> tag", "html-tag")]
         [InlineData("Question mark?", "Question-mark")]
         [InlineData("Will &quot;Augmented Reality&quot; Finally Make My Life's Dream Come True?", "Will-Augmented-Reality-Finally-Make-My-Lifes-Dream-Come-True")]
-        [InlineData("Yeah! Awesome!", "Yeah-Awesome")]
+        [InlineData("Yeah! Awesome!", "Yeahbang-Awesomebang")]
         [InlineData("Yeah----Awesome---Lot's of     spaces  ", "Yeah-Awesome-Lots-of-spaces")]
         [InlineData("Includes MSWord “smartquotes”", "Includes-MSWord-smartquotes")]
         [InlineData("Handles an en–dash", "Handles-an-en-dash")]
         [InlineData("Converts an encoded ene28093dash to a normal dash", "Converts-an-encoded-en-dash-to-a-normal-dash")]
         [InlineData("Removes encoded e2809csmartquotese2809d", "Removes-encoded-smartquotes")]
+        [InlineData("Removes.Dots", "RemovesdotDots")]
+        [InlineData("Removes. all.net", "Removesdot-alldotnet")]
         public void ProperlyEncodeTheString(string source, string expected)
         {
             Assert.Equal(expected, source.CreateSlug());

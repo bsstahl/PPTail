@@ -11,7 +11,14 @@
       "commandName": "Project",
       "environmentVariables": {
         "outputPath": "E:\\GeneratedWebsite",
-        "sourceDataPath": "E:\\CognitiveInheritance\\App_Data"
+        "sourceDataPath": "E:\\CognitiveInheritance"
+      }
+    },
+    "win10-shared-box": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "C:\\Users\\bsstahl\\Documents\\My Web Sites\\Generated",
+        "sourceDataPath": "C:\\Users\\bsstahl\\Documents\\CognitiveInheritance"
       }
     },
     "win7-dev-box": {

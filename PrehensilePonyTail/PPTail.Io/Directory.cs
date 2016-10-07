@@ -17,5 +17,11 @@ namespace PPTail.Io
         {
             return System.IO.Directory.Exists(path);
         }
+
+        public IEnumerable<string> EnumerateFiles(string path)
+        {
+            return System.IO.Directory.EnumerateFiles(path);
+        }
+
     }
 }
