@@ -18,6 +18,20 @@ namespace PPTail.Data.FileSystem.Test
         const string _dataFolder = "App_Data";
 
         [Fact]
+        public void ThrowSettingNotFoundExceptionIfSettingsCannotBeLoaded()
+        {
+            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            string xml = "<badXml></bad>";
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            Assert.Throws(typeof(Exceptions.SettingNotFoundException), () => target.GetSiteSettings());
+        }
+
+        [Fact]
         public void ReadsTheProperFileFromTheFileSystem()
         {
             string rootPath = $"c:\\{string.Empty.GetRandom()}\\";

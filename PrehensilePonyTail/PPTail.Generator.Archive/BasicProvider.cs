@@ -17,10 +17,12 @@ namespace PPTail.Generator.Archive
 
         public BasicProvider(IServiceProvider serviceProvider)
         {
+            //TODO: Add test coverage
             _serviceProvider = serviceProvider;
             if (_serviceProvider == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(IServiceProvider));
 
+            //TODO: Add test coverage
             _template = serviceProvider.GetService<IEnumerable<Template>>().SingleOrDefault(t => t.TemplateType == TemplateType.HomePage);
             if (_template == null)
                 throw new Exceptions.TemplateNotFoundException(Enumerations.TemplateType.HomePage, "HomePage");

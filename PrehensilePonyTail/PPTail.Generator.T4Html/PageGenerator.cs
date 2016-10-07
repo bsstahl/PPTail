@@ -104,11 +104,13 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
+            //TODO: Add test coverage
             return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
         {
+            //TODO: Add test coverage
             //TODO: Process template against additional data (such as Settings and SiteSettings)
             return this.StyleTemplate.Content;
         }
