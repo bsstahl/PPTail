@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable"
@@ -16,7 +16,8 @@
     "PPTail.Generator.TagCloudStyler": "1.0.0-*",
     "TestHelperExtensions": "1.1.5",
     "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Moq": "4.6.38-alpha"
+    "Moq": "4.6.38-alpha",
+    "Microsoft.CodeCoverage": "1.0.2"
   },
   "testRunner": "xunit",
   "frameworks": {
