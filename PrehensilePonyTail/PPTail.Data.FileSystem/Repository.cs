@@ -43,6 +43,8 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFile>();
             string settingsPath = System.IO.Path.Combine(_rootDataPath, "settings.xml");
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
+            if (result == null)
+                throw new Exceptions.SettingNotFoundException("SiteSettings");
 
             if (string.IsNullOrWhiteSpace(result.Title))
                 throw new Exceptions.SettingNotFoundException("SiteSettings.Title");
