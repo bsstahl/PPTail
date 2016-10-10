@@ -106,6 +106,11 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
         }
 
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, string contentpageTemplate, string homePageTemplate, string itemTemplate)
+        {
+            return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", homePageTemplate, "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
+        }
+
         public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, 
             string contentTemplateText, string postTemplateText, 
             string homepageTemplateText, string styleTemplateText,
