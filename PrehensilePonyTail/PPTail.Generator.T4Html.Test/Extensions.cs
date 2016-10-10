@@ -98,12 +98,25 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore)
         {
-            var contentTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
-            var postTemplate = new Template() { Content = "<html/>", Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
-            var homePageTemplate = new Template() { Content = "<html/>", Name = "main", TemplateType = Enumerations.TemplateType.HomePage };
-            var styleTemplate = new Template() { Content = "body { }", Name = "main", TemplateType = Enumerations.TemplateType.Style };
-            var bootstrapTemplate = new Template() { Content = "/*! * Bootstrap v0.0.0 */", Name = "Main", TemplateType = Enumerations.TemplateType.Bootstrap };
-            var itemTemplate = new Template() { Content = "", Name = "main", TemplateType = Enumerations.TemplateType.Item };
+            return ignore.CreateBlankTemplates("<html/>", "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", "");
+        }
+
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, string contentpageTemplate, string itemTemplate)
+        {
+            return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
+        }
+
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, 
+            string contentTemplateText, string postTemplateText, 
+            string homepageTemplateText, string styleTemplateText,
+            string bootstrapTemplateText, string itemTemplateText)
+        {
+            var contentTemplate = new Template() { Content = contentTemplateText, Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
+            var postTemplate = new Template() { Content = postTemplateText, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
+            var homePageTemplate = new Template() { Content = homepageTemplateText, Name = "main", TemplateType = Enumerations.TemplateType.HomePage };
+            var styleTemplate = new Template() { Content = styleTemplateText, Name = "main", TemplateType = Enumerations.TemplateType.Style };
+            var bootstrapTemplate = new Template() { Content = bootstrapTemplateText, Name = "Main", TemplateType = Enumerations.TemplateType.Bootstrap };
+            var itemTemplate = new Template() { Content = itemTemplateText, Name = "main", TemplateType = Enumerations.TemplateType.Item };
             return new List<Template>() { contentTemplate, postTemplate, homePageTemplate, styleTemplate, bootstrapTemplate, itemTemplate };
         }
 
