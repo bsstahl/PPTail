@@ -104,7 +104,12 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            //TODO: Add test coverage
+            if (this.HomePageTemplate == null)
+                throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
+
+            if (this.ItemTemplate == null)
+                throw new TemplateNotFoundException(Enumerations.TemplateType.Item, string.Empty);
+
             return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
         }
 
