@@ -32,6 +32,24 @@ namespace PPTail.Generator.Contact.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<ISettings>(Mock.Of<ISettings>());
+
+            Assert.Throws(typeof(DependencyNotFoundException), () => new TemplateProvider(container.BuildServiceProvider()));
+        }
+
+        [Fact]
+        public void ThrowDependencyNotFoundExceptionIfSettingsAreNotProvided()
+        {
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var template = (null as Template).Create();
+            var templates = new List<Template>() { template };
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<SiteSettings>(Mock.Of<SiteSettings>());
 
             Assert.Throws(typeof(DependencyNotFoundException), () => new TemplateProvider(container.BuildServiceProvider()));
         }
@@ -50,7 +68,8 @@ namespace PPTail.Generator.Contact.Test
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<SiteSettings>(siteSettings);
 
-            Assert.Throws(typeof(DependencyNotFoundException), () => new TemplateProvider(container.BuildServiceProvider()));
+            Assert.Throws(typeof(TemplateNotFoundException), () => new TemplateProvider(container.BuildServiceProvider()));
         }
+
     }
 }

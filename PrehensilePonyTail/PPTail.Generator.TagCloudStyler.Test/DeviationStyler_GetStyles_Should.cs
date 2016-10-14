@@ -147,7 +147,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
-            for (int i = 0; i < 400.GetRandom(300); i++)
+            for (int i = 0; i < 500.GetRandom(350); i++)
                 tags.Add(tagList.GetRandom());
 
             var actual = styler.GetStyles(tags);

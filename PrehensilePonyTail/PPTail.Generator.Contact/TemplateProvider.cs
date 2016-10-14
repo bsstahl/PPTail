@@ -22,16 +22,17 @@ namespace PPTail.Generator.Contact
             if (_serviceProvider == null)
                 throw new Exceptions.DependencyNotFoundException("IServiceProvider");
 
-            //TODO: Add test coverage
+            // Guard code for a null _templates variable is not required
+            // because the Service Provider will return an empty array
+            // if the templates collection has not been added to the container
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
-            if (_templates == null || !_templates.Any(s => s.TemplateType == Enumerations.TemplateType.ContactPage))
-                throw new Exceptions.DependencyNotFoundException("ContactPageTemplate");
+            if (!_templates.Any(s => s.TemplateType == Enumerations.TemplateType.ContactPage))
+                throw new Exceptions.TemplateNotFoundException(Enumerations.TemplateType.ContactPage, string.Empty);
 
             _siteSettings = _serviceProvider.GetService<SiteSettings>();
             if (_siteSettings == null)
                 throw new Exceptions.DependencyNotFoundException("SiteSettings");
 
-            // TODO: Add test coverage
             _settings = _serviceProvider.GetService<ISettings>();
             if (_settings == null)
                 throw new Exceptions.DependencyNotFoundException("Settings");
