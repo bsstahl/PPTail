@@ -286,6 +286,50 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
+        public void GenerateASlugForAPostWithoutAPreviouslyGeneratedSlug()
+        {
+            var contentRepo = new Mock<IContentRepository>();
+
+            var contentItems = (null as IEnumerable<ContentItem>).Create(1);
+            var post = contentItems.Single();
+            post.Slug = string.Empty;
+            post.IsPublished = true;
+
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+
+            var pageGen = new Mock<IPageGenerator>();
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var actual = target.Build();
+
+            var postPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage).Single();
+            Assert.Contains(post.Title, postPage.RelativeFilePath);
+        }
+
+        [Fact]
+        public void GenerateASlugForAPageWithoutAPreviouslyGeneratedSlug()
+        {
+            var contentRepo = new Mock<IContentRepository>();
+
+            var contentItems = (null as IEnumerable<ContentItem>).Create(1);
+            var page = contentItems.Single();
+            page.Slug = string.Empty;
+            page.IsPublished = true;
+
+            contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
+            var archiveProvider = Mock.Of<IArchiveProvider>();
+
+            var pageGen = new Mock<IPageGenerator>();
+
+            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var actual = target.Build();
+
+            var contentPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage).Single();
+            Assert.Contains(page.Title, contentPage.RelativeFilePath);
+        }
+
+        [Fact]
         public void CallGenerateStylesheetEactlyOnce()
         {
             var container = new ServiceCollection();

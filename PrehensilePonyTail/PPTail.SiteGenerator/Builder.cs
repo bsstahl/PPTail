@@ -91,7 +91,6 @@ namespace PPTail.SiteGenerator
                 // Add all published content pages to the results
                 if (post.IsPublished)
                 {
-                    // TODO: Add test coverage
                     if (string.IsNullOrWhiteSpace(post.Slug))
                         post.Slug = post.Title.CreateSlug();
 
@@ -109,7 +108,6 @@ namespace PPTail.SiteGenerator
                 // Add all published content pages to the results
                 if (page.IsPublished)
                 {
-                    // TODO: Add test coverage
                     if (string.IsNullOrWhiteSpace(page.Slug))
                         page.Slug = page.Title.CreateSlug();
 
