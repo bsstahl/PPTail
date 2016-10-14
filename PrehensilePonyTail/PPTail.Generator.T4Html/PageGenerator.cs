@@ -14,7 +14,7 @@ namespace PPTail.Generator.T4Html
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly INavigationProvider _navProvider;
-        private readonly Settings _settings;
+        private readonly ISettings _settings;
         private readonly IEnumerable<Template> _templates;
 
         public PageGenerator(IServiceProvider serviceProvider)
@@ -23,7 +23,7 @@ namespace PPTail.Generator.T4Html
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _settings = _serviceProvider.GetService<Settings>();
+            _settings = _serviceProvider.GetService<ISettings>();
             if (_settings == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(Settings));
 
@@ -68,6 +68,7 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        // TODO: Add test coverage
         private Template StyleTemplate
         {
             get
@@ -84,7 +85,7 @@ namespace PPTail.Generator.T4Html
             }
         }
 
-
+        // TODO: Add test coverage
         private string DateTimeFormatSpecifier
         {
             get
@@ -93,6 +94,7 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        // TODO: Add test coverage
         private string ItemSeparator
         {
             get
@@ -128,7 +130,7 @@ namespace PPTail.Generator.T4Html
                 return this.BootstrapTemplate.Content;
         }
 
-        public string GenerateSidebarContent(Settings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
+        public string GenerateSidebarContent(ISettings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
         {
             var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets)

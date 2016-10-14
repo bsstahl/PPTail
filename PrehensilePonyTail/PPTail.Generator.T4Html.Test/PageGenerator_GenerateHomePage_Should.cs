@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestHelperExtensions;
 using Xunit;
 
 namespace PPTail.Generator.T4Html.Test
@@ -22,7 +23,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var pageData = (null as ContentItem).Create();
@@ -40,7 +41,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var pageData = (null as ContentItem).Create();
@@ -75,14 +76,14 @@ namespace PPTail.Generator.T4Html.Test
             var posts = (null as IEnumerable<ContentItem>).Create(5);
 
             string pageTemplate = "-----{Content}-----";
-            string itemTemplate = "{Title}";
+            string itemTemplate = "*{Title}*";
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
             var target = (null as IPageGenerator).Create(templates, settings);
 
-            var siteSettings = (null as SiteSettings).Create();
+            var siteSettings = (null as SiteSettings).Create(string.Empty.GetRandom(), string.Empty.GetRandom(), posts.Count());
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
 
             Console.WriteLine(actual);

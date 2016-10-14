@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
 using Moq;
+using PPTail.Entities;
 
 namespace PPTail.Output.FileSystem.Test
 {
@@ -24,7 +25,7 @@ namespace PPTail.Output.FileSystem.Test
         {
             var container = new ServiceCollection();
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
-            container.AddSingleton<Settings>((null as Settings).Create());
+            container.AddSingleton<ISettings>((null as ISettings).Create());
             Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(container.BuildServiceProvider()));
         }
 
@@ -33,7 +34,7 @@ namespace PPTail.Output.FileSystem.Test
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(Mock.Of<IFile>());
-            container.AddSingleton<Settings>((null as Settings).Create());
+            container.AddSingleton<ISettings>((null as ISettings).Create());
             Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(container.BuildServiceProvider()));
         }
 
@@ -47,12 +48,26 @@ namespace PPTail.Output.FileSystem.Test
         }
 
         [Fact]
+        public void ThrowSettingNotFoundExceptionIfExtendedSettingsAreNotProvided()
+        {
+            var container = new ServiceCollection();
+            container.AddSingleton<IFile>(Mock.Of<IFile>());
+            container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
+
+            var settings = new Mock<ISettings>();
+            settings.SetupGet(s => s.ExtendedSettings).Returns(null as ExtendedSettingsCollection);
+            container.AddSingleton<ISettings>(settings.Object);
+
+            Assert.Throws<SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
+        }
+
+        [Fact]
         public void ThrowSettingNotFoundExceptionIfOutputPathIsNotProvided()
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
-            container.AddSingleton<Settings>(new Settings());
+            container.AddSingleton<ISettings>(new Settings());
             Assert.Throws(typeof(SettingNotFoundException), () => new Repository(container.BuildServiceProvider()));
         }
 

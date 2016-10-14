@@ -11,7 +11,7 @@ namespace PPTail.Generator.T4Html
 {
     public static class WidgetExtensions
     {
-        public static string Render(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts, string pathToRoot)
+        public static string Render(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, string pathToRoot)
         {
             string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
 
@@ -33,7 +33,7 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, Settings settings, IEnumerable<ContentItem> posts, string pathToRoot)
+        private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, string pathToRoot)
         {
             string results = string.Empty;
             if (widget.ShowTitle)

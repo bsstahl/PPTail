@@ -23,9 +23,9 @@ namespace PPTail.Data.FileSystem
         {
             _serviceProvider = serviceProvider;
 
-            var settings = _serviceProvider.GetService<Settings>();
+            var settings = _serviceProvider.GetService<ISettings>();
             if (settings == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(Settings));
+                throw new Exceptions.DependencyNotFoundException(nameof(ISettings));
 
             var fileSystem = _serviceProvider.GetService<IFile>();
             if (fileSystem == null)

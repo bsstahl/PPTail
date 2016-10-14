@@ -1,4 +1,5 @@
 ﻿using PPTail.Entities;
+using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        internal static string ReplaceContentItemVariables(this string template, Settings settings, SiteSettings siteSettings, ContentItem item)
+        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, ContentItem item)
         {
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", item.Content)
@@ -19,7 +20,7 @@ namespace PPTail.Extensions
                 .Replace("{ByLine}", item.ByLine);
         }
 
-        internal static string ReplaceNonContentItemSpecificVariables(this string template, Settings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)
+        internal static string ReplaceNonContentItemSpecificVariables(this string template, ISettings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)
         {
             return template
                 .ReplaceSettingsVariables(settings, siteSettings)
@@ -28,7 +29,7 @@ namespace PPTail.Extensions
                 .Replace("{Content}", content);
         }
 
-        internal static string ReplaceSettingsVariables(this string template, Settings settings, SiteSettings siteSettings)
+        internal static string ReplaceSettingsVariables(this string template, ISettings settings, SiteSettings siteSettings)
         {
             return template.Replace("{SiteTitle}", siteSettings.Title)
                 .Replace("{SiteDescription}", siteSettings.Description);

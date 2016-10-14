@@ -21,7 +21,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var pageData = (null as ContentItem).Create();

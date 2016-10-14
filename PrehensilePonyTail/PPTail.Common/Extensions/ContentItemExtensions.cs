@@ -10,7 +10,7 @@ namespace PPTail.Extensions
 {
     public static class ContentItemExtensions
     {
-        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, Settings settings, SiteSettings siteSettings, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, int maxPostCount)
+        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, ISettings settings, SiteSettings siteSettings, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, int maxPostCount)
         {
             string content = string.Empty;
             var recentPosts = posts.OrderByDescending(p => p.PublicationDate).Where(pub => pub.IsPublished);

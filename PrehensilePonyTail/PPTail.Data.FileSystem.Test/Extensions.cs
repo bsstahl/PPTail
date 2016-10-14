@@ -35,7 +35,7 @@ namespace PPTail.Data.FileSystem.Test
             var container = new ServiceCollection();
 
             var settings = new Settings();
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourcePath);
 
             container.AddSingleton<IFile>(fileSystem);

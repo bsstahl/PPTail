@@ -15,7 +15,7 @@ namespace PPTail.Output.FileSystem
         IServiceProvider _serviceProvider;
         IFile _file;
         IDirectory _directory;
-        Settings _settings;
+        ISettings _settings;
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -31,10 +31,11 @@ namespace PPTail.Output.FileSystem
             if (_directory == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(IDirectory));
 
-            _settings = serviceProvider.GetService<Settings>();
+            _settings = serviceProvider.GetService<ISettings>();
             if (_settings == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(Settings));
 
+            // TODO: Add test coverage
             if (_settings.ExtendedSettings == null || !_settings.ExtendedSettings.Any(s => s.Item1 == outputPathSettingName))
                 throw new Exceptions.SettingNotFoundException(outputPathSettingName);
         }

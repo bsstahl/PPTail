@@ -6,6 +6,7 @@ using PPTail.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Exceptions;
 using PPTail.Extensions;
+using PPTail.Interfaces;
 
 namespace PPTail.Generator.Search
 {
@@ -15,7 +16,7 @@ namespace PPTail.Generator.Search
         IEnumerable<Template> _templates;
         Template _searchTemplate;
         Template _itemTemplate;
-        Settings _settings;
+        ISettings _settings;
         SiteSettings _siteSettings;
 
         public PageGenerator(IServiceProvider serviceProvider)
@@ -24,11 +25,12 @@ namespace PPTail.Generator.Search
             if (serviceProvider == null)
                 throw new DependencyNotFoundException("IServiceProvider");
 
+            // Add test coverage
             _templates = serviceProvider.GetService<IEnumerable<Template>>();
             if (_templates == null || !_templates.Any())
                 throw new DependencyNotFoundException("Templates");
 
-            _settings = serviceProvider.GetService<Settings>();
+            _settings = serviceProvider.GetService<ISettings>();
             if (_settings == null)
                 throw new DependencyNotFoundException("Settings");
 

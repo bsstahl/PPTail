@@ -93,7 +93,7 @@ namespace PPTail.Data.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystem.Object);
             container.AddSingleton<IDirectory>(directoryProvider.Object);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var target = (null as IContentRepository).Create(container.BuildServiceProvider());
             var posts = target.GetAllPosts();

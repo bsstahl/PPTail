@@ -39,7 +39,12 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), Mock.Of<Settings>(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, pageGen, (null as ISettings).Create());
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, ISettings settings)
+        {
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
@@ -67,26 +72,26 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<Settings>(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, INavigationProvider navProvider)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, Mock.Of<Settings>(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, (null as ISettings).Create(), Mock.Of<SiteSettings>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IPageGenerator pageGen)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), Mock.Of<Settings>(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>());
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, Settings settings, SiteSettings siteSettings)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, ISettings settings, SiteSettings siteSettings)
         {
             IServiceCollection container = new ServiceCollection();
 
             container.AddSingleton<IContentRepository>(contentRepo);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -146,17 +151,17 @@ namespace PPTail.SiteGenerator.Test
             };
         }
 
-        public static Settings Create(this Settings ignore)
+        public static ISettings Create(this Settings ignore)
         {
             return ignore.Create(string.Empty.GetRandom(3));
         }
 
-        public static Settings Create(this Settings ignore, string outputFileExtension)
+        public static ISettings Create(this Settings ignore, string outputFileExtension)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
         }
 
-        public static Settings Create(this Settings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
+        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
         {
             var result = new Settings()
             {
@@ -212,6 +217,14 @@ namespace PPTail.SiteGenerator.Test
             for (int i = 0; i < count; i++)
                 result.Add(string.Empty.GetRandom());
             return result;
+        }
+
+        public static ISettings Create(this ISettings ignore)
+        {
+            var extendedSettings = new ExtendedSettingsCollection();
+            var settings = new Mock<ISettings>();
+            settings.SetupGet(s => s.ExtendedSettings).Returns(extendedSettings);
+            return settings.Object;
         }
     }
 }

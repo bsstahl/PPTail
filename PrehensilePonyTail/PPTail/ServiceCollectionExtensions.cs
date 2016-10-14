@@ -4,17 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
+using PPTail.Interfaces;
 
 namespace PPTail
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection Create(this IServiceCollection ignore, Settings settings, IEnumerable<Template> templates)
+        public static IServiceCollection Create(this IServiceCollection ignore, ISettings settings, IEnumerable<Template> templates)
         {
             IServiceCollection container = new ServiceCollection();
 
             // Configure Dependencies
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IEnumerable<Template>>(templates);
 
             container.AddSingleton<Interfaces.IFile>(c => new PPTail.Io.File());

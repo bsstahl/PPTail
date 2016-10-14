@@ -14,7 +14,7 @@ namespace PPTail.Generator.Contact
         IServiceProvider _serviceProvider;
         IEnumerable<Template> _templates;
         SiteSettings _siteSettings;
-        Settings _settings;
+        ISettings _settings;
 
         public TemplateProvider(IServiceProvider serviceProvider)
         {
@@ -22,6 +22,7 @@ namespace PPTail.Generator.Contact
             if (_serviceProvider == null)
                 throw new Exceptions.DependencyNotFoundException("IServiceProvider");
 
+            //TODO: Add test coverage
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
             if (_templates == null || !_templates.Any(s => s.TemplateType == Enumerations.TemplateType.ContactPage))
                 throw new Exceptions.DependencyNotFoundException("ContactPageTemplate");
@@ -30,7 +31,8 @@ namespace PPTail.Generator.Contact
             if (_siteSettings == null)
                 throw new Exceptions.DependencyNotFoundException("SiteSettings");
 
-            _settings = _serviceProvider.GetService<Settings>();
+            // TODO: Add test coverage
+            _settings = _serviceProvider.GetService<ISettings>();
             if (_settings == null)
                 throw new Exceptions.DependencyNotFoundException("Settings");
         }

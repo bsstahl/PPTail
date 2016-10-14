@@ -32,7 +32,7 @@ namespace PPTail.Generator.Search.Test
                 serviceCollection.AddSingleton<IEnumerable<Template>>(templates);
 
             if (settings != null)
-                serviceCollection.AddSingleton<Settings>(settings);
+                serviceCollection.AddSingleton<ISettings>(settings);
 
             if (siteSettings != null)
                 serviceCollection.AddSingleton<SiteSettings>(siteSettings);

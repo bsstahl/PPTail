@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PPTail.Entities;
+using PPTail.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace PPTail
         const string _outputPathSettingName = "outputPath";
         const string _additionalFilePathsSettingName = "additionalFilePaths";
 
-        public static Settings Create(this Settings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths)
+        public static ISettings Create(this ISettings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths)
         {
             var settings = new Settings()
             {

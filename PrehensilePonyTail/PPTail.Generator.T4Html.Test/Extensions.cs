@@ -49,27 +49,27 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create(templates, settings, navProvider);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, Settings settings)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings)
         {
             return ignore.Create(templates, settings, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, Settings settings, INavigationProvider navProvider)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
             return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
         }
 
-        public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)
         {
             return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;

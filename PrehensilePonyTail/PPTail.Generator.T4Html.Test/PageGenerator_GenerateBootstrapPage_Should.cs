@@ -23,7 +23,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var target = (null as IPageGenerator).Create(templates, settings);
             var actual = target.GenerateBootstrapPage();
@@ -42,7 +42,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(allTemplates);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var target = (null as IPageGenerator).Create(allTemplates, settings);
             var actual = target.GenerateBootstrapPage();

@@ -247,7 +247,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
@@ -299,7 +299,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
@@ -325,7 +325,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
@@ -351,7 +351,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
@@ -391,7 +391,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -430,7 +430,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -475,7 +475,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -503,7 +503,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -532,7 +532,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -561,7 +561,7 @@ namespace PPTail.SiteGenerator.Test
 
             container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
@@ -645,7 +645,7 @@ namespace PPTail.SiteGenerator.Test
             var searchProvider = new Mock<ISearchProvider>();
 
             var pageGen = new Mock<IPageGenerator>();
-            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<Settings>(), It.IsAny<SiteSettings>(),
+            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<ISettings>(), It.IsAny<SiteSettings>(),
                     It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<ContentItem>>(),
                     It.IsAny<IEnumerable<Widget>>(), It.IsAny<string>()))
                 .Returns(sidebarContent);

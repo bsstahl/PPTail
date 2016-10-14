@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using PPTail.Enumerations;
+using PPTail.Interfaces;
 
 namespace PPTail
 {
@@ -38,7 +39,7 @@ namespace PPTail
             string sourceDataPath = config[_sourceDataPathSettingName];
             string outputPath = config[_outputPathSettingName];
 
-            var settings = (null as Settings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths);
+            var settings = (null as ISettings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths);
             var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, contactPageTemplatePath, itemTemplatePath, searchPageTemplatePath);
 
             var container = (null as IServiceCollection).Create(settings, templates);

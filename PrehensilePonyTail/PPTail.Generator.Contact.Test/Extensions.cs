@@ -19,7 +19,7 @@ namespace PPTail.Generator.Contact.Test
             container.AddSingleton<SiteSettings>(siteSettings);
 
             var settings = (null as Settings).Create();
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var template = (null as Template).Create();
             var templates = new List<Template>() { template };

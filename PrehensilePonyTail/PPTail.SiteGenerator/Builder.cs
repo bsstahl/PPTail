@@ -27,7 +27,7 @@ namespace PPTail.SiteGenerator
 
             var contentRepo = ServiceProvider.GetService<IContentRepository>();
             var pageGen = ServiceProvider.GetService<IPageGenerator>();
-            var settings = ServiceProvider.GetService<Settings>();
+            var settings = ServiceProvider.GetService<ISettings>();
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
             var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
             var contactProvider = ServiceProvider.GetService<IContactProvider>();
@@ -91,6 +91,7 @@ namespace PPTail.SiteGenerator
                 // Add all published content pages to the results
                 if (post.IsPublished)
                 {
+                    // TODO: Add test coverage
                     if (string.IsNullOrWhiteSpace(post.Slug))
                         post.Slug = post.Title.CreateSlug();
 
@@ -108,6 +109,7 @@ namespace PPTail.SiteGenerator
                 // Add all published content pages to the results
                 if (page.IsPublished)
                 {
+                    // TODO: Add test coverage
                     if (string.IsNullOrWhiteSpace(page.Slug))
                         page.Slug = page.Title.CreateSlug();
 

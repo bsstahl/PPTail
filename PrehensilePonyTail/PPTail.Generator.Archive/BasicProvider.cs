@@ -17,18 +17,16 @@ namespace PPTail.Generator.Archive
 
         public BasicProvider(IServiceProvider serviceProvider)
         {
-            //TODO: Add test coverage
             _serviceProvider = serviceProvider;
             if (_serviceProvider == null)
                 throw new Exceptions.DependencyNotFoundException(nameof(IServiceProvider));
 
-            //TODO: Add test coverage
             _template = serviceProvider.GetService<IEnumerable<Template>>().SingleOrDefault(t => t.TemplateType == TemplateType.HomePage);
             if (_template == null)
                 throw new Exceptions.TemplateNotFoundException(Enumerations.TemplateType.HomePage, "HomePage");
         }
 
-        public string GenerateArchive(Settings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)
+        public string GenerateArchive(ISettings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)
         {
             string content = "<div id=\"archive\"><h1>Archive</h1>";
             content += "<table><tbody>";
@@ -41,7 +39,7 @@ namespace PPTail.Generator.Archive
             return _template.ProcessNonContentItemTemplate(sidebarContent, navContent, siteSettings, settings, content, "Archive");
         }
 
-        public string GetPath(ContentItem item, Settings settings, string pathToRoot)
+        public string GetPath(ContentItem item, ISettings settings, string pathToRoot)
         {
             return System.IO.Path.Combine(pathToRoot, "Posts", $"{item.Slug}.{settings.OutputFileExtension}");
         }

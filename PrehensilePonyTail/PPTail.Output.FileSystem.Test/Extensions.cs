@@ -29,7 +29,7 @@ namespace PPTail.Output.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(file);
             container.AddSingleton<IDirectory>(directory);
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             return ignore.Create(container);
         }
 
@@ -100,17 +100,17 @@ namespace PPTail.Output.FileSystem.Test
         }
 
 
-        public static Settings Create(this Settings ignore)
+        public static Settings Create(this ISettings ignore)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html", $"\\{string.Empty.GetRandom()}");
         }
 
-        public static Settings Create(this Settings ignore, string outputPath)
+        public static Settings Create(this ISettings ignore, string outputPath)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html", outputPath);
         }
 
-        public static Settings Create(this Settings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string outputPath)
+        public static Settings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string outputPath)
         {
             var result = new Settings()
             {

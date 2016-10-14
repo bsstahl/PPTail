@@ -44,7 +44,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
         }
@@ -56,7 +56,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             container.AddSingleton<IEnumerable<Template>>(templates);

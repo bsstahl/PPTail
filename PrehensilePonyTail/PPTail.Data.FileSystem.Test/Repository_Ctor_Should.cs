@@ -4,6 +4,7 @@ using System;
 using Xunit;
 using TestHelperExtensions;
 using Moq;
+using PPTail.Entities;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -20,7 +21,7 @@ namespace PPTail.Data.FileSystem.Test
             var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IFile>(fileSystem);
 
             var target = new Repository(container.BuildServiceProvider());
@@ -44,7 +45,7 @@ namespace PPTail.Data.FileSystem.Test
             settings.ExtendedSettings.Set(_sourceDataPathSettingName, string.Empty.GetRandom());
 
             var container = new ServiceCollection();
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
 
             Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
@@ -56,7 +57,7 @@ namespace PPTail.Data.FileSystem.Test
             var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
-            container.AddSingleton<Settings>(settings);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IFile>(fileSystem);
 
             Assert.Throws<Exceptions.SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
