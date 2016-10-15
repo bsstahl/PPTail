@@ -63,5 +63,24 @@ namespace PPTail.Generator.T4Html.Test
 
             Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
         }
+
+        [Fact]
+        public void ThrowATemplateNotFoundExceptionIfTheStyleTemplateIsNotProvided()
+        {
+            var container = new ServiceCollection();
+
+            var settings = new Settings();
+            settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
+            container.AddSingleton<ISettings>(settings);
+
+            var nav = new FakeNavProvider();
+            container.AddSingleton<INavigationProvider>(nav);
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var testTemplates = templates.Where(t => t.TemplateType != Enumerations.TemplateType.Style);
+            container.AddSingleton<IEnumerable<Template>>(testTemplates);
+
+            Assert.Throws<TemplateNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
+        }
     }
 }
