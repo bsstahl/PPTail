@@ -25,9 +25,11 @@ namespace PPTail.Generator.Search
             if (serviceProvider == null)
                 throw new DependencyNotFoundException("IServiceProvider");
 
-            // Add test coverage
+            // Guard code for a null _templates variable is not required
+            // because the Service Provider will return an empty array
+            // if the templates collection has not been added to the container
             _templates = serviceProvider.GetService<IEnumerable<Template>>();
-            if (_templates == null || !_templates.Any())
+            if (!_templates.Any())
                 throw new DependencyNotFoundException("Templates");
 
             _settings = serviceProvider.GetService<ISettings>();

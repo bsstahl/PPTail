@@ -8,6 +8,7 @@ using TestHelperExtensions;
 using PPTail.Interfaces;
 using PPTail.Exceptions;
 using PPTail.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Generator.Search.Test
 {
@@ -18,13 +19,6 @@ namespace PPTail.Generator.Search.Test
         {
             IServiceProvider serviceProvider = null;
             Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(serviceProvider));
-        }
-
-        [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheTemplatesAreNotProvided()
-        {
-            IEnumerable<Template> templates = null;
-            Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(templates));
         }
 
         [Fact]
@@ -45,6 +39,13 @@ namespace PPTail.Generator.Search.Test
             SiteSettings siteSettings = null;
 
             Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(templates, settings, siteSettings));
+        }
+
+        [Fact]
+        public void ThrowADependencyNotFoundExceptionIfTheTemplateCollectionIsNotProvided()
+        {
+            var serviceProvider = new ServiceCollection().BuildServiceProvider();
+            Assert.Throws<DependencyNotFoundException>(() => (null as ISearchProvider).Create(serviceProvider));
         }
 
         [Fact]
