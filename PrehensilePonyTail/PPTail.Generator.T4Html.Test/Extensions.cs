@@ -13,36 +13,40 @@ namespace PPTail.Generator.T4Html.Test
     {
         const string _contentPageTemplatePath = @"..\ContentPage.template.html";
         const string _postPageTemplatePath = @"..\PostPage.template.html";
+        const string _styleTemplatePath = @"..\Style.template.css";
         const string _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
 
         public static IPageGenerator Create(this IPageGenerator ignore)
         {
             var cpt = System.IO.File.ReadAllText(_contentPageTemplatePath);
             var ppt = System.IO.File.ReadAllText(_postPageTemplatePath);
+            var styleTemplate = System.IO.File.ReadAllText(_styleTemplatePath);
             var nav = new FakeNavProvider();
-            return ignore.Create(cpt, ppt, nav);
+            return ignore.Create(cpt, ppt, styleTemplate, nav);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate)
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string styleTemplate)
         {
-            return ignore.Create(contentPageTemplate, postPageTemplate, new FakeNavProvider());
+            return ignore.Create(contentPageTemplate, postPageTemplate, styleTemplate, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, INavigationProvider navProvider)
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, INavigationProvider navProvider)
         {
-            return ignore.Create(contentPageTemplate, postPageTemplate, _defaultDateTimeFormatSpecifier, navProvider);
+            return ignore.Create(contentPageTemplate, postPageTemplate, stylePageTemplate, _defaultDateTimeFormatSpecifier, navProvider);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier)
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, string dateTimeFormatSpecifier)
         {
-            return ignore.Create(contentPageTemplate, postPageTemplate, dateTimeFormatSpecifier, new FakeNavProvider());
+            return ignore.Create(contentPageTemplate, postPageTemplate, stylePageTemplate, dateTimeFormatSpecifier, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string dateTimeFormatSpecifier, INavigationProvider navProvider)
+        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, string dateTimeFormatSpecifier, INavigationProvider navProvider)
         {
             var contentTemplate = new Template() { Content = contentPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = postPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
-            var templates = new List<Template>() { contentTemplate, postTemplate };
+            var styleTemplate = new Template() { Content = stylePageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.Style };
+
+            var templates = new List<Template>() { contentTemplate, postTemplate, styleTemplate };
 
             var settings = (null as Settings).CreateDefault(dateTimeFormatSpecifier);
 

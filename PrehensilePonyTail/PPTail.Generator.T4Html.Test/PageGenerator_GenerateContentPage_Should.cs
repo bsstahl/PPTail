@@ -35,7 +35,7 @@ namespace PPTail.Generator.T4Html.Test
             var pageData = (null as ContentItem).Create();
 
             string template = "*******************************{Title}*******************************";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -49,7 +49,7 @@ namespace PPTail.Generator.T4Html.Test
             var pageData = (null as ContentItem).Create();
 
             string template = "{Title}***\r\n************{Title}*********************\t\t****{Title}*****{Title}************{Title}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -68,7 +68,7 @@ namespace PPTail.Generator.T4Html.Test
             pageData.Title = null;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -87,7 +87,7 @@ namespace PPTail.Generator.T4Html.Test
             var expectedData = pageData.Content;
 
             string template = $"*******************************{placeholderText}*******************************";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -104,7 +104,7 @@ namespace PPTail.Generator.T4Html.Test
             var expectedData = pageData.Content;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -123,7 +123,7 @@ namespace PPTail.Generator.T4Html.Test
             pageData.Content = null;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -142,7 +142,7 @@ namespace PPTail.Generator.T4Html.Test
             var expectedData = pageData.Author;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -161,7 +161,7 @@ namespace PPTail.Generator.T4Html.Test
             pageData.Author = null;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -180,7 +180,7 @@ namespace PPTail.Generator.T4Html.Test
             var expectedData = pageData.Description;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -199,7 +199,7 @@ namespace PPTail.Generator.T4Html.Test
             pageData.Description = null;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
@@ -258,7 +258,7 @@ namespace PPTail.Generator.T4Html.Test
             var expectedData = pageData.ByLine;
 
             string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(template, string.Empty);
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);

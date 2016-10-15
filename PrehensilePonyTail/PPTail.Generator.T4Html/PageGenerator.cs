@@ -31,6 +31,9 @@ namespace PPTail.Generator.T4Html
             if (!_templates.Any())
                 throw new Exceptions.DependencyNotFoundException("IEnumerable<Template>");
 
+            if (!_templates.Any(t => t.TemplateType == Enumerations.TemplateType.Style))
+                throw new Exceptions.TemplateNotFoundException(Enumerations.TemplateType.Style, string.Empty);
+
             _navProvider = _serviceProvider.GetService<INavigationProvider>();
             if (_navProvider == null)
                 throw new Exceptions.DependencyNotFoundException("INavigationProvider");
