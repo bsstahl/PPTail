@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Extensions;
 
 namespace PPTail.Output.FileSystem
 {
@@ -21,19 +22,15 @@ namespace PPTail.Output.FileSystem
         {
             _serviceProvider = serviceProvider;
             if (_serviceProvider == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(IServiceProvider));
+                throw new ArgumentNullException(nameof(IServiceProvider));
+
+            _serviceProvider.ValidateService<IFile>();
+            _serviceProvider.ValidateService<IDirectory>();
+            _serviceProvider.ValidateService<ISettings>();
 
             _file = serviceProvider.GetService<IFile>();
-            if (_file == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(IFile));
-
             _directory = serviceProvider.GetService<IDirectory>();
-            if (_directory == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(IDirectory));
-
             _settings = serviceProvider.GetService<ISettings>();
-            if (_settings == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(Settings));
 
             // TODO: Add test coverage
             if (_settings.ExtendedSettings == null || !_settings.ExtendedSettings.Any(s => s.Item1 == outputPathSettingName))

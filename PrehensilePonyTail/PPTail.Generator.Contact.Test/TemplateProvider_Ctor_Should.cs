@@ -15,9 +15,9 @@ namespace PPTail.Generator.Contact.Test
     public class TemplateProvider_Ctor_Should
     {
         [Fact]
-        public void ThrowDependencyNotFoundExceptionIfServiceProviderNotProvided()
+        public void ThrowArgumentNullExceptionIfServiceProviderNotProvided()
         {
-            Assert.Throws(typeof(DependencyNotFoundException), () => new TemplateProvider(null));
+            Assert.Throws<ArgumentNullException>(() => new TemplateProvider(null));
         }
 
         [Fact]
@@ -63,12 +63,14 @@ namespace PPTail.Generator.Contact.Test
 
             var templates = new List<Template>();
             var siteSettings = (null as SiteSettings).Create();
+            var settings = (null as ISettings).Create();
 
             var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<IEnumerable<Template>>(templates);
 
-            Assert.Throws(typeof(TemplateNotFoundException), () => new TemplateProvider(container.BuildServiceProvider()));
+            Assert.Throws<TemplateNotFoundException>(() => new TemplateProvider(container.BuildServiceProvider()));
         }
 
     }

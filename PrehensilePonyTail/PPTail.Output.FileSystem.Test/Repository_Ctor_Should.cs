@@ -17,7 +17,7 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void ThrowDependencyNotFoundExceptionIfServiceProviderIsNotProvided()
         {
-            Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(null));
+            Assert.Throws<ArgumentNullException>(() => new Repository(null));
         }
 
         [Fact]

@@ -19,11 +19,10 @@ namespace PPTail.Generator.Archive
         {
             _serviceProvider = serviceProvider;
             if (_serviceProvider == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(IServiceProvider));
+                throw new ArgumentNullException(nameof(serviceProvider));
 
-            _template = serviceProvider.GetService<IEnumerable<Template>>().SingleOrDefault(t => t.TemplateType == TemplateType.HomePage);
-            if (_template == null)
-                throw new Exceptions.TemplateNotFoundException(Enumerations.TemplateType.HomePage, "HomePage");
+            var templates = serviceProvider.GetService<IEnumerable<Template>>();
+            _template = templates.Find(TemplateType.HomePage);
         }
 
         public string GenerateArchive(ISettings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)

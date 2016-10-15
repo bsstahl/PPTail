@@ -6,6 +6,7 @@ using PPTail.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System.Xml.Linq;
 using PPTail.Interfaces;
+using PPTail.Extensions;
 
 namespace PPTail.Data.FileSystem
 {
@@ -23,13 +24,11 @@ namespace PPTail.Data.FileSystem
         {
             _serviceProvider = serviceProvider;
 
-            var settings = _serviceProvider.GetService<ISettings>();
-            if (settings == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(ISettings));
+            _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<IFile>();
 
+            var settings = _serviceProvider.GetService<ISettings>();
             var fileSystem = _serviceProvider.GetService<IFile>();
-            if (fileSystem == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(IFile));
 
             if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
                 throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);

@@ -13,9 +13,9 @@ namespace PPTail.Generator.Archive.Test
     public class BasicProvider_Ctor_Should
     {
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheServiceProviderIsNotSupplied()
+        public void ThrowAnArgumentNullExceptionIfTheServiceProviderIsNotSupplied()
         {
-            Assert.Throws<DependencyNotFoundException>(() => new Archive.BasicProvider(null));
+            Assert.Throws<ArgumentNullException>(() => new Archive.BasicProvider(null));
         }
 
         [Fact]

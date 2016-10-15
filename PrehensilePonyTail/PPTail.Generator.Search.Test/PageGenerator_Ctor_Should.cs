@@ -15,10 +15,10 @@ namespace PPTail.Generator.Search.Test
     public class PageGenerator_Ctor_Should
     {
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheServiceProviderIsNotProvided()
+        public void ThrowAnArgumentNullExceptionIfTheServiceProviderIsNotProvided()
         {
             IServiceProvider serviceProvider = null;
-            Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(serviceProvider));
+            Assert.Throws<ArgumentNullException>(() => (null as ISearchProvider).Create(serviceProvider));
         }
 
         [Fact]

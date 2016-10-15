@@ -139,28 +139,6 @@ namespace PPTail.Generator.TagCloudStyler.Test
         }
 
         [Fact]
-        public void ANormallyDistributedTagListShouldProduceMoreMediumSizesThanBigSizes()
-        {
-            var serviceProvider = new ServiceCollection().BuildServiceProvider();
-            var styler = new DeviationStyler(serviceProvider);
-            var tagList = (null as IEnumerable<string>).GetTagList();
-
-            // Each tag should be used a random # of times
-            var tags = new List<string>();
-            for (int i = 0; i < 500.GetRandom(350); i++)
-                tags.Add(tagList.GetRandom());
-
-            var actual = styler.GetStyles(tags);
-            var smallestCount = actual.Count(i => i.Item2 == "smallest");
-            var smallCount = actual.Count(i => i.Item2 == "small");
-            var mediumCount = actual.Count(i => i.Item2 == "medium");
-            var bigCount = actual.Count(i => i.Item2 == "big");
-            var biggestCount = actual.Count(i => i.Item2 == "biggest");
-
-            Assert.True(mediumCount > bigCount);
-        }
-
-        [Fact]
         public void ANormallyDistributedTagListShouldProduceMoreMediumSizesThanBiggestSizes()
         {
             var serviceProvider = new ServiceCollection().BuildServiceProvider();

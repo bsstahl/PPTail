@@ -23,31 +23,20 @@ namespace PPTail.Generator.Search
         {
             _serviceProvider = serviceProvider;
             if (serviceProvider == null)
-                throw new DependencyNotFoundException("IServiceProvider");
+                throw new ArgumentNullException("IServiceProvider");
+
+            _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<SiteSettings>();
+
+            _settings = _serviceProvider.GetService<ISettings>();
+            _siteSettings = serviceProvider.GetService<SiteSettings>();
 
             // Guard code for a null _templates variable is not required
             // because the Service Provider will return an empty array
             // if the templates collection has not been added to the container
             _templates = serviceProvider.GetService<IEnumerable<Template>>();
-            if (!_templates.Any())
-                throw new DependencyNotFoundException("Templates");
-
-            _settings = serviceProvider.GetService<ISettings>();
-            if (_settings == null)
-                throw new DependencyNotFoundException("Settings");
-
-            _siteSettings = serviceProvider.GetService<SiteSettings>();
-            if (_siteSettings == null)
-                throw new DependencyNotFoundException("SiteSettings");
-
-            _searchTemplate = _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.SearchPage);
-            if (_searchTemplate == null)
-                throw new TemplateNotFoundException(Enumerations.TemplateType.SearchPage, "SearchPage");
-
-            _itemTemplate = _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Item);
-            if (_itemTemplate == null)
-                throw new TemplateNotFoundException(Enumerations.TemplateType.Item, "Item");
-
+            _searchTemplate = _templates.Find(Enumerations.TemplateType.SearchPage);
+            _itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
         }
 
         public string GenerateSearchResultsPage(string tag, IEnumerable<ContentItem> contentItems, string navigationContent, string sidebarContent, string pathToRoot)

@@ -63,12 +63,12 @@ namespace PPTail.Generator.Contact.Test
             };
         }
 
-        public static Settings Create(this Settings ignore)
+        public static ISettings Create(this ISettings ignore)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html");
         }
 
-        public static Settings Create(this Settings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
+        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
         {
             return new Settings()
             {

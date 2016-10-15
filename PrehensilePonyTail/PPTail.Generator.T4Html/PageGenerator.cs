@@ -23,20 +23,14 @@ namespace PPTail.Generator.T4Html
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
+            _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<INavigationProvider>();
+
             _settings = _serviceProvider.GetService<ISettings>();
-            if (_settings == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(Settings));
+            _navProvider = _serviceProvider.GetService<INavigationProvider>();
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
-            if (!_templates.Any())
-                throw new Exceptions.DependencyNotFoundException("IEnumerable<Template>");
-
-            if (!_templates.Any(t => t.TemplateType == Enumerations.TemplateType.Style))
-                throw new Exceptions.TemplateNotFoundException(Enumerations.TemplateType.Style, string.Empty);
-
-            _navProvider = _serviceProvider.GetService<INavigationProvider>();
-            if (_navProvider == null)
-                throw new Exceptions.DependencyNotFoundException("INavigationProvider");
+            _templates.Validate(Enumerations.TemplateType.Style);
         }
 
         private Template ContentPageTemplate
