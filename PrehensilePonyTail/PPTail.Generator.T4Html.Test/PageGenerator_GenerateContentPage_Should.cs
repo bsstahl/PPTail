@@ -26,10 +26,10 @@ namespace PPTail.Generator.T4Html.Test
             var siteSettings = (null as SiteSettings).Create();
             var pageData = (null as ContentItem).Create();
             var target = (null as IPageGenerator).Create(templates, settings);
-            Assert.Throws(typeof(TemplateNotFoundException), () => target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData));
+            Assert.Throws<TemplateNotFoundException>(() => target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData));
         }
 
-        [Fact]
+    [Fact]
         public void ReplaceATitlePlaceholderWithTheTitle()
         {
             var pageData = (null as ContentItem).Create();

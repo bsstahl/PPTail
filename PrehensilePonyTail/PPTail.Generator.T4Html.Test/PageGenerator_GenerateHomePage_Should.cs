@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
@@ -110,6 +111,20 @@ namespace PPTail.Generator.T4Html.Test
 
             Console.WriteLine(actual);
             Assert.DoesNotContain(itemTemplate, actual);
+        }
+
+        [Fact]
+        public void ThrowATemplateNotFoundExceptionIfTheHomePageTemplateIsNotProvided()
+        {
+            var target = (null as IPageGenerator).Create(Enumerations.TemplateType.HomePage);
+            Assert.Throws<TemplateNotFoundException>(() => target.GenerateHomepage(string.Empty, string.Empty, Mock.Of<SiteSettings>(), new List<ContentItem>()));
+        }
+
+        [Fact]
+        public void ThrowATemplateNotFoundExceptionIfTheItemPageTemplateIsNotProvided()
+        {
+            var target = (null as IPageGenerator).Create(Enumerations.TemplateType.Item);
+            Assert.Throws<TemplateNotFoundException>(() => target.GenerateHomepage(string.Empty, string.Empty, Mock.Of<SiteSettings>(), new List<ContentItem>()));
         }
 
     }

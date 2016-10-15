@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestHelperExtensions;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Enumerations;
+using Xunit;
+using PPTail.Exceptions;
 
 namespace PPTail.Generator.T4Html.Test
 {
@@ -58,6 +61,23 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create(templates, settings, new FakeNavProvider());
         }
 
+        public static IPageGenerator Create(this IPageGenerator ignore, TemplateType templateTypeToBeMissing)
+        {
+            var container = new ServiceCollection();
+
+            var settings = (null as ISettings).CreateDefault();
+            container.AddSingleton<ISettings>(settings);
+
+            var nav = new FakeNavProvider();
+            container.AddSingleton<INavigationProvider>(nav);
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var testTemplates = templates.Where(t => t.TemplateType != templateTypeToBeMissing);
+            container.AddSingleton<IEnumerable<Template>>(testTemplates);
+
+            return ignore.Create(container);
+        }
+
         public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
         {
             var container = new ServiceCollection();
@@ -65,15 +85,25 @@ namespace PPTail.Generator.T4Html.Test
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
+            return ignore.Create(container);
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, IServiceCollection container)
+        {
             return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
         }
 
-        public static ISettings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this ISettings ignore)
+        {
+            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
+        }
+
+        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier)
         {
             return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static ISettings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
@@ -166,7 +196,6 @@ namespace PPTail.Generator.T4Html.Test
                 contentItems.Add((null as ContentItem).Create());
             return contentItems;
         }
-
 
     }
 }

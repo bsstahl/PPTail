@@ -19,6 +19,10 @@ namespace PPTail.Generator.T4Html
 
         public PageGenerator(IServiceProvider serviceProvider)
         {
+            // Note: Validation that required templates have been supplied
+            // is being done in the methods where they are required
+            // TODO: Do the same for the service validation
+
             if (serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
@@ -30,8 +34,9 @@ namespace PPTail.Generator.T4Html
             _navProvider = _serviceProvider.GetService<INavigationProvider>();
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
-            _templates.Validate(Enumerations.TemplateType.Style);
         }
+
+        #region Properties 
 
         private Template ContentPageTemplate
         {
@@ -65,7 +70,6 @@ namespace PPTail.Generator.T4Html
             }
         }
 
-        // TODO: Add test coverage
         private Template StyleTemplate
         {
             get
@@ -100,22 +104,19 @@ namespace PPTail.Generator.T4Html
             }
         }
 
+        #endregion
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            if (this.HomePageTemplate == null)
-                throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
-
-            if (this.ItemTemplate == null)
-                throw new TemplateNotFoundException(Enumerations.TemplateType.Item, string.Empty);
-
+            _templates.Validate(Enumerations.TemplateType.HomePage);
+            _templates.Validate(Enumerations.TemplateType.Item);
             return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
         {
-            //TODO: Add test coverage
             //TODO: Process template against additional data (such as Settings and SiteSettings)
+            _templates.Validate(Enumerations.TemplateType.Style);
             return this.StyleTemplate.Content;
         }
 
