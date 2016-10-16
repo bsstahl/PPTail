@@ -38,6 +38,31 @@ namespace PPTail.Generator.Contact.Test
         }
 
         [Fact]
+        public void ThrowWithProperInterfaceTypeNameIfSiteSettingsAreNotProvided()
+        {
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var template = (null as Template).Create();
+            var templates = new List<Template>() { template };
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<ISettings>(Mock.Of<ISettings>());
+
+            string expected = typeof(SiteSettings).Name;
+            try
+            {
+                var target = new TemplateProvider(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
+        }
+
+        [Fact]
         public void ThrowDependencyNotFoundExceptionIfSettingsAreNotProvided()
         {
             string navigationContent = string.Empty.GetRandom();
@@ -52,6 +77,31 @@ namespace PPTail.Generator.Contact.Test
             container.AddSingleton<SiteSettings>(Mock.Of<SiteSettings>());
 
             Assert.Throws(typeof(DependencyNotFoundException), () => new TemplateProvider(container.BuildServiceProvider()));
+        }
+
+        [Fact]
+        public void ThrowWithProperInterfaceTypeNameIfSettingsAreNotProvided()
+        {
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var template = (null as Template).Create();
+            var templates = new List<Template>() { template };
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<SiteSettings>(Mock.Of<SiteSettings>());
+
+            string expected = typeof(ISettings).Name;
+            try
+            {
+                var target = new TemplateProvider(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
         }
 
         [Fact]

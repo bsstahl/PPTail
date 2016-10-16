@@ -10,10 +10,5 @@ namespace PPTail.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public int PostsPerPage { get; set; }
-
-        public object Create(object p)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

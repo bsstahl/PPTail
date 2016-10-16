@@ -24,7 +24,7 @@ namespace PPTail.Generator.Search.Test
             return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>());
         }
 
-        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, Settings settings, SiteSettings siteSettings)
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings)
         {
             var serviceCollection = new ServiceCollection();
 

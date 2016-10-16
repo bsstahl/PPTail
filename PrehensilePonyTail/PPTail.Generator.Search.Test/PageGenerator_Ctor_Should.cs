@@ -25,27 +25,56 @@ namespace PPTail.Generator.Search.Test
         public void ThrowADependencyNotFoundExceptionIfTheSettingsAreNotProvided()
         {
             var templates = (null as IEnumerable<Template>).Create();
-            Settings settings = null;
+            ISettings settings = null;
             SiteSettings siteSettings = Mock.Of<SiteSettings>();
 
             Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(templates, settings, siteSettings));
         }
 
         [Fact]
+        public void ThrowWithTheProperInterfaceTypeNameIfTheSettingsAreNotProvided()
+        {
+            var templates = (null as IEnumerable<Template>).Create();
+            ISettings settings = null;
+            SiteSettings siteSettings = Mock.Of<SiteSettings>();
+
+            string expected = typeof(ISettings).Name;
+            try
+            {
+                var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
+        }
+
+        [Fact]
         public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
         {
             var templates = (null as IEnumerable<Template>).Create();
-            Settings settings = Mock.Of<Settings>();
+            var settings = Mock.Of<ISettings>();
             SiteSettings siteSettings = null;
 
             Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(templates, settings, siteSettings));
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheTemplateCollectionIsNotProvided()
+        public void ThrowWithTheProperInterfaceTypeNameIfTheSiteSettingsAreNotProvided()
         {
-            var serviceProvider = new ServiceCollection().BuildServiceProvider();
-            Assert.Throws<DependencyNotFoundException>(() => (null as ISearchProvider).Create(serviceProvider));
+            var templates = (null as IEnumerable<Template>).Create();
+            var settings = Mock.Of<ISettings>();
+            SiteSettings siteSettings = null;
+
+            string expected = typeof(SiteSettings).Name;
+            try
+            {
+                var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
         }
 
         [Fact]

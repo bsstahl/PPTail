@@ -30,6 +30,24 @@ namespace PPTail.Output.FileSystem.Test
         }
 
         [Fact]
+        public void ThrowWithTheProperInterfaceTypeNameIfFileProviderIsNotProvided()
+        {
+            var container = new ServiceCollection();
+            container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
+            container.AddSingleton<ISettings>((null as ISettings).Create());
+
+            string expected = typeof(IFile).Name;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
+        }
+
+        [Fact]
         public void ThrowDependencyNotFoundExceptionIfDirectoryProviderIsNotProvided()
         {
             var container = new ServiceCollection();
@@ -39,12 +57,48 @@ namespace PPTail.Output.FileSystem.Test
         }
 
         [Fact]
+        public void ThrowWithProperInterfaceTypeNameIfDirectoryProviderIsNotProvided()
+        {
+            var container = new ServiceCollection();
+            container.AddSingleton<IFile>(Mock.Of<IFile>());
+            container.AddSingleton<ISettings>((null as ISettings).Create());
+
+            string expected = typeof(IDirectory).Name;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
+        }
+
+        [Fact]
         public void ThrowDependencyNotFoundExceptionIfSettingsAreNotProvided()
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
             Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(container.BuildServiceProvider()));
+        }
+
+        [Fact]
+        public void ThrowWithProperInterfaceTypeNameIfSettingsAreNotProvided()
+        {
+            var container = new ServiceCollection();
+            container.AddSingleton<IFile>(Mock.Of<IFile>());
+            container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
+
+            string expected = typeof(ISettings).Name;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
         }
 
         [Fact]

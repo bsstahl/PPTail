@@ -5,6 +5,7 @@ using Xunit;
 using TestHelperExtensions;
 using Moq;
 using PPTail.Entities;
+using PPTail.Exceptions;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -39,6 +40,25 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
+        public void ThrowWithProperInterfaceTypeNameIfSettingsAreNotProvided()
+        {
+            var fileSystem = Mock.Of<IFile>();
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IFile>(fileSystem);
+
+            string expected = typeof(ISettings).Name;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
+        }
+
+        [Fact]
         public void ThrowADependencyNotFoundExceptionIfAFileSystemIsNotProvided()
         {
             var settings = new Settings();
@@ -48,6 +68,26 @@ namespace PPTail.Data.FileSystem.Test
             container.AddSingleton<ISettings>(settings);
 
             Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
+        }
+
+        [Fact]
+        public void ThrowWithProperInterfaceTypeNameIfFileSystemIsNotProvided()
+        {
+            var settings = new Settings();
+            settings.ExtendedSettings.Set(_sourceDataPathSettingName, string.Empty.GetRandom());
+
+            var container = new ServiceCollection();
+            container.AddSingleton<ISettings>(settings);
+
+            string expected = typeof(IFile).Name;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (DependencyNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.InterfaceTypeName);
+            }
         }
 
         [Fact]

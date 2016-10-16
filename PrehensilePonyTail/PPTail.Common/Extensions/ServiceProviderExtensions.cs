@@ -12,7 +12,7 @@ namespace PPTail.Extensions
         {
             T service = serviceProvider.GetService<T>();
             if (service == null)
-                throw new Exceptions.DependencyNotFoundException(nameof(T));
+                throw new Exceptions.DependencyNotFoundException(typeof(T).Name);
         }
     }
 }
