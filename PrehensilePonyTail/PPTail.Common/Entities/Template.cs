@@ -7,7 +7,6 @@ namespace PPTail.Entities
 {
     public class Template
     {
-        public string Name { get; set; }
         public Enumerations.TemplateType TemplateType { get; set; }
         public string Content { get; set; }
     }

@@ -18,7 +18,6 @@ namespace PPTail.Generator.Archive.Test
             var template = new Template()
             {
                 Content = "{Content}",
-                Name = string.Empty.GetRandom(),
                 TemplateType = Enumerations.TemplateType.HomePage
             };
 

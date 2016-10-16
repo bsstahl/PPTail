@@ -43,7 +43,6 @@ namespace PPTail.Generator.Contact.Test
             return new Template()
             {
                 Content = content,
-                Name = name,
                 TemplateType = templateType
             };
         }

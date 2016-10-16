@@ -45,9 +45,9 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, string dateTimeFormatSpecifier, INavigationProvider navProvider)
         {
-            var contentTemplate = new Template() { Content = contentPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
-            var postTemplate = new Template() { Content = postPageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
-            var styleTemplate = new Template() { Content = stylePageTemplate, Name = "Main", TemplateType = Enumerations.TemplateType.Style };
+            var contentTemplate = new Template() { Content = contentPageTemplate, TemplateType = Enumerations.TemplateType.ContentPage };
+            var postTemplate = new Template() { Content = postPageTemplate, TemplateType = Enumerations.TemplateType.PostPage };
+            var styleTemplate = new Template() { Content = stylePageTemplate, TemplateType = Enumerations.TemplateType.Style };
 
             var templates = new List<Template>() { contentTemplate, postTemplate, styleTemplate };
 
@@ -150,12 +150,12 @@ namespace PPTail.Generator.T4Html.Test
             string homepageTemplateText, string styleTemplateText,
             string bootstrapTemplateText, string itemTemplateText)
         {
-            var contentTemplate = new Template() { Content = contentTemplateText, Name = "Main", TemplateType = Enumerations.TemplateType.ContentPage };
-            var postTemplate = new Template() { Content = postTemplateText, Name = "Main", TemplateType = Enumerations.TemplateType.PostPage };
-            var homePageTemplate = new Template() { Content = homepageTemplateText, Name = "main", TemplateType = Enumerations.TemplateType.HomePage };
-            var styleTemplate = new Template() { Content = styleTemplateText, Name = "main", TemplateType = Enumerations.TemplateType.Style };
-            var bootstrapTemplate = new Template() { Content = bootstrapTemplateText, Name = "Main", TemplateType = Enumerations.TemplateType.Bootstrap };
-            var itemTemplate = new Template() { Content = itemTemplateText, Name = "main", TemplateType = Enumerations.TemplateType.Item };
+            var contentTemplate = new Template() { Content = contentTemplateText, TemplateType = Enumerations.TemplateType.ContentPage };
+            var postTemplate = new Template() { Content = postTemplateText, TemplateType = Enumerations.TemplateType.PostPage };
+            var homePageTemplate = new Template() { Content = homepageTemplateText, TemplateType = Enumerations.TemplateType.HomePage };
+            var styleTemplate = new Template() { Content = styleTemplateText, TemplateType = Enumerations.TemplateType.Style };
+            var bootstrapTemplate = new Template() { Content = bootstrapTemplateText, TemplateType = Enumerations.TemplateType.Bootstrap };
+            var itemTemplate = new Template() { Content = itemTemplateText, TemplateType = Enumerations.TemplateType.Item };
             return new List<Template>() { contentTemplate, postTemplate, homePageTemplate, styleTemplate, bootstrapTemplate, itemTemplate };
         }
 

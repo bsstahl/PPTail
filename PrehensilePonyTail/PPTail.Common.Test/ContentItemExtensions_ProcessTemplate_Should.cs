@@ -28,8 +28,8 @@ namespace PPTail.Common.Test
             string pageTitle = string.Empty.GetRandom();
             int maxPostCount = postsPerPage;
 
-            var pageTemplate = new Template() { Content = pageTemplateContent, Name = "Page", TemplateType = Enumerations.TemplateType.HomePage };
-            var itemTemplate = new Template() { Content = itemTemplateContent, Name = "Item", TemplateType = Enumerations.TemplateType.Item };
+            var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
+            var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
 
             var posts = new List<ContentItem>();
             var earliestPost = (null as ContentItem).Create(DateTime.UtcNow.AddHours(-35));
@@ -62,8 +62,8 @@ namespace PPTail.Common.Test
             string pageTitle = string.Empty.GetRandom();
             int maxPostCount = postsPerPage;
 
-            var pageTemplate = new Template() { Content = pageTemplateContent, Name = "Page", TemplateType = Enumerations.TemplateType.HomePage };
-            var itemTemplate = new Template() { Content = itemTemplateContent, Name = "Item", TemplateType = Enumerations.TemplateType.Item };
+            var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
+            var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
 
             var posts = new List<ContentItem>();
             var earliestPost = (null as ContentItem).Create(DateTime.UtcNow.AddHours(-35));
@@ -96,8 +96,8 @@ namespace PPTail.Common.Test
             string pageTitle = string.Empty.GetRandom();
             int maxPostCount = postsPerPage;
 
-            var pageTemplate = new Template() { Content = pageTemplateContent, Name = "Page", TemplateType = Enumerations.TemplateType.HomePage };
-            var itemTemplate = new Template() { Content = itemTemplateContent, Name = "Item", TemplateType = Enumerations.TemplateType.Item };
+            var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
+            var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
 
             var posts = new List<ContentItem>();
             var earliestPost = (null as ContentItem).Create(DateTime.UtcNow.AddHours(-35));
@@ -130,8 +130,8 @@ namespace PPTail.Common.Test
             string pageTitle = string.Empty.GetRandom();
             int maxPostCount = postsPerPage;
 
-            var pageTemplate = new Template() { Content = pageTemplateContent, Name = "Page", TemplateType = Enumerations.TemplateType.HomePage };
-            var itemTemplate = new Template() { Content = itemTemplateContent, Name = "Item", TemplateType = Enumerations.TemplateType.Item };
+            var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
+            var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
 
             var posts = new List<ContentItem>();
             var earliestPost = (null as ContentItem).Create(DateTime.UtcNow.AddHours(-35));
@@ -164,8 +164,8 @@ namespace PPTail.Common.Test
             string pageTitle = string.Empty.GetRandom();
             int maxPostCount = postsPerPage;
 
-            var pageTemplate = new Template() { Content = pageTemplateContent, Name = "Page", TemplateType = Enumerations.TemplateType.HomePage };
-            var itemTemplate = new Template() { Content = itemTemplateContent, Name = "Item", TemplateType = Enumerations.TemplateType.Item };
+            var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
+            var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
 
             var posts = new List<ContentItem>();
             var earliestPost = (null as ContentItem).Create(DateTime.UtcNow.AddHours(-35));

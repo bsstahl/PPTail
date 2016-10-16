@@ -10,7 +10,6 @@ namespace PPTail.Extensions
     {
         public static void Validate(this ISettings settings, string extendedSettingName)
         {
-            // TODO: Add code coverage
             if (settings == null || settings.ExtendedSettings == null || !settings.ExtendedSettings.HasSetting(extendedSettingName))
                 throw new Exceptions.SettingNotFoundException(extendedSettingName);
         }

@@ -75,7 +75,6 @@ namespace PPTail.Generator.Search.Test
             return new Template()
             {
                 Content = content,
-                Name = name,
                 TemplateType = templateType
             };
         }
