@@ -86,24 +86,6 @@ namespace PPTail.Generator.T4Html
             }
         }
 
-        // TODO: Add test coverage
-        private string DateTimeFormatSpecifier
-        {
-            get
-            {
-                return _settings.DateTimeFormatSpecifier;
-            }
-        }
-
-        // TODO: Add test coverage
-        private string ItemSeparator
-        {
-            get
-            {
-                return _settings.ItemSeparator;
-            }
-        }
-
         #endregion
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
