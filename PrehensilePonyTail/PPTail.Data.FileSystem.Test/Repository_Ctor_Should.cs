@@ -102,5 +102,26 @@ namespace PPTail.Data.FileSystem.Test
 
             Assert.Throws<Exceptions.SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
+
+        [Fact]
+        public void ThrowWithProperSettingNameIfTheSourceDataPathIsNotSpecified()
+        {
+            var settings = new Settings();
+            var fileSystem = Mock.Of<IFile>();
+
+            var container = new ServiceCollection();
+            container.AddSingleton<ISettings>(settings);
+            container.AddSingleton<IFile>(fileSystem);
+
+            string expected = _sourceDataPathSettingName;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (SettingNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.SettingName);
+            }
+        }
     }
 }

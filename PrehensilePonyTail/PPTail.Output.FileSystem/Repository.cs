@@ -32,9 +32,7 @@ namespace PPTail.Output.FileSystem
             _directory = serviceProvider.GetService<IDirectory>();
             _settings = serviceProvider.GetService<ISettings>();
 
-            // TODO: Add test coverage
-            if (_settings.ExtendedSettings == null || !_settings.ExtendedSettings.Any(s => s.Item1 == outputPathSettingName))
-                throw new Exceptions.SettingNotFoundException(outputPathSettingName);
+            _settings.Validate(outputPathSettingName);
         }
 
         public void Save(IEnumerable<SiteFile> files)

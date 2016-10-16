@@ -14,6 +14,8 @@ namespace PPTail.Output.FileSystem.Test
 {
     public class Repository_Ctor_Should
     {
+        const string _outputPathSettingName = "outputPath";
+
         [Fact]
         public void ThrowDependencyNotFoundExceptionIfServiceProviderIsNotProvided()
         {
@@ -102,20 +104,6 @@ namespace PPTail.Output.FileSystem.Test
         }
 
         [Fact]
-        public void ThrowSettingNotFoundExceptionIfExtendedSettingsAreNotProvided()
-        {
-            var container = new ServiceCollection();
-            container.AddSingleton<IFile>(Mock.Of<IFile>());
-            container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
-
-            var settings = new Mock<ISettings>();
-            settings.SetupGet(s => s.ExtendedSettings).Returns(null as ExtendedSettingsCollection);
-            container.AddSingleton<ISettings>(settings.Object);
-
-            Assert.Throws<SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
-        }
-
-        [Fact]
         public void ThrowSettingNotFoundExceptionIfOutputPathIsNotProvided()
         {
             var container = new ServiceCollection();
@@ -123,6 +111,27 @@ namespace PPTail.Output.FileSystem.Test
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
             container.AddSingleton<ISettings>(new Settings());
             Assert.Throws(typeof(SettingNotFoundException), () => new Repository(container.BuildServiceProvider()));
+        }
+
+        [Fact]
+        public void ThrowWithProperSettingNameIfOutputPathIsNotProvided()
+        {
+            var container = new ServiceCollection();
+            container.AddSingleton<IFile>(Mock.Of<IFile>());
+            container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
+
+            var settings = new Settings();
+            container.AddSingleton<ISettings>(settings);
+
+            string expected = _outputPathSettingName;
+            try
+            {
+                var target = new Repository(container.BuildServiceProvider());
+            }
+            catch (SettingNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.SettingName);
+            }
         }
 
     }

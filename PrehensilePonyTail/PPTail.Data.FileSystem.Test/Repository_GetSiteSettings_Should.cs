@@ -32,6 +32,29 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
+        public void ThrowWithProperSettingNameIfSettingsCannotBeLoaded()
+        {
+            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            string xml = "<badXml></bad>";
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml);
+
+            string expected = typeof(SiteSettings).Name;
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            try
+            {
+                var actual = target.GetSiteSettings();
+            }
+            catch (SettingNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.SettingName);
+            }
+        }
+
+        [Fact]
         public void ReadsTheProperFileFromTheFileSystem()
         {
             string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
@@ -76,6 +99,31 @@ namespace PPTail.Data.FileSystem.Test
 
             var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             Assert.Throws<SettingNotFoundException>(() => target.GetSiteSettings());
+        }
+
+        [Fact]
+        public void ThrowWithTheProperSettingNameIfTitleIsNotSupplied()
+        {
+            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+
+            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
+            xml.RemoveDescendants("name");
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml.ToString());
+
+            SiteSettings actual;
+            string expected = nameof(actual.Title);
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            try
+            {
+                actual = target.GetSiteSettings();
+            }
+            catch (SettingNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.SettingName);
+            }
         }
 
         [Fact]

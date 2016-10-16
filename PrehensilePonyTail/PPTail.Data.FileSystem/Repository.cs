@@ -30,8 +30,7 @@ namespace PPTail.Data.FileSystem
             var settings = _serviceProvider.GetService<ISettings>();
             var fileSystem = _serviceProvider.GetService<IFile>();
 
-            if (!settings.ExtendedSettings.HasSetting(_sourceDataPathSettingName))
-                throw new Exceptions.SettingNotFoundException(_sourceDataPathSettingName);
+            settings.Validate(_sourceDataPathSettingName);
 
             _rootSitePath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
             _rootDataPath = System.IO.Path.Combine(_rootSitePath, "App_Data");
@@ -43,10 +42,10 @@ namespace PPTail.Data.FileSystem
             string settingsPath = System.IO.Path.Combine(_rootDataPath, "settings.xml");
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
             if (result == null)
-                throw new Exceptions.SettingNotFoundException("SiteSettings");
+                throw new Exceptions.SettingNotFoundException(typeof(SiteSettings).Name);
 
             if (string.IsNullOrWhiteSpace(result.Title))
-                throw new Exceptions.SettingNotFoundException("SiteSettings.Title");
+                throw new Exceptions.SettingNotFoundException(nameof(result.Title));
 
             if (result.PostsPerPage == 0)
                 result.PostsPerPage = _defaultPostsPerPage;
