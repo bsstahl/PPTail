@@ -36,6 +36,8 @@ namespace PPTail.Generator.T4Html
         private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, string pathToRoot)
         {
             string results = string.Empty;
+
+            //TODO: Add code coverage (currently intermittent)
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
 

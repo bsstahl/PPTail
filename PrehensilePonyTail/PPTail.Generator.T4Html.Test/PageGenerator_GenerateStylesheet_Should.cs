@@ -1,5 +1,6 @@
 ﻿using Moq;
 using PPTail.Entities;
+using PPTail.Enumerations;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
 using System;
@@ -18,6 +19,22 @@ namespace PPTail.Generator.T4Html.Test
         {
             var target = (null as IPageGenerator).Create(Enumerations.TemplateType.Style);
             Assert.Throws<TemplateNotFoundException>(() => target.GenerateStylesheet(Mock.Of<SiteSettings>()));
+        }
+
+        [Fact]
+        public void ThrowWithTheProperTemplateTypeIfTheStyleTemplateIsNotProvided()
+        {
+            var target = (null as IPageGenerator).Create(Enumerations.TemplateType.Style);
+
+            TemplateType expected = TemplateType.Style;
+            try
+            {
+                var actual = target.GenerateStylesheet(Mock.Of<SiteSettings>());
+            }
+            catch (TemplateNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.TemplateType);
+            }
         }
 
         [Fact]

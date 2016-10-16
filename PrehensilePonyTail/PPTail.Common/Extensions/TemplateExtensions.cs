@@ -36,5 +36,11 @@ namespace PPTail.Extensions
             templates.Validate(templateType);
             return templates.Single(t => t.TemplateType == templateType);
         }
+
+        public static bool Contains(this IEnumerable<Template> templates, TemplateType templateType)
+        {
+            return templates.Any(t => t.TemplateType == templateType);
+        }
+
     }
 }

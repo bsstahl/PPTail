@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
+using PPTail.Enumerations;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
 using System;
@@ -29,7 +30,34 @@ namespace PPTail.Generator.T4Html.Test
             Assert.Throws<TemplateNotFoundException>(() => target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData));
         }
 
-    [Fact]
+        [Fact]
+        public void ThrowWithTheProperTemplateTypeIfTheContentPageTemplateIsNotSupplied()
+        {
+            var allTemplates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var templates = allTemplates.Where(t => t.TemplateType != Enumerations.TemplateType.ContentPage);
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var pageData = (null as ContentItem).Create();
+
+            TemplateType expected = TemplateType.ContentPage;
+            var target = (null as IPageGenerator).Create(templates, settings);
+
+            try
+            {
+                target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
+            }
+            catch (TemplateNotFoundException ex)
+            {
+                Assert.Equal(expected, ex.TemplateType);
+            }
+        }
+
+        [Fact]
         public void ReplaceATitlePlaceholderWithTheTitle()
         {
             var pageData = (null as ContentItem).Create();

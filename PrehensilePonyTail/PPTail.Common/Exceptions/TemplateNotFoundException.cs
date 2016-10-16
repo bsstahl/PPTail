@@ -9,14 +9,17 @@ namespace PPTail.Exceptions
     {
         public Enumerations.TemplateType TemplateType { get; set; }
 
-        public string TemplateName { get; set; }
+        // Not yet needed
+        // public string TemplateName { get; set; }
 
 
         public TemplateNotFoundException(Enumerations.TemplateType templateType, string templateName) 
             : base($"Unable to load template '{templateName}' of type '{templateType.ToString()}'")
         {
             this.TemplateType = templateType;
-            this.TemplateName = templateName;
+
+            // Not yet needed
+            // this.TemplateName = templateName;
         }
     }
 }

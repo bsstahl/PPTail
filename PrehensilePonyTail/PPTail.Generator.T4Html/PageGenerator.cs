@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
 using PPTail.Extensions;
+using PPTail.Enumerations;
 
 namespace PPTail.Generator.T4Html
 {
@@ -36,78 +37,28 @@ namespace PPTail.Generator.T4Html
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
         }
 
-        #region Properties 
-
-        private Template ContentPageTemplate
-        {
-            get
-            {
-                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.ContentPage);
-            }
-        }
-
-        private Template PostPageTemplate
-        {
-            get
-            {
-                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.PostPage);
-            }
-        }
-
-        private Template HomePageTemplate
-        {
-            get
-            {
-                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.HomePage);
-            }
-        }
-
-        private Template ItemTemplate
-        {
-            get
-            {
-                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Item);
-            }
-        }
-
-        private Template StyleTemplate
-        {
-            get
-            {
-                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Style);
-            }
-        }
-
-        private Template BootstrapTemplate
-        {
-            get
-            {
-                return _templates.SingleOrDefault(t => t.TemplateType == Enumerations.TemplateType.Bootstrap);
-            }
-        }
-
-        #endregion
-
         public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
         {
-            _templates.Validate(Enumerations.TemplateType.HomePage);
-            _templates.Validate(Enumerations.TemplateType.Item);
-            return posts.ProcessTemplate(_settings, siteSettings, this.HomePageTemplate, this.ItemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
+            var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
+            var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
+            return posts.ProcessTemplate(_settings, siteSettings, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
         {
             //TODO: Process template against additional data (such as Settings and SiteSettings)
-            _templates.Validate(Enumerations.TemplateType.Style);
-            return this.StyleTemplate.Content;
+            var template = _templates.Find(Enumerations.TemplateType.Style);
+            return template.Content;
         }
 
         public string GenerateBootstrapPage()
         {
-            if (this.BootstrapTemplate == null)
-                return string.Empty;
-            else
-                return this.BootstrapTemplate.Content;
+            string result = string.Empty;
+            var templateType = TemplateType.Bootstrap;
+            var template = _templates.SingleOrDefault(t => t.TemplateType == templateType);
+            if (_templates.Contains(templateType))
+                result = _templates.Find(templateType).Content;
+            return result;
         }
 
         public string GenerateSidebarContent(ISettings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
@@ -121,19 +72,13 @@ namespace PPTail.Generator.T4Html
 
         public string GenerateContentPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem pageData)
         {
-            var template = this.ContentPageTemplate;
-            if (template == null)
-                throw new TemplateNotFoundException(Enumerations.TemplateType.ContentPage, string.Empty);
-
+            var template = _templates.Find(TemplateType.ContentPage);
             return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings);
         }
 
         public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
         {
-            var template = this.PostPageTemplate;
-            if (template == null)
-                throw new TemplateNotFoundException(Enumerations.TemplateType.PostPage, string.Empty);
-
+            var template = _templates.Find(TemplateType.PostPage);
             return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings);
         }
 
