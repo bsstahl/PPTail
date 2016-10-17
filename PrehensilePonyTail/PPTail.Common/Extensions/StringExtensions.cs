@@ -9,7 +9,7 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, ContentItem item, string pathToRoot)
+        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ContentItem item, string pathToRoot)
         {
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", item.Content)
@@ -18,7 +18,8 @@ namespace PPTail.Extensions
                 .Replace("{PublicationDate}", item.PublicationDate.ToString(settings.DateTimeFormatSpecifier))
                 .Replace("{LastModificationDate}", item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier))
                 .Replace("{ByLine}", item.ByLine)
-                .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"));
+                .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"))
+                .Replace("{Categories}", categories.CategoryLinkList(item.CategoryIds, settings, pathToRoot, "small"));
         }
 
         internal static string ReplaceNonContentItemSpecificVariables(this string template, ISettings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)

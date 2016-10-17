@@ -165,5 +165,11 @@ namespace PPTail.Data.FileSystem
 
             return results;
         }
+
+        // TODO: Implement GetCategories method
+        public IEnumerable<Category> GetCategories()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -348,5 +348,64 @@ namespace PPTail.Generator.T4Html.Test
             }
         }
 
+        [Fact]
+        public void ReplaceTheCategoriesPlaceholderWithEachCategory()
+        {
+            const string placeholderText = "{Categories}";
+
+            var categoryList = new List<Category>();
+            for (int i = 0; i < 10; i++)
+                categoryList.Add((null as Category).Create());
+
+            var categoryIds = categoryList.GetRandomCategoryIds();
+            var pageData = (null as ContentItem).Create(categoryIds);
+
+            string template = $"*****{placeholderText}*****";
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates(template, "<html/>", template);
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+
+            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
+            foreach (var category in selectedCategories)
+                Assert.Contains(category.Name, actual);
+        }
+
+        [Fact]
+        public void ReplaceTheCategoriesPlaceholderWithALinkToEachSearchPage()
+        {
+            const string placeholderText = "{Categories}";
+
+            var categoryList = new List<Category>();
+            for (int i = 0; i < 10; i++)
+                categoryList.Add((null as Category).Create());
+
+            var categoryIds = categoryList.GetRandomCategoryIds();
+            var pageData = (null as ContentItem).Create(categoryIds);
+
+            string template = $"*****{placeholderText}*****";
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates(template, "<html/>", "<div/>");
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+
+            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
+            foreach (var category in selectedCategories)
+            {
+                string href = $"\\search\\{category.Name}.{settings.OutputFileExtension}";
+                Assert.Contains(href.ToLower(), actual.ToLower());
+            }
+        }
+
     }
 }

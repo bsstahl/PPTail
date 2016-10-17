@@ -10,7 +10,7 @@ namespace PPTail.Extensions
 {
     public static class ContentItemExtensions
     {
-        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, ISettings settings, SiteSettings siteSettings, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, int maxPostCount, string pathToRoot)
+        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, int maxPostCount, string pathToRoot)
         {
             string content = string.Empty;
             var recentPosts = posts.OrderByDescending(p => p.PublicationDate).Where(pub => pub.IsPublished);
@@ -20,7 +20,7 @@ namespace PPTail.Extensions
 
             var contentItems = new List<string>();
             foreach (var post in recentPosts)
-                contentItems.Add(itemTemplate.ProcessContentItemTemplate(post, sidebarContent, navContent, siteSettings, settings, pathToRoot));
+                contentItems.Add(itemTemplate.ProcessContentItemTemplate(post, sidebarContent, navContent, siteSettings, settings, categories, pathToRoot));
 
             var pageContent = string.Join(settings.ItemSeparator, contentItems);
             return pageTemplate.ProcessNonContentItemTemplate(sidebarContent, navContent, siteSettings, settings, pageContent, pageTitle);

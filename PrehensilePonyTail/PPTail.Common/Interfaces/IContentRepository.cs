@@ -1,6 +1,6 @@
-﻿using PPTail.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PPTail.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,5 +13,6 @@ namespace PPTail.Interfaces
         IEnumerable<ContentItem> GetAllPosts();
         IEnumerable<Widget> GetAllWidgets();
         IEnumerable<SourceFile> GetFolderContents(string relativePath);
+        IEnumerable<Category> GetCategories();
     }
 }

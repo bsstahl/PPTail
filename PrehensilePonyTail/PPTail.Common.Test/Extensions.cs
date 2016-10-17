@@ -35,5 +35,34 @@ namespace PPTail.Common.Test
             return result;
         }
 
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
+        {
+            var result = new List<Category>();
+
+            int count = 10.GetRandom(5);
+            for (int i = 0; i < count; i++)
+                result.Add((null as Category).Create());
+
+            return result;
+        }
+
+        public static Category Create(this Category ignore)
+        {
+            Guid id = Guid.NewGuid();
+            string name = $"nameof_{id.ToString()}";
+            string description = $"descriptionof_{id.ToString()}";
+            return ignore.Create(id, name, description);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name, string description)
+        {
+            return new Category()
+            {
+                Id = id,
+                Name = name,
+                Description = description
+            };
+        }
+
     }
 }

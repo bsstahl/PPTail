@@ -53,12 +53,17 @@ namespace PPTail.Generator.T4Html.Test
 
             var settings = (null as Settings).CreateDefault(dateTimeFormatSpecifier);
 
-            return ignore.Create(templates, settings, navProvider);
+            return ignore.Create(templates, settings, navProvider, new List<Category>());
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings)
         {
-            return ignore.Create(templates, settings, new FakeNavProvider());
+            return ignore.Create(templates, settings, new FakeNavProvider(), new List<Category>());
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories)
+        {
+            return ignore.Create(templates, settings, new FakeNavProvider(), categories);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, TemplateType templateTypeToBeMissing)
@@ -78,13 +83,14 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create(container);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
+            container.AddSingleton<IEnumerable<Category>>(categories);
             return ignore.Create(container);
         }
 
@@ -119,8 +125,19 @@ namespace PPTail.Generator.T4Html.Test
 
         public static ContentItem Create(this ContentItem ignore, IEnumerable<string> tags)
         {
-            string author = string.Empty.GetRandom();
             var categoryIds = new List<Guid>() { Guid.NewGuid() };
+            return ignore.Create(tags, categoryIds);
+        }
+
+        public static ContentItem Create(this ContentItem ignore, IEnumerable<Guid> categoryIds)
+        {
+            var tags = new List<string>() { string.Empty.GetRandom() };
+            return ignore.Create(tags, categoryIds);
+        }
+
+        public static ContentItem Create(this ContentItem ignore, IEnumerable<string> tags, IEnumerable<Guid> categoryIds)
+        {
+            string author = string.Empty.GetRandom();
             var lastModDate = DateTime.UtcNow.AddDays(-10.GetRandom(1));
             var pubDate = DateTime.UtcNow.AddDays(-20.GetRandom(10));
             var slug = string.Empty.GetRandom();
@@ -216,5 +233,48 @@ namespace PPTail.Generator.T4Html.Test
             return contentItems;
         }
 
+        public static Category Create(this Category ignore)
+        {
+            var id = Guid.NewGuid();
+            string name = $"nameof_{id.ToString()}";
+            return ignore.Create(id, name);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name)
+        {
+            string description = $"descriptionof_{id.ToString()}";
+            return ignore.Create(id, name, description);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name, string description)
+        {
+            return new Category()
+            {
+                Id = id,
+                Name = name,
+                Description = description
+            };
+        }
+
+        public static IEnumerable<Guid> GetRandomCategoryIds(this IEnumerable<Category> categories)
+        {
+            // Returns 1 or 2 category IDs from the collection of categories
+            var result = new List<Guid>();
+            Category cat1 = categories.GetRandom();
+            Category cat2 = null;
+
+            result.Add(cat1.Id);
+            if (true.GetRandom())
+            {
+                do
+                {
+                    cat2 = categories.GetRandom();
+                } while (cat1.Id == cat2.Id);
+
+                result.Add(cat2.Id);
+            }
+
+            return result;
+        }
     }
 }
