@@ -22,7 +22,8 @@ namespace PPTail.Generator.T4Html
         {
             // Note: Validation that required templates have been supplied
             // is being done in the methods where they are required
-            // TODO: Do the same for the service validation
+
+            // TODO: Move the service validation into the methods where they are required
 
             if (serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
