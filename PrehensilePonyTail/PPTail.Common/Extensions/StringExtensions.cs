@@ -82,7 +82,7 @@ namespace PPTail.Extensions
         {
             var results = string.Empty;
             foreach (var tag in tags)
-                results += $"{settings.CreateSearchLink(pathToRoot, tag, cssClass)}&nbsp;";
+                results += $"{settings.CreateSearchLink(pathToRoot, tag, "Tag", cssClass)}&nbsp;";
             return results;
         }
     }

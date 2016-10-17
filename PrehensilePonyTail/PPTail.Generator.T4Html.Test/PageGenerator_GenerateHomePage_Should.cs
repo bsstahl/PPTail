@@ -114,6 +114,67 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
+        public void ReplaceTheTagPlaceholderWithEachTag()
+        {
+            const string placeholderText = "{Tags}";
+
+            int tagCount = 8.GetRandom(3);
+            var tagList = new List<string>();
+            for (int i = 0; i < tagCount; i++)
+                tagList.Add(string.Empty.GetRandom());
+
+            var pageData = (null as ContentItem).Create(tagList);
+            var posts = new List<ContentItem>() { pageData };
+
+            string itemTemplate = $"*****{placeholderText}*****";
+            string pageTemplate = "-----{Content}-----";
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+
+            var target = (null as IPageGenerator).Create(templates, settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
+            Console.WriteLine(actual);
+
+            foreach (string tag in tagList)
+                Assert.Contains(tag, actual);
+        }
+
+        [Fact]
+        public void ReplaceTheTagPlaceholderWithALinkToEachTagPage()
+        {
+            const string placeholderText = "{Tags}";
+
+            int tagCount = 8.GetRandom(3);
+            var tagList = new List<string>();
+            for (int i = 0; i < tagCount; i++)
+                tagList.Add(string.Empty.GetRandom());
+
+            var pageData = (null as ContentItem).Create(tagList);
+            var posts = new List<ContentItem>() { pageData };
+
+            string itemTemplate = $"*****{placeholderText}*****";
+            string pageTemplate = "-----{Content}-----";
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+
+            var target = (null as IPageGenerator).Create(templates, settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
+            Console.WriteLine(actual);
+
+            foreach (string tag in tagList)
+            {
+                string href = $"\\search\\{tag}.{settings.OutputFileExtension}";
+                Assert.Contains(href.ToLower(), actual.ToLower());
+            }
+        }
+
+        [Fact]
         public void ThrowATemplateNotFoundExceptionIfTheHomePageTemplateIsNotProvided()
         {
             var target = (null as IPageGenerator).Create(Enumerations.TemplateType.HomePage);
