@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestHelperExtensions;
 using Xunit;
 
 namespace PPTail.Generator.T4Html.Test
@@ -294,6 +295,57 @@ namespace PPTail.Generator.T4Html.Test
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
             Assert.Equal(6, actualCount);
+        }
+
+        [Fact]
+        public void ReplaceTheTagPlaceholderWithEachTag()
+        {
+            const string placeholderText = "{Tags}";
+
+            int tagCount = 8.GetRandom(3);
+            var tagList = new List<string>();
+            for (int i = 0; i < tagCount; i++)
+                tagList.Add(string.Empty.GetRandom());
+
+            var pageData = (null as ContentItem).Create(tagList);
+            
+            string template = $"*****{placeholderText}*****";
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            foreach (string tag in tagList)
+                Assert.Contains(tag, actual);
+        }
+
+        [Fact]
+        public void ReplaceTheTagPlaceholderWithALinkToEachTagPage()
+        {
+            const string placeholderText = "{Tags}";
+
+            int tagCount = 8.GetRandom(3);
+            var tagList = new List<string>();
+            for (int i = 0; i < tagCount; i++)
+                tagList.Add(string.Empty.GetRandom());
+
+            var pageData = (null as ContentItem).Create(tagList);
+
+            string template = $"*****{placeholderText}*****";
+            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
+
+            var settings = (null as ISettings).CreateDefault();
+
+            var siteSettings = (null as SiteSettings).Create();
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            foreach (string tag in tagList)
+            {
+                string href = $"\\search\\{tag}.{settings.OutputFileExtension}";
+                Assert.Contains(href.ToLower(), actual.ToLower());
+            }
         }
 
     }

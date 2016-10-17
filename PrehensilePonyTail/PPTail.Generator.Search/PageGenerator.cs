@@ -42,7 +42,7 @@ namespace PPTail.Generator.Search
         public string GenerateSearchResultsPage(string tag, IEnumerable<ContentItem> contentItems, string navigationContent, string sidebarContent, string pathToRoot)
         {
             var posts = contentItems.Where(i => i.Tags.Contains(tag));
-            return posts.ProcessTemplate(_settings, _siteSettings, _searchTemplate, _itemTemplate, sidebarContent, navigationContent, $"Tag: {tag}", 0);
+            return posts.ProcessTemplate(_settings, _siteSettings, _searchTemplate, _itemTemplate, sidebarContent, navigationContent, $"Tag: {tag}", 0, pathToRoot);
         }
 
     }

@@ -40,7 +40,7 @@ namespace PPTail.Common.Test
             posts.Add(latestPost);
             posts.Add(earliestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount);
+            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty);
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(earliestPost.Content, actualPosts.Last());
         }
@@ -74,7 +74,7 @@ namespace PPTail.Common.Test
             posts.Add(latestPost);
             posts.Add(earliestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount);
+            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty);
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(earliestPost.Content, actualPosts.Last());
         }
@@ -108,7 +108,7 @@ namespace PPTail.Common.Test
             posts.Add(earliestPost);
             posts.Add(latestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount);
+            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty);
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(latestPost.Content, actualPosts.First());
         }
@@ -142,7 +142,7 @@ namespace PPTail.Common.Test
             posts.Add(latestPost);
             posts.Add(middlePost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount);
+            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty);
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(latestPost.Content, actualPosts.First());
         }
@@ -176,7 +176,7 @@ namespace PPTail.Common.Test
             posts.Add(earliestPost);
             posts.Add(latestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount);
+            var actual = posts.ProcessTemplate(settings, siteSettings, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty);
             Assert.DoesNotContain(earliestPost.Content, actual);
         }
 

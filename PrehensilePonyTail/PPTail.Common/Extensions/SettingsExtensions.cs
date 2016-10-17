@@ -14,5 +14,11 @@ namespace PPTail.Extensions
                 throw new Exceptions.SettingNotFoundException(extendedSettingName);
         }
 
+        public static string CreateSearchLink(this ISettings settings, string pathToRoot, string title, string cssClass)
+        {
+            string url = System.IO.Path.Combine(pathToRoot, "search", $"{title.CreateSlug()}.{settings.OutputFileExtension}");
+            return $"<a title=\"Tag: {title}\" class=\"{cssClass}\" href=\"{url}\">{title}</a>";
+        }
+
     }
 }

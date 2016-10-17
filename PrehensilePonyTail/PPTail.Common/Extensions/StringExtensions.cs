@@ -9,7 +9,7 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, ContentItem item)
+        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, ContentItem item, string pathToRoot)
         {
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", item.Content)
@@ -17,7 +17,8 @@ namespace PPTail.Extensions
                 .Replace("{Description}", item.Description)
                 .Replace("{PublicationDate}", item.PublicationDate.ToString(settings.DateTimeFormatSpecifier))
                 .Replace("{LastModificationDate}", item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier))
-                .Replace("{ByLine}", item.ByLine);
+                .Replace("{ByLine}", item.ByLine)
+                .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"));
         }
 
         internal static string ReplaceNonContentItemSpecificVariables(this string template, ISettings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)
@@ -77,5 +78,12 @@ namespace PPTail.Extensions
             return current;
         }
 
+        public static string TagLinkList(this IEnumerable<string> tags, ISettings settings, string pathToRoot, string cssClass)
+        {
+            var results = string.Empty;
+            foreach (var tag in tags)
+                results += $"{settings.CreateSearchLink(pathToRoot, tag, cssClass)}&nbsp;";
+            return results;
+        }
     }
 }

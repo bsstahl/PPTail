@@ -48,10 +48,7 @@ namespace PPTail.Generator.T4Html
 
             results += "<div class=\"content\"><ul>";
             foreach (var style in styles)
-            {
-                string url = System.IO.Path.Combine(pathToRoot, "search",  $"{style.Item1.CreateSlug()}.{settings.OutputFileExtension}");
-                results += $"<li><a title=\"Tag: {style.Item1}\" class=\"{style.Item2}\" href=\"{url}\">{style.Item1}</a></li> ";
-            }
+                results += $"<li>{settings.CreateSearchLink(pathToRoot, style.Item1, style.Item2)}</li>";
 
             results += "</ul></div>";
             return results;

@@ -113,19 +113,38 @@ namespace PPTail.Generator.T4Html.Test
 
         public static ContentItem Create(this ContentItem ignore)
         {
+            var tags = new List<string>() { string.Empty.GetRandom() };
+            return ignore.Create(tags);
+        }
+
+        public static ContentItem Create(this ContentItem ignore, IEnumerable<string> tags)
+        {
             string author = string.Empty.GetRandom();
+            var categoryIds = new List<Guid>() { Guid.NewGuid() };
+            var lastModDate = DateTime.UtcNow.AddDays(-10.GetRandom(1));
+            var pubDate = DateTime.UtcNow.AddDays(-20.GetRandom(10));
+            var slug = string.Empty.GetRandom();
+            var title = string.Empty.GetRandom();
+            return ignore.Create(author, categoryIds, string.Empty.GetRandom(), string.Empty.GetRandom(), true, lastModDate, pubDate, slug, tags, title);
+        }
+
+        private static ContentItem Create(this ContentItem ignore, 
+            string author, IEnumerable<Guid> categoryIds, string content,
+            string description, bool isPublished, DateTime lastModDate, DateTime pubDate,
+            string slug, IEnumerable<string> tags, string title)
+        {
             return new ContentItem()
             {
                 Author = author,
-                CategoryIds = new List<Guid>() { Guid.NewGuid() },
-                Content = string.Empty.GetRandom(),
-                Description = string.Empty.GetRandom(),
-                IsPublished = true,
-                LastModificationDate = DateTime.UtcNow.AddDays(-10.GetRandom()),
-                PublicationDate = DateTime.UtcNow.AddDays(-20.GetRandom(10)),
-                Slug = string.Empty.GetRandom(),
-                Tags = new List<string>() { string.Empty.GetRandom() },
-                Title = string.Empty.GetRandom(),
+                CategoryIds = categoryIds,
+                Content = content,
+                Description = description,
+                IsPublished = isPublished,
+                LastModificationDate = lastModDate,
+                PublicationDate = pubDate,
+                Slug = slug,
+                Tags = tags,
+                Title = title,
                 ByLine = $"by {author}"
             };
         }

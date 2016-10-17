@@ -41,7 +41,7 @@ namespace PPTail.Generator.T4Html
         {
             var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
-            return posts.ProcessTemplate(_settings, siteSettings, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage);
+            return posts.ProcessTemplate(_settings, siteSettings, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage, ".");
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -73,13 +73,13 @@ namespace PPTail.Generator.T4Html
         public string GenerateContentPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem pageData)
         {
             var template = _templates.Find(TemplateType.ContentPage);
-            return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings);
+            return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings, "..");
         }
 
         public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
         {
             var template = _templates.Find(TemplateType.PostPage);
-            return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings);
+            return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings, "..");
         }
 
     }
