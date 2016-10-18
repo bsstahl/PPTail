@@ -16,8 +16,9 @@ namespace PPTail.Data.FileSystem.Test
     {
         const string _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage></settings>";
         const string _sourceDataPathSettingName = "sourceDataPath";
-        const string _widgetZoneNodeFormat = "<widget id=\"{0}\" title=\"{1}\" showTitle=\"{2}\">{3}</widget>";
 
+        const string _widgetZoneNodeFormat = "<widget id=\"{0}\" title=\"{1}\" showTitle=\"{2}\">{3}</widget>";
+        const string _categoryNodeFormat = "<category id=\"{0}\" description=\"{2}\" parent=\"\">{1}</category>";
 
         public static IContentRepository Create(this IContentRepository ignore)
         {
@@ -141,6 +142,18 @@ namespace PPTail.Data.FileSystem.Test
                 .Returns(widgetNode.ToString());
         }
 
+        public static void ConfigureCategories(this Mock<IFile> fileSystem, IEnumerable<Category> categories, string rootPath)
+        {
+            const string dataPath = "App_Data\\categories.xml";
+
+            var categoryFilePath = System.IO.Path.Combine(rootPath, dataPath);
+            fileSystem.Setup(f => f.Exists(categoryFilePath)).Returns(true);
+
+            var categoryFileContents = categories.Serialize();
+            fileSystem.Setup(f => f.ReadAllText(categoryFilePath))
+                .Returns(categoryFileContents.ToString());
+        }
+
         public static XElement Serialize(this IEnumerable<Widget> widgets)
         {
             var widgetNode = XElement.Parse("<?xml version=\"1.0\" encoding=\"utf-8\"?><widgets></widgets>");
@@ -158,10 +171,16 @@ namespace PPTail.Data.FileSystem.Test
             return widgetType.ToString().Replace("_", " ");
         }
 
-        public static string Serialize(this Widget widget)
+        public static XElement Serialize(this IEnumerable<Category> categories)
         {
-            //             const string widgetFileFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><SerializableStringDictionary><SerializableStringDictionary><DictionaryEntry Key=\"{0}\" Value=\"{1}\" /></SerializableStringDictionary></SerializableStringDictionary>";
-            throw new NotImplementedException();
+            var rootNode = XElement.Parse("<?xml version=\"1.0\" encoding=\"utf-8\"?><categories></categories>");
+            foreach (var category in categories)
+            {
+                string nodeText = string.Format(_categoryNodeFormat, category.Id.ToString(), category.Name, category.Description);
+                rootNode.Add(XElement.Parse(nodeText));
+            }
+
+            return rootNode;
         }
 
         public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, string relativePath, int count)
@@ -182,6 +201,63 @@ namespace PPTail.Data.FileSystem.Test
                 FileName = $"{string.Empty.GetRandom()}.{string.Empty.GetRandom(3)}",
                 RelativePath = relativePath
             };
+        }
+
+        public static Category Create(this Category ignore)
+        {
+            var id = Guid.NewGuid();
+            string name = $"nameof_{id.ToString()}";
+            return ignore.Create(id, name);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name)
+        {
+            string description = $"descriptionof_{id.ToString()}";
+            return ignore.Create(id, name, description);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name, string description)
+        {
+            return new Category()
+            {
+                Id = id,
+                Name = name,
+                Description = description
+            };
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
+        {
+            return ignore.Create(10.GetRandom(5));
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, int count)
+        {
+            var result = new List<Category>();
+            for (int i = 0; i < count; i++)
+                result.Add((null as Category).Create());
+            return result;
+        }
+
+        public static IEnumerable<Guid> GetRandomCategoryIds(this IEnumerable<Category> categories)
+        {
+            // Returns 1 or 2 category IDs from the collection of categories
+            var result = new List<Guid>();
+            Category cat1 = categories.GetRandom();
+            Category cat2 = null;
+
+            result.Add(cat1.Id);
+            if (true.GetRandom())
+            {
+                do
+                {
+                    cat2 = categories.GetRandom();
+                } while (cat1.Id == cat2.Id);
+
+                result.Add(cat2.Id);
+            }
+
+            return result;
         }
     }
 }

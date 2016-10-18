@@ -15,6 +15,7 @@ namespace PPTail.Data.FileSystem
         const int _defaultPostsPerPage = 3;
         const string _sourceDataPathSettingName = "sourceDataPath";
         const string _widgetRelativePath = "datastore\\widgets";
+        const string _categoriesRelativePath = "categories.xml";
 
         private readonly IServiceProvider _serviceProvider;
         private readonly string _rootDataPath;
@@ -166,10 +167,26 @@ namespace PPTail.Data.FileSystem
             return results;
         }
 
-        // TODO: Implement GetCategories method
         public IEnumerable<Category> GetCategories()
         {
-            throw new NotImplementedException();
+            const string categoryNodeName = "category";
+            var fileSystem = _serviceProvider.GetService<IFile>();
+
+            // TODO: Add defensive code to handle error conditions
+            var results = new List<Category>();
+            var path = System.IO.Path.Combine(_rootDataPath, _categoriesRelativePath);
+
+            var fileContents = fileSystem.ReadAllText(path);
+            var categoriesNode = XElement.Parse(fileContents);
+            foreach (var categoryNode in categoriesNode.Descendants().Where(d => d.Name == categoryNodeName))
+                results.Add(new Category()
+                {
+                    Id = Guid.Parse(categoryNode.Attributes().Single(d => d.Name == "id").Value),
+                    Name = categoryNode.Value,
+                    Description = categoryNode.Attributes().Single(d => d.Name == "description").Value
+                });
+
+            return results;
         }
     }
 }

@@ -1,27 +1,27 @@
 ﻿h1, h2, h3 {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 
 a, a:visited {
-	color: #909090;
+    color: #909090;
 }
 
-	a:hover {
-		color: #000000;
-	}
+    a:hover {
+        color: #000000;
+    }
 
 .main {
-	margin: 0px auto;
-	text-align: left;
-	width: 960px;
+    margin: 0px auto;
+    text-align: left;
+    width: 960px;
 }
 
 
 .content {
-	overflow: auto;
-	width: 100%;
-	padding: 20px 0px;
+    overflow: auto;
+    width: 100%;
+    padding: 20px 0px;
 }
 
 body {
@@ -134,64 +134,71 @@ a, a:visited {
 }
 
 .sidebar {
-	float: left;
-	width: 300px;
-	margin: 0px 0px 0px 20px;
-	font-size: 12px;
+    float: left;
+    width: 300px;
+    margin: 0px 0px 0px 20px;
+    font-size: 12px;
 }
 
-	.sidebar h1 {
-		font-size: 18px;
-		margin: 20px 0px 5px 0px;
-	}
+    .sidebar h1 {
+        font-size: 18px;
+        margin: 20px 0px 5px 0px;
+    }
 
-	.sidebar ul {
-		margin: 0px;
-		padding: 0px;
-	}
+    .sidebar ul {
+        margin: 0px;
+        padding: 0px;
+    }
 
-	.sidebar li {
-		list-style: none;
-	}
+    .sidebar li {
+        list-style: none;
+    }
 
-	.sidebar .rssButton {
-		margin-right: 5px;
-	}
+    .sidebar .rssButton {
+        margin-right: 5px;
+    }
 
 
 .menu {
-	background-color: #000000;
-	color: #ffffff;
-	padding: 10px;
-	font-size: 16px;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+    font-size: 16px;
 }
 
-	.menu a, .menu a:visited {
-		color: #ffffff;
-		margin: 0px 5px;
-		text-decoration: none;
-	}
+    .menu a, .menu a:visited {
+        color: #ffffff;
+        margin: 0px 5px;
+        text-decoration: none;
+    }
 
-		.menu a:hover {
-			text-decoration: underline;
-		}
+        .menu a:hover {
+            text-decoration: underline;
+        }
 
-	.menu img {
-		margin-right: 5px;
-	}
+    .menu img {
+        margin-right: 5px;
+    }
 
 .pagelist {
-	display: inline;
-	margin: 0px;
-	padding: 5px;
+    display: inline;
+    margin: 0px;
+    padding: 5px;
 }
 
-	.pagelist li {
-		list-style-type: none;
-		display: inline;
-		margin: 0px 5px 0px 0px;
-	}
+    .pagelist li {
+        list-style-type: none;
+        display: inline;
+        margin: 0px 5px 0px 0px;
+    }
 
+.code, code, .csharpcode {
+    display: block;
+    overflow: auto;
+    border: solid 1px #909090;
+    padding: 5px;
+    font-family: Consolas,Courier New,Courier;
+}
 
 /*
 
@@ -624,13 +631,6 @@ blockquote {
 		line-height: 130%;
 	}
 
-.code, code, .csharpcode {
-	display: block;
-	overflow: auto;
-	border: solid 1px #909090;
-	padding: 5px;
-	font-family: Consolas,Courier New,Courier;
-}
 
 	.code .rem, .csharpcode .rem {
 		color: #008000;

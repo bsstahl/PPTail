@@ -178,7 +178,7 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
-        public void ReturnTrueIfThepostIsPublished()
+        public void ReturnTrueIfThePostIsPublished()
         {
             string fieldName = "ispublished";
             Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
@@ -191,7 +191,7 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
-        public void ReturnFalseIfThepostIsNotPublished()
+        public void ReturnFalseIfThePostIsNotPublished()
         {
             string fieldName = "ispublished";
             Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
@@ -310,6 +310,67 @@ namespace PPTail.Data.FileSystem.Test
             var actual = pages.Single().Tags.Count();
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReturnTheCategoryFromASingleCategoryPost()
+        {
+            var expected = Guid.NewGuid();
+            string xml = $"<post><categories><category>{expected.ToString()}</category></categories></post>";
+
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+
+            var fileSystem = new Mock<IFile>();
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+                    .Returns(files);
+
+            foreach (var file in files)
+                fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                    .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
+            var pages = target.GetAllPosts();
+
+            var actualPage = pages.Single();
+            var actual = actualPage.CategoryIds.Single();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReturnTheCategoriesFromAMultipleCategoryPost()
+        {
+            var expected1 = Guid.NewGuid();
+            var expected2 = Guid.NewGuid();
+            var expected3 = Guid.NewGuid();
+            var categoryIds = new List<Guid>() { expected1, expected2, expected3 };
+
+            string xml = $"<post><categories><category>{expected1.ToString()}</category><category>{expected2.ToString()}</category><category>{expected3.ToString()}</category></categories></post>";
+
+            var files = new List<string>();
+            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+
+            var fileSystem = new Mock<IFile>();
+            var directoryProvider = new Mock<IDirectory>();
+
+            directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
+                    .Returns(files);
+
+            foreach (var file in files)
+                fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                    .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
+            var pages = target.GetAllPosts();
+
+            var actualPage = pages.Single();
+            var actual = actualPage.CategoryIds;
+
+            foreach (var categoryid in categoryIds)
+                Assert.True(actual.Contains(categoryid));
         }
 
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)

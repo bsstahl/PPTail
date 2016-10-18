@@ -379,5 +379,57 @@ namespace PPTail.Generator.T4Html.Test
             }
         }
 
+        [Fact]
+        public void ReplaceTheCategoriesPlaceholderWithBlankIfNoCategoriesAreSelected()
+        {
+            const string placeholderText = "{Categories}";
+
+            var categoryList = new List<Category>();
+            for (int i = 0; i < 10; i++)
+                categoryList.Add((null as Category).Create());
+
+            var categoryIds = new List<Guid>();
+            var pageData = (null as ContentItem).Create(categoryIds);
+
+            string template = $"*****{placeholderText}*****";
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
+
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+            var siteSettings = (null as SiteSettings).Create();
+
+            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
+
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            Assert.False(string.IsNullOrWhiteSpace(actual));
+        }
+
+        [Fact]
+        public void ReplaceTheCategoriesPlaceholderWithBlankIfSelectedCategoriesIsNull()
+        {
+            const string placeholderText = "{Categories}";
+
+            var categoryList = new List<Category>();
+            for (int i = 0; i < 10; i++)
+                categoryList.Add((null as Category).Create());
+
+            IEnumerable<Guid> categoryIds = null;
+            var pageData = (null as ContentItem).Create(categoryIds);
+
+            string template = $"*****{placeholderText}*****";
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
+
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+            var siteSettings = (null as SiteSettings).Create();
+
+            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
+
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            Console.WriteLine(actual);
+
+            Assert.False(string.IsNullOrWhiteSpace(actual));
+        }
+
     }
 }

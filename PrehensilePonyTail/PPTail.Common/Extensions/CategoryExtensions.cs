@@ -12,9 +12,12 @@ namespace PPTail.Extensions
         public static string CategoryLinkList(this IEnumerable<Category> categories, IEnumerable<Guid> selectedCategoryIds, ISettings settings, string pathToRoot, string cssClass)
         {
             var results = string.Empty;
-            var selectedCategories = categories.Where(c => selectedCategoryIds.Contains(c.Id));
-            foreach (var category in selectedCategories)
-                results += $"{settings.CreateSearchLink(pathToRoot, category.Name, "Category", cssClass)}&nbsp;";
+            if (selectedCategoryIds != null)
+            {
+                var selectedCategories = categories.Where(c => selectedCategoryIds.Contains(c.Id));
+                foreach (var category in selectedCategories)
+                    results += $"{settings.CreateSearchLink(pathToRoot, category.Name, "Category", cssClass)}&nbsp;";
+            }
             return results;
         }
 

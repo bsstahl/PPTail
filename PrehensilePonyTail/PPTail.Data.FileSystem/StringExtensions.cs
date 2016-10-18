@@ -74,6 +74,9 @@ namespace PPTail.Data.FileSystem
                 var tagElements = node.Descendants().Where(n => n.Name.LocalName == "tag");
                 var tags = tagElements.Select(e => e.Value);
 
+                var categoryNodes = node.Descendants().Where(n => n.Name.LocalName == "category");
+                var categoryIds = categoryNodes.Select(n => Guid.Parse(n.Value));
+
                 result = new ContentItem()
                 {
                     IsPublished = isPublished,
@@ -86,7 +89,8 @@ namespace PPTail.Data.FileSystem
                     PublicationDate = publicationDate,
                     LastModificationDate = lastModificationDate,
                     Tags = tags,
-                    ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}"
+                    ByLine = string.IsNullOrEmpty(author) ? string.Empty : $"by {author}",
+                    CategoryIds = categoryIds
                 };
             }
 

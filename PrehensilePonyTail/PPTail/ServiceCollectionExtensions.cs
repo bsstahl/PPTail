@@ -31,8 +31,12 @@ namespace PPTail
             container.AddSingleton<SiteGenerator.Builder>(c => new PPTail.SiteGenerator.Builder(c));
 
             var contentRepo = container.BuildServiceProvider().GetService<Interfaces.IContentRepository>();
+
             var siteSettings = contentRepo.GetSiteSettings();
             container.AddSingleton<SiteSettings>(siteSettings);
+
+            var categories = contentRepo.GetCategories();
+            container.AddSingleton<IEnumerable<Category>>(categories);
 
             return container;
         }
