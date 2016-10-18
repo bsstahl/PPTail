@@ -33,6 +33,8 @@ namespace PPTail.SiteGenerator
             var contactProvider = ServiceProvider.GetService<IContactProvider>();
             var searchProvider = ServiceProvider.GetService<ISearchProvider>();
 
+            var categories = ServiceProvider.GetService<IEnumerable<Category>>();
+
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
             var pages = contentRepo.GetAllPages();
@@ -122,12 +124,20 @@ namespace PPTail.SiteGenerator
 
             // Add Search Pages
             var tags = posts.SelectMany(p => p.Tags).Distinct();
-            foreach (var tag in tags.Where(t => !string.IsNullOrEmpty(t)))
+            var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
+            var usedCategories = categories.Where(c => categoryIds.Contains(c.Id));
+            var usedCategoryNames = usedCategories.Select(c => c.Name);
+
+            var searchNames = new List<string>();
+            searchNames.AddRange(tags);
+            searchNames.AddRange(usedCategoryNames);
+
+            foreach (var name in searchNames.Distinct().Where(t => !string.IsNullOrEmpty(t)))
             {
                 result.Add(new SiteFile()
                 {
-                    Content = searchProvider.GenerateSearchResultsPage(tag, posts, childLevelNavigationContent, childLevelSidebarContent, "../"),
-                    RelativeFilePath = $"Search/{tag.CreateSlug()}.{settings.OutputFileExtension}",
+                    Content = searchProvider.GenerateSearchResultsPage(name, posts, childLevelNavigationContent, childLevelSidebarContent, "../"),
+                    RelativeFilePath = $"Search/{name.CreateSlug()}.{settings.OutputFileExtension}",
                     SourceTemplateType = Enumerations.TemplateType.SearchPage,
                     IsBase64Encoded = false
                 });

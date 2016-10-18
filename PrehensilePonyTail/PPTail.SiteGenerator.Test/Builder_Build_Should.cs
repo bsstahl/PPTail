@@ -9,6 +9,7 @@ using PPTail.Entities;
 using PPTail.Extensions;
 using TestHelperExtensions;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace PPTail.SiteGenerator.Test
 {
@@ -618,7 +619,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void ReturnOneSearchPageForEachKeyword()
+        public void ReturnOneSearchPageForEachTag()
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var tags = posts.SelectMany(p => p.Tags).Distinct();
@@ -633,6 +634,59 @@ namespace PPTail.SiteGenerator.Test
 
             foreach (var tag in tags)
                 searchProvider.Verify(s => s.GenerateSearchResultsPage(tag, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void ReturnOneSearchPageForEachCategory()
+        {
+            var categories = (null as IEnumerable<Category>).Create(5);
+            int postCount = 25.GetRandom(10);
+
+            var posts = (null as IEnumerable<ContentItem>).Create(categories, postCount);
+
+            var usedCategoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
+            var usedCategories = categories.Where(c => usedCategoryIds.Contains(c.Id));
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, categories);
+            var actual = target.Build();
+
+            foreach (var category in usedCategories)
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(category.Name, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void ReturnOneSearchPageEvenIfNameIsUsedAsATagAndACategory()
+        {
+            string overlappingName = string.Empty.GetRandom();
+            string otherTag = string.Empty.GetRandom();
+            var targetCategory = (null as Category).Create(Guid.NewGuid(), overlappingName, "target_category");
+            var otherCategory = (null as Category).Create();
+            var allCategories = new List<Category>() { targetCategory, otherCategory };
+
+            var post1 = (null as ContentItem).Create(targetCategory.Id, new List<string>() { otherTag });
+            var post2 = (null as ContentItem).Create(otherCategory.Id, new List<string>() { overlappingName });
+
+            var posts = new List<ContentItem>() { post1, post2 };
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var usedCategoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var searchProvider = new Mock<ISearchProvider>();
+
+            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, allCategories);
+            var actual = target.Build();
+
+            searchProvider.Setup(s => s.GenerateSearchResultsPage(otherTag, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            searchProvider.Setup(s => s.GenerateSearchResultsPage(otherCategory.Name, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+
+            searchProvider.Verify(s => s.GenerateSearchResultsPage(overlappingName, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]

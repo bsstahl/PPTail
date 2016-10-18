@@ -44,7 +44,7 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, ISettings settings)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
@@ -67,25 +67,30 @@ namespace PPTail.SiteGenerator.Test
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, string pageFilenameExtension)
         {
             var settings = (null as Settings).Create(pageFilenameExtension);
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IEnumerable<Category> categories)
+        {
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), categories);
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, INavigationProvider navProvider)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, (null as ISettings).Create(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, (null as ISettings).Create(), Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IPageGenerator pageGen)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, ISettings settings, SiteSettings siteSettings)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
         {
             IServiceCollection container = new ServiceCollection();
 
@@ -97,6 +102,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
             container.AddSingleton<ISearchProvider>(searchProvider);
+            container.AddSingleton<IEnumerable<Category>>(categories);
 
             return ignore.Create(container);
         }
@@ -108,17 +114,35 @@ namespace PPTail.SiteGenerator.Test
 
         public static ContentItem Create(this ContentItem ignore)
         {
+            var categoryId = Guid.NewGuid();
+            return ignore.Create(categoryId);
+        }
+
+        public static ContentItem Create(this ContentItem ignore, Guid categoryId)
+        {
+            string tag = string.Empty.GetRandom();
+            return ignore.Create(categoryId, new List<string>() { tag });
+        }
+
+        public static ContentItem Create(this ContentItem ignore, string tag)
+        {
+            var categoryId = Guid.NewGuid();
+            return ignore.Create(categoryId, new List<string>() { tag });
+        }
+
+        public static ContentItem Create(this ContentItem ignore, Guid categoryId, IEnumerable<string> tags)
+        {
             return new ContentItem()
             {
                 Author = string.Empty.GetRandom(),
-                CategoryIds = new List<Guid>() { Guid.NewGuid() },
+                CategoryIds = new List<Guid>() { categoryId },
                 Content = string.Empty.GetRandom(),
                 Description = string.Empty.GetRandom(),
                 IsPublished = true,
                 LastModificationDate = DateTime.UtcNow.AddDays(-10.GetRandom()),
                 PublicationDate = DateTime.UtcNow.AddDays(-20.GetRandom(10)),
                 Slug = string.Empty.GetRandom(),
-                Tags = (null as IEnumerable<string>).CreateTags(),
+                Tags = tags,
                 Title = string.Empty.GetRandom()
             };
         }
@@ -130,9 +154,15 @@ namespace PPTail.SiteGenerator.Test
 
         public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
         {
+            var allCategories = (null as IEnumerable<Category>).Create();
+            return ignore.Create(allCategories, count);
+        }
+
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, IEnumerable<Category> allCategories, int count)
+        {
             var contentItems = new List<ContentItem>();
             for (int i = 0; i < count; i++)
-                contentItems.Add((null as ContentItem).Create());
+                contentItems.Add((null as ContentItem).Create(allCategories.GetRandom().Id));
             return contentItems;
         }
 
@@ -225,6 +255,37 @@ namespace PPTail.SiteGenerator.Test
             var settings = new Mock<ISettings>();
             settings.SetupGet(s => s.ExtendedSettings).Returns(extendedSettings);
             return settings.Object;
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
+        {
+            return ignore.Create(8.GetRandom(3));
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, int count)
+        {
+            var result = new List<Category>();
+            for (int i = 0; i < count; i++)
+                result.Add((null as Category).Create());
+            return result;
+        }
+
+        public static Category Create(this Category ignore)
+        {
+            var id = Guid.NewGuid();
+            var name = $"nameof_{id.ToString()}";
+            var description = $"descriptionof_{id.ToString()}";
+            return ignore.Create(id, name, description);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name, string description)
+        {
+            return new Category()
+            {
+                Id = id,
+                Name = name,
+                Description = description
+            };
         }
     }
 }
