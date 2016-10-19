@@ -44,7 +44,7 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, ISettings settings)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), new List<Category>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
@@ -67,12 +67,12 @@ namespace PPTail.SiteGenerator.Test
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, string pageFilenameExtension)
         {
             var settings = (null as Settings).Create(pageFilenameExtension);
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), new List<Category>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), new List<Category>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IEnumerable<Category> categories)
@@ -82,12 +82,12 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, INavigationProvider navProvider)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, (null as ISettings).Create(), Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, (null as ISettings).Create(), Mock.Of<SiteSettings>(), new List<Category>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IPageGenerator pageGen)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), Mock.Of<IEnumerable<Category>>());
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), new List<Category>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)

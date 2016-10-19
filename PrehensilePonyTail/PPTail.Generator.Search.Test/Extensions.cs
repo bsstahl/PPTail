@@ -15,16 +15,26 @@ namespace PPTail.Generator.Search.Test
     {
         public static ISearchProvider Create(this ISearchProvider ignore)
         {
-            return ignore.Create(Mock.Of<IEnumerable<Template>>(), 
-                Mock.Of<Settings>(), Mock.Of<SiteSettings>());
+            return ignore.Create(Mock.Of<IEnumerable<Template>>(),
+                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null);
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>());
+            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null);
+        }
+
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, IEnumerable<Category> categories)
+        {
+            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), categories);
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings)
+        {
+            return ignore.Create(templates, settings, siteSettings, null);
+        }
+
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
         {
             var serviceCollection = new ServiceCollection();
 
@@ -36,6 +46,9 @@ namespace PPTail.Generator.Search.Test
 
             if (siteSettings != null)
                 serviceCollection.AddSingleton<SiteSettings>(siteSettings);
+
+            if (categories != null)
+                serviceCollection.AddSingleton<IEnumerable<Category>>(categories);
 
             return new PageGenerator(serviceCollection.BuildServiceProvider());
         }
@@ -86,16 +99,23 @@ namespace PPTail.Generator.Search.Test
 
         public static ContentItem Create(this ContentItem ignore, string tag)
         {
-            return ignore.Create(new List<string>() { tag });
+            var tags = new List<string>() { tag };
+            return ignore.Create(Guid.NewGuid(), tags);
         }
 
-        public static ContentItem Create(this ContentItem ignore, IEnumerable<string> tags)
+        public static ContentItem Create(this ContentItem ignore, Guid categoryId)
+        {
+            var tags = new List<string>() { string.Empty.GetRandom() };
+            return ignore.Create(categoryId, tags);
+        }
+
+        public static ContentItem Create(this ContentItem ignore, Guid categoryId, IEnumerable<string> tags)
         {
             string author = string.Empty.GetRandom();
             return new ContentItem()
             {
                 Author = author,
-                CategoryIds = new List<Guid>() { Guid.NewGuid() },
+                CategoryIds = new List<Guid>() { categoryId },
                 Content = string.Empty.GetRandom(),
                 Description = string.Empty.GetRandom(),
                 IsPublished = true,
@@ -134,6 +154,36 @@ namespace PPTail.Generator.Search.Test
             return result;
         }
 
+        public static Category Create(this Category ignore)
+        {
+            Guid id = Guid.NewGuid();
+            string name = $"nameof_{id.ToString()}";
+            string description = $"descriptionof_{id.ToString()}";
+            return ignore.Create(id, name, description);
+        }
+
+        public static Category Create(this Category ignore, Guid id, string name, string description)
+        {
+            return new Category()
+            {
+                Id = id,
+                Name = name,
+                Description = description
+            };
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
+        {
+            return ignore.Create(6.GetRandom(3));
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, int count)
+        {
+            var result = new List<Category>();
+            for (int i = 0; i < count; i++)
+                result.Add((null as Category).Create());
+            return result;
+        }
 
     }
 }

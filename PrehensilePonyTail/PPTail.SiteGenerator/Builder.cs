@@ -126,7 +126,10 @@ namespace PPTail.SiteGenerator
             var tags = posts.SelectMany(p => p.Tags).Distinct();
             var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
             var usedCategories = categories.Where(c => categoryIds.Contains(c.Id));
-            var usedCategoryNames = usedCategories.Select(c => c.Name);
+
+            IEnumerable<string> usedCategoryNames = new List<string>();
+            if (usedCategories.Any())
+                usedCategoryNames = usedCategories.Select(c => c.Name);
 
             var searchNames = new List<string>();
             searchNames.AddRange(tags);
