@@ -54,7 +54,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
             var target = (null as Builder).Create(contentRepo.Object);
             var actual = target.Build();
-            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains("posts/")));
+            Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains("posts\\")));
         }
 
         [Fact]
@@ -87,8 +87,9 @@ namespace PPTail.SiteGenerator.Test
             var actualPages = target.Build();
             var actualPage = actualPages.Single(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage);
 
-            var expected = $"posts/{contentItem.Slug}.{extension}";
-            Assert.Equal(expected, actualPage.RelativeFilePath.ToLowerInvariant());
+            string expectedFileName = $"{contentItem.Slug}.{extension}";
+            var expectedFilePath = System.IO.Path.Combine("posts", expectedFileName);
+            Assert.Equal(expectedFilePath, actualPage.RelativeFilePath.ToLowerInvariant());
         }
 
         [Fact]
@@ -865,6 +866,67 @@ namespace PPTail.SiteGenerator.Test
             var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
 
             Assert.False(actualPages.Any(p => p.IsBase64Encoded));
+        }
+
+        [Fact]
+        public void ReturnOneRedirectItemForEachPost()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            string filenameExtension = string.Empty.GetRandom();
+
+            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var actual = target.Build();
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect);
+
+            Assert.Equal(posts.Count(), actualPages.Count());
+        }
+
+        [Fact]
+        public void PassTheCorrectRedirectToUrlForEachPostToTheRedirectProvider()
+        {
+            string folderName = "Posts";
+            string filenameExtension = string.Empty.GetRandom();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var redirectProvider = new Mock<IRedirectProvider>();
+            foreach (var post in posts)
+            {
+                string fileName = $"{post.Slug}.{filenameExtension}";
+                string expectedUrl = System.IO.Path.Combine(folderName, fileName);
+                redirectProvider.Setup(r => r.GenerateRedirect(It.Is<string>(s => s == expectedUrl))).Verifiable();
+            }
+
+            var target = (null as Builder).Create(contentRepo.Object, redirectProvider.Object, filenameExtension);
+            var actual = target.Build();
+
+            redirectProvider.VerifyAll();
+        }
+
+        [Fact]
+        public void ReturnRedirectWithTheCorrectFilePath()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var post = posts.Single();
+
+            string folderName = "Permalinks";
+            string filenameExtension = string.Empty.GetRandom();
+            string fileName = $"{post.Id.ToString()}.{filenameExtension}";
+            string expectedPath = System.IO.Path.Combine(folderName, fileName);
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+
+            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var actual = target.Build();
+            var actualPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect).Single();
+
+            Assert.Contains(expectedPath, actualPage.RelativeFilePath);
         }
     }
 }

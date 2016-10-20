@@ -49,25 +49,30 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
         {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), pageFilenameExtension);
+            return ignore.Create(contentRepo, Mock.Of<IRedirectProvider>(), pageFilenameExtension);
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, string pageFilenameExtension)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IRedirectProvider redirectProvider, string pageFilenameExtension)
+        {
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), redirectProvider, pageFilenameExtension);
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IRedirectProvider redirectProvider, string pageFilenameExtension)
         {
             var contactProvider = Mock.Of<IContactProvider>();
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, pageFilenameExtension);
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, redirectProvider, pageFilenameExtension);
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, string pageFilenameExtension)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, IRedirectProvider redirectProvider, string pageFilenameExtension)
         {
             var searchProvider = Mock.Of<ISearchProvider>();
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, pageFilenameExtension);
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, redirectProvider, pageFilenameExtension);
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, string pageFilenameExtension)
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IRedirectProvider redirectProvider, string pageFilenameExtension)
         {
             var settings = (null as Settings).Create(pageFilenameExtension);
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), new List<Category>());
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), redirectProvider, settings, Mock.Of<SiteSettings>(), new List<Category>());
         }
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider)
@@ -92,6 +97,12 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
         {
+            IRedirectProvider redirectProvider = Mock.Of<IRedirectProvider>();
+            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, pageGen, navProvider, redirectProvider, settings, siteSettings, categories);
+        }
+
+        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
+        {
             IServiceCollection container = new ServiceCollection();
 
             container.AddSingleton<IContentRepository>(contentRepo);
@@ -103,6 +114,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IContactProvider>(contactProvider);
             container.AddSingleton<ISearchProvider>(searchProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
+            container.AddSingleton<IRedirectProvider>(redirectProvider);
 
             return ignore.Create(container);
         }
@@ -134,6 +146,7 @@ namespace PPTail.SiteGenerator.Test
         {
             return new ContentItem()
             {
+                Id = Guid.NewGuid(),
                 Author = string.Empty.GetRandom(),
                 CategoryIds = new List<Guid>() { categoryId },
                 Content = string.Empty.GetRandom(),

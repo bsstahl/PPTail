@@ -32,6 +32,7 @@ namespace PPTail.SiteGenerator
             var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
             var contactProvider = ServiceProvider.GetService<IContactProvider>();
             var searchProvider = ServiceProvider.GetService<ISearchProvider>();
+            var redirectProvider = ServiceProvider.GetService<IRedirectProvider>();
 
             var categories = ServiceProvider.GetService<IEnumerable<Category>>();
 
@@ -96,11 +97,24 @@ namespace PPTail.SiteGenerator
                     if (string.IsNullOrWhiteSpace(post.Slug))
                         post.Slug = post.Title.CreateSlug();
 
+                    // Add the post page
+                    string postFileName = $"{post.Slug.HTMLEncode()}.{settings.OutputFileExtension}";
+                    string postFilePath = System.IO.Path.Combine("Posts", postFileName);
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Posts/{post.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
+                        RelativeFilePath = postFilePath,
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
                         Content = pageGen.GeneratePostPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, post)
+                    });
+
+                    // Add the permalink page
+                    string permalinkFileName = $"{post.Id.ToString().HTMLEncode()}.{settings.OutputFileExtension}";
+                    string permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
+                    result.Add(new SiteFile()
+                    {
+                        RelativeFilePath = permalinkFilePath,
+                        SourceTemplateType = Enumerations.TemplateType.Redirect,
+                        Content = redirectProvider.GenerateRedirect(postFilePath)
                     });
                 }
             }
