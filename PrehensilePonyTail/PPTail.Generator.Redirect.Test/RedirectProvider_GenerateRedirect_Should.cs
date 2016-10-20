@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PPTail.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace PPTail.Generator.Redirect.Test
         public void IncludeTheUrlInTheOutput()
         {
             string url = string.Empty.GetRandom();
-            var target = new RedirectProvider();
+            string redirectTemplate = "window.location.assign(\"{Url}\");";
+            var target = (null as IRedirectProvider).Create(redirectTemplate);
             var actual = target.GenerateRedirect(url);
             Assert.Contains(url, actual);
         }
@@ -23,7 +25,8 @@ namespace PPTail.Generator.Redirect.Test
         {
             string url = string.Empty.GetRandom();
             string command = "window.location.assign(";
-            var target = new RedirectProvider();
+            string redirectTemplate = "window.location.assign(\"{Url}\");";
+            var target = (null as IRedirectProvider).Create(redirectTemplate);
             var actual = target.GenerateRedirect(url);
             Assert.Contains(command, actual);
         }
