@@ -26,5 +26,11 @@ namespace PPTail.Extensions
             return pageTemplate.ProcessNonContentItemTemplate(sidebarContent, navContent, siteSettings, settings, pageContent, pageTitle);
         }
 
+        public static string GetPermalink(this ContentItem post, string pathToRoot, string outputFileExtension, string linkText)
+        {
+            string filename = $"{post.Id.ToString()}.{outputFileExtension}";
+            string url = System.IO.Path.Combine(pathToRoot, "Permalinks", filename).ToHttpSlashes();
+            return $"<a href=\"{url}\" rel=\"bookmark\">{linkText}</a>";
+        }
     }
 }

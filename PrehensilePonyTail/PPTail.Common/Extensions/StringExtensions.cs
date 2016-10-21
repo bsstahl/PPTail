@@ -19,7 +19,8 @@ namespace PPTail.Extensions
                 .Replace("{LastModificationDate}", item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier))
                 .Replace("{ByLine}", item.ByLine)
                 .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"))
-                .Replace("{Categories}", categories.CategoryLinkList(item.CategoryIds, settings, pathToRoot, "small"));
+                .Replace("{Categories}", categories.CategoryLinkList(item.CategoryIds, settings, pathToRoot, "small"))
+                .Replace("{Permalink}", item.GetPermalink(pathToRoot, settings.OutputFileExtension, "Permalink"));
         }
 
         internal static string ReplaceNonContentItemSpecificVariables(this string template, ISettings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)
