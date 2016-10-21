@@ -110,11 +110,12 @@ namespace PPTail.SiteGenerator
                     // Add the permalink page
                     string permalinkFileName = $"{post.Id.ToString().HTMLEncode()}.{settings.OutputFileExtension}";
                     string permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
+                    string redirectFilePath = System.IO.Path.Combine("..", postFilePath);
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = permalinkFilePath,
                         SourceTemplateType = Enumerations.TemplateType.Redirect,
-                        Content = redirectProvider.GenerateRedirect(postFilePath)
+                        Content = redirectProvider.GenerateRedirect(redirectFilePath)
                     });
                 }
             }

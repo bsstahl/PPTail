@@ -28,6 +28,7 @@ namespace PPTail
             container.AddSingleton<Interfaces.IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
             container.AddSingleton<Interfaces.IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
             container.AddSingleton<Interfaces.ISearchProvider>(c => new PPTail.Generator.Search.PageGenerator(c));
+            container.AddSingleton<Interfaces.IRedirectProvider>(c => new PPTail.Generator.Redirect.RedirectProvider(c));
             container.AddSingleton<SiteGenerator.Builder>(c => new PPTail.SiteGenerator.Builder(c));
 
             var contentRepo = container.BuildServiceProvider().GetService<Interfaces.IContentRepository>();

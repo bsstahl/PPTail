@@ -898,7 +898,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var post in posts)
             {
                 string fileName = $"{post.Slug}.{filenameExtension}";
-                string expectedUrl = System.IO.Path.Combine(folderName, fileName);
+                string expectedUrl = System.IO.Path.Combine("..", folderName, fileName);
                 redirectProvider.Setup(r => r.GenerateRedirect(It.Is<string>(s => s == expectedUrl))).Verifiable();
             }
 

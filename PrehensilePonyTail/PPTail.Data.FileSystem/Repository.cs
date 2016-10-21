@@ -64,7 +64,7 @@ namespace PPTail.Data.FileSystem
             var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
-                var contentItem = fileSystem.ReadAllText(file).ParseContentItem("page");
+                var contentItem = fileSystem.ReadAllText(file).ParseContentItem(file, "page");
                 if (contentItem != null)
                     results.Add(contentItem);
             }
@@ -81,7 +81,7 @@ namespace PPTail.Data.FileSystem
             var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
-                var contentItem = fileSystem.ReadAllText(file).ParseContentItem("post");
+                var contentItem = fileSystem.ReadAllText(file).ParseContentItem(file, "post");
                 if (contentItem != null)
                     results.Add(contentItem);
             }

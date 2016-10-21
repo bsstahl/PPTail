@@ -41,7 +41,7 @@ namespace PPTail.Data.FileSystem
             return result;
         }
 
-        public static ContentItem ParseContentItem(this string xmlText, string nodeLocalName)
+        public static ContentItem ParseContentItem(this string xmlText, string filename, string nodeLocalName)
         {
             ContentItem result = null;
 
@@ -57,6 +57,9 @@ namespace PPTail.Data.FileSystem
 
             if (node != null && node.Name.LocalName == nodeLocalName)
             {
+                string fileId = System.IO.Path.GetFileNameWithoutExtension(filename);
+                Guid id = Guid.Parse(fileId);
+
                 string author = node.GetElementValue("author");
 
                 bool isPublished = false;
@@ -79,6 +82,7 @@ namespace PPTail.Data.FileSystem
 
                 result = new ContentItem()
                 {
+                    Id = id,
                     IsPublished = isPublished,
                     ShowInList = isShowInList,
                     Title = node.GetElementValue("title"),

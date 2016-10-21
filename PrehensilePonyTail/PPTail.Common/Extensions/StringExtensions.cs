@@ -86,5 +86,10 @@ namespace PPTail.Extensions
                 results += $"{settings.CreateSearchLink(pathToRoot, tag, "Tag", cssClass)}&nbsp;";
             return results;
         }
+
+        public static string ToHttpSlashes(this string path)
+        {
+            return path.Replace("\\", "/");
+        }
     }
 }
