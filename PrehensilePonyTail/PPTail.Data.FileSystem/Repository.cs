@@ -13,6 +13,8 @@ namespace PPTail.Data.FileSystem
     public class Repository : Interfaces.IContentRepository
     {
         const int _defaultPostsPerPage = 3;
+        const int _defaultPostsPerFeed = 5;
+
         const string _sourceDataPathSettingName = "sourceDataPath";
         const string _widgetRelativePath = "datastore\\widgets";
         const string _categoriesRelativePath = "categories.xml";
@@ -50,6 +52,9 @@ namespace PPTail.Data.FileSystem
 
             if (result.PostsPerPage == 0)
                 result.PostsPerPage = _defaultPostsPerPage;
+
+            if (result.PostsPerFeed == 0)
+                result.PostsPerFeed = _defaultPostsPerFeed;
 
             return result;
         }

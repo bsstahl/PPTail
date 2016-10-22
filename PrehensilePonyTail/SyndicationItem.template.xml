@@ -1,0 +1,8 @@
+﻿<item>
+  <title>{Title}</title>
+  <description>{Content}</description>
+  <link>{Link}</link>
+  <author>{Author}</author>
+  <guid>{Permalink}</guid>
+  <pubDate>{PublicationDate}</pubDate>
+</item>

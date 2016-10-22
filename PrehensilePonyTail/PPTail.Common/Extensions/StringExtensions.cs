@@ -9,17 +9,32 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ContentItem item, string pathToRoot)
+        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ContentItem item, string pathToRoot, bool xmlEncodeContent)
         {
+
+            string content = item.Content;
+            string description = item.Description;
+            string pubDate = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
+            string lastModDate = item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+
+            if (xmlEncodeContent)
+            {
+                content = item.Content.XmlEncode();
+                description = item.Description.XmlEncode();
+                pubDate = item.PublicationDate.ToString("o");
+                lastModDate = item.LastModificationDate.ToString("o");
+            }
+
             return template.Replace("{Title}", item.Title)
-                .Replace("{Content}", item.Content)
+                .Replace("{Content}", content)
                 .Replace("{Author}", item.Author)
-                .Replace("{Description}", item.Description)
-                .Replace("{PublicationDate}", item.PublicationDate.ToString(settings.DateTimeFormatSpecifier))
-                .Replace("{LastModificationDate}", item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier))
+                .Replace("{Description}", description)
+                .Replace("{PublicationDate}", pubDate)
+                .Replace("{LastModificationDate}", lastModDate)
                 .Replace("{ByLine}", item.ByLine)
                 .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"))
                 .Replace("{Categories}", categories.CategoryLinkList(item.CategoryIds, settings, pathToRoot, "small"))
+                .Replace("{Link}", item.GetLinkUrl(pathToRoot, settings.OutputFileExtension))
                 .Replace("{Permalink}", item.GetPermalink(pathToRoot, settings.OutputFileExtension, "Permalink"));
         }
 
@@ -64,6 +79,17 @@ namespace PPTail.Extensions
                 .Replace("e28093", "-")
                 .Replace("e2809c", "")
                 .Replace("e2809d", "");
+        }
+
+        public static string XmlEncode(this string content)
+        {
+            return content.Replace("<", "&lt;")
+                .Replace(">","&gt;")
+                .Replace("“", "&quot;")
+                .Replace("”", "&quot;")
+                .Replace("\"", "&quot;")
+                .Replace("'", "&apos;")
+                .Replace("&", "&amp;");
         }
 
         public static string RemoveConsecutiveDashes(this string data)

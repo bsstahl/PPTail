@@ -14,7 +14,7 @@ namespace PPTail.Data.FileSystem.Test
 {
     public static class Extensions
     {
-        const string _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage></settings>";
+        const string _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage><postsperfeed>{3}</postsperfeed></settings>";
         const string _sourceDataPathSettingName = "sourceDataPath";
 
         const string _widgetZoneNodeFormat = "<widget id=\"{0}\" title=\"{1}\" showTitle=\"{2}\">{3}</widget>";
@@ -52,7 +52,12 @@ namespace PPTail.Data.FileSystem.Test
 
         public static string BuildXml(this SiteSettings ignore, string title, string description, int postsPerPage)
         {
-            return string.Format(_siteSettingsXmlTemplate, title, description, postsPerPage.ToString());
+            return ignore.BuildXml(title, description, postsPerPage, 3);
+        }
+
+        public static string BuildXml(this SiteSettings ignore, string title, string description, int postsPerPage, int postsPerFeed)
+        {
+            return string.Format(_siteSettingsXmlTemplate, title, description, postsPerPage.ToString(), postsPerFeed.ToString());
         }
 
         public static XElement RemoveDescendants(this XElement element, string elementLocalName)

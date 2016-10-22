@@ -42,10 +42,11 @@ namespace PPTail.Generator.Search
         public string GenerateSearchResultsPage(string tag, IEnumerable<ContentItem> contentItems, string navigationContent, string sidebarContent, string pathToRoot)
         {
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
+            var settings = _serviceProvider.GetService<ISettings>();
             var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
             Guid categoryId = (category == null) ? Guid.Empty : category.Id;
             var posts = contentItems.Where(i => i.Tags.Contains(tag) || i.CategoryIds.Contains(categoryId));
-            return posts.ProcessTemplate(_settings, _siteSettings, categories, _searchTemplate, _itemTemplate, sidebarContent, navigationContent, $"Tag: {tag}", 0, pathToRoot);
+            return posts.ProcessTemplate(_settings, _siteSettings, categories, _searchTemplate, _itemTemplate, sidebarContent, navigationContent, $"Tag: {tag}", 0, pathToRoot, settings.ItemSeparator, false);
         }
 
     }

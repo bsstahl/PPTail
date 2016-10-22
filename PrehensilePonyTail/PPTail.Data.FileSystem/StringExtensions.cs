@@ -30,11 +30,16 @@ namespace PPTail.Data.FileSystem
                 int postsPerPage = 0;
                 Int32.TryParse(ppPage, out postsPerPage);
 
+                string ppFeed = node.GetElementValue("postsperfeed");
+                int postsPerFeed = 0;
+                Int32.TryParse(ppFeed, out postsPerFeed);
+
                 result = new SiteSettings()
                 {
                     Title = node.GetElementValue("name"),
                     Description = node.GetElementValue("description"),
-                    PostsPerPage = postsPerPage
+                    PostsPerPage = postsPerPage,
+                    PostsPerFeed = postsPerFeed
                 };
             }
 

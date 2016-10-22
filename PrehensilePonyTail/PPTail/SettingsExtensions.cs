@@ -12,8 +12,9 @@ namespace PPTail
         const string _sourceDataPathSettingName = "sourceDataPath";
         const string _outputPathSettingName = "outputPath";
         const string _additionalFilePathsSettingName = "additionalFilePaths";
+        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
 
-        public static ISettings Create(this ISettings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths)
+        public static ISettings Create(this ISettings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths, bool createDasBlogSyndicationCompatibilityFile)
         {
             var settings = new Settings()
             {
@@ -26,6 +27,7 @@ namespace PPTail
             settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourceDataPath);
             settings.ExtendedSettings.Set(_outputPathSettingName, outputPath);
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
+            settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString());
 
             return settings;
         }

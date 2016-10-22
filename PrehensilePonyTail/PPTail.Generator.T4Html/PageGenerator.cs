@@ -43,7 +43,8 @@ namespace PPTail.Generator.T4Html
             var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return posts.ProcessTemplate(_settings, siteSettings, categories, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage, ".");
+            var settings = _serviceProvider.GetService<ISettings>();
+            return posts.ProcessTemplate(_settings, siteSettings, categories, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage, ".", settings.ItemSeparator, false);
         }
 
         public string GenerateStylesheet(SiteSettings siteSettings)
@@ -76,14 +77,14 @@ namespace PPTail.Generator.T4Html
         {
             var template = _templates.Find(TemplateType.ContentPage);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings, categories, "..");
+            return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings, categories, "..", false);
         }
 
         public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
         {
             var template = _templates.Find(TemplateType.PostPage);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings, categories, "..");
+            return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings, categories, "..", false);
         }
 
     }

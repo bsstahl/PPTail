@@ -15,6 +15,7 @@ namespace PPTail.Data.FileSystem.Test
     public class Repository_GetSiteSettings_Should
     {
         const int _defaultPostsPerPage = 3;
+        const int _defaultPostsPerFeed = 5;
         const string _dataFolder = "App_Data";
 
         [Fact]
@@ -188,6 +189,38 @@ namespace PPTail.Data.FileSystem.Test
             var actual = target.GetSiteSettings();
 
             Assert.Equal(_defaultPostsPerPage, actual.PostsPerPage);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForPostsPerFeed()
+        {
+            int expected = 25.GetRandom(5);
+            string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty, 10.GetRandom(3), expected);
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.PostsPerFeed);
+        }
+
+        [Fact]
+        public void ReturnTheDefaultValueIfPostsPerFeedIsNotSupplied()
+        {
+            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2), 100));
+            xml.RemoveDescendants("postsperfeed");
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(_defaultPostsPerFeed, actual.PostsPerFeed);
         }
     }
 }

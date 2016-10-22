@@ -12,11 +12,26 @@ namespace PPTail.SiteGenerator
     public class Builder
     {
         const string _additionalFilePathsSettingName = "additionalFilePaths";
+        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+
         private IServiceProvider _serviceProvider;
 
         public Builder(IServiceProvider serviceProvider)
         {
+            if (serviceProvider == null)
+                throw new ArgumentNullException(nameof(serviceProvider));
+
             _serviceProvider = serviceProvider;
+
+            _serviceProvider.ValidateService<IContentRepository>();
+            _serviceProvider.ValidateService<IPageGenerator>();
+            _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<INavigationProvider>();
+            _serviceProvider.ValidateService<IArchiveProvider>();
+            _serviceProvider.ValidateService<IContactProvider>();
+            _serviceProvider.ValidateService<ISearchProvider>();
+            _serviceProvider.ValidateService<IRedirectProvider>();
+            _serviceProvider.ValidateService<ISyndicationProvider>();
         }
 
         private IServiceProvider ServiceProvider { get { return _serviceProvider; } }
@@ -33,6 +48,7 @@ namespace PPTail.SiteGenerator
             var contactProvider = ServiceProvider.GetService<IContactProvider>();
             var searchProvider = ServiceProvider.GetService<ISearchProvider>();
             var redirectProvider = ServiceProvider.GetService<IRedirectProvider>();
+            var syndicationProvider = ServiceProvider.GetService<ISyndicationProvider>();
 
             var categories = ServiceProvider.GetService<IEnumerable<Category>>();
 
@@ -88,6 +104,26 @@ namespace PPTail.SiteGenerator
                 SourceTemplateType = Enumerations.TemplateType.ContactPage,
                 Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
+
+            // TODO: Create RSS Feed
+            var syndicationContent = syndicationProvider.GenerateFeed(posts);
+            result.Add(new SiteFile()
+            {
+                RelativeFilePath = "./syndication.xml",
+                SourceTemplateType = Enumerations.TemplateType.Syndication,
+                Content = syndicationContent
+            });
+
+            string createCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName);
+            bool createCompatibilityFile = false;
+            bool.TryParse(createCompatibilityFileValue, out createCompatibilityFile);
+            if (createCompatibilityFile)
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = "./syndication.axd",
+                    SourceTemplateType = Enumerations.TemplateType.Syndication,
+                    Content = syndicationContent
+                });
 
             foreach (var post in posts)
             {
@@ -162,7 +198,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add additional raw files
-            string relativePathString = settings.ExtendedSettings.Get(_additionalFilePathsSettingName);
+            string relativePathString = settings.GetExtendedSetting(_additionalFilePathsSettingName);
             if (!string.IsNullOrEmpty(relativePathString))
             {
                 var additionalFilePaths = relativePathString.Split(',');

@@ -16,12 +16,17 @@ namespace PPTail.SiteGenerator.Test
     public class Builder_Build_Should
     {
         const string _additionalFilePathsSettingName = "additionalFilePaths";
+        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
 
         [Fact]
         public void RequestAllPagesFromTheRepository()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
-            var target = (null as Builder).Create(contentRepo.Object);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
             contentRepo.Verify(c => c.GetAllPages(), Times.AtLeastOnce());
         }
@@ -29,8 +34,12 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void RequestAllPostsFromTheRepository()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
-            var target = (null as Builder).Create(contentRepo.Object);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
             contentRepo.Verify(c => c.GetAllPosts(), Times.AtLeastOnce());
         }
@@ -38,10 +47,14 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnOneItemInFolderPagesIfOnePageIsRetrieved()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
             var contentItem = (null as ContentItem).Create();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains("pages/")));
         }
@@ -49,10 +62,14 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnOneItemInFolderPostsIfOnePostIsRetrieved()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
             var contentItem = (null as ContentItem).Create();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
             Assert.Equal(1, actual.Count(f => f.RelativeFilePath.ToLowerInvariant().Contains("posts\\")));
         }
@@ -60,13 +77,18 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SetTheFilenameOfTheContentPageToTheSlugPlusTheExtension()
         {
-            string extension = string.Empty.GetRandom(3);
-            var contentItem = (null as ContentItem).Create();
+            var container = (null as IServiceCollection).Create();
 
+            string extension = string.Empty.GetRandom(3);
+            var settings = (null as Settings).Create(extension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var contentItem = (null as ContentItem).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, extension);
+            var target = (null as Builder).Create(container);
             var actualPages = target.Build();
             var actualPage = actualPages.Single(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage);
 
@@ -77,13 +99,18 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SetTheFilenameOfThePostPageToTheSlugPlusTheExtension()
         {
-            string extension = string.Empty.GetRandom(4);
-            var contentItem = (null as ContentItem).Create();
+            var container = (null as IServiceCollection).Create();
 
+            string extension = string.Empty.GetRandom(4);
+            var settings = (null as ISettings).Create(extension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var contentItem = (null as ContentItem).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, extension);
+            var target = (null as Builder).Create(container);
             var actualPages = target.Build();
             var actualPage = actualPages.Single(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage);
 
@@ -95,15 +122,16 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DontCreateAnyPageFilesIfAllPagesAreUnpublished()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             foreach (var item in contentItems)
                 item.IsPublished = false;
-
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage));
@@ -112,17 +140,18 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void OnlyCreateAsManyPageFilesAsThereArePublishedPages()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
+            contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var expected = contentItems.Count(ci => ci.IsPublished);
 
-            contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
-
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(expected, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage));
@@ -131,18 +160,19 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DoNotCreateOutputForAnUnpublishedPage()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             foreach (var item in contentItems)
                 item.IsPublished = true;
+            contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var unpublishedItem = contentItems.GetRandom();
             unpublishedItem.IsPublished = false;
 
-            contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
-
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
@@ -152,15 +182,16 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DontCreateAnyPostFilesIfAllPostsAreUnpublished()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             foreach (var item in contentItems)
                 item.IsPublished = false;
-
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage));
@@ -169,17 +200,18 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void OnlyCreateAsManyFilesAsThereArePublishedPosts()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var expected = contentItems.Count(ci => ci.IsPublished);
 
-            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
-
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(expected, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage));
@@ -188,18 +220,19 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void DoNotCreateOutputForAnUnpublishedPost()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             foreach (var item in contentItems)
                 item.IsPublished = true;
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var unpublishedItem = contentItems.GetRandom();
             unpublishedItem.IsPublished = false;
 
-            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
-
-            var target = (null as Builder).Create(contentRepo.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
@@ -232,29 +265,21 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPage()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var pageGen = new Mock<IPageGenerator>();
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
+            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
 
             var settings = new Settings();
-            var navProvider = Mock.Of<INavigationProvider>();
+            container.ReplaceDependency<ISettings>(settings);
 
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
-
-            var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -268,16 +293,19 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPost()
         {
+            var container = (null as IServiceCollection).Create();
+
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
-            var archiveProvider = Mock.Of<IArchiveProvider>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var pageGen = new Mock<IPageGenerator>();
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
+            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             foreach (var item in contentItems)
@@ -290,19 +318,17 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void GenerateASlugForAPostWithoutAPreviouslyGeneratedSlug()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(1);
             var post = contentItems.Single();
             post.Slug = string.Empty;
             post.IsPublished = true;
-
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
-            var archiveProvider = Mock.Of<IArchiveProvider>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var pageGen = new Mock<IPageGenerator>();
-
-            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             var postPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage).Single();
@@ -312,19 +338,17 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void GenerateASlugForAPageWithoutAPreviouslyGeneratedSlug()
         {
-            var contentRepo = new Mock<IContentRepository>();
+            var container = (null as IServiceCollection).Create();
 
+            var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(1);
             var page = contentItems.Single();
             page.Slug = string.Empty;
             page.IsPublished = true;
-
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
-            var archiveProvider = Mock.Of<IArchiveProvider>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var pageGen = new Mock<IPageGenerator>();
-
-            var target = (null as Builder).Create(contentRepo.Object, pageGen.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             var contentPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage).Single();
@@ -334,23 +358,14 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallGenerateStylesheetEactlyOnce()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
 
-            var contentRepo = new Mock<IContentRepository>();
             var pageGen = new Mock<IPageGenerator>();
+            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
+
             var settings = new Settings();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
+            container.ReplaceDependency<ISettings>(settings);
 
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
-
-            var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -360,23 +375,14 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallGenerateBootstrapFileEactlyOnce()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
 
-            var contentRepo = new Mock<IContentRepository>();
             var pageGen = new Mock<IPageGenerator>();
+            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
+
             var settings = new Settings();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
+            container.ReplaceDependency<ISettings>(settings);
 
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
-
-            var siteSettings = (null as SiteSettings).Create();
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -386,23 +392,15 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallGenerateHomepageEactlyOnce()
         {
-            var container = new ServiceCollection();
+            // TODO: See if AddSingleton acts the same as ReplaceDependency
+            var container = (null as IServiceCollection).Create();
 
-            var contentRepo = new Mock<IContentRepository>();
             var pageGen = new Mock<IPageGenerator>();
-            var settings = new Settings();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
             container.AddSingleton<IPageGenerator>(pageGen.Object);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
 
-            var siteSettings = (null as SiteSettings).Create();
+            var settings = new Settings();
+            container.AddSingleton<ISettings>(settings);
+
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -412,18 +410,15 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateOneRawSiteFileForEachSourceFile()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
-            var pageGen = Mock.Of<IPageGenerator>();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-            var siteSettings = Mock.Of<SiteSettings>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
             string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
+            container.ReplaceDependency<ISettings>(settings);
 
             var additionalPaths = additionalPathSettingsValue.Split(',');
             int expected = 0;
@@ -435,14 +430,6 @@ namespace PPTail.SiteGenerator.Test
                 contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
             }
 
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
-
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -452,18 +439,15 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ProperlyBase64EncodeAllFileContents()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
-            var pageGen = Mock.Of<IPageGenerator>();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-            var siteSettings = Mock.Of<SiteSettings>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
             string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
+            container.ReplaceDependency<ISettings>(settings);
 
             var additionalPaths = additionalPathSettingsValue.Split(',');
             var sourceFiles = new List<SourceFile>();
@@ -473,14 +457,6 @@ namespace PPTail.SiteGenerator.Test
                 sourceFiles.AddRange(additionalFiles);
                 contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
             }
-
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -496,18 +472,15 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ProperlyMarkAllRawFilesAsBase64Encoded()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
-            var pageGen = Mock.Of<IPageGenerator>();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-            var siteSettings = Mock.Of<SiteSettings>();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
             string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
+            container.ReplaceDependency<ISettings>(settings);
 
             var additionalPaths = additionalPathSettingsValue.Split(',');
             int expected = 0;
@@ -519,14 +492,6 @@ namespace PPTail.SiteGenerator.Test
                 contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
             }
 
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
-
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -536,24 +501,10 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnNoRawFilesIfTheSettingDoesNotExist()
         {
-            var container = new ServiceCollection();
-
-            var contentRepo = new Mock<IContentRepository>();
-            var pageGen = Mock.Of<IPageGenerator>();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-            var siteSettings = Mock.Of<SiteSettings>();
+            var container = (null as IServiceCollection).Create();
 
             var settings = new Settings();
-
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
+            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -564,25 +515,11 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnNoRawFilesIfTheSettingIsEmpty()
         {
-            var container = new ServiceCollection();
-
-            var contentRepo = new Mock<IContentRepository>();
-            var pageGen = Mock.Of<IPageGenerator>();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-            var siteSettings = Mock.Of<SiteSettings>();
+            var container = (null as IServiceCollection).Create();
 
             var settings = new Settings();
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, string.Empty);
-
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
+            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -593,25 +530,11 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnNoRawFilesIfTheSettingIsNull()
         {
-            var container = new ServiceCollection();
-
-            var contentRepo = new Mock<IContentRepository>();
-            var pageGen = Mock.Of<IPageGenerator>();
-            var navProvider = Mock.Of<INavigationProvider>();
-            var archiveProvider = Mock.Of<IArchiveProvider>();
-            var contactProvider = Mock.Of<IContactProvider>();
-            var siteSettings = Mock.Of<SiteSettings>();
+            var container = (null as IServiceCollection).Create();
 
             var settings = new Settings();
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, null);
-
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
-            container.AddSingleton<IPageGenerator>(pageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
-            container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IArchiveProvider>(archiveProvider);
-            container.AddSingleton<IContactProvider>(contactProvider);
+            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -622,15 +545,18 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnOneSearchPageForEachTag()
         {
+            var container = (null as IServiceCollection).Create();
+
             var posts = (null as IEnumerable<ContentItem>).Create();
             var tags = posts.SelectMany(p => p.Tags).Distinct();
-
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             foreach (var tag in tags)
@@ -640,22 +566,25 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnOneSearchPageForEachCategory()
         {
-            var categories = (null as IEnumerable<Category>).Create(5);
-            int postCount = 25.GetRandom(10);
+            var container = (null as IServiceCollection).Create();
 
+            var categories = (null as IEnumerable<Category>).Create(5);
+            container.ReplaceDependency<IEnumerable<Category>>(categories);
+
+            int postCount = 25.GetRandom(10);
             var posts = (null as IEnumerable<ContentItem>).Create(categories, postCount);
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
 
             var usedCategoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
             var usedCategories = categories.Where(c => usedCategoryIds.Contains(c.Id));
-
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-
-            var searchProvider = new Mock<ISearchProvider>();
-
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, categories);
-            var actual = target.Build();
-
             foreach (var category in usedCategories)
                 searchProvider.Verify(s => s.GenerateSearchResultsPage(category.Name, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
         }
@@ -663,25 +592,26 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnOneSearchPageEvenIfNameIsUsedAsATagAndACategory()
         {
+            var container = (null as IServiceCollection).Create();
+
             string overlappingName = string.Empty.GetRandom();
             string otherTag = string.Empty.GetRandom();
             var targetCategory = (null as Category).Create(Guid.NewGuid(), overlappingName, "target_category");
             var otherCategory = (null as Category).Create();
             var allCategories = new List<Category>() { targetCategory, otherCategory };
+            container.ReplaceDependency<IEnumerable<Category>>(allCategories);
 
             var post1 = (null as ContentItem).Create(targetCategory.Id, new List<string>() { otherTag });
             var post2 = (null as ContentItem).Create(otherCategory.Id, new List<string>() { overlappingName });
-
             var posts = new List<ContentItem>() { post1, post2 };
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            var usedCategoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
-
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, allCategories);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             searchProvider.Setup(s => s.GenerateSearchResultsPage(otherTag, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -693,17 +623,20 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SupplyTheFullListOfPostsToEachSearchPage()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var container = (null as IServiceCollection).Create();
 
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
             foreach (var tag in tags)
                 searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
         }
@@ -711,22 +644,26 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SupplyTheNavigationContentToEachSearchPage()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            var navContent = string.Empty.GetRandom();
+            var container = (null as IServiceCollection).Create();
 
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
+            var navContent = string.Empty.GetRandom();
             var navigationProvider = new Mock<INavigationProvider>();
             navigationProvider.Setup(n => n.CreateNavigation(It.IsAny<IEnumerable<ContentItem>>(), "../", It.IsAny<string>()))
                 .Returns(navContent);
+            container.ReplaceDependency<INavigationProvider>(navigationProvider.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, navigationProvider.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
             foreach (var tag in tags)
                 searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), navContent, It.IsAny<string>(), It.IsAny<string>()));
         }
@@ -734,24 +671,28 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SupplyTheSidebarContentToEachSearchPage()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            var sidebarContent = string.Empty.GetRandom();
+            var container = (null as IServiceCollection).Create();
 
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
+            var sidebarContent = string.Empty.GetRandom();
             var pageGen = new Mock<IPageGenerator>();
             pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<ISettings>(), It.IsAny<SiteSettings>(),
                     It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<ContentItem>>(),
                     It.IsAny<IEnumerable<Widget>>(), It.IsAny<string>()))
                 .Returns(sidebarContent);
+            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object, pageGen.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
             foreach (var tag in tags)
                 searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), sidebarContent, It.IsAny<string>()));
         }
@@ -759,42 +700,50 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SupplyTheCorrectPathToRootToEachSearchPage()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            var pathToRoot = "../";
+            string expectedPathToRoot = "../";
 
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
             foreach (var tag in tags)
-                searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), pathToRoot));
+                searchProvider.Verify(s => s.GenerateSearchResultsPage(It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), expectedPathToRoot));
         }
 
         [Fact]
         public void ReturnTheCorrectContentOfTheSearchPage()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var container = (null as IServiceCollection).Create();
 
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
+            container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
+
+            var tags = posts.SelectMany(p => p.Tags).Distinct();
             foreach (var tag in tags)
             {
                 searchProvider.Setup(s => s.GenerateSearchResultsPage(tag, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<String>(), It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(tag.ToBase64());
             }
 
-            var target = (null as Builder).Create(contentRepo.Object, searchProvider.Object);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
-            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
 
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
             foreach (var tag in tags)
             {
                 var tagPage = actualPages.Single(p => p.RelativeFilePath.Contains(tag));
@@ -809,16 +758,19 @@ namespace PPTail.SiteGenerator.Test
             string tagPart2 = string.Empty.GetRandom(4);
             string testTag = $".{tagPart1} {tagPart2}";
 
+            var container = (null as IServiceCollection).Create();
+
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             posts.Single().Tags = new List<string>() { testTag };
-
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            string filenameExtension = string.Empty.GetRandom();
-
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            string filenameExtension = string.Empty.GetRandom();
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
             var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
 
@@ -829,23 +781,23 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void NotProcessAnEmptyTag()
         {
-            string testTag = string.Empty.GetRandom();
+            var container = (null as IServiceCollection).Create();
 
+            string testTag = string.Empty.GetRandom();
             var post1 = (null as ContentItem).Create();
             post1.Tags = new List<string>() { testTag };
-
             var post2 = (null as ContentItem).Create();
             post2.Tags = new List<string>() { string.Empty };
-
             var posts = new List<ContentItem>() { post1, post2 };
-
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            string filenameExtension = string.Empty.GetRandom();
-
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            string filenameExtension = string.Empty.GetRandom();
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage));
@@ -854,33 +806,42 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnContentMarkedAsUnEncoded()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
-            string filenameExtension = string.Empty.GetRandom();
+            var container = (null as IServiceCollection).Create();
 
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            string filenameExtension = string.Empty.GetRandom();
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
-            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
 
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
             Assert.False(actualPages.Any(p => p.IsBase64Encoded));
         }
 
         [Fact]
         public void ReturnOneRedirectItemForEachPost()
         {
-            var posts = (null as IEnumerable<ContentItem>).Create();
+            var container = (null as IServiceCollection).Create();
 
+            var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
             string filenameExtension = string.Empty.GetRandom();
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
 
-            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
-            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect);
 
+            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect);
             Assert.Equal(posts.Count(), actualPages.Count());
         }
 
@@ -890,9 +851,15 @@ namespace PPTail.SiteGenerator.Test
             string folderName = "Posts";
             string filenameExtension = string.Empty.GetRandom();
 
+            var container = (null as IServiceCollection).Create();
+
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
 
             var redirectProvider = new Mock<IRedirectProvider>();
             foreach (var post in posts)
@@ -901,8 +868,9 @@ namespace PPTail.SiteGenerator.Test
                 string expectedUrl = System.IO.Path.Combine("..", folderName, fileName);
                 redirectProvider.Setup(r => r.GenerateRedirect(It.Is<string>(s => s == expectedUrl))).Verifiable();
             }
+            container.ReplaceDependency<IRedirectProvider>(redirectProvider.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, redirectProvider.Object, filenameExtension);
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             redirectProvider.VerifyAll();
@@ -911,6 +879,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnRedirectWithTheCorrectFilePath()
         {
+            var container = (null as IServiceCollection).Create();
+
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
 
@@ -921,12 +891,182 @@ namespace PPTail.SiteGenerator.Test
 
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var target = (null as Builder).Create(contentRepo.Object, filenameExtension);
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var target = (null as Builder).Create(container);
             var actual = target.Build();
-            var actualPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect).Single();
 
+            var actualPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect).Single();
             Assert.Contains(expectedPath, actualPage.RelativeFilePath);
         }
+
+        [Fact]
+        public void CreateTheSyndicationContentExactlyOnce()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            syndicationProvider.Verify(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
+        }
+
+        [Fact]
+        public void ReturnTheSyndicationResourcePage()
+        {
+            string syndicationFileName = "syndication.xml";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
+        }
+
+        [Fact]
+        public void ReturnTheOutputOfTheSyndicationProviderAsTheContentOfTheSyndicationFile()
+        {
+            string syndicationFileExtension = "xml";
+            string syndicationContent = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(syndicationContent);
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            var actualFile = actual.Single(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileExtension));
+            Assert.Equal(syndicationContent, actualFile.Content);
+        }
+
+        [Fact]
+        public void NotGenerateADasBlagCompatibilitySyndicationFileIfNoExtendedSettingExists()
+        {
+            string syndicationFileName = "syndication.axd";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
+        }
+
+        [Fact]
+        public void NotGenerateADasBlagCompatibilitySyndicationFileIfTheExtendedSettingSaysNotTo()
+        {
+            string syndicationFileName = "syndication.axd";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            settings.AddExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
+        }
+
+        [Fact]
+        public void GenerateADasBlagCompatibilitySyndicationFileIfTheExtendedSettingExists()
+        {
+            string syndicationFileName = "syndication.axd";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            settings.AddExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName, true.ToString());
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
+        }
+
     }
 }

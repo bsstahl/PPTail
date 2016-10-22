@@ -10,10 +10,10 @@ namespace PPTail.Extensions
 {
     public static class TemplateExtensions
     {
-        public static string ProcessContentItemTemplate(this Template template, ContentItem item, string sidebarContent, string navContent, SiteSettings siteSettings, ISettings settings, IEnumerable<Category> categories, string pathToRoot)
+        public static string ProcessContentItemTemplate(this Template template, ContentItem item, string sidebarContent, string navContent, SiteSettings siteSettings, ISettings settings, IEnumerable<Category> categories, string pathToRoot, bool xmlEncodeContent)
         {
             return template.Content
-                .ReplaceContentItemVariables(settings, siteSettings, categories, item, pathToRoot)
+                .ReplaceContentItemVariables(settings, siteSettings, categories, item, pathToRoot, xmlEncodeContent)
                 .ReplaceNonContentItemSpecificVariables(settings, siteSettings, sidebarContent, navContent, string.Empty);
         }
 

@@ -28,83 +28,24 @@ namespace PPTail.SiteGenerator.Test
 
         public static Builder Create(this Builder ignore)
         {
-            var contentRepo = Mock.Of<IContentRepository>();
-            return ignore.Create(contentRepo, string.Empty.GetRandom());
+            return ignore.Create((null as IServiceCollection).Create());
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo)
+        public static Builder Create(this Builder ignore, IServiceCollection container)
         {
-            return ignore.Create(contentRepo, string.Empty.GetRandom());
+            return new Builder(container.BuildServiceProvider());
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen)
+        public static IServiceCollection Create(this IServiceCollection ignore)
         {
-            return ignore.Create(contentRepo, pageGen, (null as ISettings).Create());
+            return ignore.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
+                Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
+                Mock.Of<ISettings>(), Mock.Of<SiteSettings>(), new List<Category>());
         }
 
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IPageGenerator pageGen, ISettings settings)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), pageGen, Mock.Of<INavigationProvider>(), settings, Mock.Of<SiteSettings>(), new List<Category>());
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, string pageFilenameExtension)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IRedirectProvider>(), pageFilenameExtension);
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IRedirectProvider redirectProvider, string pageFilenameExtension)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), redirectProvider, pageFilenameExtension);
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IRedirectProvider redirectProvider, string pageFilenameExtension)
-        {
-            var contactProvider = Mock.Of<IContactProvider>();
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, redirectProvider, pageFilenameExtension);
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, IRedirectProvider redirectProvider, string pageFilenameExtension)
-        {
-            var searchProvider = Mock.Of<ISearchProvider>();
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, redirectProvider, pageFilenameExtension);
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IRedirectProvider redirectProvider, string pageFilenameExtension)
-        {
-            var settings = (null as Settings).Create(pageFilenameExtension);
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), redirectProvider, settings, Mock.Of<SiteSettings>(), new List<Category>());
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), new List<Category>());
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IEnumerable<Category> categories)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), categories);
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, INavigationProvider navProvider)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, Mock.Of<IPageGenerator>(), navProvider, (null as ISettings).Create(), Mock.Of<SiteSettings>(), new List<Category>());
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, ISearchProvider searchProvider, IPageGenerator pageGen)
-        {
-            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(), searchProvider, pageGen, Mock.Of<INavigationProvider>(), (null as ISettings).Create(), Mock.Of<SiteSettings>(), new List<Category>());
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
-        {
-            IRedirectProvider redirectProvider = Mock.Of<IRedirectProvider>();
-            return ignore.Create(contentRepo, archiveProvider, contactProvider, searchProvider, pageGen, navProvider, redirectProvider, settings, siteSettings, categories);
-        }
-
-        public static Builder Create(this Builder ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
+        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
         {
             IServiceCollection container = new ServiceCollection();
-
             container.AddSingleton<IContentRepository>(contentRepo);
             container.AddSingleton<IPageGenerator>(pageGen);
             container.AddSingleton<ISettings>(settings);
@@ -113,15 +54,25 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
             container.AddSingleton<ISearchProvider>(searchProvider);
+            container.AddSingleton<ISyndicationProvider>(syndicationProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<IRedirectProvider>(redirectProvider);
-
-            return ignore.Create(container);
+            return container;
         }
 
-        public static Builder Create(this Builder ignore, IServiceCollection container)
+        public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
         {
-            return new Builder(container.BuildServiceProvider());
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            return container;
+        }
+
+        public static IServiceCollection ReplaceDependency<T>(this IServiceCollection container, T serviceInstance) where T : class
+        {
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            container.AddSingleton<T>(serviceInstance);
+            return container;
         }
 
         public static ContentItem Create(this ContentItem ignore)
@@ -194,12 +145,12 @@ namespace PPTail.SiteGenerator.Test
             };
         }
 
-        public static ISettings Create(this Settings ignore)
+        public static ISettings Create(this ISettings ignore)
         {
             return ignore.Create(string.Empty.GetRandom(3));
         }
 
-        public static ISettings Create(this Settings ignore, string outputFileExtension)
+        public static ISettings Create(this ISettings ignore, string outputFileExtension)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
         }
@@ -262,14 +213,6 @@ namespace PPTail.SiteGenerator.Test
             return result;
         }
 
-        public static ISettings Create(this ISettings ignore)
-        {
-            var extendedSettings = new ExtendedSettingsCollection();
-            var settings = new Mock<ISettings>();
-            settings.SetupGet(s => s.ExtendedSettings).Returns(extendedSettings);
-            return settings.Object;
-        }
-
         public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
         {
             return ignore.Create(8.GetRandom(3));
@@ -300,5 +243,7 @@ namespace PPTail.SiteGenerator.Test
                 Description = description
             };
         }
+
+
     }
 }

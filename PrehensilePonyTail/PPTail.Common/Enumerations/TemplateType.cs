@@ -16,6 +16,8 @@ namespace PPTail.Enumerations
         SearchPage,
         Archive,
         Redirect,
+        Syndication,
+        SyndicationItem,
         Item,
         Raw
     }
