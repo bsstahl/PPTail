@@ -10,7 +10,7 @@
     "mobile-dev-box": {
       "commandName": "Project",
       "environmentVariables": {
-        "outputPath": "E:\\GeneratedWebsite",
+        "outputPath": "..\\GeneratedWebApp\\wwwroot",
         "sourceDataPath": "E:\\CognitiveInheritance"
       }
     },
