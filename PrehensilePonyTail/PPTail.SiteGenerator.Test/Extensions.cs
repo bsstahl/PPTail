@@ -39,15 +39,16 @@ namespace PPTail.SiteGenerator.Test
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             return ignore.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
-                Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
+                Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
                 Mock.Of<ISettings>(), Mock.Of<SiteSettings>(), new List<Category>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
+        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
         {
             IServiceCollection container = new ServiceCollection();
             container.AddSingleton<IContentRepository>(contentRepo);
             container.AddSingleton<IPageGenerator>(pageGen);
+            container.AddSingleton<IHomePageGenerator>(homePageGen);
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);

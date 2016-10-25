@@ -392,14 +392,13 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallGenerateHomepageEactlyOnce()
         {
-            // TODO: See if AddSingleton acts the same as ReplaceDependency
             var container = (null as IServiceCollection).Create();
 
-            var pageGen = new Mock<IPageGenerator>();
-            container.AddSingleton<IPageGenerator>(pageGen.Object);
+            var pageGen = new Mock<IHomePageGenerator>();
+            container.ReplaceDependency<IHomePageGenerator>(pageGen.Object);
 
             var settings = new Settings();
-            container.AddSingleton<ISettings>(settings);
+            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();

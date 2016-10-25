@@ -38,15 +38,6 @@ namespace PPTail.Generator.T4Html
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
         }
 
-        public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
-        {
-            var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
-            var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            var settings = _serviceProvider.GetService<ISettings>();
-            return posts.ProcessTemplate(_settings, siteSettings, categories, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage, ".", settings.ItemSeparator, false);
-        }
-
         public string GenerateStylesheet(SiteSettings siteSettings)
         {
             //TODO: Process template against additional data (such as Settings and SiteSettings)

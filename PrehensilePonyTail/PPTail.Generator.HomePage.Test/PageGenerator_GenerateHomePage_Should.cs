@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using TestHelperExtensions;
 using Xunit;
 
-namespace PPTail.Generator.T4Html.Test
+namespace PPTail.Generator.HomePage.Test
 {
     public class PageGenerator_GenerateHomePage_Should
     {
@@ -28,7 +28,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var siteSettings = (null as SiteSettings).Create();
             var pageData = (null as ContentItem).Create();
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
             Assert.Throws(typeof(TemplateNotFoundException), () => target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts));
         }
 
@@ -46,7 +46,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var siteSettings = (null as SiteSettings).Create();
             var pageData = (null as ContentItem).Create();
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
             Assert.Throws(typeof(TemplateNotFoundException), () => target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts));
         }
 
@@ -62,7 +62,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -82,7 +82,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
 
             var siteSettings = (null as SiteSettings).Create(string.Empty.GetRandom(), string.Empty.GetRandom(), posts.Count());
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -104,7 +104,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -132,7 +132,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -161,7 +161,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IHomePageGenerator).Create(templates, settings);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -193,7 +193,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
+            var target = (null as IHomePageGenerator).Create(templates, settings, categoryList);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -223,7 +223,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", pageTemplate, itemTemplate);
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
-            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
+            var target = (null as IHomePageGenerator).Create(templates, settings, categoryList);
 
             var siteSettings = (null as SiteSettings).Create();
             var actual = target.GenerateHomepage(string.Empty, string.Empty, siteSettings, posts);
@@ -240,14 +240,14 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void ThrowATemplateNotFoundExceptionIfTheHomePageTemplateIsNotProvided()
         {
-            var target = (null as IPageGenerator).Create(Enumerations.TemplateType.HomePage);
+            var target = (null as IHomePageGenerator).Create(Enumerations.TemplateType.HomePage);
             Assert.Throws<TemplateNotFoundException>(() => target.GenerateHomepage(string.Empty, string.Empty, Mock.Of<SiteSettings>(), new List<ContentItem>()));
         }
 
         [Fact]
         public void ThrowATemplateNotFoundExceptionIfTheItemPageTemplateIsNotProvided()
         {
-            var target = (null as IPageGenerator).Create(Enumerations.TemplateType.Item);
+            var target = (null as IHomePageGenerator).Create(Enumerations.TemplateType.Item);
             Assert.Throws<TemplateNotFoundException>(() => target.GenerateHomepage(string.Empty, string.Empty, Mock.Of<SiteSettings>(), new List<ContentItem>()));
         }
 

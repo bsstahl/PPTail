@@ -25,6 +25,7 @@ namespace PPTail.SiteGenerator
 
             _serviceProvider.ValidateService<IContentRepository>();
             _serviceProvider.ValidateService<IPageGenerator>();
+            _serviceProvider.ValidateService<IHomePageGenerator>();
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<INavigationProvider>();
             _serviceProvider.ValidateService<IArchiveProvider>();
@@ -42,6 +43,7 @@ namespace PPTail.SiteGenerator
 
             var contentRepo = ServiceProvider.GetService<IContentRepository>();
             var pageGen = ServiceProvider.GetService<IPageGenerator>();
+            var homePageGen = ServiceProvider.GetService<IHomePageGenerator>();
             var settings = ServiceProvider.GetService<ISettings>();
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
             var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
@@ -86,7 +88,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = pageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, siteSettings, posts)
+                Content = homePageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, siteSettings, posts)
             });
 
             // Create Archive
