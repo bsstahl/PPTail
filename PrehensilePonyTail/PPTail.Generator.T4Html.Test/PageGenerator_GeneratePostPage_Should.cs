@@ -26,7 +26,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var pageData = (null as ContentItem).Create();
             var target = (null as IPageGenerator).Create(templates, settings);
-            Assert.Throws<TemplateNotFoundException>(() => target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData));
+            Assert.Throws<TemplateNotFoundException>(() => target.GeneratePostPage(string.Empty, string.Empty, pageData));
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var siteSettings = (null as SiteSettings).Create();
 
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
             Assert.Contains(pageData.Title, actual);
         }
@@ -53,7 +53,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(pageData.Title));
@@ -72,7 +72,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
@@ -91,7 +91,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
             Assert.Contains(expectedData, actual);
         }
@@ -108,7 +108,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
@@ -127,7 +127,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
@@ -146,7 +146,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
@@ -165,7 +165,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
@@ -184,7 +184,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
@@ -203,7 +203,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
@@ -223,7 +223,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, dateTimeFormatSpecifier);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
@@ -243,7 +243,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, dateTimeFormatSpecifier);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
@@ -262,7 +262,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
@@ -285,7 +285,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             foreach (string tag in tagList)
@@ -310,7 +310,7 @@ namespace PPTail.Generator.T4Html.Test
             var settings = (null as ISettings).CreateDefault();
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             foreach (string tag in tagList)
@@ -340,7 +340,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var target = (null as IPageGenerator).Create(templates, settings, categoryList);
 
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
@@ -368,7 +368,7 @@ namespace PPTail.Generator.T4Html.Test
             var target = (null as IPageGenerator).Create(templates, settings, categoryList);
 
             var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
@@ -399,7 +399,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var target = (null as IPageGenerator).Create(templates, settings, categoryList);
 
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             Assert.False(string.IsNullOrWhiteSpace(actual));
@@ -425,7 +425,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var target = (null as IPageGenerator).Create(templates, settings, categoryList);
 
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, siteSettings, pageData);
+            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
             Console.WriteLine(actual);
 
             Assert.False(string.IsNullOrWhiteSpace(actual));

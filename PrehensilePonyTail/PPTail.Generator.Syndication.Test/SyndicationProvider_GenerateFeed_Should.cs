@@ -82,6 +82,36 @@ namespace PPTail.Generator.Syndication.Test
         }
 
         [Fact]
+        public void RetrieveALinkToEachPost()
+        {
+            IServiceCollection container = (null as IServiceCollection).Create();
+
+            var settings = (null as ISettings).Create();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed - 1);
+
+            var linkProvider = new Mock<ILinkProvider>();
+            foreach (var post in posts)
+                linkProvider.Setup(l => l.GetUrl(".", "Posts", post.Slug)).Verifiable();
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var target = (null as ISyndicationProvider).Create(container);
+            var actual = target.GenerateFeed(posts);
+
+            linkProvider.VerifyAll();
+
+            //foreach (var post in posts)
+            //{
+            //    string url = $"{post.Slug}.{settings.OutputFileExtension}";
+            //    Assert.Contains(url, actual);
+            //}
+        }
+
+        [Fact]
         public void ContainEachOfThePostLinks()
         {
             IServiceCollection container = (null as IServiceCollection).Create();
@@ -94,14 +124,19 @@ namespace PPTail.Generator.Syndication.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed - 1);
 
+            var linkProvider = new Mock<ILinkProvider>();
+            foreach (var post in posts)
+                linkProvider.Setup(l => l.GetUrl(It.IsAny<string>(), It.IsAny<string>(), post.Slug))
+                    .Returns(post.Id.ToString());
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
+            linkProvider.VerifyAll();
+
             foreach (var post in posts)
-            {
-                string url = $"{post.Slug}.{settings.OutputFileExtension}";
-                Assert.Contains(url, actual);
-            }
+                Assert.Contains(post.Id.ToString(), actual);
         }
     }
 }

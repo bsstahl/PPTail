@@ -30,7 +30,7 @@ namespace PPTail.Generator.Redirect
         public string GenerateRedirect(string redirectToUrl)
         {
             var template = _templates.Find(Enumerations.TemplateType.Redirect);
-            return template.Content.Replace("{Url}", redirectToUrl).ToHttpSlashes();
+            return template.Content.Replace("{Url}", redirectToUrl);
         }
     }
 }

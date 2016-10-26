@@ -286,7 +286,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
+                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<string>(), It.IsAny<string>(), item), Times.Once);
             }
         }
 
@@ -311,7 +311,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), item), Times.Once);
+                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<string>(), It.IsAny<string>(), item), Times.Once);
             }
         }
 
@@ -369,7 +369,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
-            pageGen.Verify(c => c.GenerateStylesheet(It.IsAny<SiteSettings>()), Times.Once);
+            pageGen.Verify(c => c.GenerateStylesheet(), Times.Once);
         }
 
         [Fact]
@@ -403,7 +403,7 @@ namespace PPTail.SiteGenerator.Test
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
-            pageGen.Verify(c => c.GenerateHomepage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<SiteSettings>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
+            pageGen.Verify(c => c.GenerateHomepage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>()), Times.Once);
         }
 
         [Fact]
@@ -682,9 +682,9 @@ namespace PPTail.SiteGenerator.Test
 
             var sidebarContent = string.Empty.GetRandom();
             var pageGen = new Mock<IPageGenerator>();
-            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<ISettings>(), It.IsAny<SiteSettings>(),
-                    It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<ContentItem>>(),
-                    It.IsAny<IEnumerable<Widget>>(), It.IsAny<string>()))
+            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<IEnumerable<ContentItem>>(), 
+                It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<Widget>>(), 
+                It.IsAny<string>()))
                 .Returns(sidebarContent);
             container.ReplaceDependency<IPageGenerator>(pageGen.Object);
 

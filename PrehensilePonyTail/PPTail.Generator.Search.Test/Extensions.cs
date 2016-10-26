@@ -16,25 +16,25 @@ namespace PPTail.Generator.Search.Test
         public static ISearchProvider Create(this ISearchProvider ignore)
         {
             return ignore.Create(Mock.Of<IEnumerable<Template>>(),
-                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null);
+                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null);
+            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, IEnumerable<Category> categories)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), categories);
+            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), categories, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings)
         {
-            return ignore.Create(templates, settings, siteSettings, null);
+            return ignore.Create(templates, settings, siteSettings, null, Mock.Of<ILinkProvider>());
         }
 
-        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
             var serviceCollection = new ServiceCollection();
 
@@ -49,6 +49,9 @@ namespace PPTail.Generator.Search.Test
 
             if (categories != null)
                 serviceCollection.AddSingleton<IEnumerable<Category>>(categories);
+
+            if (linkProvider != null)
+                serviceCollection.AddSingleton<ILinkProvider>(linkProvider);
 
             return new PageGenerator(serviceCollection.BuildServiceProvider());
         }

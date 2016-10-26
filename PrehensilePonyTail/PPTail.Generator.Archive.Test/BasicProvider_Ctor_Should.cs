@@ -21,7 +21,11 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void ThrowATemplateNotFoundExceptionIfTheHomePageTemplateIsNotSupplied()
         {
-            var container = new ServiceCollection();
+            var container = (null as IServiceCollection).Create();
+
+            var templates = new List<Template>();
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+
             Assert.Throws<TemplateNotFoundException>(() => new Archive.BasicProvider(container.BuildServiceProvider()));
         }
 

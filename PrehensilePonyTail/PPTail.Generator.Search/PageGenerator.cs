@@ -16,8 +16,6 @@ namespace PPTail.Generator.Search
         IEnumerable<Template> _templates;
         Template _searchTemplate;
         Template _itemTemplate;
-        ISettings _settings;
-        SiteSettings _siteSettings;
 
         public PageGenerator(IServiceProvider serviceProvider)
         {
@@ -28,8 +26,6 @@ namespace PPTail.Generator.Search
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<SiteSettings>();
 
-            _settings = _serviceProvider.GetService<ISettings>();
-            _siteSettings = serviceProvider.GetService<SiteSettings>();
 
             // Guard code for a null _templates variable is not required
             // because the Service Provider will return an empty array
@@ -43,10 +39,12 @@ namespace PPTail.Generator.Search
         {
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
             var settings = _serviceProvider.GetService<ISettings>();
+            var siteSettings = _serviceProvider.GetService<SiteSettings>();
+
             var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
             Guid categoryId = (category == null) ? Guid.Empty : category.Id;
             var posts = contentItems.Where(i => i.Tags.Contains(tag) || i.CategoryIds.Contains(categoryId));
-            return posts.ProcessTemplate(_settings, _siteSettings, categories, _searchTemplate, _itemTemplate, sidebarContent, navigationContent, $"Tag: {tag}", 0, pathToRoot, settings.ItemSeparator, false);
+            return posts.ProcessTemplate(_serviceProvider, _searchTemplate, _itemTemplate, sidebarContent, navigationContent, $"Tag: {tag}", pathToRoot, false, siteSettings.PostsPerPage);
         }
 
     }

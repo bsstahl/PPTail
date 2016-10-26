@@ -39,7 +39,7 @@ namespace PPTail.Generator.Contact
         {
             // TODO: Handle multiple templates of the same type
             var template = _templates.Single(t => t.TemplateType == Enumerations.TemplateType.ContactPage);
-            return template.ProcessNonContentItemTemplate(sidebarContent, navigationContent, _siteSettings, _settings, string.Empty, "Contact Me");
+            return template.ProcessNonContentItemTemplate(_serviceProvider, sidebarContent, navigationContent, string.Empty, "Contact Me");
         }
     }
 }

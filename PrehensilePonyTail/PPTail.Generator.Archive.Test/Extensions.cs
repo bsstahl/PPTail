@@ -13,20 +13,41 @@ namespace PPTail.Generator.Archive.Test
     {
         public static IArchiveProvider Create(this IArchiveProvider ignore)
         {
+            IServiceCollection container = (null as IServiceCollection).Create();
+            return ignore.Create(container.BuildServiceProvider());
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore)
+        {
             var container = new ServiceCollection();
 
-            var template = new Template()
+            var settings = (null as ISettings).CreateDefault();
+            container.AddSingleton<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.AddSingleton<SiteSettings>(siteSettings);
+
+            var templates = (null as IEnumerable<Template>).Create();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+
+            // Add dependencies here as needed
+            return container;
+        }
+
+        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore)
+        {
+            var templates = new List<Template>();
+            templates.Add((null as Template).Create());
+            return templates;
+        }
+
+        public static Template Create(this Template ignore)
+        {
+            return new Template()
             {
                 Content = "{Content}",
                 TemplateType = Enumerations.TemplateType.HomePage
             };
-
-            var templates = new List<Template>();
-            templates.Add(template);
-            container.AddSingleton<IEnumerable<Template>>(templates);
-
-            // Add dependencies here as needed
-            return ignore.Create(container.BuildServiceProvider());
         }
 
         public static IArchiveProvider Create(this IArchiveProvider ignore, IServiceProvider serviceProvider)
@@ -34,12 +55,17 @@ namespace PPTail.Generator.Archive.Test
             return new BasicProvider(serviceProvider);
         }
 
-        public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this ISettings ignore)
+        {
+            return ignore.CreateDefault("MM/dd/yyyy hh:mm");
+        }
+
+        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier)
         {
             return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static Settings CreateDefault(this Settings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
@@ -81,6 +107,20 @@ namespace PPTail.Generator.Archive.Test
             for (int i = 0; i < count; i++)
                 result.Add((null as ContentItem).Create());
             return result;
+        }
+
+        public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
+        {
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            return container;
+        }
+
+        public static IServiceCollection ReplaceDependency<T>(this IServiceCollection container, T serviceInstance) where T : class
+        {
+            container.RemoveDependency<T>();
+            container.AddSingleton<T>(serviceInstance);
+            return container;
         }
 
     }

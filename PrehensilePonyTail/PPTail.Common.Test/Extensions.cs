@@ -1,4 +1,7 @@
-﻿using PPTail.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using PPTail.Entities;
+using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +12,45 @@ namespace PPTail.Common.Test
 {
     public static class Extensions
     {
+        public static IServiceCollection Create(this IServiceCollection ignore)
+        {
+            var container = new ServiceCollection();
+
+            var settings = (null as ISettings).Create();
+            var siteSettings = (null as SiteSettings).Create();
+            var categories = (null as IEnumerable<Category>).Create();
+            var linkProvider = Mock.Of<ILinkProvider>();
+
+            container.AddSingleton<ISettings>(settings);
+            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<IEnumerable<Category>>(categories);
+            container.AddSingleton<ILinkProvider>(linkProvider);
+
+            return container;
+        }
+
+        public static ISettings Create(this ISettings ignore)
+        {
+            return new Settings()
+            {
+                DateFormatSpecifier = "MM/dd/yyyy",
+                DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
+                ItemSeparator = string.Empty.GetRandom(),
+                OutputFileExtension = string.Empty.GetRandom()
+            };
+        }
+
+
+        public static SiteSettings Create(this SiteSettings ignore)
+        {
+            return new SiteSettings()
+            {
+                Title = string.Empty.GetRandom(),
+                Description = string.Empty.GetRandom(),
+                PostsPerPage = 25.GetRandom(5)
+            };
+        }
+
         public static ContentItem Create(this ContentItem ignore, DateTime pubDate)
         {
             return new ContentItem()
@@ -62,6 +104,20 @@ namespace PPTail.Common.Test
                 Name = name,
                 Description = description
             };
+        }
+
+        public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
+        {
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            return container;
+        }
+
+        public static IServiceCollection ReplaceDependency<T>(this IServiceCollection container, T serviceInstance) where T : class
+        {
+            container.RemoveDependency<T>();
+            container.AddSingleton<T>(serviceInstance);
+            return container;
         }
 
     }

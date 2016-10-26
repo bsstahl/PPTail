@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using TestHelperExtensions;
+using Moq;
 
 namespace PPTail.Generator.Syndication.Test
 {
     public static class Extensions
     {
         const string _defaultSyndicationTemplateContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss><channel>{Content}</channel></rss>";
-        const string _defaultSyndicationItemTemplateContent = "<item><title>{Title}</title><description>{Content}</description><link>{Link}</link><author>{Author}</author><guid>{Permalink}</guid><pubDate>{PublicationDate}</pubDate><category>{CategoryList}</category></item>";
+        const string _defaultSyndicationItemTemplateContent = "<item><title>{Title}</title><description>{Content}</description><link>{Link}</link><author>{Author}</author><guid>{PermalinkUrl}</guid><pubDate>{PublicationDate}</pubDate><category>{CategoryList}</category></item>";
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
@@ -23,6 +24,9 @@ namespace PPTail.Generator.Syndication.Test
 
             var settings = (null as ISettings).Create();
             container.AddSingleton<ISettings>(settings);
+
+            var linkProvider = Mock.Of<ILinkProvider>();
+            container.AddSingleton<ILinkProvider>(linkProvider);
 
             var syndicationTemplate = new Template() { Content = _defaultSyndicationTemplateContent, TemplateType = Enumerations.TemplateType.Syndication };
             var syndicationItemTemplate = new Template() { Content = _defaultSyndicationItemTemplateContent, TemplateType = Enumerations.TemplateType.SyndicationItem };

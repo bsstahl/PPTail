@@ -35,7 +35,8 @@ namespace PPTail.Generator.Syndication
             var settings = _serviceProvider.GetService<ISettings>();
             var siteSettings = _serviceProvider.GetService<SiteSettings>();
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return posts.ProcessTemplate(settings, siteSettings, categories, syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, "Syndication", siteSettings.PostsPerFeed, ".", string.Empty, true);
+
+            return posts.ProcessTemplate(_serviceProvider, syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, "Syndication", ".", true, siteSettings.PostsPerFeed);
         }
     }
 }

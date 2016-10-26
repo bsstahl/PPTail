@@ -35,13 +35,14 @@ namespace PPTail.Generator.HomePage
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
         }
 
-        public string GenerateHomepage(string sidebarContent, string navigationContent, SiteSettings siteSettings, IEnumerable<ContentItem> posts)
+        public string GenerateHomepage(string sidebarContent, string navigationContent, IEnumerable<ContentItem> posts)
         {
             var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
             var settings = _serviceProvider.GetService<ISettings>();
-            return posts.ProcessTemplate(_settings, siteSettings, categories, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", siteSettings.PostsPerPage, ".", settings.ItemSeparator, false);
+            var siteSettings = _serviceProvider.GetService<SiteSettings>();
+            return posts.ProcessTemplate(_serviceProvider, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", ".", false, siteSettings.PostsPerPage);
         }
 
     }

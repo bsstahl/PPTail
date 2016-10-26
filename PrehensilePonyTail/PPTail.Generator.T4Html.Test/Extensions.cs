@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PPTail.Enumerations;
 using Xunit;
 using PPTail.Exceptions;
+using Moq;
 
 namespace PPTail.Generator.T4Html.Test
 {
@@ -80,6 +81,9 @@ namespace PPTail.Generator.T4Html.Test
             var testTemplates = templates.Where(t => t.TemplateType != templateTypeToBeMissing);
             container.AddSingleton<IEnumerable<Template>>(testTemplates);
 
+            var linkProvider = Mock.Of<ILinkProvider>();
+            container.AddSingleton<ILinkProvider>(linkProvider);
+
             return ignore.Create(container);
         }
 
@@ -91,6 +95,15 @@ namespace PPTail.Generator.T4Html.Test
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
+            container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
+            container.AddSingleton<SiteSettings>(new SiteSettings()
+            {
+                Title = string.Empty.GetRandom(),
+                Description = string.Empty.GetRandom(),
+                PostsPerPage = 10.GetRandom(5),
+                PostsPerFeed = 20.GetRandom(10)
+            });
+
             return ignore.Create(container);
         }
 

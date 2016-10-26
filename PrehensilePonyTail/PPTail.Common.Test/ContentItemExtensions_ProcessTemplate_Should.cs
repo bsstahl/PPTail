@@ -1,5 +1,7 @@
-﻿using PPTail.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PPTail.Entities;
 using PPTail.Extensions;
+using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +22,18 @@ namespace PPTail.Common.Test
             string pageTemplateContent = "{Content}";
             string itemTemplateContent = "{Content}";
 
-            var settings = new Settings() { ItemSeparator = itemSeparator.ToString() };
+            var container = (null as IServiceCollection).Create();
+
             var siteSettings = new SiteSettings() { Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom(), PostsPerPage = postsPerPage };
-            var categories = (null as IEnumerable<Category>).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var settings = (null as ISettings).Create();
+            settings.ItemSeparator = itemSeparator.ToString();
+            container.ReplaceDependency<ISettings>(settings);
 
             string sidebarContent = string.Empty.GetRandom();
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
-            int maxPostCount = postsPerPage;
 
             var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
             var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
@@ -41,7 +47,9 @@ namespace PPTail.Common.Test
             posts.Add(latestPost);
             posts.Add(earliestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, categories, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty, itemSeparator.ToString(), false);
+            var serviceProvider = container.BuildServiceProvider();
+            var actual = posts.ProcessTemplate(serviceProvider, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, string.Empty, false, siteSettings.PostsPerPage);
+
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(earliestPost.Content, actualPosts.Last());
         }
@@ -55,14 +63,18 @@ namespace PPTail.Common.Test
             string pageTemplateContent = "{Content}";
             string itemTemplateContent = "{Content}";
 
-            var settings = new Settings() { ItemSeparator = itemSeparator.ToString() };
+            var container = (null as IServiceCollection).Create();
+
             var siteSettings = new SiteSettings() { Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom(), PostsPerPage = postsPerPage };
-            var categories = (null as IEnumerable<Category>).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var settings = (null as ISettings).Create();
+            settings.ItemSeparator = itemSeparator.ToString();
+            container.ReplaceDependency<ISettings>(settings);
 
             string sidebarContent = string.Empty.GetRandom();
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
-            int maxPostCount = postsPerPage;
 
             var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
             var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
@@ -76,7 +88,9 @@ namespace PPTail.Common.Test
             posts.Add(latestPost);
             posts.Add(earliestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, categories, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty, itemSeparator.ToString(), false);
+            var serviceProvider = container.BuildServiceProvider();
+            var actual = posts.ProcessTemplate(serviceProvider, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, string.Empty, false, siteSettings.PostsPerPage);
+
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(earliestPost.Content, actualPosts.Last());
         }
@@ -90,14 +104,18 @@ namespace PPTail.Common.Test
             string pageTemplateContent = "{Content}";
             string itemTemplateContent = "{Content}";
 
-            var settings = new Settings() { ItemSeparator = itemSeparator.ToString() };
+            var container = (null as IServiceCollection).Create();
+
             var siteSettings = new SiteSettings() { Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom(), PostsPerPage = postsPerPage };
-            var categories = (null as IEnumerable<Category>).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var settings = (null as ISettings).Create();
+            settings.ItemSeparator = itemSeparator.ToString();
+            container.ReplaceDependency<ISettings>(settings);
 
             string sidebarContent = string.Empty.GetRandom();
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
-            int maxPostCount = postsPerPage;
 
             var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
             var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
@@ -111,7 +129,9 @@ namespace PPTail.Common.Test
             posts.Add(earliestPost);
             posts.Add(latestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, categories, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty, itemSeparator.ToString(), false);
+            var serviceProvider = container.BuildServiceProvider();
+            var actual = posts.ProcessTemplate(serviceProvider, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, string.Empty, false, siteSettings.PostsPerPage);
+
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(latestPost.Content, actualPosts.First());
         }
@@ -125,14 +145,18 @@ namespace PPTail.Common.Test
             string pageTemplateContent = "{Content}";
             string itemTemplateContent = "{Content}";
 
-            var settings = new Settings() { ItemSeparator = itemSeparator.ToString() };
+            var container = (null as IServiceCollection).Create();
+
             var siteSettings = new SiteSettings() { Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom(), PostsPerPage = postsPerPage };
-            var categories = (null as IEnumerable<Category>).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var settings = (null as ISettings).Create();
+            settings.ItemSeparator = itemSeparator.ToString();
+            container.ReplaceDependency<ISettings>(settings);
 
             string sidebarContent = string.Empty.GetRandom();
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
-            int maxPostCount = postsPerPage;
 
             var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
             var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
@@ -146,7 +170,9 @@ namespace PPTail.Common.Test
             posts.Add(latestPost);
             posts.Add(middlePost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, categories, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty, itemSeparator.ToString(), false);
+            var serviceProvider = container.BuildServiceProvider();
+            var actual = posts.ProcessTemplate(serviceProvider, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, string.Empty, false, siteSettings.PostsPerPage);
+
             var actualPosts = actual.Split(itemSeparator);
             Assert.Equal(latestPost.Content, actualPosts.First());
         }
@@ -155,19 +181,18 @@ namespace PPTail.Common.Test
         public void NotProcessAPostOutsideThePostLimit()
         {
             const int postsPerPage = 2;
-            const char itemSeparator = ';';
 
             string pageTemplateContent = "{Content}";
             string itemTemplateContent = "{Content}";
 
-            var settings = new Settings() { ItemSeparator = itemSeparator.ToString() };
+            var container = (null as IServiceCollection).Create();
+
             var siteSettings = new SiteSettings() { Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom(), PostsPerPage = postsPerPage };
-            var categories = (null as IEnumerable<Category>).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             string sidebarContent = string.Empty.GetRandom();
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
-            int maxPostCount = postsPerPage;
 
             var pageTemplate = new Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.HomePage };
             var itemTemplate = new Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
@@ -181,7 +206,9 @@ namespace PPTail.Common.Test
             posts.Add(earliestPost);
             posts.Add(latestPost);
 
-            var actual = posts.ProcessTemplate(settings, siteSettings, categories, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, maxPostCount, string.Empty, "<hr/>", false);
+            var serviceProvider = container.BuildServiceProvider();
+            var actual = posts.ProcessTemplate(serviceProvider, pageTemplate, itemTemplate, sidebarContent, navContent, pageTitle, string.Empty, false, siteSettings.PostsPerPage);
+
             Assert.DoesNotContain(earliestPost.Content, actual);
         }
 

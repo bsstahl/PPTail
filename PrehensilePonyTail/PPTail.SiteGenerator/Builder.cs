@@ -60,8 +60,8 @@ namespace PPTail.SiteGenerator
             var widgets = contentRepo.GetAllWidgets();
 
             // Create Sidebar Content
-            var rootLevelSidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets, ".");
-            var childLevelSidebarContent = pageGen.GenerateSidebarContent(settings, siteSettings, posts, pages, widgets, "../");
+            var rootLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
+            var childLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "../");
 
             // Create navbars
             var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.OutputFileExtension);
@@ -80,7 +80,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./Style.css",
                 SourceTemplateType = Enumerations.TemplateType.Style,
-                Content = pageGen.GenerateStylesheet(siteSettings)
+                Content = pageGen.GenerateStylesheet()
             });
 
             // Create home page
@@ -88,7 +88,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
-                Content = homePageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, siteSettings, posts)
+                Content = homePageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, posts)
             });
 
             // Create Archive
@@ -96,7 +96,7 @@ namespace PPTail.SiteGenerator
             {
                 RelativeFilePath = $"./archive.html",
                 SourceTemplateType = Enumerations.TemplateType.Archive,
-                Content = archiveProvider.GenerateArchive(settings, siteSettings, posts, pages, rootLevelNavigationContent, rootLevelSidebarContent, "./")
+                Content = archiveProvider.GenerateArchive(posts, pages, rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
 
             // Create Contact Page
@@ -142,7 +142,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = postFilePath,
                         SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, post)
+                        Content = pageGen.GeneratePostPage(childLevelSidebarContent, childLevelNavigationContent, post)
                     });
 
                     // Add the permalink page
@@ -170,7 +170,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(childLevelSidebarContent, childLevelNavigationContent, siteSettings, page)
+                        Content = pageGen.GenerateContentPage(childLevelSidebarContent, childLevelNavigationContent, page)
                     });
                 }
             }

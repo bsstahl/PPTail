@@ -1,4 +1,6 @@
-﻿using PPTail.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PPTail.Entities;
+using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,14 @@ namespace PPTail.Generator.Archive.Test
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
 
-            var settings = (null as Settings).CreateDefault(string.Empty);
-            var siteSettings = (null as SiteSettings).Create();
+            var container = (null as IServiceCollection).Create();
+            var serviceProvider = container.BuildServiceProvider();
 
-            var target = (null as BasicProvider).Create();
-            var actual = target.GenerateArchive(settings, siteSettings, posts, pages, navContent, sidebarContent, pathToRoot);
+            var settings = serviceProvider.GetService<ISettings>();
+            var siteSettings = serviceProvider.GetService<SiteSettings>();
+
+            var target = (null as BasicProvider).Create(serviceProvider);
+            var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             foreach (var post in posts)
             {

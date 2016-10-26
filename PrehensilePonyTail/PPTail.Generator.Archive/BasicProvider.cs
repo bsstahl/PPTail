@@ -21,12 +21,19 @@ namespace PPTail.Generator.Archive
             if (_serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
+            // TODO: Add code coverage
+            _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<SiteSettings>();
+
             var templates = serviceProvider.GetService<IEnumerable<Template>>();
             _template = templates.Find(TemplateType.HomePage);
         }
 
-        public string GenerateArchive(ISettings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)
+        public string GenerateArchive(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)
         {
+            var settings = _serviceProvider.GetService<ISettings>();
+            var siteSettings = _serviceProvider.GetService<SiteSettings>();
+
             string content = "<div id=\"archive\"><h1>Archive</h1>";
             content += "<table><tbody>";
             content += "<tr><th>Date</th><th>Title</th></tr>";
@@ -35,7 +42,7 @@ namespace PPTail.Generator.Archive
                 content += $"<tr><td class=\"date\">{post.PublicationDate.ToString(settings.DateFormatSpecifier)}</td><td class=\"title\"><a href=\"{GetPath(post, settings, pathToRoot)}\">{post.Title}</a></td></tr>";
             content += "</tbody></table></div>";
 
-            return _template.ProcessNonContentItemTemplate(sidebarContent, navContent, siteSettings, settings, content, "Archive");
+            return _template.ProcessNonContentItemTemplate(_serviceProvider, sidebarContent, navContent, content, "Archive");
         }
 
         public string GetPath(ContentItem item, ISettings settings, string pathToRoot)

@@ -4,13 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        internal static string ReplaceContentItemVariables(this string template, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ContentItem item, string pathToRoot, bool xmlEncodeContent)
+        internal static string ReplaceContentItemVariables(this string template, IServiceProvider serviceProvider, ContentItem item, string pathToRoot, bool xmlEncodeContent)
         {
+            serviceProvider.ValidateService<ISettings>();
+            serviceProvider.ValidateService<IEnumerable<Category>>();
+            serviceProvider.ValidateService<ILinkProvider>();
+
+            var settings = serviceProvider.GetService<ISettings>();
+            var categories = serviceProvider.GetService<IEnumerable<Category>>();
+            var linkProvider = serviceProvider.GetService<ILinkProvider>();
 
             string content = item.Content;
             string description = item.Description;
@@ -25,6 +33,9 @@ namespace PPTail.Extensions
                 lastModDate = item.LastModificationDate.ToString("o");
             }
 
+            string permaLinkUrl = linkProvider.GetUrl(pathToRoot, "Permalinks", item.Id.ToString());
+            string permaLink = $"<a href=\"{permaLinkUrl}\" rel=\"bookmark\">Permalink</a>";
+
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", content)
                 .Replace("{Author}", item.Author)
@@ -34,12 +45,16 @@ namespace PPTail.Extensions
                 .Replace("{ByLine}", item.ByLine)
                 .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"))
                 .Replace("{Categories}", categories.CategoryLinkList(item.CategoryIds, settings, pathToRoot, "small"))
-                .Replace("{Link}", item.GetLinkUrl(pathToRoot, settings.OutputFileExtension))
-                .Replace("{Permalink}", item.GetPermalink(pathToRoot, settings.OutputFileExtension, "Permalink"));
+                .Replace("{Link}", linkProvider.GetUrl(pathToRoot, "Posts", item.Slug))
+                .Replace("{Permalink}", permaLink)
+                .Replace("{PermalinkUrl}", permaLinkUrl);
         }
 
-        internal static string ReplaceNonContentItemSpecificVariables(this string template, ISettings settings, SiteSettings siteSettings, string sidebarContent, string navContent, string content)
+        internal static string ReplaceNonContentItemSpecificVariables(this string template, IServiceProvider serviceProvider, string sidebarContent, string navContent, string content)
         {
+            var settings = serviceProvider.GetService<ISettings>();
+            var siteSettings = serviceProvider.GetService<SiteSettings>();
+
             return template
                 .ReplaceSettingsVariables(settings, siteSettings)
                 .Replace("{NavigationMenu}", navContent)
@@ -84,7 +99,7 @@ namespace PPTail.Extensions
         public static string XmlEncode(this string content)
         {
             return content.Replace("<", "&lt;")
-                .Replace(">","&gt;")
+                .Replace(">", "&gt;")
                 .Replace("“", "&quot;")
                 .Replace("”", "&quot;")
                 .Replace("\"", "&quot;")
@@ -114,9 +129,9 @@ namespace PPTail.Extensions
             return results;
         }
 
-        public static string ToHttpSlashes(this string path)
-        {
-            return path.Replace("\\", "/");
-        }
+        //public static string ToHttpSlashes(this string path)
+        //{
+        //    return path.Replace("\\", "/");
+        //}
     }
 }

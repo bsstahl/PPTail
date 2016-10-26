@@ -18,7 +18,7 @@ namespace PPTail.Generator.T4Html.Test
         public void ThrowATemplateNotFoundExceptionIfTheStyleTemplateIsNotProvided()
         {
             var target = (null as IPageGenerator).Create(Enumerations.TemplateType.Style);
-            Assert.Throws<TemplateNotFoundException>(() => target.GenerateStylesheet(Mock.Of<SiteSettings>()));
+            Assert.Throws<TemplateNotFoundException>(() => target.GenerateStylesheet());
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace PPTail.Generator.T4Html.Test
             TemplateType expected = TemplateType.Style;
             try
             {
-                var actual = target.GenerateStylesheet(Mock.Of<SiteSettings>());
+                var actual = target.GenerateStylesheet();
             }
             catch (TemplateNotFoundException ex)
             {
@@ -42,7 +42,7 @@ namespace PPTail.Generator.T4Html.Test
         {
             string styleTemplate = string.Empty.GetRandom();
             var target = (null as IPageGenerator).Create(string.Empty, string.Empty, styleTemplate);
-            var actual = target.GenerateStylesheet(Mock.Of<SiteSettings>());
+            var actual = target.GenerateStylesheet();
             Assert.Equal(styleTemplate, actual);
         }
     }

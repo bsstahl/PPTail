@@ -7,6 +7,6 @@ namespace PPTail.Interfaces
 {
     public interface IArchiveProvider
     {
-        string GenerateArchive(ISettings settings, Entities.SiteSettings siteSettings, IEnumerable<Entities.ContentItem> posts, IEnumerable<Entities.ContentItem> pages, string navigationContent, string sidebarContent, string pathToRoot);
+        string GenerateArchive(IEnumerable<Entities.ContentItem> posts, IEnumerable<Entities.ContentItem> pages, string navigationContent, string sidebarContent, string pathToRoot);
     }
 }

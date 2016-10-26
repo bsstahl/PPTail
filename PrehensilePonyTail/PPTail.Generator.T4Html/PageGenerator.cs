@@ -38,7 +38,7 @@ namespace PPTail.Generator.T4Html
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
         }
 
-        public string GenerateStylesheet(SiteSettings siteSettings)
+        public string GenerateStylesheet()
         {
             //TODO: Process template against additional data (such as Settings and SiteSettings)
             var template = _templates.Find(Enumerations.TemplateType.Style);
@@ -55,8 +55,11 @@ namespace PPTail.Generator.T4Html
             return result;
         }
 
-        public string GenerateSidebarContent(ISettings settings, SiteSettings siteSettings, IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
+        public string GenerateSidebarContent(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
         {
+            _serviceProvider.ValidateService<ISettings>();
+            var settings = _serviceProvider.GetService<ISettings>();
+
             var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets)
                 results += widget.Render(_serviceProvider, settings, posts, pathToRoot);
@@ -64,18 +67,18 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        public string GenerateContentPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem pageData)
+        public string GenerateContentPage(string sidebarContent, string navContent, ContentItem pageData)
         {
             var template = _templates.Find(TemplateType.ContentPage);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return template.ProcessContentItemTemplate(pageData, sidebarContent, navContent, siteSettings, _settings, categories, "..", false);
+            return template.ProcessContentItemTemplate(_serviceProvider, pageData, sidebarContent, navContent, "..", false);
         }
 
-        public string GeneratePostPage(string sidebarContent, string navContent, SiteSettings siteSettings, ContentItem article)
+        public string GeneratePostPage(string sidebarContent, string navContent, ContentItem article)
         {
             var template = _templates.Find(TemplateType.PostPage);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return template.ProcessContentItemTemplate(article, sidebarContent, navContent, siteSettings, _settings, categories, "..", false);
+            return template.ProcessContentItemTemplate(_serviceProvider, article, sidebarContent, navContent, "..", false);
         }
 
     }

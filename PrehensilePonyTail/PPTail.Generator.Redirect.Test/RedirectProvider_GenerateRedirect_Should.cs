@@ -31,18 +31,5 @@ namespace PPTail.Generator.Redirect.Test
             Assert.Contains(command, actual);
         }
 
-        [Fact]
-        public void FixAnyIncorrectSlashes()
-        {
-            string iffyUrl = $"{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
-            string fixedUrl = iffyUrl.Replace("\\", "/");
-
-            string redirectTemplate = "{Url}";
-            var target = (null as IRedirectProvider).Create(redirectTemplate);
-            var actual = target.GenerateRedirect(iffyUrl);
-
-            Assert.Equal(fixedUrl, actual);
-        }
-
     }
 }

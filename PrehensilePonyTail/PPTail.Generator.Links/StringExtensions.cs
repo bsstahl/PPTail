@@ -114,12 +114,12 @@ namespace PPTail.Generator.Links
         //    return results;
         //}
 
-        //public static string ToHttpSlashes(this string path)
-        //{
-        //    return path.Replace("\\", "/");
-        //}
+        internal static string ToHttpSlashes(this string path)
+        {
+            return path.Replace("\\", "/");
+        }
 
-        public static string RemoveLeadingDotSlash(this string path)
+        internal static string RemoveLeadingDotSlash(this string path)
         {
             string result = path;
             if (result.StartsWith("./"))
