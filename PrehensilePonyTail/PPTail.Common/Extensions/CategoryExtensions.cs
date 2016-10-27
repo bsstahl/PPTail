@@ -9,14 +9,14 @@ namespace PPTail.Extensions
 {
     public static class CategoryExtensions
     {
-        public static string CategoryLinkList(this IEnumerable<Category> categories, IEnumerable<Guid> selectedCategoryIds, ISettings settings, string pathToRoot, string cssClass)
+        public static string CategoryLinkList(this IEnumerable<Category> categories, IServiceProvider serviceProvider, IEnumerable<Guid> selectedCategoryIds, ISettings settings, string pathToRoot, string cssClass)
         {
             var results = string.Empty;
             if (selectedCategoryIds != null)
             {
                 var selectedCategories = categories.Where(c => selectedCategoryIds.Contains(c.Id));
                 foreach (var category in selectedCategories)
-                    results += $"{settings.CreateSearchLink(pathToRoot, category.Name, "Category", cssClass)}&nbsp;";
+                    results += $"{category.Name.CreateSearchLink(serviceProvider, pathToRoot, "Category", cssClass)}&nbsp;";
             }
             return results;
         }

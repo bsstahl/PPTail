@@ -36,6 +36,9 @@ namespace PPTail.Generator.HomePage.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             container.AddSingleton<IEnumerable<Template>>(templates);
 
+            var categories = (null as IEnumerable<Category>).Create();
+            container.AddSingleton<IEnumerable<Category>>(categories);
+
             return container;
         }
 
@@ -232,6 +235,14 @@ namespace PPTail.Generator.HomePage.Test
                 Name = name,
                 Description = description
             };
+        }
+
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
+        {
+            var categoryList = new List<Category>();
+            for (int i = 0; i < 10; i++)
+                categoryList.Add((null as Category).Create());
+            return categoryList;
         }
 
         public static IEnumerable<Guid> GetRandomCategoryIds(this IEnumerable<Category> categories)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Enumerations;
 using PPTail.Exceptions;
@@ -321,6 +322,39 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
+        public void CallTheLinkProviderOnceForEachTag()
+        {
+            const string placeholderText = "{Tags}";
+
+            int tagCount = 8.GetRandom(3);
+            var tagList = new List<string>();
+            for (int i = 0; i < tagCount; i++)
+                tagList.Add(string.Empty.GetRandom());
+
+            var pageData = (null as ContentItem).Create(tagList);
+
+            string template = $"*****{placeholderText}*****";
+            var templates = new List<Template>();
+            templates.Add(new Template() {
+                Content = template,
+                TemplateType = TemplateType.ContentPage
+            });
+
+            var linkProvider = new Mock<ILinkProvider>();
+            foreach (var tag in tagList)
+                linkProvider.Setup(l => l.GetUrl("..", "search", tag)).Verifiable();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, pageData);
+
+            linkProvider.VerifyAll();
+        }
+
+        [Fact]
         public void ReplaceTheTagPlaceholderWithALinkToEachTagPage()
         {
             const string placeholderText = "{Tags}";
@@ -333,19 +367,26 @@ namespace PPTail.Generator.T4Html.Test
             var pageData = (null as ContentItem).Create(tagList);
 
             string template = $"*****{placeholderText}*****";
-            var target = (null as IPageGenerator).Create(template, string.Empty, string.Empty);
+            var templates = new List<Template>();
+            templates.Add(new Template()
+            {
+                Content = template,
+                TemplateType = TemplateType.ContentPage
+            });
 
-            var settings = (null as ISettings).CreateDefault();
+            var linkProvider = new Mock<ILinkProvider>();
+            foreach (var tag in tagList)
+                linkProvider.Setup(l => l.GetUrl("..", "search", tag)).Returns($"href_{tag}");
 
-            var siteSettings = (null as SiteSettings).Create();
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var target = (null as IPageGenerator).Create(container);
             var actual = target.GenerateContentPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
 
             foreach (string tag in tagList)
-            {
-                string href = $"\\search\\{tag}.{settings.OutputFileExtension}";
-                Assert.Contains(href.ToLower(), actual.ToLower());
-            }
+                Assert.Contains($"href_{tag}".ToLower(), actual.ToLower());
         }
 
         [Fact]
@@ -377,14 +418,11 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
-        public void ReplaceTheCategoriesPlaceholderWithALinkToEachSearchPage()
+        public void CallTheLinkProviderOnceForEachCategory()
         {
             const string placeholderText = "{Categories}";
 
-            var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
-                categoryList.Add((null as Category).Create());
-
+            var categoryList = (null as IEnumerable<Category>).Create();
             var categoryIds = categoryList.GetRandomCategoryIds();
             var pageData = (null as ContentItem).Create(categoryIds);
 
@@ -392,19 +430,54 @@ namespace PPTail.Generator.T4Html.Test
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates(template, "<html/>", "<div/>");
             var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+            var linkProvider = new Mock<ILinkProvider>();
 
-            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GenerateContentPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<ISettings>(settings);
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<IEnumerable<Category>>(categoryList);
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
             var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
             foreach (var category in selectedCategories)
-            {
-                string href = $"\\search\\{category.Name}.{settings.OutputFileExtension}";
-                Assert.Contains(href.ToLower(), actual.ToLower());
-            }
+                linkProvider.Setup(l => l.GetUrl("..", "search", category.Name)).Verifiable();
+
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, pageData);
+
+            linkProvider.VerifyAll();
+        }
+
+        [Fact]
+        public void ReplaceTheCategoriesPlaceholderWithALinkToEachSearchPage()
+        {
+            const string placeholderText = "{Categories}";
+
+            var categoryList = (null as IEnumerable<Category>).Create();
+            var categoryIds = categoryList.GetRandomCategoryIds();
+            var pageData = (null as ContentItem).Create(categoryIds);
+
+            string template = $"*****{placeholderText}*****";
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates(template, "<html/>", "<div/>");
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
+            var linkProvider = new Mock<ILinkProvider>();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<ISettings>(settings);
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<IEnumerable<Category>>(categoryList);
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
+            foreach (var category in selectedCategories)
+                linkProvider.Setup(l => l.GetUrl("..", "search", category.Name)).Returns(category.Id.ToString());
+
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GenerateContentPage(string.Empty, string.Empty, pageData);
+
+            foreach (var category in selectedCategories)
+                Assert.Contains(category.Id.ToString().ToLower(), actual.ToLower());
         }
 
     }

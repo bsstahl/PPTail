@@ -89,6 +89,21 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
         {
+            var container = (null as IServiceCollection).Create(templates, settings, navProvider, categories);
+            return ignore.Create(container);
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore)
+        {
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as ISettings).CreateDefault();
+            var navProvider = Mock.Of<INavigationProvider>();
+            var categories = (null as IEnumerable<Category>).Create();
+            return ignore.Create(templates, settings, navProvider, categories);
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
+        {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<ISettings>(settings);
@@ -103,8 +118,7 @@ namespace PPTail.Generator.T4Html.Test
                 PostsPerPage = 10.GetRandom(5),
                 PostsPerFeed = 20.GetRandom(10)
             });
-
-            return ignore.Create(container);
+            return container;
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, IServiceCollection container)
@@ -269,6 +283,14 @@ namespace PPTail.Generator.T4Html.Test
             };
         }
 
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
+        {
+            var categoryList = new List<Category>();
+            for (int i = 0; i < 10; i++)
+                categoryList.Add((null as Category).Create());
+            return categoryList;
+        }
+
         public static IEnumerable<Guid> GetRandomCategoryIds(this IEnumerable<Category> categories)
         {
             // Returns 1 or 2 category IDs from the collection of categories
@@ -288,6 +310,20 @@ namespace PPTail.Generator.T4Html.Test
             }
 
             return result;
+        }
+
+        public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
+        {
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            return container;
+        }
+
+        public static IServiceCollection ReplaceDependency<T>(this IServiceCollection container, T serviceInstance) where T : class
+        {
+            container.RemoveDependency<T>();
+            container.AddSingleton<T>(serviceInstance);
+            return container;
         }
     }
 }

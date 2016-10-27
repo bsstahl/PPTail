@@ -43,8 +43,8 @@ namespace PPTail.Extensions
                 .Replace("{PublicationDate}", pubDate)
                 .Replace("{LastModificationDate}", lastModDate)
                 .Replace("{ByLine}", item.ByLine)
-                .Replace("{Tags}", item.Tags.TagLinkList(settings, pathToRoot, "small"))
-                .Replace("{Categories}", categories.CategoryLinkList(item.CategoryIds, settings, pathToRoot, "small"))
+                .Replace("{Tags}", item.Tags.TagLinkList(serviceProvider, pathToRoot, "small"))
+                .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, settings, pathToRoot, "small"))
                 .Replace("{Link}", linkProvider.GetUrl(pathToRoot, "Posts", item.Slug))
                 .Replace("{Permalink}", permaLink)
                 .Replace("{PermalinkUrl}", permaLinkUrl);
@@ -121,17 +121,21 @@ namespace PPTail.Extensions
             return current;
         }
 
-        public static string TagLinkList(this IEnumerable<string> tags, ISettings settings, string pathToRoot, string cssClass)
+        public static string TagLinkList(this IEnumerable<string> tags, IServiceProvider serviceProvider, string pathToRoot, string cssClass)
         {
             var results = string.Empty;
             foreach (var tag in tags)
-                results += $"{settings.CreateSearchLink(pathToRoot, tag, "Tag", cssClass)}&nbsp;";
+                results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
             return results;
         }
 
-        //public static string ToHttpSlashes(this string path)
-        //{
-        //    return path.Replace("\\", "/");
-        //}
+        public static string CreateSearchLink(this string title, IServiceProvider serviceProvider, string pathToRoot, string linkType, string cssClass)
+        {
+            serviceProvider.ValidateService<ILinkProvider>();
+            var linkProvider = serviceProvider.GetService<ILinkProvider>();
+            string url = linkProvider.GetUrl(pathToRoot, "search", title.CreateSlug());
+            return $"<a title=\"{linkType}: {title}\" class=\"{cssClass}\" href=\"{url}\">{title}</a>";
+        }
+
     }
 }

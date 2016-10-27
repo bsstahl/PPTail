@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Xunit;
 using TestHelperExtensions;
 using PPTail.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using PPTail.Interfaces;
 
 namespace PPTail.Generator.T4Html.Test
 {
@@ -103,59 +106,51 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
-        public void RendersTagsLinkedToTheTagPage()
+        public void CallTheLinkProviderOncePerTag()
         {
+            string pathToRoot = ".";
+
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };
 
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
-
-            var siteSettings = (null as SiteSettings).Create();
+            var pages = new List<ContentItem>();
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var tagName = posts.Single().Tags.Single();
-            var extension = settings.OutputFileExtension;
 
-            var pages = new List<ContentItem>();
+            var linkProvider = new Mock<ILinkProvider>();
+            linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tagName)).Verifiable();
 
-            string pathToRoot = ".";
-            string expectedPath = System.IO.Path.Combine(pathToRoot, "search", $"{tagName.CreateSlug()}.{extension}");
-            string expected = $"href=\"{expectedPath}\"";
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(container);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, pathToRoot);
 
-            Assert.Contains(expected, actual);
+            linkProvider.VerifyAll();
         }
 
         [Fact]
-        public void RendersTagLinksWithoutSpaces()
+        public void ReturnTheOutputOfTheLinkProvider()
         {
+            string pathToRoot = ".";
+
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };
 
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
-
-            var siteSettings = (null as SiteSettings).Create();
-            var posts = (null as IEnumerable<ContentItem>).Create(1);
-            var thisPost = posts.Single();
-            var tagValue = $"{String.Empty.GetRandom()} {string.Empty.GetRandom()}";
-            thisPost.Tags = new List<string>() { tagValue };
-
-            var tagName = tagValue.CreateSlug();
-            var extension = settings.OutputFileExtension;
-
             var pages = new List<ContentItem>();
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var tagName = posts.Single().Tags.Single();
 
-            string pathToRoot = ".";
-            string expectedPath = System.IO.Path.Combine(pathToRoot, "search", $"{tagName.CreateSlug()}.{extension}");
-            string expected = $"href=\"{expectedPath}\"";
+            var linkProvider = new Mock<ILinkProvider>();
+            linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tagName)).Returns($"http_{tagName}");
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(container);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, pathToRoot);
 
-            Assert.Contains(expected, actual);
+            Assert.Contains($"http_{tagName}", actual);
         }
 
         [Fact]
