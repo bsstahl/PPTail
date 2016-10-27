@@ -13,7 +13,7 @@ using Moq;
 
 namespace PPTail.Generator.HomePage.Test
 {
-    public static class ExtensionsS
+    public static class Extensions
     {
         const string _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
 
@@ -21,23 +21,26 @@ namespace PPTail.Generator.HomePage.Test
         {
             var container = new ServiceCollection();
 
-            var settings = (null as ISettings).CreateDefault();
-            container.AddSingleton<ISettings>(settings);
+            //var settings = (null as ISettings).CreateDefault();
+            //container.AddSingleton<ISettings>(settings);
 
             var siteSettings = (null as SiteSettings).Create();
             container.AddSingleton<SiteSettings>(siteSettings);
 
-            var nav = new FakeNavProvider();
-            container.AddSingleton<INavigationProvider>(nav);
+            var templateProcessor = (null as ITemplateProcessor).Create();
+            container.AddSingleton<ITemplateProcessor>(templateProcessor);
 
-            var linkProvider = Mock.Of<ILinkProvider>();
-            container.AddSingleton<ILinkProvider>(linkProvider);
+            //var nav = new FakeNavProvider();
+            //container.AddSingleton<INavigationProvider>(nav);
+
+            //var linkProvider = Mock.Of<ILinkProvider>();
+            //container.AddSingleton<ILinkProvider>(linkProvider);
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             container.AddSingleton<IEnumerable<Template>>(templates);
 
-            var categories = (null as IEnumerable<Category>).Create();
-            container.AddSingleton<IEnumerable<Category>>(categories);
+            //var categories = (null as IEnumerable<Category>).Create();
+            //container.AddSingleton<IEnumerable<Category>>(categories);
 
             return container;
         }
@@ -92,6 +95,7 @@ namespace PPTail.Generator.HomePage.Test
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<ILinkProvider>(linkProvider);
+            container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
             return ignore.Create(container);
         }
 
@@ -165,6 +169,11 @@ namespace PPTail.Generator.HomePage.Test
                 Title = title,
                 ByLine = $"by {author}"
             };
+        }
+
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore)
+        {
+            return ignore.Create(25.GetRandom(2));
         }
 
         public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
@@ -264,6 +273,11 @@ namespace PPTail.Generator.HomePage.Test
             }
 
             return result;
+        }
+
+        public static ITemplateProcessor Create(this ITemplateProcessor ignore)
+        {
+            return Mock.Of<ITemplateProcessor>();
         }
 
         public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class

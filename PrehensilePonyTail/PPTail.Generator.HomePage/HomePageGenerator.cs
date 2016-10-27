@@ -14,35 +14,29 @@ namespace PPTail.Generator.HomePage
     public class HomePageGenerator : Interfaces.IHomePageGenerator
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly INavigationProvider _navProvider;
-        private readonly ISettings _settings;
         private readonly IEnumerable<Template> _templates;
 
         public HomePageGenerator(IServiceProvider serviceProvider)
         {
-            // Note: Validation that required templates have been supplied
-            // is being done in the methods where they are required
-
-            // TODO: Move the service validation into the methods where they are required
-
             if (serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<SiteSettings>();
+            _serviceProvider.ValidateService<ITemplateProcessor>();
 
-            _settings = _serviceProvider.GetService<ISettings>();
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            _templates.Validate(TemplateType.HomePage);
+            _templates.Validate(TemplateType.Item);
         }
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, IEnumerable<ContentItem> posts)
         {
             var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            var settings = _serviceProvider.GetService<ISettings>();
             var siteSettings = _serviceProvider.GetService<SiteSettings>();
-            return posts.ProcessTemplate(_serviceProvider, homepageTemplate, itemTemplate, sidebarContent, navigationContent, "Home", ".", false, siteSettings.PostsPerPage);
+            var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
+            return templateProcessor.Process(homepageTemplate, itemTemplate, sidebarContent, navigationContent, posts, "Home", ".", false, siteSettings.PostsPerPage);
         }
 
     }
