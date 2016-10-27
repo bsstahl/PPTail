@@ -71,19 +71,18 @@ namespace PPTail.Generator.Syndication.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSettingsAreNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheTemplateProcessorIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<ISettings>();
-
+            container.RemoveDependency<ITemplateProcessor>();
             Assert.Throws<DependencyNotFoundException>(() => (null as ISyndicationProvider).Create(container));
         }
 
         [Fact]
-        public void ReturnTheCorrectDependencyNameIfTheSettingsAreNotProvided()
+        public void ReturnTheCorrectDependencyNameIfTheTemplateProcessorIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<ISettings>();
+            container.RemoveDependency<ITemplateProcessor>();
 
             string actual = string.Empty;
             try
@@ -95,7 +94,7 @@ namespace PPTail.Generator.Syndication.Test
                 actual = ex.InterfaceTypeName;
             }
 
-            Assert.Equal("ISettings", actual);
+            Assert.Equal("ITemplateProcessor", actual);
         }
 
         [Fact]

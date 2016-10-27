@@ -22,26 +22,23 @@ namespace PPTail.Generator.Search.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSettingsAreNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
         {
-            var templates = (null as IEnumerable<Template>).Create();
-            ISettings settings = null;
-            SiteSettings siteSettings = Mock.Of<SiteSettings>();
-
-            Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(templates, settings, siteSettings));
+            var container = (null as IServiceCollection).Create();
+            container.RemoveDependency<SiteSettings>();
+            Assert.Throws<DependencyNotFoundException>(() => (null as ISearchProvider).Create(container));
         }
 
         [Fact]
-        public void ThrowWithTheProperInterfaceTypeNameIfTheSettingsAreNotProvided()
+        public void ThrowWithTheProperInterfaceTypeNameIfTheSiteSettingsAreNotProvided()
         {
-            var templates = (null as IEnumerable<Template>).Create();
-            ISettings settings = null;
-            SiteSettings siteSettings = Mock.Of<SiteSettings>();
+            var container = (null as IServiceCollection).Create();
+            container.RemoveDependency<SiteSettings>();
 
-            string expected = typeof(ISettings).Name;
+            string expected = typeof(SiteSettings).Name;
             try
             {
-                var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+                var target = (null as ISearchProvider).Create(container);
             }
             catch (DependencyNotFoundException ex)
             {
@@ -50,26 +47,23 @@ namespace PPTail.Generator.Search.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheTemplateProviderIsNotProvided()
         {
-            var templates = (null as IEnumerable<Template>).Create();
-            var settings = Mock.Of<ISettings>();
-            SiteSettings siteSettings = null;
-
-            Assert.Throws(typeof(DependencyNotFoundException), () => (null as ISearchProvider).Create(templates, settings, siteSettings));
+            var container = (null as IServiceCollection).Create();
+            container.RemoveDependency<ITemplateProcessor>();
+            Assert.Throws<DependencyNotFoundException>(() => (null as ISearchProvider).Create(container));
         }
 
         [Fact]
-        public void ThrowWithTheProperInterfaceTypeNameIfTheSiteSettingsAreNotProvided()
+        public void ThrowWithTheProperInterfaceTypeNameIfTheTemplateProviderIsNotProvided()
         {
-            var templates = (null as IEnumerable<Template>).Create();
-            var settings = Mock.Of<ISettings>();
-            SiteSettings siteSettings = null;
+            var container = (null as IServiceCollection).Create();
+            container.RemoveDependency<ITemplateProcessor>();
 
-            string expected = typeof(SiteSettings).Name;
+            string expected = typeof(ITemplateProcessor).Name;
             try
             {
-                var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+                var target = (null as ISearchProvider).Create(container);
             }
             catch (DependencyNotFoundException ex)
             {
@@ -92,5 +86,6 @@ namespace PPTail.Generator.Search.Test
             IEnumerable<Template> templates = (null as IEnumerable<Template>).Create(null, template);
             Assert.Throws(typeof(TemplateNotFoundException), () => (null as ISearchProvider).Create(templates));
         }
+
     }
 }

@@ -36,29 +36,50 @@ namespace PPTail.Generator.Search.Test
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
-            var serviceCollection = new ServiceCollection();
+            var container = (null as IServiceCollection).Create(templates, settings, siteSettings, categories, linkProvider, Mock.Of<ITemplateProcessor>());
+            return new PageGenerator(container.BuildServiceProvider());
+        }
 
-            if (templates != null)
-                serviceCollection.AddSingleton<IEnumerable<Template>>(templates);
+        public static IServiceCollection Create(this IServiceCollection ignore)
+        {
+            return ignore.Create((null as IEnumerable<Template>).Create(),
+                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null,
+                Mock.Of<ILinkProvider>(), Mock.Of<ITemplateProcessor>());
+        }
 
-            if (settings != null)
-                serviceCollection.AddSingleton<ISettings>(settings);
-
-            if (siteSettings != null)
-                serviceCollection.AddSingleton<SiteSettings>(siteSettings);
-
-            if (categories != null)
-                serviceCollection.AddSingleton<IEnumerable<Category>>(categories);
-
-            if (linkProvider != null)
-                serviceCollection.AddSingleton<ILinkProvider>(linkProvider);
-
-            return new PageGenerator(serviceCollection.BuildServiceProvider());
+        public static ISearchProvider Create(this ISearchProvider ignore, IServiceCollection container)
+        {
+            return ignore.Create(container.BuildServiceProvider());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IServiceProvider serviceProvider)
         {
             return new PageGenerator(serviceProvider);
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ILinkProvider linkProvider, ITemplateProcessor templateProcessor)
+        {
+            var container = new ServiceCollection();
+
+            if (templates != null)
+                container.AddSingleton<IEnumerable<Template>>(templates);
+
+            if (settings != null)
+                container.AddSingleton<ISettings>(settings);
+
+            if (siteSettings != null)
+                container.AddSingleton<SiteSettings>(siteSettings);
+
+            if (categories != null)
+                container.AddSingleton<IEnumerable<Category>>(categories);
+
+            if (linkProvider != null)
+                container.AddSingleton<ILinkProvider>(linkProvider);
+
+            if (templateProcessor != null)
+                container.AddSingleton<ITemplateProcessor>(templateProcessor);
+
+            return container;
         }
 
         public static IEnumerable<Template> Create(this IEnumerable<Template> ignore)
@@ -188,5 +209,19 @@ namespace PPTail.Generator.Search.Test
             return result;
         }
 
+
+        public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
+        {
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            return container;
+        }
+
+        public static IServiceCollection ReplaceDependency<T>(this IServiceCollection container, T serviceInstance) where T : class
+        {
+            container.RemoveDependency<T>();
+            container.AddSingleton<T>(serviceInstance);
+            return container;
+        }
     }
 }

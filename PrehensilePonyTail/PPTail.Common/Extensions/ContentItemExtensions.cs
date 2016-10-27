@@ -11,7 +11,7 @@ namespace PPTail.Extensions
 {
     public static class ContentItemExtensions
     {
-        public static string ProcessTemplate(this IEnumerable<ContentItem> posts, IServiceProvider serviceProvider, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, string pathToRoot, bool xmlEncodeContent, int maxPostCount)
+        private static string ProcessTemplate(this IEnumerable<ContentItem> posts, IServiceProvider serviceProvider, Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, string pageTitle, string pathToRoot, bool xmlEncodeContent, int maxPostCount)
         {
             // MaxPosts is not pulled from the SiteSettings because
             // there are 2 possible values that might be used to

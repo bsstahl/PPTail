@@ -8,150 +8,256 @@ using TestHelperExtensions;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
+using PPTail.Extensions;
 
 namespace PPTail.Generator.Search.Test
 {
     public class PageGenerator_GenerateSearchResultsPage_Should
     {
         [Fact]
-        public void ReturnThePostTitleIfThePostHasTheTag()
+        public void CallTheTemplateProcessorOncePerExecution()
         {
-            var tag = string.Empty.GetRandom();
-            var post = (null as ContentItem).Create(tag);
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
             string navigationContent = string.Empty.GetRandom();
             string sidebarContent = string.Empty.GetRandom();
             string pathToRoot = string.Empty.GetRandom();
 
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var target = (null as ISearchProvider).Create(templates);
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
+                .Verifiable();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            Assert.Contains(post.Title, actual);
+            templateProcessor.VerifyAll();
         }
 
         [Fact]
-        public void ReturnThePostContentIfThePostHasTheTag()
+        public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            var tag = string.Empty.GetRandom();
-            var post = (null as ContentItem).Create(tag);
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
             string navigationContent = string.Empty.GetRandom();
             string sidebarContent = string.Empty.GetRandom();
             string pathToRoot = string.Empty.GetRandom();
 
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var settings = (null as Settings).Create();
-            var siteSettings = Mock.Of<SiteSettings>();
+            string expected = string.Empty.GetRandom();
 
-            var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
+                .Returns(expected);
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            Assert.Contains(post.Content, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ReturnThePostTitleIfThePostHasTheCategory()
+        public void PassTheCorrectSearchTemplateToTheTemplateProcessor()
         {
-            var allCategories = (null as IEnumerable<Category>).Create();
-            var postCategory = allCategories.GetRandom();
-            var post = (null as ContentItem).Create(postCategory.Id);
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
             string navigationContent = string.Empty.GetRandom();
             string sidebarContent = string.Empty.GetRandom();
             string pathToRoot = string.Empty.GetRandom();
 
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var target = (null as ISearchProvider).Create(templates, allCategories);
-            var actual = target.GenerateSearchResultsPage(postCategory.Name, posts, navigationContent, sidebarContent, pathToRoot);
+            var container = (null as IServiceCollection).Create();
 
-            Assert.Contains(post.Title, actual);
-        }
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
-        [Fact]
-        public void ReturnThePostOnceEvenIfItHasBothTheTagAndCategory()
-        {
-            var allCategories = (null as IEnumerable<Category>).Create();
-            var postCategory = allCategories.GetRandom();
-            var post = (null as ContentItem).Create(postCategory.Id, new List<string>() { postCategory.Name });
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
-
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var target = (null as ISearchProvider).Create(templates, allCategories);
-            var actual = target.GenerateSearchResultsPage(postCategory.Name, posts, navigationContent, sidebarContent, pathToRoot);
-
-            var pos = actual.IndexOf(post.Title);
-            Assert.DoesNotContain(post.Title, actual.Substring(pos + 1));
-        }
-
-        [Fact]
-        public void ReturnTheSidebarContentOnce()
-        {
-            var tag = string.Empty.GetRandom();
-            var post = (null as ContentItem).Create(tag);
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
-
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var settings = (null as Settings).Create();
-            var siteSettings = Mock.Of<SiteSettings>();
-
-            var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+            var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            Assert.Equal(1, Regex.Matches(actual, sidebarContent).Count);
+            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var searchTemplate = templates.Find(Enumerations.TemplateType.SearchPage);
+
+            templateProcessor
+                .Verify(t => t.Process(searchTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
-        public void ReturnTheNavigationContentOnce()
+        public void PassTheCorrectItemTemplateToTheTemplateProcessor()
         {
-            var tag = string.Empty.GetRandom();
-            var post = (null as ContentItem).Create(tag);
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
             string navigationContent = string.Empty.GetRandom();
             string sidebarContent = string.Empty.GetRandom();
             string pathToRoot = string.Empty.GetRandom();
 
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var settings = (null as Settings).Create();
-            var siteSettings = Mock.Of<SiteSettings>();
+            var container = (null as IServiceCollection).Create();
 
-            var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            Assert.Equal(1, Regex.Matches(actual, navigationContent).Count);
+            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var itemTemplate = templates.Find(Enumerations.TemplateType.Item);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
-        public void ReturnTheTagPageTitleOnce()
+        public void PassTheCorrectSidebarContentToTheTemplateProcessor()
         {
-            var tag = string.Empty.GetRandom();
-            var post = (null as ContentItem).Create(tag);
-            var posts = (null as IEnumerable<ContentItem>).Create(post);
-
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
             string navigationContent = string.Empty.GetRandom();
             string sidebarContent = string.Empty.GetRandom();
             string pathToRoot = string.Empty.GetRandom();
 
-            IEnumerable<Template> templates = (null as IEnumerable<Template>).Create();
-            var settings = (null as Settings).Create();
-            var siteSettings = Mock.Of<SiteSettings>();
+            var container = (null as IServiceCollection).Create();
 
-            var target = (null as ISearchProvider).Create(templates, settings, siteSettings);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            Assert.Equal(1, Regex.Matches(actual, $"Tag: {tag}").Count);
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
+
+        [Fact]
+        public void PassTheCorrectNavigationContentToTheTemplateProcessor()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectContentItemsCollectionToTheTemplateProcessor()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectPageNameToTheTemplateProcessor()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), $"Tag: {tag}", It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectPathToRootToTheTemplateProcessor()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), pathToRoot, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectXmlEncodeValueToTheTemplateProcessor()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), false, It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectPostsPerPageValueToTheTemplateProcessor()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerPage), Times.Once);
+        }
+
     }
 }

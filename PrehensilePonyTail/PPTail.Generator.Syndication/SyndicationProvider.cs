@@ -21,7 +21,8 @@ namespace PPTail.Generator.Syndication
 
             _serviceProvider = serviceProvider;
             _serviceProvider.ValidateService<SiteSettings>();
-            _serviceProvider.ValidateService<ISettings>();
+
+            _serviceProvider.ValidateService<ITemplateProcessor>();
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
             _templates.Validate(Enumerations.TemplateType.Syndication);
@@ -32,11 +33,9 @@ namespace PPTail.Generator.Syndication
         {
             var syndicationTemplate = _templates.Find(Enumerations.TemplateType.Syndication);
             var syndicationItemTemplate = _templates.Find(Enumerations.TemplateType.SyndicationItem);
-            var settings = _serviceProvider.GetService<ISettings>();
             var siteSettings = _serviceProvider.GetService<SiteSettings>();
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-
-            return posts.ProcessTemplate(_serviceProvider, syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, "Syndication", ".", true, siteSettings.PostsPerFeed);
+            var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
+            return templateProcessor.Process(syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, posts, "Syndication", ".", true, siteSettings.PostsPerFeed);
         }
     }
 }

@@ -28,6 +28,9 @@ namespace PPTail.Generator.Syndication.Test
             var linkProvider = Mock.Of<ILinkProvider>();
             container.AddSingleton<ILinkProvider>(linkProvider);
 
+            var templateProcessor = Mock.Of<ITemplateProcessor>();
+            container.AddSingleton<ITemplateProcessor>(templateProcessor);
+
             var syndicationTemplate = new Template() { Content = _defaultSyndicationTemplateContent, TemplateType = Enumerations.TemplateType.Syndication };
             var syndicationItemTemplate = new Template() { Content = _defaultSyndicationItemTemplateContent, TemplateType = Enumerations.TemplateType.SyndicationItem };
             var templates = new List<Template>() { syndicationTemplate, syndicationItemTemplate };

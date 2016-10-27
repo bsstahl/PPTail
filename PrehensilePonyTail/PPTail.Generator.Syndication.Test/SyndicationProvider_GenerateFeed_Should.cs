@@ -10,133 +10,168 @@ using PPTail.Interfaces;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Xml.Linq;
+using PPTail.Extensions;
 
 namespace PPTail.Generator.Syndication.Test
 {
     public class SyndicationProvider_GenerateFeed_Should
     {
         [Fact]
-        public void ReturnValidXml()
+        public void CallTheTemplateProcessorOncePerExecution()
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
 
-            var posts = (null as IEnumerable<ContentItem>).Create();
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
+                .Verifiable();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            var xml = XElement.Parse(actual);
+            templateProcessor.VerifyAll();
         }
 
         [Fact]
-        public void ContainsTheCorrectNumberOfItemsIfPostCountIsGreaterThanPostsPerFeed()
+        public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            string expected = string.Empty.GetRandom();
 
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
+            var container = (null as IServiceCollection).Create();
 
-            var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed + 5);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
+                .Returns(expected);
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            var xml = XElement.Parse(actual);
-            var itemCount = xml.Descendants().Count(n => n.Name.LocalName == "item");
-            Assert.Equal(siteSettings.PostsPerFeed, itemCount);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ContainsTheCorrectNumberOfItemsIfPostCountIsLessThanPostsPerFeed()
+        public void PassTheCorrectSyndicationTemplateToTheTemplateProcessor()
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
 
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
-
-            var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed - 1);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            var xml = XElement.Parse(actual);
-            var itemCount = xml.Descendants().Count(n => n.Name.LocalName == "item");
-            Assert.Equal(posts.Count(), itemCount);
+            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var searchTemplate = templates.Find(Enumerations.TemplateType.Syndication);
+
+            templateProcessor
+                .Verify(t => t.Process(searchTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
-        public void ContainEachOfThePostTitles()
+        public void PassTheCorrectItemTemplateToTheTemplateProcessor()
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
 
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
-
-            var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed - 1);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            foreach (var post in posts)
-                Assert.Contains(post.Title, actual);
+            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var itemTemplate = templates.Find(Enumerations.TemplateType.SyndicationItem);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
-        public void RetrieveALinkToEachPost()
+        public void PassTheCorrectContentItemsCollectionToTheTemplateProcessor()
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
-
-            var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed - 1);
-
-            var linkProvider = new Mock<ILinkProvider>();
-            foreach (var post in posts)
-                linkProvider.Setup(l => l.GetUrl(".", "Posts", post.Slug)).Verifiable();
-            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            linkProvider.VerifyAll();
-
-            //foreach (var post in posts)
-            //{
-            //    string url = $"{post.Slug}.{settings.OutputFileExtension}";
-            //    Assert.Contains(url, actual);
-            //}
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
-        public void ContainEachOfThePostLinks()
+        public void PassTheCorrectPageNameToTheTemplateProcessor()
         {
-            IServiceCollection container = (null as IServiceCollection).Create();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
-
-            var posts = (null as IEnumerable<ContentItem>).Create(siteSettings.PostsPerFeed - 1);
-
-            var linkProvider = new Mock<ILinkProvider>();
-            foreach (var post in posts)
-                linkProvider.Setup(l => l.GetUrl(It.IsAny<string>(), It.IsAny<string>(), post.Slug))
-                    .Returns(post.Id.ToString());
-            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            linkProvider.VerifyAll();
-
-            foreach (var post in posts)
-                Assert.Contains(post.Id.ToString(), actual);
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), "Syndication", It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
+
+        [Fact]
+        public void PassTheCorrectPathToRootToTheTemplateProcessor()
+        {
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISyndicationProvider).Create(container);
+            var actual = target.GenerateFeed(posts);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), ".", It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectXmlEncodeValueToTheTemplateProcessor()
+        {
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISyndicationProvider).Create(container);
+            var actual = target.GenerateFeed(posts);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), true, It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectPostsPerFeedValueToTheTemplateProcessor()
+        {
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISyndicationProvider).Create(container);
+            var actual = target.GenerateFeed(posts);
+
+            var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerFeed), Times.Once);
+        }
+
     }
 }
