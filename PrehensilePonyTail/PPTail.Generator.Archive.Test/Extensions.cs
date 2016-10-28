@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using System;
@@ -30,23 +31,32 @@ namespace PPTail.Generator.Archive.Test
             var templates = (null as IEnumerable<Template>).Create();
             container.AddSingleton<IEnumerable<Template>>(templates);
 
-            // Add dependencies here as needed
+            var templateProcessor = (null as ITemplateProcessor).Create();
+            container.AddSingleton<ITemplateProcessor>(templateProcessor);
+
+
             return container;
         }
 
         public static IEnumerable<Template> Create(this IEnumerable<Template> ignore)
         {
             var templates = new List<Template>();
-            templates.Add((null as Template).Create());
+            templates.Add((null as Template).Create(Enumerations.TemplateType.Archive));
+            templates.Add((null as Template).Create(Enumerations.TemplateType.ArchiveItem));
             return templates;
         }
 
         public static Template Create(this Template ignore)
         {
+            return ignore.Create(Enumerations.TemplateType.Archive);
+        }
+
+        public static Template Create(this Template ignore, Enumerations.TemplateType templateType)
+        {
             return new Template()
             {
                 Content = "{Content}",
-                TemplateType = Enumerations.TemplateType.HomePage
+                TemplateType = templateType
             };
         }
 
@@ -107,6 +117,11 @@ namespace PPTail.Generator.Archive.Test
             for (int i = 0; i < count; i++)
                 result.Add((null as ContentItem).Create());
             return result;
+        }
+
+        public static ITemplateProcessor Create(this ITemplateProcessor ignore)
+        {
+            return Mock.Of<ITemplateProcessor>();
         }
 
         public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class

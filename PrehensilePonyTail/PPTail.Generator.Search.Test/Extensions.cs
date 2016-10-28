@@ -43,7 +43,7 @@ namespace PPTail.Generator.Search.Test
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             return ignore.Create((null as IEnumerable<Template>).Create(),
-                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null,
+                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), (null as IEnumerable<Category>).Create(),
                 Mock.Of<ILinkProvider>(), Mock.Of<ITemplateProcessor>());
         }
 

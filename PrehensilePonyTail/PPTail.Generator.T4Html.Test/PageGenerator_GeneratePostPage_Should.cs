@@ -2,6 +2,7 @@
 using Moq;
 using PPTail.Entities;
 using PPTail.Exceptions;
+using PPTail.Extensions;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -31,485 +32,186 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
-        public void ReplaceATitlePlaceholderWithTheTitle()
+        public void ReturnTheProperTemplateTypeIfThePostPageTemplateIsNotSupplied()
         {
-            var pageData = (null as ContentItem).Create();
-
-            string template = "*******************************{Title}*******************************";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
+            var allTemplates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var templates = allTemplates.Where(t => t.TemplateType != Enumerations.TemplateType.PostPage);
+            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
             var siteSettings = (null as SiteSettings).Create();
 
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-            Assert.Contains(pageData.Title, actual);
-        }
-
-        [Fact]
-        public void ReplaceAllTitlePlaceholdersWithTheTitle()
-        {
-            var pageData = (null as ContentItem).Create();
-
-            string template = "{Title}***\r\n************{Title}*********************\t\t****{Title}*****{Title}************{Title}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(pageData.Title));
-            Assert.Equal(5, actualCount);
-        }
-
-        [Fact]
-        public void RemoveThePlaceholderTextIfTheTitleDataValueIsNull()
-        {
-            const string placeholderText = "{Title}";
+            var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<ISettings>(settings);
 
             var pageData = (null as ContentItem).Create();
-            pageData.Title = null;
+            var target = (null as IPageGenerator).Create(templates, settings);
 
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
+            Enumerations.TemplateType actual = Enumerations.TemplateType.Raw;
+            try
+            {
+                target.GeneratePostPage(string.Empty, string.Empty, pageData);
+            }
+            catch (TemplateNotFoundException ex)
+            {
+                actual = ex.TemplateType;
+            }
 
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
-            Assert.Equal(0, actualCount);
+            Assert.Equal(Enumerations.TemplateType.PostPage, actual);
         }
 
         [Fact]
-        public void ReplaceAContentPlaceholderWithTheContent()
+        public void CallTheTemplateProcessorOncePerExecution()
         {
-            const string placeholderText = "{Content}";
-
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
             var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.Content;
-
-            string template = $"*******************************{placeholderText}*******************************";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-            Assert.Contains(expectedData, actual);
-        }
-
-        [Fact]
-        public void ReplaceAllContentPlaceholdersWithTheContent()
-        {
-            const string placeholderText = "{Content}";
-
-            var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.Content;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
-            Assert.Equal(6, actualCount);
-        }
-
-        [Fact]
-        public void RemoveThePlaceholderTextIfTheContentDataValueIsNull()
-        {
-            const string placeholderText = "{Content}";
-
-            var pageData = (null as ContentItem).Create();
-            pageData.Content = null;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
-            Assert.Equal(0, actualCount);
-        }
-
-        [Fact]
-        public void ReplaceAllAuthorPlaceholdersWithTheAuthor()
-        {
-            const string placeholderText = "{Author}";
-
-            var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.Author;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
-            Assert.Equal(6, actualCount);
-        }
-
-        [Fact]
-        public void RemoveThePlaceholderTextIfTheAuthorDataValueIsNull()
-        {
-            const string placeholderText = "{Author}";
-
-            var pageData = (null as ContentItem).Create();
-            pageData.Author = null;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
-            Assert.Equal(0, actualCount);
-        }
-
-        [Fact]
-        public void ReplaceAllDescriptionPlaceholdersWithTheDescription()
-        {
-            const string placeholderText = "{Description}";
-
-            var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.Description;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
-            Assert.Equal(6, actualCount);
-        }
-
-        [Fact]
-        public void RemoveThePlaceholderTextIfTheDescriptionDataValueIsNull()
-        {
-            const string placeholderText = "{Description}";
-
-            var pageData = (null as ContentItem).Create();
-            pageData.Description = null;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(placeholderText));
-            Assert.Equal(0, actualCount);
-        }
-
-        [Fact]
-        public void ReplaceAllPubDatePlaceholdersWithThePubDate()
-        {
-            const string placeholderText = "{PublicationDate}";
-            const string dateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
-
-            var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.PublicationDate.ToString(dateTimeFormatSpecifier);
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, dateTimeFormatSpecifier);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
-            Assert.Equal(6, actualCount);
-        }
-
-        [Fact]
-        public void ReplaceAllLastModDatePlaceholdersWithTheLastModDate()
-        {
-            const string placeholderText = "{LastModificationDate}";
-            const string dateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
-
-            var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.LastModificationDate.ToString(dateTimeFormatSpecifier);
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, dateTimeFormatSpecifier);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
-            Assert.Equal(6, actualCount);
-        }
-
-        [Fact]
-        public void ReplaceAllByLinePlaceholdersWithTheByLine()
-        {
-            const string placeholderText = "{ByLine}";
-
-            var pageData = (null as ContentItem).Create();
-            var expectedData = pageData.ByLine;
-
-            string template = $"{placeholderText}*******{placeholderText}******\r\n****{placeholderText}*********\t\t****{placeholderText}*****{placeholderText}************{placeholderText}";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            int actualCount = actual.Select((c, i) => actual.Substring(i)).Count(sub => sub.StartsWith(expectedData));
-            Assert.Equal(6, actualCount);
-        }
-
-        [Fact]
-        public void ReplaceTheTagPlaceholderWithEachTag()
-        {
-            const string placeholderText = "{Tags}";
-
-            int tagCount = 8.GetRandom(3);
-            var tagList = new List<string>();
-            for (int i = 0; i < tagCount; i++)
-                tagList.Add(string.Empty.GetRandom());
-
-            var pageData = (null as ContentItem).Create(tagList);
-
-            string template = $"*****{placeholderText}*****";
-            var target = (null as IPageGenerator).Create(string.Empty, template, string.Empty);
-
-            var siteSettings = (null as SiteSettings).Create();
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            foreach (string tag in tagList)
-                Assert.Contains(tag, actual);
-        }
-
-        [Fact]
-        public void CallTheLinkProviderOnceForEachTag()
-        {
-            const string placeholderText = "{Tags}";
-
-            int tagCount = 8.GetRandom(3);
-            var tagList = new List<string>();
-            for (int i = 0; i < tagCount; i++)
-                tagList.Add(string.Empty.GetRandom());
-
-            var pageData = (null as ContentItem).Create(tagList);
-
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates(string.Empty, template, string.Empty, string.Empty, string.Empty, string.Empty);
-
-            var settings = (null as ISettings).CreateDefault();
-            var siteSettings = (null as SiteSettings).Create();
-
-            var linkProvider = new Mock<ILinkProvider>();
-            foreach (var tag in tagList)
-                linkProvider.Setup(l => l.GetUrl("..", "search", tag)).Verifiable();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
-            container.ReplaceDependency<ISettings>(settings);
-            container.ReplaceDependency<SiteSettings>(siteSettings);
-            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as IPageGenerator).Create(container);
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
 
-            linkProvider.VerifyAll();
+            // templateProcessor.Verify(t => t.ProcessContentItemTemplate(template, pageData, sidebarContent, navigationContent, "..", false), Times.Once);
+            // templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]
-        public void ReplaceTheTagPlaceholderWithTheOutputOfTheLinkProvider()
+        public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            const string placeholderText = "{Tags}";
+            string expected = string.Empty.GetRandom();
 
-            int tagCount = 8.GetRandom(3);
-            var tagList = new List<string>();
-            for (int i = 0; i < tagCount; i++)
-                tagList.Add(string.Empty.GetRandom());
-
-            var pageData = (null as ContentItem).Create(tagList);
-
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates(string.Empty, template, string.Empty, string.Empty, string.Empty, string.Empty);
-
-            var settings = (null as ISettings).CreateDefault();
-            var siteSettings = (null as SiteSettings).Create();
-
-            var linkProvider = new Mock<ILinkProvider>();
-            foreach (var tag in tagList)
-                linkProvider.Setup(l => l.GetUrl("..", "search", tag)).Returns($"http_{tag}");
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
-            container.ReplaceDependency<ISettings>(settings);
-            container.ReplaceDependency<SiteSettings>(siteSettings);
-            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor
+                .Setup(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(expected);
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as IPageGenerator).Create(container);
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
 
-            foreach (string tag in tagList)
-                Assert.Contains($"http_{tag}".ToLower(), actual.ToLower());
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ReplaceTheCategoriesPlaceholderWithEachCategory()
+        public void PassTheProperTemplateToTheTemplateProcessor()
         {
-            const string placeholderText = "{Categories}";
-
-            var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
-                categoryList.Add((null as Category).Create());
-
-            var categoryIds = categoryList.GetRandomCategoryIds();
-            var pageData = (null as ContentItem).Create(categoryIds);
-
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
-
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
-            var siteSettings = (null as SiteSettings).Create();
-
-            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
-
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
-            foreach (var category in selectedCategories)
-                Assert.Contains(category.Name, actual);
-        }
-
-        [Fact]
-        public void CallTheLinkProviderOnceForEachCategory()
-        {
-            const string placeholderText = "{Categories}";
-
-            var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
-                categoryList.Add((null as Category).Create());
-
-            var categoryIds = categoryList.GetRandomCategoryIds();
-            var pageData = (null as ContentItem).Create(categoryIds);
-
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
-
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
-            var linkProvider = new Mock<ILinkProvider>();
-
-            var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
-            foreach (var category in selectedCategories)
-                linkProvider.Setup(l => l.GetUrl("..", "search", category.Name)).Verifiable();
-    
-            var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Category>>(categoryList);
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
-            container.ReplaceDependency<ISettings>(settings);
-            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
-
-            var target = (null as IPageGenerator).Create(container);
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-
-            linkProvider.VerifyAll();
-        }
-
-        [Fact]
-        public void ReplaceTheCategoriesPlaceholderWithALinkToEachSearchPage()
-        {
-            const string placeholderText = "{Categories}";
-
-            var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
-                categoryList.Add((null as Category).Create());
-
-            var categoryIds = categoryList.GetRandomCategoryIds();
-            var pageData = (null as ContentItem).Create(categoryIds);
-
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
-
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
-            var linkProvider = new Mock<ILinkProvider>();
-
-            var selectedCategories = categoryList.Where(c => categoryIds.Contains(c.Id));
-            foreach (var category in selectedCategories)
-                linkProvider.Setup(l => l.GetUrl("..", "search", category.Name)).Returns(category.Id.ToString());
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Category>>(categoryList);
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
-            container.ReplaceDependency<ISettings>(settings);
-            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var target = (null as IPageGenerator).Create(container);
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
 
-            foreach (var category in selectedCategories)
-                Assert.Contains(category.Id.ToString().ToLower(), actual.ToLower());
+            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var template = templates.Find(Enumerations.TemplateType.PostPage);
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(template, It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]
-        public void ReplaceTheCategoriesPlaceholderWithBlankIfNoCategoriesAreSelected()
+        public void PassTheProperContentItemToTheTemplateProcessor()
         {
-            const string placeholderText = "{Categories}";
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
 
-            var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
-                categoryList.Add((null as Category).Create());
+            var container = (null as IServiceCollection).Create();
 
-            var categoryIds = new List<Guid>();
-            var pageData = (null as ContentItem).Create(categoryIds);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
 
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
-            var siteSettings = (null as SiteSettings).Create();
-
-            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
-
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            Assert.False(string.IsNullOrWhiteSpace(actual));
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), pageData, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]
-        public void ReplaceTheCategoriesPlaceholderWithBlankIfSelectedCategoriesIsNull()
+        public void PassTheProperSidebarContentToTheTemplateProcessor()
         {
-            const string placeholderText = "{Categories}";
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
 
-            var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
-                categoryList.Add((null as Category).Create());
+            var container = (null as IServiceCollection).Create();
 
-            IEnumerable<Guid> categoryIds = null;
-            var pageData = (null as ContentItem).Create(categoryIds);
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
-            string template = $"*****{placeholderText}*****";
-            var templates = (null as IEnumerable<Template>).CreateBlankTemplates("<html/>", template, "<html/>", string.Empty, string.Empty, "<div/>");
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
 
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
-            var siteSettings = (null as SiteSettings).Create();
-
-            var target = (null as IPageGenerator).Create(templates, settings, categoryList);
-
-            var actual = target.GeneratePostPage(string.Empty, string.Empty, pageData);
-            Console.WriteLine(actual);
-
-            Assert.False(string.IsNullOrWhiteSpace(actual));
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), sidebarContent, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
+        [Fact]
+        public void PassTheProperNavigationContentToTheTemplateProcessor()
+        {
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
+
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), It.IsAny<string>(), navigationContent, It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheProperPathToRootToTheTemplateProcessor()
+        {
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
+
+            string pathToRoot = "..";
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>(), pathToRoot, It.IsAny<bool>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheProperXmlEncodeValueToTheTemplateProcessor()
+        {
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+            var pageData = (null as ContentItem).Create();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as IPageGenerator).Create(container);
+            var actual = target.GeneratePostPage(sidebarContent, navigationContent, pageData);
+
+            bool xmlEncode = false;
+            templateProcessor.Verify(t => t.ProcessContentItemTemplate(It.IsAny<Template>(), It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), xmlEncode), Times.Once);
+        }
     }
 }

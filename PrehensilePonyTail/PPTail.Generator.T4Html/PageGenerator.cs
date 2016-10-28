@@ -71,14 +71,16 @@ namespace PPTail.Generator.T4Html
         {
             var template = _templates.Find(TemplateType.ContentPage);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return template.ProcessContentItemTemplate(_serviceProvider, pageData, sidebarContent, navContent, "..", false);
+            var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
+            return templateProcessor.ProcessContentItemTemplate(template, pageData, sidebarContent, navContent, "..", false);
         }
 
         public string GeneratePostPage(string sidebarContent, string navContent, ContentItem article)
         {
             var template = _templates.Find(TemplateType.PostPage);
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            return template.ProcessContentItemTemplate(_serviceProvider, article, sidebarContent, navContent, "..", false);
+            var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
+            return templateProcessor.ProcessContentItemTemplate(template, article, sidebarContent, navContent, "..", false);
         }
 
     }

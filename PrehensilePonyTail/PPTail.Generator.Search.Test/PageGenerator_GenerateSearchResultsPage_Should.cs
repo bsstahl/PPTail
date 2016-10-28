@@ -154,10 +154,12 @@ namespace PPTail.Generator.Search.Test
         }
 
         [Fact]
-        public void PassTheCorrectContentItemsCollectionToTheTemplateProcessor()
+        public void PassTheCorrectContentItemsCollectionForTheTagToTheTemplateProcessor()
         {
             string tag = string.Empty.GetRandom();
-            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            var post = (null as ContentItem).Create(tag);
+            var posts = new List<ContentItem>() { post, (null as ContentItem).Create(string.Empty.GetRandom(5)) };
+
             string navigationContent = string.Empty.GetRandom();
             string sidebarContent = string.Empty.GetRandom();
             string pathToRoot = string.Empty.GetRandom();
@@ -170,8 +172,36 @@ namespace PPTail.Generator.Search.Test
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
+            var selectedContentItems = new List<ContentItem>() { post };
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), selectedContentItems, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectContentItemsCollectionForTheCategoryToTheTemplateProcessor()
+        {
+            var categories = (null as IEnumerable<Category>).Create(5);
+            var category = categories.GetRandom();
+
+            var post = (null as ContentItem).Create(category.Id);
+            var posts = new List<ContentItem>() { post, (null as ContentItem).Create(Guid.NewGuid()) };
+
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Category>>(categories);
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(category.Name, posts, navigationContent, sidebarContent, pathToRoot);
+
+            var selectedContentItems = new List<ContentItem>() { post };
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), selectedContentItems, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -258,6 +288,30 @@ namespace PPTail.Generator.Search.Test
             templateProcessor
                 .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerPage), Times.Once);
         }
+
+        [Fact]
+        public void DoSomething()
+        {
+            string tag = string.Empty.GetRandom();
+            var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISearchProvider).Create(container);
+            var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
+
+            var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerPage), Times.Once);
+        }
+
+
 
     }
 }

@@ -111,6 +111,7 @@ namespace PPTail.Generator.T4Html.Test
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
+            container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
             container.AddSingleton<SiteSettings>(new SiteSettings()
             {
                 Title = string.Empty.GetRandom(),
@@ -118,6 +119,7 @@ namespace PPTail.Generator.T4Html.Test
                 PostsPerPage = 10.GetRandom(5),
                 PostsPerFeed = 20.GetRandom(10)
             });
+
             return container;
         }
 

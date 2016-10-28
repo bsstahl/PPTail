@@ -9,7 +9,7 @@ namespace PPTail
 {
     public static class TemplateExtensions
     {
-        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, string styleTemplatePath, string bootstrapTemplatePath, string homePageTemplatePath, string contentPageTemplatePath, string postPageTemplatePath, string contactPageTemplatePath, string redirectTemplatePath, string syndicationTemplatePath, string syndicationItemTemplatePath, string itemTemplatePath, string searchTemplatePath)
+        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, string styleTemplatePath, string bootstrapTemplatePath, string homePageTemplatePath, string contentPageTemplatePath, string postPageTemplatePath, string contactPageTemplatePath, string redirectTemplatePath, string syndicationTemplatePath, string syndicationItemTemplatePath, string itemTemplatePath, string searchTemplatePath, string archiveTemplatePath, string archiveItemTemplatePath)
         {
             string contentPageTemplate = System.IO.File.ReadAllText(contentPageTemplatePath);
             string styleTemplate = System.IO.File.ReadAllText(styleTemplatePath);
@@ -22,6 +22,8 @@ namespace PPTail
             string syndicationItemTemplate = System.IO.File.ReadAllText(syndicationItemTemplatePath);
             string itemTemplate = System.IO.File.ReadAllText(itemTemplatePath);
             string searchTemplate = System.IO.File.ReadAllText(searchTemplatePath);
+            string archiveTemplate = System.IO.File.ReadAllText(archiveTemplatePath);
+            string archiveItemTemplate = System.IO.File.ReadAllText(archiveItemTemplatePath);
 
             return new List<Template>()
             {
@@ -35,7 +37,9 @@ namespace PPTail
                 new Template() { Content = syndicationTemplate, TemplateType = TemplateType.Syndication },
                 new Template() { Content = syndicationItemTemplate, TemplateType = TemplateType.SyndicationItem },
                 new Template() { Content = itemTemplate, TemplateType = TemplateType.Item },
-                new Template() { Content = searchTemplate, TemplateType = TemplateType.SearchPage }
+                new Template() { Content = searchTemplate, TemplateType = TemplateType.SearchPage },
+                new Template() { Content = archiveTemplate, TemplateType = TemplateType.Archive },
+                new Template() { Content = archiveItemTemplate, TemplateType = TemplateType.ArchiveItem }
             };
         }
 

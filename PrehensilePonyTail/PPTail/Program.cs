@@ -30,6 +30,8 @@ namespace PPTail
             string contentPageTemplatePath = "..\\ContentPage.template.html";
             string postPageTemplatePath = "..\\PostPage.template.html";
             string redirectTemplatePath = "..\\Redirect.template.html";
+            string archiveTemplatePath = "..\\Archive.template.html";
+            string archiveItemTemplatePath = "..\\ArchiveItem.template.html";
             string syndicationTemplatePath = "..\\Syndication.template.xml";
             string syndicationItemTemplatePath = "..\\SyndicationItem.template.xml";
             string contactPageTemplatePath = "..\\ContactPage.template.html";
@@ -44,7 +46,7 @@ namespace PPTail
             string outputPath = config[_outputPathSettingName];
 
             var settings = (null as ISettings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile);
-            var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, contactPageTemplatePath, redirectTemplatePath, syndicationTemplatePath, syndicationItemTemplatePath, itemTemplatePath, searchPageTemplatePath);
+            var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, contactPageTemplatePath, redirectTemplatePath, syndicationTemplatePath, syndicationItemTemplatePath, itemTemplatePath, searchPageTemplatePath, archiveTemplatePath, archiveItemTemplatePath);
 
             var container = (null as IServiceCollection).Create(settings, templates);
 

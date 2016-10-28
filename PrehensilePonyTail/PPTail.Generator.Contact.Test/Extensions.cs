@@ -6,12 +6,13 @@ using PPTail.Entities;
 using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using TestHelperExtensions;
+using Moq;
 
 namespace PPTail.Generator.Contact.Test
 {
     public static class Extensions
     {
-        public static IContactProvider Create(this IContactProvider ignore)
+        public static IServiceCollection Create(this IServiceCollection ignore)
         {
             var container = new ServiceCollection();
 
@@ -21,16 +22,33 @@ namespace PPTail.Generator.Contact.Test
             var settings = (null as Settings).Create();
             container.AddSingleton<ISettings>(settings);
 
-            var template = (null as Template).Create();
-            var templates = new List<Template>() { template };
+            var templateProcessor = (null as ITemplateProcessor).Create();
+            container.AddSingleton<ITemplateProcessor>(templateProcessor);
+
+            var templates = (null as IEnumerable<Template>).Create();
             container.AddSingleton<IEnumerable<Template>>(templates);
 
+            return container;
+        }
+
+        public static IContactProvider Create(this IContactProvider ignore)
+        {
+            return ignore.Create((null as IServiceCollection).Create());
+        }
+
+        public static IContactProvider Create(this IContactProvider ignore, IServiceCollection container)
+        {
             return ignore.Create(container.BuildServiceProvider());
         }
 
         public static IContactProvider Create(this IContactProvider ignore, IServiceProvider serviceProvider)
         {
             return new TemplateProvider(serviceProvider);
+        }
+
+        public static ITemplateProcessor Create(this ITemplateProcessor ignore)
+        {
+            return Mock.Of<ITemplateProcessor>();
         }
 
         public static Template Create(this Template ignore)
@@ -45,6 +63,13 @@ namespace PPTail.Generator.Contact.Test
                 Content = content,
                 TemplateType = templateType
             };
+        }
+
+        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore)
+        {
+            var templates = new List<Template>();
+            templates.Add((null as Template).Create());
+            return templates;
         }
 
         public static SiteSettings Create(this SiteSettings ignore)
@@ -77,5 +102,20 @@ namespace PPTail.Generator.Contact.Test
                 OutputFileExtension = outputFileExtension
             };
         }
+
+        public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
+        {
+            var item = container.Where(sd => sd.ServiceType == typeof(T)).Single();
+            container.Remove(item);
+            return container;
+        }
+
+        public static IServiceCollection ReplaceDependency<T>(this IServiceCollection container, T serviceInstance) where T : class
+        {
+            container.RemoveDependency<T>();
+            container.AddSingleton<T>(serviceInstance);
+            return container;
+        }
+
     }
 }

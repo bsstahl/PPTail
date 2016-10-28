@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{SiteTitle} - {SiteDescription}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./Style.css" type="text/css" />
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header">
+                    <h1>
+                        <a href="../">
+                            {SiteTitle}
+                        </a>
+                    </h1>
+                    <h2>
+                        {SiteDescription}
+                    </h2>
+                </div>
+                {NavigationMenu}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div id="archive">
+                    <h1>{PageTitle}</h1>
+                    <table>
+                        <tbody>
+                            <tr><th>Date</th><th>Title</th></tr>
+                            {Content}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 sidebar">
+                {Sidebar}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
