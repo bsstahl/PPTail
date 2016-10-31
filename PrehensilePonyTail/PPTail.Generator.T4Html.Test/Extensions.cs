@@ -112,6 +112,7 @@ namespace PPTail.Generator.T4Html.Test
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
             container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
+            container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
             container.AddSingleton<SiteSettings>(new SiteSettings()
             {
                 Title = string.Empty.GetRandom(),

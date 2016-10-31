@@ -33,6 +33,7 @@ namespace PPTail.SiteGenerator
             _serviceProvider.ValidateService<ISearchProvider>();
             _serviceProvider.ValidateService<IRedirectProvider>();
             _serviceProvider.ValidateService<ISyndicationProvider>();
+            ServiceProvider.ValidateService<IContentEncoder>();
         }
 
         private IServiceProvider ServiceProvider { get { return _serviceProvider; } }
@@ -51,6 +52,7 @@ namespace PPTail.SiteGenerator
             var searchProvider = ServiceProvider.GetService<ISearchProvider>();
             var redirectProvider = ServiceProvider.GetService<IRedirectProvider>();
             var syndicationProvider = ServiceProvider.GetService<ISyndicationProvider>();
+            var contentEncoder = ServiceProvider.GetService<IContentEncoder>();
 
             var categories = ServiceProvider.GetService<IEnumerable<Category>>();
 
@@ -133,10 +135,10 @@ namespace PPTail.SiteGenerator
                 if (post.IsPublished)
                 {
                     if (string.IsNullOrWhiteSpace(post.Slug))
-                        post.Slug = post.Title.CreateSlug();
+                        post.Slug = contentEncoder.UrlEncode(post.Title);
 
                     // Add the post page
-                    string postFileName = $"{post.Slug.HTMLEncode()}.{settings.OutputFileExtension}";
+                    string postFileName = $"{post.Slug}.{settings.OutputFileExtension}";
                     string postFilePath = System.IO.Path.Combine("Posts", postFileName);
                     result.Add(new SiteFile()
                     {
@@ -146,7 +148,7 @@ namespace PPTail.SiteGenerator
                     });
 
                     // Add the permalink page
-                    string permalinkFileName = $"{post.Id.ToString().HTMLEncode()}.{settings.OutputFileExtension}";
+                    string permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
                     string permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
                     string redirectFilePath = System.IO.Path.Combine("..", postFilePath);
                     result.Add(new SiteFile()
@@ -164,11 +166,11 @@ namespace PPTail.SiteGenerator
                 if (page.IsPublished)
                 {
                     if (string.IsNullOrWhiteSpace(page.Slug))
-                        page.Slug = page.Title.CreateSlug();
+                        page.Slug = contentEncoder.UrlEncode(page.Title);
 
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Pages/{page.Slug.HTMLEncode()}.{settings.OutputFileExtension}",
+                        RelativeFilePath = $"Pages/{page.Slug}.{settings.OutputFileExtension}",
                         SourceTemplateType = Enumerations.TemplateType.ContentPage,
                         Content = pageGen.GenerateContentPage(childLevelSidebarContent, childLevelNavigationContent, page)
                     });
@@ -193,7 +195,7 @@ namespace PPTail.SiteGenerator
                 result.Add(new SiteFile()
                 {
                     Content = searchProvider.GenerateSearchResultsPage(name, posts, childLevelNavigationContent, childLevelSidebarContent, "../"),
-                    RelativeFilePath = $"Search/{name.CreateSlug()}.{settings.OutputFileExtension}",
+                    RelativeFilePath = $"Search/{contentEncoder.UrlEncode(name)}.{settings.OutputFileExtension}",
                     SourceTemplateType = Enumerations.TemplateType.SearchPage,
                     IsBase64Encoded = false
                 });

@@ -46,9 +46,19 @@ namespace PPTail.Generator.T4Html
             var styler = serviceProvider.GetService<ITagCloudStyler>();
             var styles = styler.GetStyles(tags).OrderBy(s => s.Item1).Distinct();
 
+            serviceProvider.ValidateService<ILinkProvider>();
+            var linkProvider = serviceProvider.GetService<ILinkProvider>();
+
+            serviceProvider.ValidateService<IContentEncoder>();
+            var contentEncoder = serviceProvider.GetService<IContentEncoder>();
+
             results += "<div class=\"content\"><ul>";
             foreach (var style in styles)
-                results += $"<li>{style.Item1.CreateSearchLink(serviceProvider, pathToRoot, "Tag", style.Item2)}</li>";
+            {
+                string title = contentEncoder.UrlEncode(style.Item1);
+                string url = linkProvider.GetUrl(pathToRoot, "search", title);
+                results += $"<li><a title=\"Tag: {title}\" class=\"{style.Item2}\" href=\"{url}\">{title}</a></li>";
+            }
 
             results += "</ul></div>";
             return results;

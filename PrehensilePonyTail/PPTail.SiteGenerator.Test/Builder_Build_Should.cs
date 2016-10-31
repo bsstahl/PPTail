@@ -328,6 +328,11 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
+
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -347,6 +352,11 @@ namespace PPTail.SiteGenerator.Test
             page.IsPublished = true;
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -732,6 +742,11 @@ namespace PPTail.SiteGenerator.Test
             var searchProvider = new Mock<ISearchProvider>();
             container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
 
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
+
             var tags = posts.SelectMany(p => p.Tags).Distinct();
             foreach (var tag in tags)
             {
@@ -748,33 +763,6 @@ namespace PPTail.SiteGenerator.Test
                 var tagPage = actualPages.Single(p => p.RelativeFilePath.Contains(tag));
                 Assert.Equal(tag, tagPage.Content.FromBase64());
             }
-        }
-
-        [Fact]
-        public void ReturnTheCorrectRelativeFilePathOfEachSearchPage()
-        {
-            string tagPart1 = string.Empty.GetRandom(4);
-            string tagPart2 = string.Empty.GetRandom(4);
-            string testTag = $".{tagPart1} {tagPart2}";
-
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create(1);
-            posts.Single().Tags = new List<string>() { testTag };
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            string filenameExtension = string.Empty.GetRandom();
-            var settings = (null as ISettings).Create(filenameExtension);
-            container.ReplaceDependency<ISettings>(settings);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-            var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
-
-            var expected = $"Search/{testTag.CreateSlug()}.{filenameExtension}";
-            Assert.Equal(expected, actualPages.Single().RelativeFilePath);
         }
 
         [Fact]
@@ -873,33 +861,6 @@ namespace PPTail.SiteGenerator.Test
             var actual = target.Build();
 
             redirectProvider.VerifyAll();
-        }
-
-        [Fact]
-        public void ReturnRedirectWithTheCorrectFilePath()
-        {
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create(1);
-            var post = posts.Single();
-
-            string folderName = "Permalinks";
-            string filenameExtension = string.Empty.GetRandom();
-            string fileName = $"{post.Id.ToString()}.{filenameExtension}";
-            string expectedPath = System.IO.Path.Combine(folderName, fileName);
-
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create(filenameExtension);
-            container.ReplaceDependency<ISettings>(settings);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-
-            var actualPage = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.Redirect).Single();
-            Assert.Contains(expectedPath, actualPage.RelativeFilePath);
         }
 
         [Fact]

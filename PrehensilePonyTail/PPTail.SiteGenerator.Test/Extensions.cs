@@ -40,10 +40,10 @@ namespace PPTail.SiteGenerator.Test
         {
             return ignore.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
                 Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
-                Mock.Of<ISettings>(), Mock.Of<SiteSettings>(), new List<Category>());
+                Mock.Of<ISettings>(), Mock.Of<SiteSettings>(), new List<Category>(), Mock.Of<IContentEncoder>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories)
+        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, IContentEncoder contentEncoder)
         {
             IServiceCollection container = new ServiceCollection();
             container.AddSingleton<IContentRepository>(contentRepo);
@@ -58,6 +58,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<ISyndicationProvider>(syndicationProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<IRedirectProvider>(redirectProvider);
+            container.AddSingleton<IContentEncoder>(contentEncoder);
             return container;
         }
 

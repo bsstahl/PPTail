@@ -40,14 +40,24 @@ namespace PPTail.Generator.T4Html.Test
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };
 
+            var container = (null as IServiceCollection).Create();
+
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            var siteSettings = (null as SiteSettings).Create();
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<ISettings>(settings);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
+
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(container);
+
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
             var expected = posts.Single().Tags.Single();
 
@@ -60,10 +70,19 @@ namespace PPTail.Generator.T4Html.Test
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };
 
+            var container = (null as IServiceCollection).Create();
+
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            var siteSettings = (null as SiteSettings).Create();
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<ISettings>(settings);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
+
             var posts = (null as IEnumerable<ContentItem>).Create(1);
 
             var thisPost = posts.Single();
@@ -73,7 +92,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(container);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
 
             Assert.Contains(tag1, actual);
@@ -86,11 +105,19 @@ namespace PPTail.Generator.T4Html.Test
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };
 
+            var container = (null as IServiceCollection).Create();
+
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
-
-            var siteSettings = (null as SiteSettings).Create();
             var posts = (null as IEnumerable<ContentItem>).Create(2);
+
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceDependency<ISettings>(settings);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             string tag1 = posts.First().Tags.Single();
             string tag2 = posts.Last().Tags.Single();
@@ -98,7 +125,7 @@ namespace PPTail.Generator.T4Html.Test
 
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(container);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
 
             Assert.Contains(tag1, actual);
@@ -120,8 +147,13 @@ namespace PPTail.Generator.T4Html.Test
             var linkProvider = new Mock<ILinkProvider>();
             linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tagName)).Verifiable();
 
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+            
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(container);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, pathToRoot);
@@ -141,11 +173,16 @@ namespace PPTail.Generator.T4Html.Test
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var tagName = posts.Single().Tags.Single();
 
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+
             var linkProvider = new Mock<ILinkProvider>();
             linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tagName)).Returns($"http_{tagName}");
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var pageGen = (null as Interfaces.IPageGenerator).Create(container);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, pathToRoot);

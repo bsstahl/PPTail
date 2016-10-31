@@ -15,7 +15,13 @@ namespace PPTail.Generator.Template.Test
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             var container = new ServiceCollection();
+            container.AddSingleton<IEnumerable<Entities.Template>>((null as IEnumerable<Entities.Template>).Create());
+            container.AddSingleton<IEnumerable<Category>>(new List<Category>());
+
             container.AddSingleton<ISettings>((null as ISettings).Create());
+            container.AddSingleton<SiteSettings>((null as SiteSettings).Create());
+            container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
+            container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
             return container;
         }
 
@@ -81,6 +87,7 @@ namespace PPTail.Generator.Template.Test
                 CategoryIds = categoryIds,
                 Content = content,
                 Description = description,
+                Id = Guid.NewGuid(),
                 IsPublished = isPublished,
                 LastModificationDate = lastModDate,
                 PublicationDate = pubDate,
@@ -94,7 +101,7 @@ namespace PPTail.Generator.Template.Test
 
         public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore)
         {
-            return ignore.Create(25.GetRandom(3));
+            return ignore.Create(50.GetRandom(25));
         }
 
         public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
@@ -103,6 +110,33 @@ namespace PPTail.Generator.Template.Test
             for (int i = 0; i < count; i++)
                 result.Add((null as ContentItem).Create());
             return result;
+        }
+        
+        public static SiteSettings Create(this SiteSettings ignore)
+        {
+            return new SiteSettings()
+            {
+                Title = string.Empty.GetRandom(),
+                Description = string.Empty.GetRandom(),
+                PostsPerPage = 25.GetRandom(5),
+                PostsPerFeed = 25.GetRandom(5)
+            };
+        }
+
+        public static IEnumerable<Category> CreateCategories(this IEnumerable<Guid> categoryIds)
+        {
+            var result = new List<Category>();
+            foreach (var categoryId in categoryIds)
+            {
+                string name = string.Empty.GetRandom();
+                result.Add(new Category() { Id = categoryId, Name = name, Description = $"descriptionOf_{name}" });
+            }
+            return result;
+        }
+
+        public static string GetCategoryName(this Guid categoryId, IEnumerable<Category> categories)
+        {
+            return categories.Single(c => c.Id == categoryId).Name;
         }
 
         public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class
