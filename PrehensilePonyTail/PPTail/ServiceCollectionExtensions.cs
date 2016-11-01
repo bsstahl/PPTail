@@ -33,6 +33,7 @@ namespace PPTail
             container.AddSingleton<Interfaces.IHomePageGenerator>(c => new PPTail.Generator.HomePage.HomePageGenerator(c));
             container.AddSingleton<Interfaces.ILinkProvider>(c => new PPTail.Generator.Links.LinkProvider(c));
             container.AddSingleton<Interfaces.ITemplateProcessor>(c => new PPTail.Generator.Template.TemplateProcessor(c));
+            container.AddSingleton<Interfaces.IContentEncoder>(c => new PPTail.Generator.Encoder.ContentEncoder(c));
             container.AddSingleton<SiteGenerator.Builder>(c => new PPTail.SiteGenerator.Builder(c));
 
             var contentRepo = container.BuildServiceProvider().GetService<Interfaces.IContentRepository>();

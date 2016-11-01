@@ -21,6 +21,7 @@
     "PPTail.Data.FileSystem": "1.0.0-*",
     "PPTail.Generator.Archive": "1.0.0-*",
     "PPTail.Generator.Contact": "1.0.0-*",
+    "PPTail.Generator.Encoder": "1.0.0-*",
     "PPTail.Generator.HomePage": "1.0.0-*",
     "PPTail.Generator.Links": "1.0.0-*",
     "PPTail.Generator.Navigation": "1.0.0-*",

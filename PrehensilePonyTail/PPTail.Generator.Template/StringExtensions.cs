@@ -25,15 +25,19 @@ namespace PPTail.Generator.Template
 
             string content = item.Content;
             string description = item.Description;
-            string pubDate = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
-            string lastModDate = item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+            string pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
+            string pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
+            string lastModDate = item.LastModificationDate.ToString(settings.DateFormatSpecifier);
+            string lastModDateTime = item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
 
             if (xmlEncodeContent)
             {
                 content = contentEncoder.XmlEncode(item.Content);
                 description = contentEncoder.XmlEncode(item.Description);
-                pubDate = item.PublicationDate.ToString("o");
-                lastModDate = item.LastModificationDate.ToString("o");
+                pubDate = item.PublicationDate.Date.ToString("o");
+                pubDateTime = item.PublicationDate.ToString("o");
+                lastModDate = item.LastModificationDate.Date.ToString("o");
+                lastModDateTime = item.LastModificationDate.ToString("o");
             }
 
             string permaLinkUrl = linkProvider.GetUrl(pathToRoot, "Permalinks", item.Id.ToString());
@@ -45,7 +49,9 @@ namespace PPTail.Generator.Template
                 .Replace("{Description}", description)
                 .Replace("{ByLine}", item.ByLine)
                 .Replace("{PublicationDate}", pubDate)
+                .Replace("{PublicationDateTime}", pubDateTime)
                 .Replace("{LastModificationDate}", lastModDate)
+                .Replace("{LastModificationDateTime}", lastModDateTime)
                 .Replace("{Link}", linkProvider.GetUrl(pathToRoot, "Posts", item.Slug))
                 .Replace("{Permalink}", permaLink)
                 .Replace("{PermalinkUrl}", permaLinkUrl)

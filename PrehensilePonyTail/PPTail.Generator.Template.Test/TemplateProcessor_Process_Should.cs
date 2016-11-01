@@ -426,6 +426,38 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
+                string expected = post.PublicationDate.ToString(settings.DateFormatSpecifier);
+                Assert.Contains(expected, actual);
+            }
+        }
+
+        [Fact]
+        public void ReplaceThePublicationDateTimePlaceHolderWithThePubDateTimeOfEachPost()
+        {
+            string pageTemplateContent = "-----{Content}-----";
+            string itemTemplateContent = "*****{PublicationDateTime}*****";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
+            var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
+            var settings = (null as ISettings).Create();
+
+            string sidebarContent = string.Empty.GetRandom();
+            string navContent = string.Empty.GetRandom();
+            string pageTitle = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+            bool xmlEncodeContent = false;
+            int maxPostCount = 0;
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+
+            foreach (var post in posts.Where(p => p.IsPublished))
+            {
                 string expected = post.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
@@ -436,6 +468,38 @@ namespace PPTail.Generator.Template.Test
         {
             string pageTemplateContent = "-----{Content}-----";
             string itemTemplateContent = "*****{LastModificationDate}*****";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
+            var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
+            var settings = (null as ISettings).Create();
+
+            string sidebarContent = string.Empty.GetRandom();
+            string navContent = string.Empty.GetRandom();
+            string pageTitle = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+            bool xmlEncodeContent = false;
+            int maxPostCount = 0;
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+
+            foreach (var post in posts.Where(p => p.IsPublished))
+            {
+                string expected = post.LastModificationDate.ToString(settings.DateFormatSpecifier);
+                Assert.Contains(expected, actual);
+            }
+        }
+
+        [Fact]
+        public void ReplaceTheLastModificationDateTimePlaceHolderWithTheLastModDateTimeOfEachPost()
+        {
+            string pageTemplateContent = "-----{Content}-----";
+            string itemTemplateContent = "*****{LastModificationDateTime}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
@@ -1119,6 +1183,37 @@ namespace PPTail.Generator.Template.Test
             var post = posts.Single();
             post.IsPublished = true;
 
+            string expected = post.PublicationDate.Date.ToString("o");
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+
+            Assert.Contains(expected, actual);
+        }
+
+        [Fact]
+        public void UsesTheXmlFormatForPubDateTimeIfEncodingIsSelected()
+        {
+            string pageTemplateContent = "-----{Content}-----";
+            string itemTemplateContent = "*****{PublicationDateTime}*****";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
+            var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
+
+            string sidebarContent = string.Empty.GetRandom();
+            string navContent = string.Empty.GetRandom();
+            string pageTitle = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+            bool xmlEncodeContent = true;
+            int maxPostCount = 0;
+
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var post = posts.Single();
+            post.IsPublished = true;
+
             string expected = post.PublicationDate.ToString("o");
 
             var container = (null as IServiceCollection).Create();
@@ -1135,6 +1230,37 @@ namespace PPTail.Generator.Template.Test
         {
             string pageTemplateContent = "-----{Content}-----";
             string itemTemplateContent = "*****{LastModificationDate}*****";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
+            var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
+
+            string sidebarContent = string.Empty.GetRandom();
+            string navContent = string.Empty.GetRandom();
+            string pageTitle = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+            bool xmlEncodeContent = true;
+            int maxPostCount = 0;
+
+            var posts = (null as IEnumerable<ContentItem>).Create(1);
+            var post = posts.Single();
+            post.IsPublished = true;
+
+            string expected = post.LastModificationDate.Date.ToString("o");
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+
+            Assert.Contains(expected, actual);
+        }
+
+        [Fact]
+        public void UsesTheXmlFormatForLastModDateTimeIfEncodingIsSelected()
+        {
+            string pageTemplateContent = "-----{Content}-----";
+            string itemTemplateContent = "*****{LastModificationDateTime}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
