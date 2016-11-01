@@ -24,7 +24,7 @@ namespace PPTail.Generator.Syndication.Test
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor
-                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
                 .Verifiable();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -44,7 +44,7 @@ namespace PPTail.Generator.Syndication.Test
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor
-                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()))
                 .Returns(expected);
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -70,7 +70,7 @@ namespace PPTail.Generator.Syndication.Test
             var searchTemplate = templates.Find(Enumerations.TemplateType.Syndication);
 
             templateProcessor
-                .Verify(t => t.Process(searchTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(searchTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace PPTail.Generator.Syndication.Test
             var itemTemplate = templates.Find(Enumerations.TemplateType.SyndicationItem);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace PPTail.Generator.Syndication.Test
             var actual = target.GenerateFeed(posts);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace PPTail.Generator.Syndication.Test
             var actual = target.GenerateFeed(posts);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), "Syndication", It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), "Syndication", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -137,7 +137,23 @@ namespace PPTail.Generator.Syndication.Test
             var actual = target.GenerateFeed(posts);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), ".", It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), ".", It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectItemSeparatorToTheTemplateProcessor()
+        {
+            var posts = new List<ContentItem>() { (null as ContentItem).Create() };
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as ISyndicationProvider).Create(container);
+            var actual = target.GenerateFeed(posts);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), ".", string.Empty, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -153,7 +169,7 @@ namespace PPTail.Generator.Syndication.Test
             var actual = target.GenerateFeed(posts);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), true, It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), true, It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -170,7 +186,7 @@ namespace PPTail.Generator.Syndication.Test
 
             var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerFeed), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerFeed), Times.Once);
         }
 
     }

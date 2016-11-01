@@ -21,8 +21,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var container = new ServiceCollection();
 
-            //var settings = (null as ISettings).CreateDefault();
-            //container.AddSingleton<ISettings>(settings);
+            var settings = (null as ISettings).CreateDefault();
+            container.AddSingleton<ISettings>(settings);
 
             var siteSettings = (null as SiteSettings).Create();
             container.AddSingleton<SiteSettings>(siteSettings);

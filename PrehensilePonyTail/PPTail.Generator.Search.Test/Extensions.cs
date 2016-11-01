@@ -65,7 +65,7 @@ namespace PPTail.Generator.Search.Test
                 container.AddSingleton<IEnumerable<Template>>(templates);
 
             if (settings != null)
-                container.AddSingleton<ISettings>(settings);
+                container.AddSingleton<ISettings>((null as ISettings).Create());
 
             if (siteSettings != null)
                 container.AddSingleton<SiteSettings>(siteSettings);
@@ -80,6 +80,17 @@ namespace PPTail.Generator.Search.Test
                 container.AddSingleton<ITemplateProcessor>(templateProcessor);
 
             return container;
+        }
+
+        public static ISettings Create(this ISettings ignore)
+        {
+            return new Settings()
+            {
+                DateFormatSpecifier = "MM/dd/yyyy",
+                DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
+                ItemSeparator = string.Empty.GetRandom(),
+                OutputFileExtension = string.Empty.GetRandom()
+            };
         }
 
         public static IEnumerable<Template> Create(this IEnumerable<Template> ignore)
