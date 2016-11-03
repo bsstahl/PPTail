@@ -31,8 +31,6 @@ namespace PPTail.Data.FileSystem
             _serviceProvider.ValidateService<IFile>();
 
             var settings = _serviceProvider.GetService<ISettings>();
-            var fileSystem = _serviceProvider.GetService<IFile>();
-
             settings.Validate(_sourceDataPathSettingName);
 
             _rootSitePath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);

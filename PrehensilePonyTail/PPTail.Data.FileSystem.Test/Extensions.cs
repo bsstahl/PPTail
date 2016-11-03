@@ -157,11 +157,14 @@ namespace PPTail.Data.FileSystem.Test
         public static void ConfigureCategories(this Mock<IFile> fileSystem, IEnumerable<Category> categories, string rootPath)
         {
             const string dataPath = "App_Data\\categories.xml";
-
-            var categoryFilePath = System.IO.Path.Combine(rootPath, dataPath);
-            fileSystem.Setup(f => f.Exists(categoryFilePath)).Returns(true);
-
             var categoryFileContents = categories.Serialize();
+            var categoryFilePath = System.IO.Path.Combine(rootPath, dataPath);
+            fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
+        }
+
+        public static void ConfigureCategories(this Mock<IFile> fileSystem, XElement categoryFileContents, string categoryFilePath)
+        {
+            fileSystem.Setup(f => f.Exists(categoryFilePath)).Returns(true);
             fileSystem.Setup(f => f.ReadAllText(categoryFilePath))
                 .Returns(categoryFileContents.ToString());
         }
