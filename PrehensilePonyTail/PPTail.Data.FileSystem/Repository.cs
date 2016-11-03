@@ -175,19 +175,33 @@ namespace PPTail.Data.FileSystem
             const string categoryNodeName = "category";
             var fileSystem = _serviceProvider.GetService<IFile>();
 
-            // TODO: Add defensive code to handle error conditions
             var results = new List<Category>();
             var path = System.IO.Path.Combine(_rootDataPath, _categoriesRelativePath);
 
             var fileContents = fileSystem.ReadAllText(path);
             var categoriesNode = XElement.Parse(fileContents);
             foreach (var categoryNode in categoriesNode.Descendants().Where(d => d.Name == categoryNodeName))
-                results.Add(new Category()
+            {
+                var idNode = categoryNode.Attributes().SingleOrDefault(d => d.Name == "id");
+                var nameValue = categoriesNode.Value;
+
+                if (idNode == null || string.IsNullOrWhiteSpace(nameValue))
                 {
-                    Id = Guid.Parse(categoryNode.Attributes().Single(d => d.Name == "id").Value),
-                    Name = categoryNode.Value,
-                    Description = categoryNode.Attributes().Single(d => d.Name == "description").Value
-                });
+                    // TODO: Log that this category was skipped
+                }
+                else
+                {
+                    var descriptionNode = categoryNode.Attributes().SingleOrDefault(d => d.Name == "description");
+                    var description = (descriptionNode != null) ? descriptionNode.Value : string.Empty;
+
+                    results.Add(new Category()
+                    {
+                        Id = Guid.Parse(idNode.Value),
+                        Name = nameValue,
+                        Description = description
+                    });
+                }
+            }
 
             return results;
         }

@@ -87,8 +87,10 @@ namespace PPTail.Data.FileSystem.Test
 
             var categories = (null as IEnumerable<Category>).Create(1);
             var categoryFileContents = categories.Serialize();
-            var categoryNode = categoryFileContents.Descendants().Single(n => n.Name.LocalName == "id");
-            categoryNode.Name = "Identifier";
+            var categoryNode = categoryFileContents.Descendants().Single();
+
+            var attribute = categoryNode.Attributes().Single(n => n.Name.LocalName == "id");
+            attribute.Remove();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
@@ -145,8 +147,10 @@ namespace PPTail.Data.FileSystem.Test
 
             var categories = (null as IEnumerable<Category>).Create(1);
             var categoryFileContents = categories.Serialize();
-            var categoryNode = categoryFileContents.Descendants().Single(n => n.Name.LocalName == "description");
-            categoryNode.Name = "explanation";
+            var categoryNode = categoryFileContents.Descendants().Single();
+
+            var attribute = categoryNode.Attributes().Single(n => n.Name.LocalName == "description");
+            attribute.Remove();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
