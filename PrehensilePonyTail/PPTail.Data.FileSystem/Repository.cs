@@ -183,7 +183,7 @@ namespace PPTail.Data.FileSystem
             foreach (var categoryNode in categoriesNode.Descendants().Where(d => d.Name == categoryNodeName))
             {
                 var idNode = categoryNode.Attributes().SingleOrDefault(d => d.Name == "id");
-                var nameValue = categoriesNode.Value;
+                var nameValue = categoryNode.Value;
 
                 if (idNode == null || string.IsNullOrWhiteSpace(nameValue))
                 {

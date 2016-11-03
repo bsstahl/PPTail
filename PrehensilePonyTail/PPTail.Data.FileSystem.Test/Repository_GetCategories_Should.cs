@@ -32,11 +32,11 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
-        public void ReturnTheProperIdForACategory()
+        public void ReturnTheProperIdForEachCategory()
         {
             const string rootPath = "c:\\";
 
-            var categories = (null as IEnumerable<Category>).Create(1);
+            var categories = (null as IEnumerable<Category>).Create();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, rootPath);
@@ -44,15 +44,16 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(categories.Single().Id, actual.Single().Id);
+            foreach (var category in categories)
+                Assert.NotNull(actual.SingleOrDefault(c => c.Id == category.Id));
         }
 
         [Fact]
-        public void ReturnTheProperNameForACategory()
+        public void ReturnTheProperNameForEachCategory()
         {
             const string rootPath = "c:\\";
 
-            var categories = (null as IEnumerable<Category>).Create(1);
+            var categories = (null as IEnumerable<Category>).Create();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, rootPath);
@@ -60,15 +61,19 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(categories.Single().Name, actual.Single().Name);
+            foreach (var category in categories)
+            {
+                var actualCategory = actual.SingleOrDefault(c => c.Id == category.Id);
+                Assert.Equal(category.Name, actualCategory.Name);
+            }
         }
 
         [Fact]
-        public void ReturnTheProperDescriptionForACategory()
+        public void ReturnTheProperDescriptionForEachCategory()
         {
             const string rootPath = "c:\\";
 
-            var categories = (null as IEnumerable<Category>).Create(1);
+            var categories = (null as IEnumerable<Category>).Create();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, rootPath);
@@ -76,7 +81,11 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(categories.Single().Description, actual.Single().Description);
+            foreach (var category in categories)
+            {
+                var actualCategory = actual.SingleOrDefault(c => c.Id == category.Id);
+                Assert.Equal(category.Description, actualCategory.Description);
+            }
         }
 
         [Fact]
