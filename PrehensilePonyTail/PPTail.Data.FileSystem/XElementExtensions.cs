@@ -21,6 +21,10 @@ namespace PPTail.Data.FileSystem
         {
             Enumerations.WidgetType thisWidgetType = Enumerations.WidgetType.Unknown;
             Enum.TryParse(widgetType.Value.Replace(" ", "_"), out thisWidgetType);
+
+            var widgetTypes = (int[])Enum.GetValues(typeof(Enumerations.WidgetType));
+            if (!widgetTypes.Contains((int)thisWidgetType))
+                thisWidgetType = Enumerations.WidgetType.Unknown;
             return thisWidgetType;
         }
 
