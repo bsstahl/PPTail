@@ -96,6 +96,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Encoder", 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Encoder.Test", "PPTail.Generator.Encoder.Test\PPTail.Generator.Encoder.Test.xproj", "{9A508FD0-A18D-4194-8F39-514CE88F4CF7}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.ContentPage", "PPTail.Generator.ContentPage\PPTail.Generator.ContentPage.xproj", "{99A3D05F-CB84-4D6F-A2AC-73294195C956}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.ContentPage.Test", "PPTail.Generator.ContentPage.Test\PPTail.Generator.ContentPage.Test.xproj", "{EED26E4B-1247-463E-AE94-BF2A39B39E80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -242,6 +246,14 @@ Global
 		{9A508FD0-A18D-4194-8F39-514CE88F4CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A508FD0-A18D-4194-8F39-514CE88F4CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A508FD0-A18D-4194-8F39-514CE88F4CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A3D05F-CB84-4D6F-A2AC-73294195C956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A3D05F-CB84-4D6F-A2AC-73294195C956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A3D05F-CB84-4D6F-A2AC-73294195C956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A3D05F-CB84-4D6F-A2AC-73294195C956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EED26E4B-1247-463E-AE94-BF2A39B39E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EED26E4B-1247-463E-AE94-BF2A39B39E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EED26E4B-1247-463E-AE94-BF2A39B39E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EED26E4B-1247-463E-AE94-BF2A39B39E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -282,5 +294,7 @@ Global
 		{2EDA1B22-24B5-4362-B17C-10AB894C1B57} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 		{66CCDABD-47E4-436C-B92A-5AA82BF9820B} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{9A508FD0-A18D-4194-8F39-514CE88F4CF7} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{99A3D05F-CB84-4D6F-A2AC-73294195C956} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{EED26E4B-1247-463E-AE94-BF2A39B39E80} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 	EndGlobalSection
 EndGlobal

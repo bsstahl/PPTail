@@ -25,6 +25,7 @@ namespace PPTail.SiteGenerator
 
             _serviceProvider.ValidateService<IContentRepository>();
             _serviceProvider.ValidateService<IPageGenerator>();
+            _serviceProvider.ValidateService<IContentItemPageGenerator>();
             _serviceProvider.ValidateService<IHomePageGenerator>();
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<INavigationProvider>();
@@ -33,7 +34,7 @@ namespace PPTail.SiteGenerator
             _serviceProvider.ValidateService<ISearchProvider>();
             _serviceProvider.ValidateService<IRedirectProvider>();
             _serviceProvider.ValidateService<ISyndicationProvider>();
-            ServiceProvider.ValidateService<IContentEncoder>();
+            _serviceProvider.ValidateService<IContentEncoder>();
         }
 
         private IServiceProvider ServiceProvider { get { return _serviceProvider; } }
@@ -44,6 +45,7 @@ namespace PPTail.SiteGenerator
 
             var contentRepo = ServiceProvider.GetService<IContentRepository>();
             var pageGen = ServiceProvider.GetService<IPageGenerator>();
+            var contentItemPageGen = ServiceProvider.GetService<IContentItemPageGenerator>();
             var homePageGen = ServiceProvider.GetService<IHomePageGenerator>();
             var settings = ServiceProvider.GetService<ISettings>();
             var navProvider = ServiceProvider.GetService<INavigationProvider>();
@@ -140,11 +142,12 @@ namespace PPTail.SiteGenerator
                     // Add the post page
                     string postFileName = $"{post.Slug}.{settings.OutputFileExtension}";
                     string postFilePath = System.IO.Path.Combine("Posts", postFileName);
+                    var postPageTemplateType = Enumerations.TemplateType.PostPage;
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = postFilePath,
-                        SourceTemplateType = Enumerations.TemplateType.PostPage,
-                        Content = pageGen.GeneratePostPage(childLevelSidebarContent, childLevelNavigationContent, post)
+                        SourceTemplateType = postPageTemplateType,
+                        Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, post, postPageTemplateType, "..", false)
                     });
 
                     // Add the permalink page
@@ -168,11 +171,12 @@ namespace PPTail.SiteGenerator
                     if (string.IsNullOrWhiteSpace(page.Slug))
                         page.Slug = contentEncoder.UrlEncode(page.Title);
 
+                    var contentPageTemplateType = Enumerations.TemplateType.ContentPage;
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = $"Pages/{page.Slug}.{settings.OutputFileExtension}",
-                        SourceTemplateType = Enumerations.TemplateType.ContentPage,
-                        Content = pageGen.GenerateContentPage(childLevelSidebarContent, childLevelNavigationContent, page)
+                        SourceTemplateType = contentPageTemplateType,
+                        Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, page, contentPageTemplateType, "..",false)
                     });
                 }
             }

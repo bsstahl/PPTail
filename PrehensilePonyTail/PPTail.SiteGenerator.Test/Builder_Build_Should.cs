@@ -272,10 +272,11 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var pageGen = new Mock<IPageGenerator>();
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
-            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
+
+            var pageGen = new Mock<IContentItemPageGenerator>();
+            container.ReplaceDependency<IContentItemPageGenerator>(pageGen.Object);
 
             var settings = new Settings();
             container.ReplaceDependency<ISettings>(settings);
@@ -286,7 +287,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GenerateContentPage(It.IsAny<string>(), It.IsAny<string>(), item), Times.Once);
+                    pageGen.Verify(c => c.Generate(It.IsAny<string>(), It.IsAny<string>(), item, It.IsAny<Enumerations.TemplateType>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
             }
         }
 
@@ -300,10 +301,11 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var pageGen = new Mock<IPageGenerator>();
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
-            container.ReplaceDependency<IPageGenerator>(pageGen.Object);
+
+            var pageGen = new Mock<IContentItemPageGenerator>();
+            container.ReplaceDependency<IContentItemPageGenerator>(pageGen.Object);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -311,7 +313,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
             {
                 if (item.IsPublished)
-                    pageGen.Verify(c => c.GeneratePostPage(It.IsAny<string>(), It.IsAny<string>(), item), Times.Once);
+                    pageGen.Verify(c => c.Generate(It.IsAny<string>(), It.IsAny<string>(), item, It.IsAny<Enumerations.TemplateType>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
             }
         }
 
