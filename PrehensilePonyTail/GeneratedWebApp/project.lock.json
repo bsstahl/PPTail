@@ -1295,7 +1295,11 @@
           "ref/netstandard1.3/System.IO.Compression.dll": {}
         },
         "runtimeTargets": {
-          "runtimes/win/lib/netstandard1.3/_._": {
+          "runtimes/unix/lib/netstandard1.3/System.IO.Compression.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard1.3/System.IO.Compression.dll": {
             "assetType": "runtime",
             "rid": "win"
           }
@@ -1318,7 +1322,7 @@
           "ref/netstandard1.3/System.IO.Compression.ZipFile.dll": {}
         },
         "runtime": {
-          "lib/netstandard1.3/_._": {}
+          "lib/netstandard1.3/System.IO.Compression.ZipFile.dll": {}
         }
       },
       "System.IO.FileSystem/4.0.1": {
@@ -1550,7 +1554,11 @@
           "ref/netstandard1.3/System.Net.Http.dll": {}
         },
         "runtimeTargets": {
-          "runtimes/win/lib/netstandard1.3/_._": {
+          "runtimes/unix/lib/netstandard1.6/System.Net.Http.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard1.3/System.Net.Http.dll": {
             "assetType": "runtime",
             "rid": "win"
           }
@@ -2361,7 +2369,7 @@
           "ref/netstandard1.6/System.Text.RegularExpressions.dll": {}
         },
         "runtime": {
-          "lib/netstandard1.6/_._": {}
+          "lib/netstandard1.6/System.Text.RegularExpressions.dll": {}
         }
       },
       "System.Threading/4.0.11": {
@@ -2524,7 +2532,7 @@
           "ref/netstandard1.3/System.Xml.ReaderWriter.dll": {}
         },
         "runtime": {
-          "lib/netstandard1.3/_._": {}
+          "lib/netstandard1.3/System.Xml.ReaderWriter.dll": {}
         }
       },
       "System.Xml.XDocument/4.0.11": {
@@ -2547,7 +2555,7 @@
           "ref/netstandard1.3/System.Xml.XDocument.dll": {}
         },
         "runtime": {
-          "lib/netstandard1.3/_._": {}
+          "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
       "System.Xml.XmlDocument/4.0.1": {
@@ -2609,6 +2617,65 @@
         },
         "runtime": {
           "lib/netstandard1.3/_._": {}
+        }
+      },
+      "PPTail.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "netstandard1.6/PPTail.Common.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/PPTail.Common.dll": {}
+        }
+      },
+      "PPTail.Generator.PostLocator/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "PPTail.Common": "1.0.0"
+        },
+        "compile": {
+          "netstandard1.6/PPTail.Generator.PostLocator.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/PPTail.Generator.PostLocator.dll": {}
+        }
+      },
+      "PPTail.Web.Permalinks/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "PPTail.Common": "1.0.0"
+        },
+        "compile": {
+          "netstandard1.6/PPTail.Web.Permalinks.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/PPTail.Web.Permalinks.dll": {}
+        }
+      },
+      "PPTail.Web.Syndication/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "PPTail.Common": "1.0.0"
+        },
+        "compile": {
+          "netstandard1.6/PPTail.Web.Syndication.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/PPTail.Web.Syndication.dll": {}
         }
       }
     }
@@ -7665,6 +7732,26 @@
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._"
       ]
+    },
+    "PPTail.Common/1.0.0": {
+      "type": "project",
+      "path": "../PPTail.Common/project.json",
+      "msbuildProject": "../PPTail.Common/PPTail.Common.xproj"
+    },
+    "PPTail.Generator.PostLocator/1.0.0": {
+      "type": "project",
+      "path": "../PPTail.Generator.PostLocator/project.json",
+      "msbuildProject": "../PPTail.Generator.PostLocator/PPTail.Generator.PostLocator.xproj"
+    },
+    "PPTail.Web.Permalinks/1.0.0": {
+      "type": "project",
+      "path": "../PPTail.Web.Permalinks/project.json",
+      "msbuildProject": "../PPTail.Web.Permalinks/PPTail.Web.Permalinks.xproj"
+    },
+    "PPTail.Web.Syndication/1.0.0": {
+      "type": "project",
+      "path": "../PPTail.Web.Syndication/project.json",
+      "msbuildProject": "../PPTail.Web.Syndication/PPTail.Web.Syndication.xproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7673,7 +7760,11 @@
       "Microsoft.AspNetCore.Server.Kestrel >= 1.0.0",
       "Microsoft.AspNetCore.StaticFiles >= 1.0.0",
       "Microsoft.Extensions.Logging.Console >= 1.0.0",
-      "Microsoft.NETCore.App >= 1.0.0"
+      "Microsoft.NETCore.App >= 1.0.0",
+      "PPTail.Common >= 1.0.0-*",
+      "PPTail.Generator.PostLocator >= 1.0.0-*",
+      "PPTail.Web.Permalinks >= 1.0.0-*",
+      "PPTail.Web.Syndication >= 1.0.0-*"
     ],
     ".NETCoreApp,Version=v1.0": []
   },
