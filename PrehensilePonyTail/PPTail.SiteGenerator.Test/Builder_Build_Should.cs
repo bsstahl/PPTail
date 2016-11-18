@@ -17,6 +17,7 @@ namespace PPTail.SiteGenerator.Test
     {
         const string _additionalFilePathsSettingName = "additionalFilePaths";
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+        const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
         [Fact]
         public void RequestAllPagesFromTheRepository()
@@ -948,7 +949,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void NotGenerateADasBlagCompatibilitySyndicationFileIfNoExtendedSettingExists()
+        public void NotGenerateADasBlogCompatibilitySyndicationFileIfNoExtendedSettingExists()
         {
             string syndicationFileName = "syndication.axd";
             var container = (null as IServiceCollection).Create();
@@ -975,7 +976,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void NotGenerateADasBlagCompatibilitySyndicationFileIfTheExtendedSettingSaysNotTo()
+        public void NotGenerateADasBlogCompatibilitySyndicationFileIfTheExtendedSettingSaysNotTo()
         {
             string syndicationFileName = "syndication.axd";
             var container = (null as IServiceCollection).Create();
@@ -1003,7 +1004,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void GenerateADasBlagCompatibilitySyndicationFileIfTheExtendedSettingExists()
+        public void GenerateADasBlogCompatibilitySyndicationFileIfTheExtendedSettingExists()
         {
             string syndicationFileName = "syndication.axd";
             var container = (null as IServiceCollection).Create();
@@ -1028,6 +1029,81 @@ namespace PPTail.SiteGenerator.Test
             var actual = target.Build();
 
             Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
+        }
+
+        [Fact]
+        public void NotGenerateADasBlogPostsCompatibilityFileIfNoExtendedSettingExists()
+        {
+            string postsFileName = "posts.xml";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var syndicationProvider = new Mock<ISyndicationProvider>();
+            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
+        }
+
+        [Fact]
+        public void NotGenerateADasBlogPostsCompatibilityFileIfTheExtendedSettingSaysNotTo()
+        {
+            string postsFileName = "posts.xml";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            settings.AddExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
+        }
+
+        [Fact]
+        public void GenerateADasBlogPostsCompatibilityFileIfTheExtendedSettingExists()
+        {
+            string postsFileName = "posts.xml";
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create();
+            settings.AddExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName, true.ToString());
+            container.ReplaceDependency<ISettings>(settings);
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
         }
 
     }

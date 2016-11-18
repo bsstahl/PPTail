@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Extensions;
+using System.Xml.Linq;
 
 namespace PPTail.SiteGenerator
 {
@@ -13,6 +14,7 @@ namespace PPTail.SiteGenerator
     {
         const string _additionalFilePathsSettingName = "additionalFilePaths";
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+        const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
         private IServiceProvider _serviceProvider;
 
@@ -221,6 +223,27 @@ namespace PPTail.SiteGenerator
                         IsBase64Encoded = true
                     });
                 }
+            }
+
+            // Create DasBlog Compatibility Data File for Posts.aspx
+            string createPostsCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName);
+            bool createPostsCompatibilityFile = false;
+            bool.TryParse(createPostsCompatibilityFileValue, out createPostsCompatibilityFile);
+
+            if (createPostsCompatibilityFile)
+            {
+                string postTemplate = "<post id=\"{0}\" url=\"Posts\\{1}.html\"/>";
+                var postDataResults = new List<string>();
+                foreach (var post in posts)
+                    postDataResults.Add(string.Format(postTemplate, post.Id.ToString(), post.Slug));
+
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = System.IO.Path.Combine("app_data", "posts.xml"),
+                    SourceTemplateType = Enumerations.TemplateType.Raw,
+                    Content = $"<?xml version=\"1.0\" encoding=\"utf-8\"?><posts>{string.Join("", postDataResults)}</posts>",
+                    IsBase64Encoded = false
+                });
             }
 
             return result;

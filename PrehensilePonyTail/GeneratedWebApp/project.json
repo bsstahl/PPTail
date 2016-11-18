@@ -16,8 +16,10 @@
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "PPTail.Web.Syndication": "1.0.0-*",
     "PPTail.Web.Permalinks": "1.0.0-*",
+    "PPTail.Web.PostLocator": "1.0.0-*",
     "PPTail.Common": "1.0.0-*",
-    "PPTail.Generator.PostLocator": "1.0.0-*"
+    "PPTail.Generator.PostLocator": "1.0.0-*",
+    "PPTail.Io": "1.0.0-*"
   },
 
   "buildOptions": {

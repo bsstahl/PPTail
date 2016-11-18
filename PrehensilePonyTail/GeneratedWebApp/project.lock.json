@@ -2648,6 +2648,20 @@
           "netstandard1.6/PPTail.Generator.PostLocator.dll": {}
         }
       },
+      "PPTail.Io/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "PPTail.Common": "1.0.0"
+        },
+        "compile": {
+          "netstandard1.6/PPTail.Io.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/PPTail.Io.dll": {}
+        }
+      },
       "PPTail.Web.Permalinks/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
@@ -2661,6 +2675,22 @@
         },
         "runtime": {
           "netstandard1.6/PPTail.Web.Permalinks.dll": {}
+        }
+      },
+      "PPTail.Web.PostLocator/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.6",
+        "dependencies": {
+          "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
+          "Microsoft.AspNetCore.Http": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "PPTail.Common": "1.0.0"
+        },
+        "compile": {
+          "netstandard1.6/PPTail.Web.PostLocator.dll": {}
+        },
+        "runtime": {
+          "netstandard1.6/PPTail.Web.PostLocator.dll": {}
         }
       },
       "PPTail.Web.Syndication/1.0.0": {
@@ -7743,10 +7773,20 @@
       "path": "../PPTail.Generator.PostLocator/project.json",
       "msbuildProject": "../PPTail.Generator.PostLocator/PPTail.Generator.PostLocator.xproj"
     },
+    "PPTail.Io/1.0.0": {
+      "type": "project",
+      "path": "../PPTail.Io/project.json",
+      "msbuildProject": "../PPTail.Io/PPTail.Io.xproj"
+    },
     "PPTail.Web.Permalinks/1.0.0": {
       "type": "project",
       "path": "../PPTail.Web.Permalinks/project.json",
       "msbuildProject": "../PPTail.Web.Permalinks/PPTail.Web.Permalinks.xproj"
+    },
+    "PPTail.Web.PostLocator/1.0.0": {
+      "type": "project",
+      "path": "../PPTail.Web.PostLocator/project.json",
+      "msbuildProject": "../PPTail.Web.PostLocator/PPTail.Web.PostLocator.xproj"
     },
     "PPTail.Web.Syndication/1.0.0": {
       "type": "project",
@@ -7763,7 +7803,9 @@
       "Microsoft.NETCore.App >= 1.0.0",
       "PPTail.Common >= 1.0.0-*",
       "PPTail.Generator.PostLocator >= 1.0.0-*",
+      "PPTail.Io >= 1.0.0-*",
       "PPTail.Web.Permalinks >= 1.0.0-*",
+      "PPTail.Web.PostLocator >= 1.0.0-*",
       "PPTail.Web.Syndication >= 1.0.0-*"
     ],
     ".NETCoreApp,Version=v1.0": []
