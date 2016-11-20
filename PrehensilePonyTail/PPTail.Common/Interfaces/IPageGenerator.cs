@@ -9,8 +9,6 @@ namespace PPTail.Interfaces
     {
         string GenerateStylesheet();
         string GenerateBootstrapPage();
-        string GenerateContentPage(string sidebarContent, string navigationContent, Entities.ContentItem pageData);
-        string GeneratePostPage(string sidebarContent, string navigationContent, Entities.ContentItem article);
         string GenerateSidebarContent(IEnumerable<Entities.ContentItem> posts, IEnumerable<Entities.ContentItem> pages, IEnumerable<Entities.Widget> widgets, string pathToRoot);
     }
 }

@@ -69,20 +69,22 @@ namespace PPTail.Data.FileSystem.Test
 
         public static IEnumerable<Widget> Create(this IEnumerable<Widget> ignore)
         {
-            return ignore.Create(10.GetRandom(3));
+            return ignore.Create(25.GetRandom(10));
         }
 
         public static IEnumerable<Widget> Create(this IEnumerable<Widget> ignore, int count)
         {
             var result = new List<Widget>();
 
-            for (int i = 0; i < count; i++)
+            var widgetTypes = Enum.GetValues(typeof(Enumerations.WidgetType));
+            int loopCount = Convert.ToInt32(System.Math.Ceiling(Convert.ToDouble(count / 3)));
+            for (int i = 0; i < loopCount; i++)
             {
-                var widgetType = (Enumerations.WidgetType)3.GetRandom();
-                result.Add(widgetType.CreateWidget());
+                foreach (WidgetType widgetType in widgetTypes)
+                    result.Add(widgetType.CreateWidget());
             }
 
-            return result;
+            return result.Take(count);
         }
 
         public static Widget CreateWidget(this Enumerations.WidgetType widgetType)
@@ -138,7 +140,12 @@ namespace PPTail.Data.FileSystem.Test
             var widgetNode = widgets.Serialize();
             if (addInvalidTypes)
             {
+                // Alphanumeric node value
                 string nodeText = string.Format(_widgetZoneNodeFormat, Guid.NewGuid().ToString(), string.Empty.GetRandom(), true.GetRandom(), string.Empty.GetRandom());
+                widgetNode.Add(XElement.Parse(nodeText));
+
+                // Numeric node value
+                nodeText = string.Format(_widgetZoneNodeFormat, Guid.NewGuid().ToString(), string.Empty.GetRandom(), true.GetRandom(), 50.GetRandom(20));
                 widgetNode.Add(XElement.Parse(nodeText));
             }
 
@@ -150,11 +157,14 @@ namespace PPTail.Data.FileSystem.Test
         public static void ConfigureCategories(this Mock<IFile> fileSystem, IEnumerable<Category> categories, string rootPath)
         {
             const string dataPath = "App_Data\\categories.xml";
-
-            var categoryFilePath = System.IO.Path.Combine(rootPath, dataPath);
-            fileSystem.Setup(f => f.Exists(categoryFilePath)).Returns(true);
-
             var categoryFileContents = categories.Serialize();
+            var categoryFilePath = System.IO.Path.Combine(rootPath, dataPath);
+            fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
+        }
+
+        public static void ConfigureCategories(this Mock<IFile> fileSystem, XElement categoryFileContents, string categoryFilePath)
+        {
+            fileSystem.Setup(f => f.Exists(categoryFilePath)).Returns(true);
             fileSystem.Setup(f => f.ReadAllText(categoryFilePath))
                 .Returns(categoryFileContents.ToString());
         }

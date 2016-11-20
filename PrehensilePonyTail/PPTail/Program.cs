@@ -38,6 +38,7 @@ namespace PPTail
             string itemTemplatePath = "..\\ContentItem.template.html";
 
             bool createDasBlogSyndicationCompatibilityFile = true;
+            bool createDasBlogPostsCompatibilityFile = true;
 
             var builder = new ConfigurationBuilder().AddEnvironmentVariables();
             var config = builder.Build();
@@ -45,7 +46,7 @@ namespace PPTail
             string sourceDataPath = config[_sourceDataPathSettingName];
             string outputPath = config[_outputPathSettingName];
 
-            var settings = (null as ISettings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile);
+            var settings = (null as ISettings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
             var templates = (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, contactPageTemplatePath, redirectTemplatePath, syndicationTemplatePath, syndicationItemTemplatePath, itemTemplatePath, searchPageTemplatePath, archiveTemplatePath, archiveItemTemplatePath);
 
             var container = (null as IServiceCollection).Create(settings, templates);

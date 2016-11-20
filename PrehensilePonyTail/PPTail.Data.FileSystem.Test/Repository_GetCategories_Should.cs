@@ -32,11 +32,11 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
-        public void ReturnTheProperIdForACategory()
+        public void ReturnTheProperIdForEachCategory()
         {
             const string rootPath = "c:\\";
 
-            var categories = (null as IEnumerable<Category>).Create(1);
+            var categories = (null as IEnumerable<Category>).Create();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, rootPath);
@@ -44,15 +44,16 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(categories.Single().Id, actual.Single().Id);
+            foreach (var category in categories)
+                Assert.NotNull(actual.SingleOrDefault(c => c.Id == category.Id));
         }
 
         [Fact]
-        public void ReturnTheProperNameForACategory()
+        public void ReturnTheProperNameForEachCategory()
         {
             const string rootPath = "c:\\";
 
-            var categories = (null as IEnumerable<Category>).Create(1);
+            var categories = (null as IEnumerable<Category>).Create();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, rootPath);
@@ -60,15 +61,19 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(categories.Single().Name, actual.Single().Name);
+            foreach (var category in categories)
+            {
+                var actualCategory = actual.SingleOrDefault(c => c.Id == category.Id);
+                Assert.Equal(category.Name, actualCategory.Name);
+            }
         }
 
         [Fact]
-        public void ReturnTheProperDescriptionForACategory()
+        public void ReturnTheProperDescriptionForEachCategory()
         {
             const string rootPath = "c:\\";
 
-            var categories = (null as IEnumerable<Category>).Create(1);
+            var categories = (null as IEnumerable<Category>).Create();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, rootPath);
@@ -76,7 +81,93 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(categories.Single().Description, actual.Single().Description);
+            foreach (var category in categories)
+            {
+                var actualCategory = actual.SingleOrDefault(c => c.Id == category.Id);
+                Assert.Equal(category.Description, actualCategory.Description);
+            }
+        }
+
+        [Fact]
+        public void SkipACategoryIfItHasNoIdAttribute()
+        {
+            const string rootPath = "c:\\";
+            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+
+            var categories = (null as IEnumerable<Category>).Create(1);
+            var categoryFileContents = categories.Serialize();
+            var categoryNode = categoryFileContents.Descendants().Single();
+
+            var attribute = categoryNode.Attributes().Single(n => n.Name.LocalName == "id");
+            attribute.Remove();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetCategories();
+
+            Assert.Equal(0, actual.Count());
+        }
+
+        [Fact]
+        public void SkipACategoryIfItHasNoNameValue()
+        {
+            const string rootPath = "c:\\";
+            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+
+            var categories = (null as IEnumerable<Category>).Create(1);
+            categories.Single().Name = string.Empty;
+            var categoryFileContents = categories.Serialize();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetCategories();
+
+            Assert.Equal(0, actual.Count());
+        }
+
+        [Fact]
+        public void SkipACategoryIfItHasWhitespaceForTheNameValue()
+        {
+            const string rootPath = "c:\\";
+            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+
+            var categories = (null as IEnumerable<Category>).Create(1);
+            categories.Single().Name = "   ";
+            var categoryFileContents = categories.Serialize();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetCategories();
+
+            Assert.Equal(0, actual.Count());
+        }
+
+        [Fact]
+        public void LoadACategoryAnywayEvenIfItHasNoDescriptionAttribute()
+        {
+            const string rootPath = "c:\\";
+            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+
+            var categories = (null as IEnumerable<Category>).Create(1);
+            var categoryFileContents = categories.Serialize();
+            var categoryNode = categoryFileContents.Descendants().Single();
+
+            var attribute = categoryNode.Attributes().Single(n => n.Name.LocalName == "description");
+            attribute.Remove();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.ConfigureCategories(categoryFileContents, categoryFilePath);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetCategories();
+
+            Assert.Equal(1, actual.Count());
         }
     }
 }

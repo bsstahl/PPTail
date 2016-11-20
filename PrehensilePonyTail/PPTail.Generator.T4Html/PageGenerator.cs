@@ -45,16 +45,6 @@ namespace PPTail.Generator.T4Html
             return template.Content;
         }
 
-        public string GenerateBootstrapPage()
-        {
-            string result = string.Empty;
-            var templateType = TemplateType.Bootstrap;
-            var template = _templates.SingleOrDefault(t => t.TemplateType == templateType);
-            if (_templates.Contains(templateType))
-                result = _templates.Find(templateType).Content;
-            return result;
-        }
-
         public string GenerateSidebarContent(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
         {
             _serviceProvider.ValidateService<ISettings>();
@@ -67,21 +57,40 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        public string GenerateContentPage(string sidebarContent, string navContent, ContentItem pageData)
+        public string GenerateBootstrapPage()
         {
-            var template = _templates.Find(TemplateType.ContentPage);
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-            return templateProcessor.ProcessContentItemTemplate(template, pageData, sidebarContent, navContent, "..", false);
+            string result = string.Empty;
+            var templateType = TemplateType.Bootstrap;
+            if (_templates.Contains(templateType))
+                result = _templates.Find(templateType).Content;
+            return result;
         }
 
-        public string GeneratePostPage(string sidebarContent, string navContent, ContentItem article)
-        {
-            var template = _templates.Find(TemplateType.PostPage);
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-            return templateProcessor.ProcessContentItemTemplate(template, article, sidebarContent, navContent, "..", false);
-        }
+        //TODO: Remove scar tissue
+
+        //public string GenerateContentPage(string sidebarContent, string navContent, ContentItem pageData)
+        //{
+        //    var templateType = TemplateType.ContentPage;
+        //    string pathToRoot = "..";
+        //    bool xmlEncodeContent = false;
+        //    return GenerateTemplatePage(sidebarContent, navContent, pageData, templateType, pathToRoot, xmlEncodeContent);
+        //}
+
+        //public string GeneratePostPage(string sidebarContent, string navContent, ContentItem article)
+        //{
+        //    var templateType = TemplateType.PostPage;
+        //    string pathToRoot = "..";
+        //    bool xmlEncodeContent = false;
+        //    return GenerateTemplatePage(sidebarContent, navContent, article, templateType, pathToRoot, xmlEncodeContent);
+        //}
+
+        //private string GenerateTemplatePage(string sidebarContent, string navContent, ContentItem pageData, TemplateType templateType, string pathToRoot, bool xmlEncodeContent)
+        //{
+        //    var template = _templates.Find(templateType);
+        //    var categories = _serviceProvider.GetService<IEnumerable<Category>>();
+        //    var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
+        //    return templateProcessor.ProcessContentItemTemplate(template, pageData, sidebarContent, navContent, pathToRoot, xmlEncodeContent);
+        //}
 
     }
 }

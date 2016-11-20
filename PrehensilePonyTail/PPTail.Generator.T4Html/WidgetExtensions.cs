@@ -37,7 +37,6 @@ namespace PPTail.Generator.T4Html
         {
             string results = string.Empty;
 
-            //TODO: Add code coverage (currently intermittent)
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
 

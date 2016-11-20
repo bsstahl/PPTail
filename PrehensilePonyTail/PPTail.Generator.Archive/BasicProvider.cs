@@ -21,7 +21,6 @@ namespace PPTail.Generator.Archive
             if (_serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
-            // TODO: Add code coverage
             _serviceProvider.ValidateService<ITemplateProcessor>();
             _serviceProvider.ValidateService<SiteSettings>();
 

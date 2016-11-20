@@ -26,6 +26,7 @@ namespace PPTail
             container.AddSingleton<Interfaces.IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
             container.AddSingleton<Interfaces.IContactProvider>(c => new PPTail.Generator.Contact.TemplateProvider(c));
             container.AddSingleton<Interfaces.IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
+            container.AddSingleton<Interfaces.IContentItemPageGenerator>(c => new PPTail.Generator.ContentPage.PageGenerator(c));
             container.AddSingleton<Interfaces.IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
             container.AddSingleton<Interfaces.ISearchProvider>(c => new PPTail.Generator.Search.PageGenerator(c));
             container.AddSingleton<Interfaces.IRedirectProvider>(c => new PPTail.Generator.Redirect.RedirectProvider(c));

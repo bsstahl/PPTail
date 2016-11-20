@@ -10,6 +10,7 @@ using Moq;
 using System.Linq.Expressions;
 using PPTail.Entities;
 using System.Xml.Linq;
+using PPTail.Enumerations;
 
 namespace PPTail.Data.FileSystem.Test
 {
@@ -50,7 +51,6 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void NotFailIfAnUnknownWidgetTypeIsFound()
         {
-            // TODO: Fix intermittent failure
             string rootPath = "c:\\";
 
             var widgets = (null as IEnumerable<Widget>).Create();
@@ -61,7 +61,9 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetAllWidgets();
 
-            Assert.Equal(widgets.Count(w => w.WidgetType != Enumerations.WidgetType.Unknown), actual.Count());
+            var knownWidgetTypes = (int[])Enum.GetValues(typeof(WidgetType));
+            var expectedCount = widgets.Count(w => knownWidgetTypes.Contains((int)w.WidgetType) && w.WidgetType != WidgetType.Unknown);
+            Assert.Equal(expectedCount, actual.Count());
         }
 
         [Fact]
