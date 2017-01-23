@@ -32,7 +32,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace PPTail.Generator.HomePage.Test
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor
-                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()))
+                .Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()))
                 .Returns(expected);
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -78,7 +78,7 @@ namespace PPTail.Generator.HomePage.Test
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
             var homepageTemplate = templates.Find(Enumerations.TemplateType.HomePage);
-            templateProcessor.Verify(t => t.Process(homepageTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(homepageTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace PPTail.Generator.HomePage.Test
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
             var itemTemplate = templates.Find(Enumerations.TemplateType.Item);
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
         
         [Fact]
@@ -180,7 +180,7 @@ namespace PPTail.Generator.HomePage.Test
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
             string pageTitle = "Home";
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), pageTitle, It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), pageTitle, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -201,7 +201,30 @@ namespace PPTail.Generator.HomePage.Test
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
             string pathToRoot = ".";
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), pathToRoot, It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), pathToRoot, It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheProperItemSeparatorToTheTemplateProcessor()
+        {
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            string sidebarContent = string.Empty.GetRandom();
+            string navigationContent = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Template>>(templates);
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var settings = (null as ISettings).CreateDefault();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var target = (null as IHomePageGenerator).Create(container);
+            target.GenerateHomepage(sidebarContent, navigationContent, posts);
+
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), settings.ItemSeparator, It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -222,7 +245,7 @@ namespace PPTail.Generator.HomePage.Test
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
             bool xmlEncodeContent = false;
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), xmlEncodeContent, It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), xmlEncodeContent, It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]
@@ -244,7 +267,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), siteSettings.PostsPerPage), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), siteSettings.PostsPerPage), Times.Once);
         }
     }
 }

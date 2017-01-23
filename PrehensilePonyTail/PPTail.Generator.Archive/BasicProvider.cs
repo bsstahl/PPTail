@@ -31,18 +31,12 @@ namespace PPTail.Generator.Archive
 
         public string GenerateArchive(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)
         {
-            var siteSettings = _serviceProvider.GetService<SiteSettings>();
             var pageTemplate = _templates.Find(TemplateType.Archive);
             var itemTemplate = _templates.Find(TemplateType.ArchiveItem);
 
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-            return templateProcessor.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, "Archive", ".", false, 0);
+            return templateProcessor.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, "Archive", ".", string.Empty, false, 0);
         }
-
-        //public string GetPath(ContentItem item, ISettings settings, string pathToRoot)
-        //{
-        //    return System.IO.Path.Combine(pathToRoot, "Posts", $"{item.Slug}.{settings.OutputFileExtension}");
-        //}
 
     }
 }

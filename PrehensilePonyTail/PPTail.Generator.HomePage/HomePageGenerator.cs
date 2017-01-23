@@ -24,10 +24,12 @@ namespace PPTail.Generator.HomePage
             _serviceProvider = serviceProvider;
             _serviceProvider.ValidateService<SiteSettings>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
+            _serviceProvider.ValidateService<ISettings>(); // TODO: Add code coverage
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
             _templates.Validate(TemplateType.HomePage);
             _templates.Validate(TemplateType.Item);
+
         }
 
         public string GenerateHomepage(string sidebarContent, string navigationContent, IEnumerable<ContentItem> posts)
@@ -36,7 +38,8 @@ namespace PPTail.Generator.HomePage
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
             var siteSettings = _serviceProvider.GetService<SiteSettings>();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-            return templateProcessor.Process(homepageTemplate, itemTemplate, sidebarContent, navigationContent, posts, "Home", ".", false, siteSettings.PostsPerPage);
+            var settings = _serviceProvider.GetService<ISettings>();
+            return templateProcessor.Process(homepageTemplate, itemTemplate, sidebarContent, navigationContent, posts, "Home", ".", settings.ItemSeparator, false, siteSettings.PostsPerPage);
         }
 
     }

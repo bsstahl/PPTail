@@ -36,7 +36,7 @@ namespace PPTail.Generator.Archive.Test
             var target = (null as BasicProvider).Create(serviceProvider);
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<int>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace PPTail.Generator.Archive.Test
 
             string expected = string.Empty.GetRandom();
             var templateProcessor = new Mock<ITemplateProcessor>();
-            templateProcessor.Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>())).Returns(expected);
+            templateProcessor.Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>())).Returns(expected);
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var serviceProvider = container.BuildServiceProvider();
@@ -92,7 +92,7 @@ namespace PPTail.Generator.Archive.Test
             var searchTemplate = templates.Find(Enumerations.TemplateType.Archive);
 
             templateProcessor
-                .Verify(t => t.Process(searchTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(searchTemplate, It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace PPTail.Generator.Archive.Test
             var itemTemplate = templates.Find(Enumerations.TemplateType.ArchiveItem);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), itemTemplate, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navigationContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -199,7 +199,7 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), posts, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -225,7 +225,7 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), "Archive", It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), "Archive", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -251,7 +251,33 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), pathToRoot, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), pathToRoot, It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectItemSeparatorToTheTemplateProcessor()
+        {
+            string pathToRoot = ".";
+            string navContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+
+            var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
+            var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
+
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = (null as SiteSettings).Create();
+            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var serviceProvider = container.BuildServiceProvider();
+            var target = (null as BasicProvider).Create(serviceProvider);
+            var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<String>(), string.Empty, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -277,7 +303,7 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), false, It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), false, It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -303,7 +329,7 @@ namespace PPTail.Generator.Archive.Test
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), 0), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), 0), Times.Once);
         }
 
     }

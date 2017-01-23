@@ -35,7 +35,7 @@ namespace PPTail.Generator.Template.Test
             container.RemoveDependency<ISettings>();
 
             var target = (null as ITemplateProcessor).Create(container);
-            Assert.Throws<DependencyNotFoundException>(() => target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount));
+            Assert.Throws<DependencyNotFoundException>(() => target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount));
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace PPTail.Generator.Template.Test
             string actual = string.Empty;
             try
             {
-                target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+                target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
             }
             catch (DependencyNotFoundException ex)
             {
@@ -93,7 +93,7 @@ namespace PPTail.Generator.Template.Test
             container.RemoveDependency<ILinkProvider>();
 
             var target = (null as ITemplateProcessor).Create(container);
-            Assert.Throws<DependencyNotFoundException>(() => target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount));
+            Assert.Throws<DependencyNotFoundException>(() => target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount));
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace PPTail.Generator.Template.Test
             string actual = string.Empty;
             try
             {
-                target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+                target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
             }
             catch (DependencyNotFoundException ex)
             {
@@ -158,7 +158,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, settings.ItemSeparator, xmlEncodeContent, maxPostCount);
 
             var expectedSeparatorCount = System.Math.Min(maxPostCount, publishedPosts.Count()) - 1;
             var actualSeparatorCount = System.Text.RegularExpressions.Regex.Matches(actual, settings.ItemSeparator).Count;
@@ -190,7 +190,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             // Verify that none of the published posts beyond maxPostCount are in the output
             var excludedPosts = publishedPosts.OrderByDescending(p => p.PublicationDate).Skip(maxPostCount);
@@ -221,7 +221,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             // Verify that all of the published posts are in the output
             foreach (var post in publishedPosts)
@@ -251,7 +251,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             // Verify that none of the unpublished posts are in the output
             var excludedPosts = posts.Where(p => !p.IsPublished);
@@ -281,7 +281,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
                 Assert.Contains(post.Title, actual);
@@ -309,7 +309,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
                 Assert.Contains(post.Content, actual);
@@ -337,7 +337,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
                 Assert.Contains(post.Author, actual);
@@ -365,7 +365,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
                 Assert.Contains(post.Description, actual);
@@ -393,7 +393,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
                 Assert.Contains(post.ByLine, actual);
@@ -422,7 +422,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
@@ -454,7 +454,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
@@ -486,7 +486,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
@@ -518,7 +518,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
@@ -554,7 +554,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in publishedPosts)
                 linkProvider.Verify(l => l.GetUrl(pathToRoot, "Posts", post.Slug), Times.Once);
@@ -591,7 +591,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in publishedPosts)
                 Assert.Contains(post.Id.ToString(), actual);
@@ -624,7 +624,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in publishedPosts)
                 linkProvider.Verify(l => l.GetUrl(pathToRoot, "Permalinks", post.Id.ToString()), Times.Once);
@@ -663,7 +663,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             var expectedCount = publishedPosts.Count();
             var actualCount = System.Text.RegularExpressions.Regex.Matches(actual, ">Permalink<").Count;
@@ -703,7 +703,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in publishedPosts)
                 Assert.Contains(post.Slug, actual);
@@ -748,7 +748,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             contentEncoder.VerifyAll();
         }
@@ -791,7 +791,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             linkProvider.VerifyAll();
         }
@@ -834,7 +834,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in publishedPosts)
                 Assert.Contains(post.Id.ToString(), actual);
@@ -887,7 +887,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Category>>(categoryList);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             contentEncoder.VerifyAll();
         }
@@ -938,7 +938,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Category>>(categoryList);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             linkProvider.VerifyAll();
         }
@@ -987,7 +987,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Category>>(categoryList);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in publishedPosts)
                 Assert.Contains(post.Id.ToString(), actual);
@@ -1028,7 +1028,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Category>>(categoryList);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
         }
 
         [Fact]
@@ -1058,7 +1058,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(encoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             encoder.Verify(e => e.XmlEncode(post.Content), Times.Once);
         }
@@ -1092,7 +1092,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(encoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             Assert.Contains(expected, actual);
         }
@@ -1124,7 +1124,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(encoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             encoder.Verify(e => e.XmlEncode(post.Description), Times.Once);
         }
@@ -1158,7 +1158,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IContentEncoder>(encoder.Object);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             Assert.Contains(expected, actual);
         }
@@ -1189,7 +1189,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             Assert.Contains(expected, actual);
         }
@@ -1220,7 +1220,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             Assert.Contains(expected, actual);
         }
@@ -1251,7 +1251,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             Assert.Contains(expected, actual);
         }
@@ -1282,7 +1282,7 @@ namespace PPTail.Generator.Template.Test
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             Assert.Contains(expected, actual);
         }
