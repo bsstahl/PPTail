@@ -7,11 +7,18 @@
         "sourceDataPath": "C:\\SourceDataLocation"
       }
     },
-    "mobile-dev-box": {
+    "mobile-dev-box (CI)": {
       "commandName": "Project",
       "environmentVariables": {
         "outputPath": "..\\GeneratedWebApp\\wwwroot",
         "sourceDataPath": "E:\\CognitiveInheritance"
+      }
+    },
+    "mobile-dev-box (Political)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "E:\\PoliticalSite\\GeneratedWebSite",
+        "sourceDataPath": "E:\\PoliticalSite\\SiteSource"
       }
     },
     "win10-shared-box": {
