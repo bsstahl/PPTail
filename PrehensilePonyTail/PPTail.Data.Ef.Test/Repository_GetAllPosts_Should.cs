@@ -63,26 +63,13 @@ namespace PPTail.Data.Ef.Test
             Assert.Equal(itemCount, actual.Count());
         }
 
+
         [Fact]
         public void ReturnTheCorrectPostId()
         {
-            var container = new ServiceCollection();
-            container.AddInMemoryContext();
-            var serviceProvider = container.BuildServiceProvider();
-
-            var expected = (null as ContentItem).Create();
-
-            using (var dataContext = serviceProvider.GetService<ContentContext>())
-            {
-                dataContext.Posts.Add(expected);
-                dataContext.SaveChanges();
-            }
-
-            var target = new Repository(serviceProvider);
-            var actual = target.GetAllPosts();
-
-            Debug.Assert(Guid.Empty.CompareTo(expected.Id) != 0);
-            Assert.Equal(expected.Id, actual.Single().Id);
+            Func<ContentItem, Guid> getExpectedPropertyValue = i => i.Id;
+            Func<Entities.ContentItem, Guid> getActualPropertyValue = i => i.Id;
+            getExpectedPropertyValue.ExecutePostPropertyTest(getActualPropertyValue);
         }
 
         [Fact]

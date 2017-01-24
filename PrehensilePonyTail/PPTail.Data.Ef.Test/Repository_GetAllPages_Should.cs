@@ -64,21 +64,9 @@ namespace PPTail.Data.Ef.Test
         [Fact]
         public void ReturnTheCorrectPageId()
         {
-            var container = new ServiceCollection();
-            container.AddInMemoryContext();
-            var serviceProvider = container.BuildServiceProvider();
-
-            var expected = (null as ContentItem).Create();
-
-            using (var dataContext = serviceProvider.GetService<ContentContext>())
-            {
-                dataContext.Pages.Add(expected);
-                dataContext.SaveChanges();
-            }
-
-            var target = new Repository(serviceProvider);
-            var actual = target.GetAllPages();
-            Assert.Equal(expected.Id, actual.Single().Id);
+            Func<ContentItem, Guid> getExpectedPropertyValue = i => i.Id;
+            Func<Entities.ContentItem, Guid> getActualPropertyValue = i => i.Id;
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
