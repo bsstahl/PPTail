@@ -38,11 +38,11 @@ namespace PPTail.Data.Ef.Test
             return container.AddDbContext<ContentContext>(p => p.UseInMemoryDatabase(databaseName: string.Empty.GetRandom()), ServiceLifetime.Transient);
         }
 
-        #region String Property Test Helpers
+        #region Property Test Helpers
 
-        public static void ExecuteContentItemStringPropertyTest(
-            this Func<ContentItem, string> getExpectedPropertyValue,
-            Func<Entities.ContentItem, string> getActualPropertyValue,
+        public static void ExecuteContentItemPropertyTest<T>(
+            this Func<ContentItem, T> getExpectedPropertyValue,
+            Func<Entities.ContentItem, T> getActualPropertyValue,
             Action<ContentContext, ContentItem> addData,
             Func<Repository, Entities.ContentItem> getResult)
         {
@@ -64,68 +64,23 @@ namespace PPTail.Data.Ef.Test
             var expected = getExpectedPropertyValue(expectedObject);
             var actual = getActualPropertyValue(actualEntity);
 
-            Assert.False(string.IsNullOrWhiteSpace(expected), "Test is invalid if using an empty string");
+            Assert.False(expected == null, $"Test is invalid if using a null {typeof(T).Name} value");
+            Assert.False(expected.Equals(default(T)), $"Test is invalid if using a default {typeof(T).Name} value");
             Assert.Equal(expected, actual);
         }
 
-        public static void ExecutePostStringPropertyTest(this Func<ContentItem, string> getExpectedPropertyValue, Func<Entities.ContentItem, string> getActualPropertyValue)
+        public static void ExecutePostPropertyTest<T>(this Func<ContentItem, T> getExpectedPropertyValue, Func<Entities.ContentItem, T> getActualPropertyValue)
         {
             Action<ContentContext, ContentItem> addData = (c, i) => c.Posts.Add(i);
             Func<Repository, Entities.ContentItem> getResult = c => c.GetAllPosts().Single();
-            getExpectedPropertyValue.ExecuteContentItemStringPropertyTest(getActualPropertyValue, addData, getResult);
+            getExpectedPropertyValue.ExecuteContentItemPropertyTest(getActualPropertyValue, addData, getResult);
         }
 
-        public static void ExecutePageStringPropertyTest(this Func<ContentItem, string> getExpectedPropertyValue, Func<Entities.ContentItem, string> getActualPropertyValue)
+        public static void ExecutePagePropertyTest<T>(this Func<ContentItem, T> getExpectedPropertyValue, Func<Entities.ContentItem, T> getActualPropertyValue)
         {
             Action<ContentContext, ContentItem> addData = (c, i) => c.Pages.Add(i);
             Func<Repository, Entities.ContentItem> getResult = c => c.GetAllPages().Single();
-            getExpectedPropertyValue.ExecuteContentItemStringPropertyTest(getActualPropertyValue, addData, getResult);
-        }
-
-        #endregion
-
-        #region DateTime Property Test Helpers
-
-        public static void ExecuteContentItemDateTimePropertyTest(
-            this Func<ContentItem, DateTime> getExpectedPropertyValue,
-            Func<Entities.ContentItem, DateTime> getActualPropertyValue,
-            Action<ContentContext, ContentItem> addData,
-            Func<Repository, Entities.ContentItem> getResult)
-        {
-            var container = new ServiceCollection();
-            container.AddInMemoryContext();
-            var serviceProvider = container.BuildServiceProvider();
-
-            var expectedObject = (null as ContentItem).Create();
-
-            using (var dataContext = serviceProvider.GetService<ContentContext>())
-            {
-                addData(dataContext, expectedObject);
-                dataContext.SaveChanges();
-            }
-
-            var target = new Repository(serviceProvider);
-            var actualEntity = getResult(target);
-
-            var expected = getExpectedPropertyValue(expectedObject);
-            var actual = getActualPropertyValue(actualEntity);
-
-            Assert.True(DateTime.MinValue.CompareTo(expected) < 0, "Test is invalid if using a min value DateTime");
-            Assert.Equal(expected, actual);
-        }
-
-        public static void ExecutePostDateTimePropertyTest(this Func<ContentItem, DateTime> getExpectedPropertyValue, Func<Entities.ContentItem, DateTime> getActualPropertyValue)
-        {
-            Action<ContentContext, ContentItem> addData = (c, i) => c.Posts.Add(i);
-            Func<Repository, Entities.ContentItem> getResult = c => c.GetAllPosts().Single();
-            getExpectedPropertyValue.ExecuteContentItemDateTimePropertyTest(getActualPropertyValue, addData, getResult);
-        }
-
-        public static void ExecutePageDateTimePropertyTest(this Func<ContentItem, DateTime> getExpectedPropertyValue, Func<Entities.ContentItem, DateTime> getActualPropertyValue)
-        {
-            Action<ContentContext, ContentItem> addData = (c, i) => c.Pages.Add(i);
-            Func<Repository, Entities.ContentItem> getResult = c => c.GetAllPages().Single();
-            getExpectedPropertyValue.ExecuteContentItemDateTimePropertyTest(getActualPropertyValue, addData, getResult);
+            getExpectedPropertyValue.ExecuteContentItemPropertyTest(getActualPropertyValue, addData, getResult);
         }
 
         #endregion

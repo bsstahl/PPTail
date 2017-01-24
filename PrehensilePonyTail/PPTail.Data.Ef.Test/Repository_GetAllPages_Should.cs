@@ -86,7 +86,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, string> getExpectedPropertyValue = i => i.Title;
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Title;
-            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, string> getExpectedPropertyValue = i => i.Author;
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Author;
-            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, string> getExpectedPropertyValue = i => i.Description;
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Description;
-            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, string> getExpectedPropertyValue = i => i.Content;
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Content;
-            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, string> getExpectedPropertyValue = i => i.Slug;
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Slug;
-            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, string> getExpectedPropertyValue = i => i.ByLine;
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.ByLine;
-            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, DateTime> getExpectedPropertyValue = i => i.PublicationDate;
             Func<Entities.ContentItem, DateTime> getActualPropertyValue = i => i.PublicationDate;
-            getExpectedPropertyValue.ExecutePageDateTimePropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace PPTail.Data.Ef.Test
         {
             Func<ContentItem, DateTime> getExpectedPropertyValue = i => i.LastModificationDate;
             Func<Entities.ContentItem, DateTime> getActualPropertyValue = i => i.LastModificationDate;
-            getExpectedPropertyValue.ExecutePageDateTimePropertyTest(getActualPropertyValue);
+            getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
         }
     }
 }
