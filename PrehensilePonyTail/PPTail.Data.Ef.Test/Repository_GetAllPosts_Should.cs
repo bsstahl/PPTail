@@ -132,5 +132,21 @@ namespace PPTail.Data.Ef.Test
             Func<Entities.ContentItem, string> getActualPropertyValue = i => i.ByLine;
             getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
         }
+
+        [Fact]
+        public void ReturnTheCorrectPostPublicationDate()
+        {
+            Func<ContentItem, DateTime> getExpectedPropertyValue = i => i.PublicationDate;
+            Func<Entities.ContentItem, DateTime> getActualPropertyValue = i => i.PublicationDate;
+            getExpectedPropertyValue.ExecutePostDateTimePropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostLastModificationDate()
+        {
+            Func<ContentItem, DateTime> getExpectedPropertyValue = i => i.LastModificationDate;
+            Func<Entities.ContentItem, DateTime> getActualPropertyValue = i => i.LastModificationDate;
+            getExpectedPropertyValue.ExecutePostDateTimePropertyTest(getActualPropertyValue);
+        }
     }
 }
