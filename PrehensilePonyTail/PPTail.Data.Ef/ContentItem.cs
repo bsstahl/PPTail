@@ -21,6 +21,9 @@ namespace PPTail.Data.Ef
         public DateTime PublicationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
 
+        public bool IsPublished { get; set; }
+        public bool ShowInList { get; set; }
+
 
         public PPTail.Entities.ContentItem AsEntity()
         {
@@ -34,7 +37,9 @@ namespace PPTail.Data.Ef
                 Slug = this.Slug,
                 ByLine = this.ByLine,
                 PublicationDate = this.PublicationDate,
-                LastModificationDate = this.LastModificationDate
+                LastModificationDate = this.LastModificationDate,
+                IsPublished = this.IsPublished,
+                ShowInList = this.ShowInList
             };
         }
     }

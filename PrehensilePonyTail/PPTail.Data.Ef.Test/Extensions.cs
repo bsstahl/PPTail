@@ -24,7 +24,9 @@ namespace PPTail.Data.Ef.Test
                 ByLine = string.Empty.GetRandom(),
                 Slug = string.Empty.GetRandom(),
                 PublicationDate = DateTime.MaxValue.GetRandom(DateTime.UtcNow.AddDays(-100)),
-                LastModificationDate = DateTime.UtcNow.GetRandom(DateTime.UtcNow.AddDays(-100))
+                LastModificationDate = DateTime.UtcNow.GetRandom(DateTime.UtcNow.AddDays(-100)),
+                IsPublished = true,
+                ShowInList = true
             };
         }
 
