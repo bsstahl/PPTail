@@ -84,22 +84,49 @@ namespace PPTail.Data.Ef.Test
         [Fact]
         public void ReturnTheCorrectPageTitle()
         {
-            var container = new ServiceCollection();
-            container.AddInMemoryContext();
-            var serviceProvider = container.BuildServiceProvider();
-
-            var expected = (null as ContentItem).Create();
-
-            using (var dataContext = serviceProvider.GetService<ContentContext>())
-            {
-                dataContext.Pages.Add(expected);
-                dataContext.SaveChanges();
-            }
-
-            var target = new Repository(serviceProvider);
-            var actual = target.GetAllPages();
-            Assert.Equal(expected.Title, actual.Single().Title);
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Title;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Title;
+            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
         }
 
+        [Fact]
+        public void ReturnTheCorrectPageAuthor()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Author;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Author;
+            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPageDescription()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Description;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Description;
+            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPageContent()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Content;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Content;
+            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPageSlug()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Slug;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Slug;
+            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPageByline()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.ByLine;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.ByLine;
+            getExpectedPropertyValue.ExecutePageStringPropertyTest(getActualPropertyValue);
+        }
     }
 }

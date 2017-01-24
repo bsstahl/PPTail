@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TestHelperExtensions;
 using Xunit;
@@ -32,7 +34,7 @@ namespace PPTail.Data.Ef.Test
 
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
-                dataContext.Posts.Add(new ContentItem() { Id = Guid.NewGuid() });
+                dataContext.Posts.Add((null as ContentItem).Create());
                 dataContext.SaveChanges();
             }
 
@@ -52,7 +54,7 @@ namespace PPTail.Data.Ef.Test
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
                 for (int i = 0; i < itemCount; i++)
-                    dataContext.Posts.Add(new ContentItem() { Id = Guid.NewGuid() });
+                    dataContext.Posts.Add((null as ContentItem).Create());
                 dataContext.SaveChanges();
             }
 
@@ -62,23 +64,73 @@ namespace PPTail.Data.Ef.Test
         }
 
         [Fact]
-        public void ReturnTheCorrectPostTitle()
+        public void ReturnTheCorrectPostId()
         {
             var container = new ServiceCollection();
             container.AddInMemoryContext();
             var serviceProvider = container.BuildServiceProvider();
 
-            var expected = string.Empty.GetRandom();
+            var expected = (null as ContentItem).Create();
 
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
-                dataContext.Posts.Add(new ContentItem() { Id = Guid.NewGuid(), Title = expected });
+                dataContext.Posts.Add(expected);
                 dataContext.SaveChanges();
             }
 
             var target = new Repository(serviceProvider);
             var actual = target.GetAllPosts();
-            Assert.Equal(expected, actual.Single().Title);
+
+            Debug.Assert(Guid.Empty.CompareTo(expected.Id) != 0);
+            Assert.Equal(expected.Id, actual.Single().Id);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostTitle()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Title;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Title;
+            getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostAuthor()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Author;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Author;
+            getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostDescription()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Description;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Description;
+            getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostContent()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Content;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Content;
+            getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostSlug()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.Slug;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.Slug;
+            getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPostByline()
+        {
+            Func<ContentItem, string> getExpectedPropertyValue = i => i.ByLine;
+            Func<Entities.ContentItem, string> getActualPropertyValue = i => i.ByLine;
+            getExpectedPropertyValue.ExecutePostStringPropertyTest(getActualPropertyValue);
         }
     }
 }
