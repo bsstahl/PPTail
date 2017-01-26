@@ -26,7 +26,8 @@ namespace PPTail.Data.Ef.Test
                 PublicationDate = DateTime.MaxValue.GetRandom(DateTime.UtcNow.AddDays(-100)),
                 LastModificationDate = DateTime.UtcNow.GetRandom(DateTime.UtcNow.AddDays(-100)),
                 IsPublished = true,
-                ShowInList = true
+                ShowInList = true,
+                Tags = string.Empty.GetRandom().CreateTagList()
             };
         }
 
@@ -40,6 +41,31 @@ namespace PPTail.Data.Ef.Test
             return container.AddDbContext<ContentContext>(p => p.UseInMemoryDatabase(databaseName: string.Empty.GetRandom()), ServiceLifetime.Transient);
         }
 
+        public static string CreateTagList(this string ignore)
+        {
+            var tags = new List<string>();
+            int tagCount = 7.GetRandom(3);
+            for (int i = 0; i < tagCount; i++)
+                tags.Add(string.Empty.GetRandom().Replace(";", ""));
+            return string.Join(";", tags);
+        }
+
+        public static IServiceProvider Create(this IServiceProvider ignore)
+        {
+            var container = new ServiceCollection();
+            container.AddInMemoryContext();
+            return container.BuildServiceProvider();
+        }
+
+        public static void AddToDataStore(this ContentItem expectedObject, Action<ContentContext, ContentItem> addData, IServiceProvider serviceProvider)
+        {
+            using (var dataContext = serviceProvider.GetService<ContentContext>())
+            {
+                addData(dataContext, expectedObject);
+                dataContext.SaveChanges();
+            }
+        }
+
         #region Property Test Helpers
 
         public static void ExecuteContentItemPropertyTest<T>(
@@ -48,17 +74,10 @@ namespace PPTail.Data.Ef.Test
             Action<ContentContext, ContentItem> addData,
             Func<Repository, Entities.ContentItem> getResult)
         {
-            var container = new ServiceCollection();
-            container.AddInMemoryContext();
-            var serviceProvider = container.BuildServiceProvider();
+            var serviceProvider = (null as IServiceProvider).Create();
 
             var expectedObject = (null as ContentItem).Create();
-
-            using (var dataContext = serviceProvider.GetService<ContentContext>())
-            {
-                addData(dataContext, expectedObject);
-                dataContext.SaveChanges();
-            }
+            expectedObject.AddToDataStore(addData, serviceProvider);
 
             var target = new Repository(serviceProvider);
             var actualEntity = getResult(target);

@@ -151,5 +151,73 @@ namespace PPTail.Data.Ef.Test
             Func<Entities.ContentItem, bool> getActualPropertyValue = i => i.ShowInList;
             getExpectedPropertyValue.ExecutePostPropertyTest(getActualPropertyValue);
         }
+
+        [Fact]
+        public void ReturnTheCorrectPostTagsCollection()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.AddToDataStore((c, i) => c.Posts.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPosts().Single();
+
+            var expected = expectedObject.Tags;
+            Assert.NotNull(expected);
+
+            var expectedCollection = expected.Split(';').OrderBy(t => t).ToArray();
+            var actualCollection = actualEntity.Tags.OrderBy(t => t).ToArray();
+
+            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null string value");
+            Assert.Equal(expectedCollection.Count(), actualCollection.Count());
+            for (int i = 0; i < expectedCollection.Count(); i++)
+                Assert.Equal(expectedCollection[i], actualCollection[i]);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyTagCollectionIfThePostHasNoTags()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.Tags = null;
+            expectedObject.AddToDataStore((c, i) => c.Posts.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPosts().Single();
+
+            Assert.Equal(0, actualEntity.Tags.Count());
+        }
+
+        [Fact]
+        public void ReturnAnEmptyTagCollectionIfThePostHasOnlyOneWhitespaceTag()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.Tags = string.Empty;
+            expectedObject.AddToDataStore((c, i) => c.Posts.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPosts().Single();
+
+            Assert.Equal(0, actualEntity.Tags.Count());
+        }
+
+        [Fact]
+        public void ReturnAnEmptyTagCollectionIfThePostHasOnlyWhitespaceTags()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.Tags = "; ;";
+            expectedObject.AddToDataStore((c, i) => c.Posts.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPosts().Single();
+
+            Assert.Equal(0, actualEntity.Tags.Count());
+        }
     }
 }

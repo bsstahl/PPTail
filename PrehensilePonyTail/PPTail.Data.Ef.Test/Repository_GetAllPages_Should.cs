@@ -32,7 +32,7 @@ namespace PPTail.Data.Ef.Test
 
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
-                dataContext.Pages.Add(new ContentItem() { Id = Guid.NewGuid() });
+                dataContext.Pages.Add((null as ContentItem).Create());
                 dataContext.SaveChanges();
             }
 
@@ -52,7 +52,7 @@ namespace PPTail.Data.Ef.Test
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
                 for (int i = 0; i < itemCount; i++)
-                    dataContext.Pages.Add(new ContentItem() { Id = Guid.NewGuid() });
+                    dataContext.Pages.Add((null as ContentItem).Create());
                 dataContext.SaveChanges();
             }
 
@@ -147,6 +147,74 @@ namespace PPTail.Data.Ef.Test
             Func<ContentItem, bool> getExpectedPropertyValue = i => i.ShowInList;
             Func<Entities.ContentItem, bool> getActualPropertyValue = i => i.ShowInList;
             getExpectedPropertyValue.ExecutePagePropertyTest(getActualPropertyValue);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectPageTagsCollection()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.AddToDataStore((c,i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            var expected = expectedObject.Tags;
+            Assert.NotNull(expected);
+
+            var expectedCollection = expected.Split(';').OrderBy(t => t).ToArray();
+            var actualCollection = actualEntity.Tags.OrderBy(t => t).ToArray();
+
+            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null string value");
+            Assert.Equal(expectedCollection.Count(), actualCollection.Count());
+            for (int i = 0; i < expectedCollection.Count(); i++)
+                Assert.Equal(expectedCollection[i], actualCollection[i]);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyTagCollectionIfThePageHasNoTags()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.Tags = null;
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(0, actualEntity.Tags.Count());
+        }
+
+        [Fact]
+        public void ReturnAnEmptyTagCollectionIfThePageHasOnlyOneWhitespaceTag()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.Tags = string.Empty;
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(0, actualEntity.Tags.Count());
+        }
+
+        [Fact]
+        public void ReturnAnEmptyTagCollectionIfThePageHasOnlyWhitespaceTags()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.Tags = "; ;";
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(0, actualEntity.Tags.Count());
         }
     }
 }
