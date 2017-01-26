@@ -25,6 +25,7 @@ namespace PPTail.Data.Ef
         public bool ShowInList { get; set; }
 
         public string Tags { get; set; }
+        public string CategoryIds { get; set; }
 
 
         public PPTail.Entities.ContentItem AsEntity()
@@ -42,7 +43,8 @@ namespace PPTail.Data.Ef
                 LastModificationDate = this.LastModificationDate,
                 IsPublished = this.IsPublished,
                 ShowInList = this.ShowInList,
-                Tags = this.Tags.GetTags()
+                Tags = this.Tags.GetTags(),
+                CategoryIds = this.CategoryIds.GetCategoryIds()
             };
         }
     }

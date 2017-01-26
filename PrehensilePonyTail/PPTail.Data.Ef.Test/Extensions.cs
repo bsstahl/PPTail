@@ -27,7 +27,8 @@ namespace PPTail.Data.Ef.Test
                 LastModificationDate = DateTime.UtcNow.GetRandom(DateTime.UtcNow.AddDays(-100)),
                 IsPublished = true,
                 ShowInList = true,
-                Tags = string.Empty.GetRandom().CreateTagList()
+                Tags = string.Empty.CreateTagList(),
+                CategoryIds = string.Empty.CreateCategoryIdList()
             };
         }
 
@@ -48,6 +49,15 @@ namespace PPTail.Data.Ef.Test
             for (int i = 0; i < tagCount; i++)
                 tags.Add(string.Empty.GetRandom().Replace(";", ""));
             return string.Join(";", tags);
+        }
+
+        public static string CreateCategoryIdList(this string ignore)
+        {
+            var resultList = new List<string>();
+            int count = 7.GetRandom(3);
+            for (int i = 0; i < count; i++)
+                resultList.Add(Guid.NewGuid().ToString());
+            return string.Join(";", resultList);
         }
 
         public static IServiceProvider Create(this IServiceProvider ignore)

@@ -18,5 +18,18 @@ namespace PPTail.Data.Ef
             }
             return result;
         }
+
+        public static IEnumerable<Guid> GetCategoryIds(this string idString)
+        {
+            var result = new List<Guid>();
+            var rawIds = string.IsNullOrWhiteSpace(idString) ? new string[] { } : idString.Split(';');
+            foreach (var item in rawIds)
+            {
+                Guid thisGuid;
+                if (!string.IsNullOrWhiteSpace(item) && Guid.TryParse(item, out thisGuid))
+                    result.Add(new Guid(item));
+            }
+            return result;
+        }
     }
 }

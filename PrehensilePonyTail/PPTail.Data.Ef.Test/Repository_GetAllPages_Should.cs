@@ -216,5 +216,88 @@ namespace PPTail.Data.Ef.Test
 
             Assert.Equal(0, actualEntity.Tags.Count());
         }
+
+        [Fact]
+        public void ReturnTheCorrectPageCategoryIdCollection()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            var expected = expectedObject.CategoryIds;
+            Assert.NotNull(expected);
+
+            var expectedCollection = expected.Split(';').OrderBy(t => t).ToArray();
+            var actualCollection = actualEntity.CategoryIds.OrderBy(t => t).ToArray();
+
+            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null string value");
+            Assert.Equal(expectedCollection.Count(), actualCollection.Count());
+            for (int i = 0; i < expectedCollection.Count(); i++)
+                Assert.Equal(new Guid(expectedCollection[i]), actualCollection[i]);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyCategoryIdCollectionIfThePageHasNoCategory()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.CategoryIds = null;
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(0, actualEntity.CategoryIds.Count());
+        }
+
+        [Fact]
+        public void ReturnAnEmptyCategoryIdCollectionIfThePageHasOnlyOneWhitespaceCategoryId()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.CategoryIds = string.Empty;
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(0, actualEntity.CategoryIds.Count());
+        }
+
+        [Fact]
+        public void ReturnAnEmptyCategoryIdCollectionIfThePageHasOnlyWhitespaceCategoryIds()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.CategoryIds = "; ;";
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(0, actualEntity.CategoryIds.Count());
+        }
+
+        [Fact]
+        public void ReturnOnlyValidGuidsAsPageCategoryIds()
+        {
+            var serviceProvider = (null as IServiceProvider).Create();
+
+            var expectedObject = (null as ContentItem).Create();
+            expectedObject.CategoryIds = $";{string.Empty.GetRandom()};{Guid.NewGuid()}";
+            expectedObject.AddToDataStore((c, i) => c.Pages.Add(i), serviceProvider);
+
+            var target = new Repository(serviceProvider);
+            var actualEntity = target.GetAllPages().Single();
+
+            Assert.Equal(1, actualEntity.CategoryIds.Count());
+        }
     }
 }
