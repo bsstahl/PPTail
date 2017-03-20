@@ -28,6 +28,13 @@
         "sourceDataPath": "C:\\Users\\bsstahl\\Documents\\CognitiveInheritance"
       }
     },
+    "win10Home-Demo-box": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "..\\GeneratedWebApp\\wwwroot",
+        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\CognitiveInheritanceDasBlog"
+      }
+    },
     "win7-dev-box": {
       "commandName": "Project",
       "environmentVariables": {
