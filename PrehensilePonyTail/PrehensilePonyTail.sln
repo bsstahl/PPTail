@@ -1,17 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail", "PPTail\PPTail.xproj", "{399BA252-B5D3-4912-A5C2-0760F325837A}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Common", "PPTail.Common\PPTail.Common.xproj", "{BD3009C6-BA42-4029-815D-8774ACE59C60}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1AF51888-396D-4451-AB09-1CEC9AAC5BA5}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.FileSystem", "PPTail.Data.FileSystem\PPTail.Data.FileSystem.xproj", "{D2412FFD-AC36-470D-BF16-E87463A22D26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B28258E1-3587-4F84-B41F-1EE3A9139868}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ContactPage.template.html = ContactPage.template.html
 		ContentItem.template.html = ContentItem.template.html
 		ContentPage.template.html = ContentPage.template.html
-		global.json = global.json
 		Homepage.template.html = Homepage.template.html
 		PostPage.template.html = PostPage.template.html
 		Redirect.template.html = Redirect.template.html
@@ -30,93 +23,99 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SyndicationItem.template.xml = SyndicationItem.template.xml
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.FileSystem.Test", "PPTail.Data.FileSystem.Test\PPTail.Data.FileSystem.Test.xproj", "{4060760D-0892-4E38-B97F-E05D8D6CED40}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.T4Html", "PPTail.Generator.T4Html\PPTail.Generator.T4Html.xproj", "{0CB0D4F4-B9BD-490F-B13F-8B8F21DAA85D}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.T4Html.Test", "PPTail.Generator.T4Html.Test\PPTail.Generator.T4Html.Test.xproj", "{BB1DF9B4-FAE1-4EFF-B0D3-2003E6415D1E}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.SiteGenerator", "PPTail.SiteGenerator\PPTail.SiteGenerator.xproj", "{57C13842-A341-473A-9114-10C44CF3FE7F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.SiteGenerator.Test", "PPTail.SiteGenerator.Test\PPTail.SiteGenerator.Test.xproj", "{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Common.Test", "PPTail.Common.Test\PPTail.Common.Test.xproj", "{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.TagCloudStyler", "PPTail.Generator.TagCloudStyler\PPTail.Generator.TagCloudStyler.xproj", "{42023F20-F8FF-4A27-8A2A-C3CBAB890CDB}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.TagCloudStyler.Test", "PPTail.Generator.TagCloudStyler.Test\PPTail.Generator.TagCloudStyler.Test.xproj", "{A08D3181-D0C3-4CB2-B8BD-29FEF12E7B79}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Navigation", "PPTail.Generator.Navigation\PPTail.Generator.Navigation.xproj", "{A08B2636-3521-43CA-BD78-AB32BF242AB8}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Navigation.Test", "PPTail.Generator.Navigation.Test\PPTail.Generator.Navigation.Test.xproj", "{1657256C-4498-4906-A346-D954304080C3}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Archive", "PPTail.Generator.Archive\PPTail.Generator.Archive.xproj", "{B52A88C8-427A-4676-8668-C7576F531450}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Archive.Test", "PPTail.Generator.Archive.Test\PPTail.Generator.Archive.Test.xproj", "{D0B7399C-796A-4CD7-AD21-B91435982617}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Contact", "PPTail.Generator.Contact\PPTail.Generator.Contact.xproj", "{2B1889EB-DF28-44B9-9160-2E4ECDC40085}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Contact.Test", "PPTail.Generator.Contact.Test\PPTail.Generator.Contact.Test.xproj", "{30F6DD9B-A671-48D8-B674-6287BC98408C}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Output.FileSystem", "PPTail.Output.FileSystem\PPTail.Output.FileSystem.xproj", "{B1A61347-E394-425A-8A85-D46DD5F08F81}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Io", "PPTail.Io\PPTail.Io.xproj", "{F10FF903-7352-450B-9FE6-22889427C75F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Output.FileSystem.Test", "PPTail.Output.FileSystem.Test\PPTail.Output.FileSystem.Test.xproj", "{F76B8F95-FDF6-410F-9E7B-DAD26ABB8930}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Search", "PPTail.Generator.Search\PPTail.Generator.Search.xproj", "{9DB96A5F-4B5E-4493-A917-713363E26147}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Search.Test", "PPTail.Generator.Search.Test\PPTail.Generator.Search.Test.xproj", "{DF8F87DA-561E-497B-BDD0-25DDBC8809B8}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Redirect", "PPTail.Generator.Redirect\PPTail.Generator.Redirect.xproj", "{F12BFDBD-C950-4307-BEEC-2495332ACD1A}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Redirect.Test", "PPTail.Generator.Redirect.Test\PPTail.Generator.Redirect.Test.xproj", "{A87E3D7C-94B2-432C-ADD9-D908BC928B26}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Syndication", "PPTail.Generator.Syndication\PPTail.Generator.Syndication.xproj", "{82AE1167-3D1D-401D-A853-19EDED09A3E6}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Syndication.Test", "PPTail.Generator.Syndication.Test\PPTail.Generator.Syndication.Test.xproj", "{0197C544-A527-4DA4-95FB-3B3C917691E7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Output", "Output", "{43C10571-668A-4C6D-A40F-9613CAB3B21B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeneratedWebApp", "GeneratedWebApp\GeneratedWebApp.xproj", "{671F3D6C-A10F-45B9-A830-25758DBB10E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail", "PPTail\PPTail.csproj", "{399BA252-B5D3-4912-A5C2-0760F325837A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.HomePage", "PPTail.Generator.HomePage\PPTail.Generator.HomePage.xproj", "{00DDB698-C1F7-485B-94BB-2B74D5DDD0BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Common", "PPTail.Common\PPTail.Common.csproj", "{BD3009C6-BA42-4029-815D-8774ACE59C60}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.HomePage.Test", "PPTail.Generator.HomePage.Test\PPTail.Generator.HomePage.Test.xproj", "{946F55F1-4CEC-4550-BE78-98A587DECCA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.FileSystem", "PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj", "{D2412FFD-AC36-470D-BF16-E87463A22D26}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Links", "PPTail.Generator.Links\PPTail.Generator.Links.xproj", "{A90DCBB4-CC8C-46C7-98B8-D73DA2E4F664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.FileSystem.Test", "PPTail.Data.FileSystem.Test\PPTail.Data.FileSystem.Test.csproj", "{4060760D-0892-4E38-B97F-E05D8D6CED40}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Links.Test", "PPTail.Generator.Links.Test\PPTail.Generator.Links.Test.xproj", "{844800E1-67FB-4841-AA48-EBBCA67A4AB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.T4Html", "PPTail.Generator.T4Html\PPTail.Generator.T4Html.csproj", "{0CB0D4F4-B9BD-490F-B13F-8B8F21DAA85D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Template", "PPTail.Generator.Template\PPTail.Generator.Template.xproj", "{CA4B8260-9B40-4B39-B103-2FBEA4EAE15F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.T4Html.Test", "PPTail.Generator.T4Html.Test\PPTail.Generator.T4Html.Test.csproj", "{BB1DF9B4-FAE1-4EFF-B0D3-2003E6415D1E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Template.Test", "PPTail.Generator.Template.Test\PPTail.Generator.Template.Test.xproj", "{2EDA1B22-24B5-4362-B17C-10AB894C1B57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.SiteGenerator", "PPTail.SiteGenerator\PPTail.SiteGenerator.csproj", "{57C13842-A341-473A-9114-10C44CF3FE7F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Encoder", "PPTail.Generator.Encoder\PPTail.Generator.Encoder.xproj", "{66CCDABD-47E4-436C-B92A-5AA82BF9820B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.SiteGenerator.Test", "PPTail.SiteGenerator.Test\PPTail.SiteGenerator.Test.csproj", "{2E7E8BCF-3E7E-4A51-924C-D265B6CB2479}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.Encoder.Test", "PPTail.Generator.Encoder.Test\PPTail.Generator.Encoder.Test.xproj", "{9A508FD0-A18D-4194-8F39-514CE88F4CF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Common.Test", "PPTail.Common.Test\PPTail.Common.Test.csproj", "{BF653504-69E3-4CE6-9388-9AE4F01B5BF8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.ContentPage", "PPTail.Generator.ContentPage\PPTail.Generator.ContentPage.xproj", "{99A3D05F-CB84-4D6F-A2AC-73294195C956}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.TagCloudStyler", "PPTail.Generator.TagCloudStyler\PPTail.Generator.TagCloudStyler.csproj", "{42023F20-F8FF-4A27-8A2A-C3CBAB890CDB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.ContentPage.Test", "PPTail.Generator.ContentPage.Test\PPTail.Generator.ContentPage.Test.xproj", "{EED26E4B-1247-463E-AE94-BF2A39B39E80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.TagCloudStyler.Test", "PPTail.Generator.TagCloudStyler.Test\PPTail.Generator.TagCloudStyler.Test.csproj", "{A08D3181-D0C3-4CB2-B8BD-29FEF12E7B79}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Web.Syndication", "PPTail.Web.Syndication\PPTail.Web.Syndication.xproj", "{28E4131B-9D43-4F9D-851E-5B2E25DC15D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Navigation", "PPTail.Generator.Navigation\PPTail.Generator.Navigation.csproj", "{A08B2636-3521-43CA-BD78-AB32BF242AB8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Web.Permalinks", "PPTail.Web.Permalinks\PPTail.Web.Permalinks.xproj", "{6CC91593-DA69-4856-B936-C6AAA5C46E60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Navigation.Test", "PPTail.Generator.Navigation.Test\PPTail.Generator.Navigation.Test.csproj", "{1657256C-4498-4906-A346-D954304080C3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Web.Permalinks.Test", "PPTail.Web.Permalinks.Test\PPTail.Web.Permalinks.Test.xproj", "{CDDC95D1-A2B9-4882-A5DF-CD90FA48D460}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Archive", "PPTail.Generator.Archive\PPTail.Generator.Archive.csproj", "{B52A88C8-427A-4676-8668-C7576F531450}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Web.Syndication.Test", "PPTail.Web.Syndication.Test\PPTail.Web.Syndication.Test.xproj", "{20B59E42-64FC-4706-A8FE-B2FEC3FF125E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Archive.Test", "PPTail.Generator.Archive.Test\PPTail.Generator.Archive.Test.csproj", "{D0B7399C-796A-4CD7-AD21-B91435982617}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Web.PostLocator", "PPTail.Web.PostLocator\PPTail.Web.PostLocator.xproj", "{207710AD-9D3A-436E-A9E1-2AD6A7F3E52F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Contact", "PPTail.Generator.Contact\PPTail.Generator.Contact.csproj", "{2B1889EB-DF28-44B9-9160-2E4ECDC40085}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Web.PostLocator.Test", "PPTail.Web.PostLocator.Test\PPTail.Web.PostLocator.Test.xproj", "{47D53F75-D8CB-4604-B87A-234840CBDDCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Contact.Test", "PPTail.Generator.Contact.Test\PPTail.Generator.Contact.Test.csproj", "{30F6DD9B-A671-48D8-B674-6287BC98408C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Generator.PostLocator", "PPTail.Generator.PostLocator\PPTail.Generator.PostLocator.xproj", "{8382B941-4C21-4A7E-A372-14C3F9253218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Output.FileSystem", "PPTail.Output.FileSystem\PPTail.Output.FileSystem.csproj", "{B1A61347-E394-425A-8A85-D46DD5F08F81}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.Ef", "PPTail.Data.Ef\PPTail.Data.Ef.xproj", "{98D7888B-9D3A-4A92-ABBF-9F9AB8B1FD37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Io", "PPTail.Io\PPTail.Io.csproj", "{F10FF903-7352-450B-9FE6-22889427C75F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PPTail.Data.Ef.Test", "PPTail.Data.Ef.Test\PPTail.Data.Ef.Test.xproj", "{03DE8057-76C6-4558-8E50-9E13C32CA310}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Output.FileSystem.Test", "PPTail.Output.FileSystem.Test\PPTail.Output.FileSystem.Test.csproj", "{F76B8F95-FDF6-410F-9E7B-DAD26ABB8930}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Search", "PPTail.Generator.Search\PPTail.Generator.Search.csproj", "{9DB96A5F-4B5E-4493-A917-713363E26147}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Search.Test", "PPTail.Generator.Search.Test\PPTail.Generator.Search.Test.csproj", "{DF8F87DA-561E-497B-BDD0-25DDBC8809B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Redirect", "PPTail.Generator.Redirect\PPTail.Generator.Redirect.csproj", "{F12BFDBD-C950-4307-BEEC-2495332ACD1A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Redirect.Test", "PPTail.Generator.Redirect.Test\PPTail.Generator.Redirect.Test.csproj", "{A87E3D7C-94B2-432C-ADD9-D908BC928B26}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Syndication", "PPTail.Generator.Syndication\PPTail.Generator.Syndication.csproj", "{82AE1167-3D1D-401D-A853-19EDED09A3E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Syndication.Test", "PPTail.Generator.Syndication.Test\PPTail.Generator.Syndication.Test.csproj", "{0197C544-A527-4DA4-95FB-3B3C917691E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratedWebApp", "GeneratedWebApp\GeneratedWebApp.csproj", "{671F3D6C-A10F-45B9-A830-25758DBB10E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.HomePage", "PPTail.Generator.HomePage\PPTail.Generator.HomePage.csproj", "{00DDB698-C1F7-485B-94BB-2B74D5DDD0BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.HomePage.Test", "PPTail.Generator.HomePage.Test\PPTail.Generator.HomePage.Test.csproj", "{946F55F1-4CEC-4550-BE78-98A587DECCA6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Links", "PPTail.Generator.Links\PPTail.Generator.Links.csproj", "{A90DCBB4-CC8C-46C7-98B8-D73DA2E4F664}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Links.Test", "PPTail.Generator.Links.Test\PPTail.Generator.Links.Test.csproj", "{844800E1-67FB-4841-AA48-EBBCA67A4AB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Template", "PPTail.Generator.Template\PPTail.Generator.Template.csproj", "{CA4B8260-9B40-4B39-B103-2FBEA4EAE15F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Template.Test", "PPTail.Generator.Template.Test\PPTail.Generator.Template.Test.csproj", "{2EDA1B22-24B5-4362-B17C-10AB894C1B57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Encoder", "PPTail.Generator.Encoder\PPTail.Generator.Encoder.csproj", "{66CCDABD-47E4-436C-B92A-5AA82BF9820B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.Encoder.Test", "PPTail.Generator.Encoder.Test\PPTail.Generator.Encoder.Test.csproj", "{9A508FD0-A18D-4194-8F39-514CE88F4CF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.ContentPage", "PPTail.Generator.ContentPage\PPTail.Generator.ContentPage.csproj", "{99A3D05F-CB84-4D6F-A2AC-73294195C956}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.ContentPage.Test", "PPTail.Generator.ContentPage.Test\PPTail.Generator.ContentPage.Test.csproj", "{EED26E4B-1247-463E-AE94-BF2A39B39E80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Web.Syndication", "PPTail.Web.Syndication\PPTail.Web.Syndication.csproj", "{28E4131B-9D43-4F9D-851E-5B2E25DC15D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Web.Permalinks", "PPTail.Web.Permalinks\PPTail.Web.Permalinks.csproj", "{6CC91593-DA69-4856-B936-C6AAA5C46E60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Web.Permalinks.Test", "PPTail.Web.Permalinks.Test\PPTail.Web.Permalinks.Test.csproj", "{CDDC95D1-A2B9-4882-A5DF-CD90FA48D460}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Web.Syndication.Test", "PPTail.Web.Syndication.Test\PPTail.Web.Syndication.Test.csproj", "{20B59E42-64FC-4706-A8FE-B2FEC3FF125E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Web.PostLocator", "PPTail.Web.PostLocator\PPTail.Web.PostLocator.csproj", "{207710AD-9D3A-436E-A9E1-2AD6A7F3E52F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Web.PostLocator.Test", "PPTail.Web.PostLocator.Test\PPTail.Web.PostLocator.Test.csproj", "{47D53F75-D8CB-4604-B87A-234840CBDDCC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Generator.PostLocator", "PPTail.Generator.PostLocator\PPTail.Generator.PostLocator.csproj", "{8382B941-4C21-4A7E-A372-14C3F9253218}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Ef", "PPTail.Data.Ef\PPTail.Data.Ef.csproj", "{98D7888B-9D3A-4A92-ABBF-9F9AB8B1FD37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Ef.Test", "PPTail.Data.Ef.Test\PPTail.Data.Ef.Test.csproj", "{03DE8057-76C6-4558-8E50-9E13C32CA310}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
