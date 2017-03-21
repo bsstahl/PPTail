@@ -18,6 +18,7 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void NotThrowAnExceptionIfAllDependenciesAreProvided()
         {
+            // TODO: Fix intermittent error
             var target = (null as IPageGenerator).Create();
         }
 

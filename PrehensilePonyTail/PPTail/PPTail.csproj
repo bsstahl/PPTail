@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <AssemblyName>PPTail</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>PPTail</PackageId>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win7-x64;win7-x86</RuntimeIdentifiers>
+    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+    <ProjectReference Include="..\PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Archive\PPTail.Generator.Archive.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Contact\PPTail.Generator.Contact.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.ContentPage\PPTail.Generator.ContentPage.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Encoder\PPTail.Generator.Encoder.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.HomePage\PPTail.Generator.HomePage.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Links\PPTail.Generator.Links.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Navigation\PPTail.Generator.Navigation.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Redirect\PPTail.Generator.Redirect.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Search\PPTail.Generator.Search.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Syndication\PPTail.Generator.Syndication.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.T4Html\PPTail.Generator.T4Html.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.TagCloudStyler\PPTail.Generator.TagCloudStyler.csproj" />
+    <ProjectReference Include="..\PPTail.Generator.Template\PPTail.Generator.Template.csproj" />
+    <ProjectReference Include="..\PPTail.Io\PPTail.Io.csproj" />
+    <ProjectReference Include="..\PPTail.Output.FileSystem\PPTail.Output.FileSystem.csproj" />
+    <ProjectReference Include="..\PPTail.SiteGenerator\PPTail.SiteGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>
