@@ -7,11 +7,11 @@
         "sourceDataPath": "C:\\SourceDataLocation"
       }
     },
-    "mobile-dev-box (CI)": {
+    "mobile-dev-box (CogIn)": {
       "commandName": "Project",
       "environmentVariables": {
         "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "E:\\CognitiveInheritance"
+        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\CognitiveInheritanceDasBlog"
       }
     },
     "mobile-dev-box (Political)": {
