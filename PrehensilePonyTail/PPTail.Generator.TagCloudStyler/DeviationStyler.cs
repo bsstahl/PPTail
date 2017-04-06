@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PPTail.Common.Extensions;
 
 namespace PPTail.Generator.TagCloudStyler
 {
@@ -13,7 +14,7 @@ namespace PPTail.Generator.TagCloudStyler
 
         public IEnumerable<Tuple<string, string>> GetStyles(IEnumerable<string> tags)
         {
-            var tagCounts = GetTagCounts(tags);
+            var tagCounts = tags.GetTagCounts();
             var values = tagCounts.Select(t => t.Item2);
             var average = tagCounts.Average(t => t.Item2);
             var sum = values.Sum(d => (d - average) * (d - average));
@@ -47,21 +48,5 @@ namespace PPTail.Generator.TagCloudStyler
             return results;
         }
 
-        private static IEnumerable<Tuple<string, int>> GetTagCounts(IEnumerable<string> tags)
-        {
-            var tagCounts = new List<Tuple<string, int>>();
-            foreach (var tag in tags)
-            {
-                int startingCount = 0;
-                var tagCount = tagCounts.SingleOrDefault(t => t.Item1 == tag);
-                if (tagCount != default(Tuple<string, int>))
-                {
-                    tagCounts.Remove(tagCount);
-                    startingCount = tagCount.Item2;
-                }
-                tagCounts.Add(new Tuple<string, int>(tag, startingCount + 1));
-            }
-            return tagCounts;
-        }
     }
 }

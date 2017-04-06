@@ -9,6 +9,7 @@ namespace PPTail.Enumerations
     {
         Unknown,
         TextBox,
+        TagList,
         Tag_cloud
     }
 }
