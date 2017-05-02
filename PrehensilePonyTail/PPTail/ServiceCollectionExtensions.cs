@@ -18,24 +18,24 @@ namespace PPTail
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IEnumerable<Template>>(templates);
 
-            container.AddSingleton<Interfaces.IFile>(c => new PPTail.Io.File());
-            container.AddSingleton<Interfaces.IDirectory>(c => new PPTail.Io.Directory());
-            container.AddSingleton<Interfaces.IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
-            container.AddSingleton<Interfaces.ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
-            container.AddSingleton<Interfaces.INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
-            container.AddSingleton<Interfaces.IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
-            container.AddSingleton<Interfaces.IContactProvider>(c => new PPTail.Generator.Contact.TemplateProvider(c));
-            container.AddSingleton<Interfaces.IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
-            container.AddSingleton<Interfaces.IContentItemPageGenerator>(c => new PPTail.Generator.ContentPage.PageGenerator(c));
-            container.AddSingleton<Interfaces.IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
-            container.AddSingleton<Interfaces.ISearchProvider>(c => new PPTail.Generator.Search.PageGenerator(c));
-            container.AddSingleton<Interfaces.IRedirectProvider>(c => new PPTail.Generator.Redirect.RedirectProvider(c));
-            container.AddSingleton<Interfaces.ISyndicationProvider>(c => new PPTail.Generator.Syndication.SyndicationProvider(c));
-            container.AddSingleton<Interfaces.IHomePageGenerator>(c => new PPTail.Generator.HomePage.HomePageGenerator(c));
-            container.AddSingleton<Interfaces.ILinkProvider>(c => new PPTail.Generator.Links.LinkProvider(c));
-            container.AddSingleton<Interfaces.ITemplateProcessor>(c => new PPTail.Generator.Template.TemplateProcessor(c));
-            container.AddSingleton<Interfaces.IContentEncoder>(c => new PPTail.Generator.Encoder.ContentEncoder(c));
-            container.AddSingleton<SiteGenerator.Builder>(c => new PPTail.SiteGenerator.Builder(c));
+            container.AddSingleton<IFile>(c => new PPTail.Io.File());
+            container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
+            container.AddSingleton<IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
+            container.AddSingleton<ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
+            container.AddSingleton<INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
+            container.AddSingleton<IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
+            container.AddSingleton<IContactProvider>(c => new PPTail.Generator.Contact.TemplateProvider(c));
+            container.AddSingleton<IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
+            container.AddSingleton<IContentItemPageGenerator>(c => new PPTail.Generator.ContentPage.PageGenerator(c));
+            container.AddSingleton<IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
+            container.AddSingleton<ISearchProvider>(c => new PPTail.Generator.Search.PageGenerator(c));
+            container.AddSingleton<IRedirectProvider>(c => new PPTail.Generator.Redirect.RedirectProvider(c));
+            container.AddSingleton<ISyndicationProvider>(c => new PPTail.Generator.Syndication.SyndicationProvider(c));
+            container.AddSingleton<IHomePageGenerator>(c => new PPTail.Generator.HomePage.HomePageGenerator(c));
+            container.AddSingleton<ILinkProvider>(c => new PPTail.Generator.Links.LinkProvider(c));
+            container.AddSingleton<ITemplateProcessor>(c => new PPTail.Generator.Template.TemplateProcessor(c));
+            container.AddSingleton<IContentEncoder>(c => new PPTail.Generator.Encoder.ContentEncoder(c));
+            container.AddSingleton<ISiteBuilder>(c => new PPTail.SiteGenerator.Builder(c));
 
             var contentRepo = container.BuildServiceProvider().GetService<Interfaces.IContentRepository>();
 

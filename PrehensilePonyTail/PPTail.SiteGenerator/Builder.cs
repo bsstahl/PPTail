@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace PPTail.SiteGenerator
 {
-    public class Builder
+    public class Builder : ISiteBuilder
     {
         const string _additionalFilePathsSettingName = "additionalFilePaths";
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
@@ -40,6 +40,7 @@ namespace PPTail.SiteGenerator
         }
 
         private IServiceProvider ServiceProvider { get { return _serviceProvider; } }
+
 
         public IEnumerable<SiteFile> Build()
         {
@@ -178,7 +179,7 @@ namespace PPTail.SiteGenerator
                     {
                         RelativeFilePath = $"Pages/{page.Slug}.{settings.OutputFileExtension}",
                         SourceTemplateType = contentPageTemplateType,
-                        Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, page, contentPageTemplateType, "..",false)
+                        Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, page, contentPageTemplateType, "..", false)
                     });
                 }
             }

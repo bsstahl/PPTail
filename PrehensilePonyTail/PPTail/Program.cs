@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using PPTail.Interfaces;
@@ -20,7 +18,7 @@ namespace PPTail
 
             // TODO: Move data load here -- outside of the build process
 
-            var siteBuilder = serviceProvider.GetService<PPTail.SiteGenerator.Builder>();
+            var siteBuilder = serviceProvider.GetService<ISiteBuilder>();
             var sitePages = siteBuilder.Build();
 
             var outputRepo = serviceProvider.GetService<Interfaces.IOutputRepository>();
