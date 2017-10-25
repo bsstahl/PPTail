@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PPTail.Common.Extensions;
+using PPTail.Extensions;
 
 namespace PPTail.Generator.TagCloudStyler
 {

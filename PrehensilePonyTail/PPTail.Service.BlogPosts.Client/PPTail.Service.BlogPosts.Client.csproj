@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="106.0.0-alpha0284" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+  </ItemGroup>
+
+</Project>
