@@ -25,7 +25,6 @@ namespace GeneratedWebApp
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-            app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseDasBlogSyndication();
             app.UseDasBlogPermalinks();

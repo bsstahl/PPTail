@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using PPTail.Interfaces;
+using System;
 using PPTail.Entities;
-using PPTail.Interfaces;
+using System.Collections.Generic;
 
-namespace PPTail.Service.BlogPosts
+namespace PPTail.Service.BlogPosts.Orchestration
 {
-    [Route("")]
-    public class ValuesController : Controller
+    public class Provider : IPostPageGenerator
     {
-        // I'm alive
-        [HttpGet]
-        public bool Get()
+        IContentEncoder _contentEncoder;
+        IContentItemPageGenerator _contentItemPageGen;
+        IRedirectProvider _redirectProvider;
+
+        public Provider(IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen, IRedirectProvider redirectProvider)
         {
-            return true;
+            _contentEncoder = contentEncoder;
+            _contentItemPageGen = contentItemPageGen;
+            _redirectProvider = redirectProvider;
         }
 
-        // Submit a blog post for page generation
-        [HttpPost]
-        public IEnumerable<SiteFile> Post(IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen, IRedirectProvider redirectProvider, [FromBody]ContentPageSource pageSource)
+        public IEnumerable<SiteFile> GetPostPages(ContentPageSource pageSource)
         {
             if (pageSource == null)
                 throw new ArgumentNullException(nameof(pageSource));
@@ -37,7 +35,7 @@ namespace PPTail.Service.BlogPosts
             var settings = pageSource.Settings;
 
             if (string.IsNullOrWhiteSpace(post.Slug))
-                post.Slug = contentEncoder.UrlEncode(post.Title);
+                post.Slug = _contentEncoder.UrlEncode(post.Title);
 
             // Add the post page
             string postFileName = $"{post.Slug}.{settings.OutputFileExtension}";
@@ -47,22 +45,21 @@ namespace PPTail.Service.BlogPosts
             {
                 RelativeFilePath = postFilePath,
                 SourceTemplateType = postPageTemplateType,
-                Content = contentItemPageGen.Generate(pageSource.SidebarContent, pageSource.NavigationContent, post, postPageTemplateType, "..", false)
+                Content = _contentItemPageGen.Generate(pageSource.SidebarContent, pageSource.NavigationContent, post, postPageTemplateType, "..", false)
             });
 
             // Add the permalink page
-            string permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
+            string permalinkFileName = $"{_contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
             string permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
             string redirectFilePath = System.IO.Path.Combine("..", postFilePath);
             result.Add(new SiteFile()
             {
                 RelativeFilePath = permalinkFilePath,
                 SourceTemplateType = Enumerations.TemplateType.Redirect,
-                Content = redirectProvider.GenerateRedirect(redirectFilePath)
+                Content = _redirectProvider.GenerateRedirect(redirectFilePath)
             });
 
             return result;
         }
-
     }
 }

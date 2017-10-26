@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+    <ProjectReference Include="..\PPTail.Service.BlogPosts.Orchestration\PPTail.Service.BlogPosts.Orchestration.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>PPTail.Generator.T4Html</AssemblyName>
-    <PackageId>PPTail.Generator.T4Html</PackageId>
+    <AssemblyName>PPTail.Service.BlogPosts.Orchestration</AssemblyName>
+    <PackageId>PPTail.Service.BlogPosts.Orchestration</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

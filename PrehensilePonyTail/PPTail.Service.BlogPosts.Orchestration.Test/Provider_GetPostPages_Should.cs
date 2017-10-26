@@ -4,9 +4,9 @@ using PPTail.Interfaces;
 using PPTail.Entities;
 using Moq;
 
-namespace PPTail.Service.BlogPosts.Test
+namespace PPTail.Service.BlogPosts.Orchestration.Test
 {
-    public class ValuesController_Post_Should
+    public class Provider_GetPostPages_Should
     {
         [Fact]
         public void NotThrowANullReferenceException()
@@ -16,11 +16,11 @@ namespace PPTail.Service.BlogPosts.Test
             IRedirectProvider redirectProvider = null;
             ContentPageSource pageSource = null;
 
-            var controller = new PPTail.Service.BlogPosts.ValuesController();
+            var controller = new PPTail.Service.BlogPosts.Orchestration.Provider(contentEncoder, pageGen, redirectProvider);
 
             try
             {
-                var actual = controller.Post(contentEncoder, pageGen, redirectProvider, pageSource);
+                var actual = controller.GetPostPages(pageSource);
             }
             catch (NullReferenceException)
             {
@@ -39,8 +39,8 @@ namespace PPTail.Service.BlogPosts.Test
             IRedirectProvider redirectProvider = Mock.Of<IRedirectProvider>();
             ContentPageSource pageSource = null;
 
-            var controller = new PPTail.Service.BlogPosts.ValuesController();
-            Assert.Throws<ArgumentNullException>(() => controller.Post(contentEncoder, pageGen, redirectProvider, pageSource));
+            var controller = new PPTail.Service.BlogPosts.Orchestration.Provider(contentEncoder, pageGen, redirectProvider);
+            Assert.Throws<ArgumentNullException>(() => controller.GetPostPages(pageSource));
         }
 
         [Fact]
@@ -54,8 +54,8 @@ namespace PPTail.Service.BlogPosts.Test
             pageSource.ContentItem = null;
             pageSource.Settings = Mock.Of<ISettings>();
 
-            var controller = new PPTail.Service.BlogPosts.ValuesController();
-            Assert.Throws<ArgumentNullException>(() => controller.Post(contentEncoder, pageGen, redirectProvider, pageSource));
+            var controller = new PPTail.Service.BlogPosts.Orchestration.Provider(contentEncoder, pageGen, redirectProvider);
+            Assert.Throws<ArgumentNullException>(() => controller.GetPostPages(pageSource));
         }
 
         [Fact]
@@ -69,8 +69,8 @@ namespace PPTail.Service.BlogPosts.Test
             pageSource.ContentItem = Mock.Of<ContentItem>();
             pageSource.Settings = null;
 
-            var controller = new PPTail.Service.BlogPosts.ValuesController();
-            Assert.Throws<ArgumentNullException>(() => controller.Post(contentEncoder, pageGen, redirectProvider, pageSource));
+            var controller = new PPTail.Service.BlogPosts.Orchestration.Provider(contentEncoder, pageGen, redirectProvider);
+            Assert.Throws<ArgumentNullException>(() => controller.GetPostPages(pageSource));
         }
 
         [Fact]
@@ -90,8 +90,8 @@ namespace PPTail.Service.BlogPosts.Test
             mockContentEncoder.Setup(e => e.UrlEncode(pageSource.ContentItem.Title)).Verifiable();
             var contentEncoder = mockContentEncoder.Object;
 
-            var controller = new PPTail.Service.BlogPosts.ValuesController();
-            var actual = controller.Post(contentEncoder, pageGen, redirectProvider, pageSource);
+            var controller = new PPTail.Service.BlogPosts.Orchestration.Provider(contentEncoder, pageGen, redirectProvider);
+            var actual = controller.GetPostPages(pageSource);
 
             mockContentEncoder.VerifyAll();
         }

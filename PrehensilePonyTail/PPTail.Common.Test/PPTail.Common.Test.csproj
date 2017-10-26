@@ -1,13 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
-    <DebugType>portable</DebugType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>PPTail.Common.Test</AssemblyName>
     <PackageId>PPTail.Common.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win7-x64;win7-x86</RuntimeIdentifiers>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.4;portable-net461+win10</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -18,14 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="Moq" Version="4.7.142" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
-    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit" Version="2.3.0" />
     <PackageReference Include="TestHelperExtensions" Version="1.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.0" />
-    <PackageReference Include="Moq" Version="4.6.38-alpha" />
-    <PackageReference Include="Microsoft.CodeCoverage" Version="1.0.2" />
+    <PackageReference Include="Microsoft.CodeCoverage" Version="1.0.3" />
+    <PackageReference Include="xunit.runner.console" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
