@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}"
 EndProject
@@ -124,6 +124,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Service.BlogPosts.Orchestration", "PPTail.Service.BlogPosts.Orchestration\PPTail.Service.BlogPosts.Orchestration.csproj", "{4F210898-7633-4763-AA2D-759941867FDA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Service.BlogPosts.Orchestration.Test", "PPTail.Service.BlogPosts.Orchestration.Test\PPTail.Service.BlogPosts.Orchestration.Test.csproj", "{73DDFB41-C540-4441-B805-9A2C92E4EE68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Data.FileSystem.Wordpress", "PPTail.Data.FileSystem.Wordpress\PPTail.Data.FileSystem.Wordpress.csproj", "{0731C8FA-E546-4E97-878C-50F00C826286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Data.FileSystem.Wordpress.Test", "PPTail.Data.FileSystem.Wordpress.Test\PPTail.Data.FileSystem.Wordpress.Test.csproj", "{043CF3CC-051A-42EC-B96E-31B12642D17F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -327,6 +331,14 @@ Global
 		{73DDFB41-C540-4441-B805-9A2C92E4EE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73DDFB41-C540-4441-B805-9A2C92E4EE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73DDFB41-C540-4441-B805-9A2C92E4EE68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0731C8FA-E546-4E97-878C-50F00C826286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0731C8FA-E546-4E97-878C-50F00C826286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0731C8FA-E546-4E97-878C-50F00C826286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0731C8FA-E546-4E97-878C-50F00C826286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{043CF3CC-051A-42EC-B96E-31B12642D17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{043CF3CC-051A-42EC-B96E-31B12642D17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{043CF3CC-051A-42EC-B96E-31B12642D17F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{043CF3CC-051A-42EC-B96E-31B12642D17F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -380,6 +392,8 @@ Global
 		{3A27C4F9-2FB4-4955-A1C2-8A0B97EDB320} = {0F7CE5E2-2EFD-436D-99D8-964FF10EA936}
 		{4F210898-7633-4763-AA2D-759941867FDA} = {0F7CE5E2-2EFD-436D-99D8-964FF10EA936}
 		{73DDFB41-C540-4441-B805-9A2C92E4EE68} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{0731C8FA-E546-4E97-878C-50F00C826286} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{043CF3CC-051A-42EC-B96E-31B12642D17F} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {752DEDD1-AA28-495C-AE07-3AD022D6D8D0}
