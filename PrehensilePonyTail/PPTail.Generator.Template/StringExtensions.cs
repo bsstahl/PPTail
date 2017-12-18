@@ -94,8 +94,9 @@ namespace PPTail.Generator.Template
         internal static string TagLinkList(this IEnumerable<string> tags, IServiceProvider serviceProvider, string pathToRoot, string cssClass)
         {
             var results = string.Empty;
-            foreach (var tag in tags)
-                results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
+            if (tags != null)
+                foreach (var tag in tags)
+                    results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
             return results;
         }
 

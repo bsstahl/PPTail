@@ -21,6 +21,13 @@
         "sourceDataPath": "E:\\PoliticalSite\\SiteSource"
       }
     },
+    "mobile-dev-box (AZGC)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "..\\GeneratedWebApp\\wwwroot",
+        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data"
+      }
+    },
     "win10-shared-box": {
       "commandName": "Project",
       "environmentVariables": {

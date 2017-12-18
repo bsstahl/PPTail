@@ -12,15 +12,19 @@ namespace PPTail
     {
         public static IServiceCollection Create(this IServiceCollection ignore, ISettings settings, IEnumerable<Template> templates)
         {
+            // Configure Dependencies
             IServiceCollection container = new ServiceCollection();
 
-            // Configure Dependencies
+
+            // Data source 
+            // container.AddSingleton<IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
+            container.AddSingleton<IContentRepository>(c => new PPTail.Data.FileSystem.Wordpress.Repository(c));
+
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IEnumerable<Template>>(templates);
 
             container.AddSingleton<IFile>(c => new PPTail.Io.File());
             container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
-            container.AddSingleton<IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
             container.AddSingleton<ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
             container.AddSingleton<IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
