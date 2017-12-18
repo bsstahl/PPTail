@@ -8,10 +8,14 @@ namespace PPTail
 {
     public class Program
     {
+        const string _templatePathSettingName = "templatePath";
+
         public static void Main(string[] args)
         {
             var settings = (null as ISettings).Create();
-            var templates = (null as IEnumerable<Template>).Create();
+
+            string templatePath = settings.ExtendedSettings.Get(_templatePathSettingName) ?? "..";
+            var templates = (null as IEnumerable<Template>).Create(templatePath);
 
             var container = (null as IServiceCollection).Create(settings, templates);
             var serviceProvider = container.BuildServiceProvider();

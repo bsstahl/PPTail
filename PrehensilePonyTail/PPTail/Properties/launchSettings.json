@@ -25,7 +25,8 @@
       "commandName": "Project",
       "environmentVariables": {
         "outputPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\SourceData"
+        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\SourceData",
+        "templatePath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\Templates"
       }
     },
     "win10-shared-box": {
