@@ -24,8 +24,8 @@
     "mobile-dev-box (AZGC)": {
       "commandName": "Project",
       "environmentVariables": {
-        "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data"
+        "outputPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\GeneratedWebApp\\wwwroot",
+        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\SourceData"
       }
     },
     "win10-shared-box": {
