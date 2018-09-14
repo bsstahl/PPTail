@@ -38,7 +38,7 @@ namespace PPTail.Data.Ef.Test
 
             var target = new Repository(serviceProvider);
             var actual = target.GetAllPages();
-            Assert.Equal(1, actual.Count());
+            Assert.Single(actual);
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(0, actualEntity.Tags.Count());
+            Assert.Empty(actualEntity.Tags);
         }
 
         [Fact]
@@ -199,7 +199,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(0, actualEntity.Tags.Count());
+            Assert.Empty(actualEntity.Tags);
         }
 
         [Fact]
@@ -214,7 +214,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(0, actualEntity.Tags.Count());
+            Assert.Empty(actualEntity.Tags);
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(0, actualEntity.CategoryIds.Count());
+            Assert.Empty(actualEntity.CategoryIds);
         }
 
         [Fact]
@@ -267,7 +267,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(0, actualEntity.CategoryIds.Count());
+            Assert.Empty(actualEntity.CategoryIds);
         }
 
         [Fact]
@@ -282,7 +282,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(0, actualEntity.CategoryIds.Count());
+            Assert.Empty(actualEntity.CategoryIds);
         }
 
         [Fact]
@@ -297,7 +297,7 @@ namespace PPTail.Data.Ef.Test
             var target = new Repository(serviceProvider);
             var actualEntity = target.GetAllPages().Single();
 
-            Assert.Equal(1, actualEntity.CategoryIds.Count());
+            Assert.Single(actualEntity.CategoryIds);
         }
     }
 }
