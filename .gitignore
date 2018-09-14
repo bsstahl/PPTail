@@ -250,6 +250,11 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Cake Tools
+/Tools/
+
+# PPTail Generated Web App
 /PrehensilePonyTail/GeneratedWebApp/Properties
 /PrehensilePonyTail/GeneratedWebApp/project.json
 /PrehensilePonyTail/GeneratedWebApp/Startup.cs

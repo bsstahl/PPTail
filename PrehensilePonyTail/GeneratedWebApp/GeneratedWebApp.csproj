@@ -6,7 +6,6 @@
     <AssemblyName>GeneratedWebApp</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>GeneratedWebApp</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>

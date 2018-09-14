@@ -943,6 +943,7 @@ namespace PPTail.Generator.Template.Test
             linkProvider.VerifyAll();
         }
 
+        [Fact]
         public void ReturnsTheOutputOfTheLinkProviderWithinEachCategoryPageLink()
         {
             string pageTemplateContent = "-----{Content}-----";
