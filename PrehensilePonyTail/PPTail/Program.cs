@@ -11,7 +11,7 @@ namespace PPTail
         public static void Main(string[] args)
         {
             var settings = (null as ISettings).Create();
-            var templates = (null as IEnumerable<Template>).Create();
+            var templates = (null as IEnumerable<Template>).Create("..\\..\\..\\..");
 
             var container = (null as IServiceCollection).Create(settings, templates);
             var serviceProvider = container.BuildServiceProvider();

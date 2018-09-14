@@ -1,21 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>GeneratedWebApp</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>GeneratedWebApp</PackageId>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PPTail.Generator.PostLocator\PPTail.Generator.PostLocator.csproj" />
     <ProjectReference Include="..\PPTail.Web.Syndication\PPTail.Web.Syndication.csproj" />
     <ProjectReference Include="..\PPTail.Web.Permalinks\PPTail.Web.Permalinks.csproj" />
     <ProjectReference Include="..\PPTail.Web.PostLocator\PPTail.Web.PostLocator.csproj" />
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
-    <ProjectReference Include="..\PPTail.Generator.PostLocator\PPTail.Generator.PostLocator.csproj" />
     <ProjectReference Include="..\PPTail.Io\PPTail.Io.csproj" />
   </ItemGroup>
 

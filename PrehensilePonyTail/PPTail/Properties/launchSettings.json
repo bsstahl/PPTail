@@ -41,6 +41,20 @@
         "outputPath": "..\\GeneratedWebApp\\wwwroot",
         "sourceDataPath": "C:\\Users\\bstahl\\Documents\\CognitiveInheritanceData"
       }
+    },
+    "win10-main-laptop (CogInt)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "..\\GeneratedWebApp\\wwwroot",
+        "sourceDataPath": "C:\\Users\\barry\\source\\repos\\CognitiveInheritanceDasBlog"
+      }
+    },
+    "win10-main-laptop (Political)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "outputPath": "..\\..\\..\\..\\..\\..\\LiquidNixonPPTail\\wwwroot",
+        "sourceDataPath": "C:\\Users\\barry\\source\\repos\\LiquidNixonDasBlog"
+      }
     }
   }
 }
