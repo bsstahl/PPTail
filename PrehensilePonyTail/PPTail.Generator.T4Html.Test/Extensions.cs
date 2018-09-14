@@ -15,9 +15,9 @@ namespace PPTail.Generator.T4Html.Test
 {
     public static class Extensions
     {
-        const string _contentPageTemplatePath = @"..\ContentPage.template.html";
-        const string _postPageTemplatePath = @"..\PostPage.template.html";
-        const string _styleTemplatePath = @"..\Style.template.css";
+        const string _contentPageTemplatePath = @"..\..\..\..\ContentPage.template.html";
+        const string _postPageTemplatePath = @"..\..\..\..\PostPage.template.html";
+        const string _styleTemplatePath = @"..\..\..\..\Style.template.css";
         const string _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
 
         public static IPageGenerator Create(this IPageGenerator ignore)
