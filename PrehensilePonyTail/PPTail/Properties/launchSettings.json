@@ -2,59 +2,7 @@
   "profiles": {
     "PPTail": {
       "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "C:\\OutputDataLocation",
-        "sourceDataPath": "C:\\SourceDataLocation"
-      }
-    },
-    "mobile-dev-box (CogIn)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\CognitiveInheritanceDasBlog"
-      }
-    },
-    "mobile-dev-box (Political)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "E:\\PoliticalSite\\GeneratedWebSite",
-        "sourceDataPath": "E:\\PoliticalSite\\SiteSource"
-      }
-    },
-    "win10-shared-box": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\bsstahl\\Documents\\CognitiveInheritance"
-      }
-    },
-    "win10Home-Demo-box": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\barry\\Source\\Repos\\CognitiveInheritanceDasBlog"
-      }
-    },
-    "win7-dev-box": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\bstahl\\Documents\\CognitiveInheritanceData"
-      }
-    },
-    "win10-main-laptop (CogInt)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "..\\GeneratedWebApp\\wwwroot",
-        "sourceDataPath": "C:\\Users\\barry\\source\\repos\\CognitiveInheritanceDasBlog"
-      }
-    },
-    "win10-main-laptop (Political)": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "outputPath": "..\\..\\..\\..\\..\\..\\LiquidNixonPPTail\\wwwroot",
-        "sourceDataPath": "C:\\Users\\barry\\source\\repos\\LiquidNixonDasBlog"
-      }
+      "commandLineArgs": "C:\\SourceDataLocation C:\\OutputDataLocation"
     }
   }
 }

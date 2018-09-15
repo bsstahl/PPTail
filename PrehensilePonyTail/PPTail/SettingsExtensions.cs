@@ -17,11 +17,8 @@ namespace PPTail
         const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
 
-        public static ISettings Create(this ISettings ignore)
+        public static ISettings Create(this ISettings ignore, string sourceDataPath, string outputPath)
         {
-            const string _sourceDataPathSettingName = "sourceDataPath";
-            const string _outputPathSettingName = "outputPath";
-
             string outputFileExtension = "html";
             string dateFormatSpecifier = "yyyy-MM-dd";
             string dateTimeFormatSpecifier = "yyyy-MM-dd H:mm UTC";
@@ -30,11 +27,6 @@ namespace PPTail
 
             bool createDasBlogSyndicationCompatibilityFile = true;
             bool createDasBlogPostsCompatibilityFile = true;
-
-            var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
-
-            string sourceDataPath = config[_sourceDataPathSettingName];
-            string outputPath = config[_outputPathSettingName];
 
             return (null as ISettings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
 

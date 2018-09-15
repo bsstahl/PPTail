@@ -10,7 +10,11 @@ namespace PPTail
     {
         public static void Main(string[] args)
         {
-            var settings = (null as ISettings).Create();
+            //TODO: Harden this
+            var sourceDataPath = args[0];
+            var outputPath = args[1];
+
+            var settings = (null as ISettings).Create(sourceDataPath, outputPath);
             var templates = (null as IEnumerable<Template>).Create("..\\..\\..\\..");
 
             var container = (null as IServiceCollection).Create(settings, templates);
