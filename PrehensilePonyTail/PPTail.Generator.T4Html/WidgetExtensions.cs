@@ -58,7 +58,7 @@ namespace PPTail.Generator.T4Html
             foreach (var style in styles)
             {
                 string title = contentEncoder.UrlEncode(style.Item1);
-                string url = linkProvider.GetUrl(pathToRoot, "search", title);
+                string url = linkProvider.GetUrl(pathToRoot, "Search", title);
                 results += $"<li><a title=\"Tag: {title}\" class=\"{style.Item2}\" href=\"{url}\">{title}</a></li> ";
             }
 

@@ -145,7 +145,7 @@ namespace PPTail.Generator.T4Html.Test
             var tagName = posts.Single().Tags.Single();
 
             var linkProvider = new Mock<ILinkProvider>();
-            linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tagName)).Verifiable();
+            linkProvider.Setup(l => l.GetUrl(pathToRoot, "Search", tagName)).Verifiable();
 
             var contentEncoder = new Mock<IContentEncoder>();
             Func<string, string> valueFunction = p => p;
@@ -178,7 +178,7 @@ namespace PPTail.Generator.T4Html.Test
             contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
 
             var linkProvider = new Mock<ILinkProvider>();
-            linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tagName)).Returns($"http_{tagName}");
+            linkProvider.Setup(l => l.GetUrl(pathToRoot, "Search", tagName)).Returns($"http_{tagName}");
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);

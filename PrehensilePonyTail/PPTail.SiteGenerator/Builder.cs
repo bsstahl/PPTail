@@ -67,7 +67,7 @@ namespace PPTail.SiteGenerator
             var widgets = contentRepo.GetAllWidgets();
 
             // Create Sidebar Content
-            var rootLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
+            var rootLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "./");
             var childLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "../");
 
             // Create navbars
