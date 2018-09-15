@@ -836,7 +836,39 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void PassTheCorrectRedirectToUrlForEachPostToTheRedirectProvider()
+        public void PassTheUrlToTheCorrectPageForEachPostToTheRedirectProvider()
+        {
+            string filenameExtension = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var posts = (null as IEnumerable<ContentItem>).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create(filenameExtension);
+            container.ReplaceDependency<ISettings>(settings);
+
+            var redirectProvider = new Mock<IRedirectProvider>();
+            foreach (var post in posts)
+            {
+                string fileName = $"{post.Slug}.{filenameExtension}";
+                redirectProvider
+                    .Setup(r => r.GenerateRedirect(
+                    It.Is<string>(s => s.EndsWith(fileName))
+                    )).Verifiable();
+            }
+            container.ReplaceDependency<IRedirectProvider>(redirectProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            redirectProvider.VerifyAll();
+        }
+
+        [Fact]
+        public void PassTheUrlToTheCorrectPathForEachPostToTheRedirectProvider()
         {
             string folderName = "Posts";
             string filenameExtension = string.Empty.GetRandom();
@@ -855,8 +887,11 @@ namespace PPTail.SiteGenerator.Test
             foreach (var post in posts)
             {
                 string fileName = $"{post.Slug}.{filenameExtension}";
-                string expectedUrl = System.IO.Path.Combine("..", folderName, fileName);
-                redirectProvider.Setup(r => r.GenerateRedirect(It.Is<string>(s => s == expectedUrl))).Verifiable();
+                string fullPath = $"/{folderName}/{fileName}";
+                redirectProvider
+                    .Setup(r => r.GenerateRedirect(
+                    It.Is<string>(s => s.EndsWith(fullPath))
+                    )).Verifiable();
             }
             container.ReplaceDependency<IRedirectProvider>(redirectProvider.Object);
 

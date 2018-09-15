@@ -21,10 +21,10 @@ namespace PPTail.Generator.Redirect.Test
         }
 
         [Fact]
-        public void IncludeARedirectInTheOutput()
+        public void IncludeTheRawTemplateInTheOutput()
         {
             string url = string.Empty.GetRandom();
-            string command = "window.location.assign(";
+            string command = "window.location";
             string redirectTemplate = "window.location.assign(\"{Url}\");";
             var target = (null as IRedirectProvider).Create(redirectTemplate);
             var actual = target.GenerateRedirect(url);

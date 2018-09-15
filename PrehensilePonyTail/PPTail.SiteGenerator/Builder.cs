@@ -156,7 +156,7 @@ namespace PPTail.SiteGenerator
                     // Add the permalink page
                     string permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
                     string permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
-                    string redirectFilePath = System.IO.Path.Combine("..", postFilePath);
+                    string redirectFilePath = $"../Posts/{postFileName}"; // System.IO.Path.Combine("..", postFilePath);
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = permalinkFilePath,
