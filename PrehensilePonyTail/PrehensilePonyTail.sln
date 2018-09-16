@@ -117,6 +117,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Ef", "PPTail.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Ef.Test", "PPTail.Data.Ef.Test\PPTail.Data.Ef.Test.csproj", "{03DE8057-76C6-4558-8E50-9E13C32CA310}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Test", "PPTail.Test\PPTail.Test.csproj", "{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -307,6 +309,10 @@ Global
 		{03DE8057-76C6-4558-8E50-9E13C32CA310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03DE8057-76C6-4558-8E50-9E13C32CA310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03DE8057-76C6-4558-8E50-9E13C32CA310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -357,5 +363,9 @@ Global
 		{47D53F75-D8CB-4604-B87A-234840CBDDCC} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 		{98D7888B-9D3A-4A92-ABBF-9F9AB8B1FD37} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{03DE8057-76C6-4558-8E50-9E13C32CA310} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C6FD3D6-AA5B-4B33-A93A-E8286791C3F4}
 	EndGlobalSection
 EndGlobal

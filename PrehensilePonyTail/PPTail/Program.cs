@@ -10,23 +10,31 @@ namespace PPTail
     {
         public static void Main(string[] args)
         {
-            //TODO: Harden this
-            var sourceDataPath = args[0];
-            var outputPath = args[1];
+            (var argsAreValid, var argumentErrrors) = args.ValidateArguments();
 
-            var settings = (null as ISettings).Create(sourceDataPath, outputPath);
-            var templates = (null as IEnumerable<Template>).Create("..\\..\\..\\..");
+            if (argsAreValid)
+            {
+                var (sourceConnection, targetConnection, templateConnection) = args.ParseArguments();
+                var settings = (null as ISettings).Create(sourceConnection, targetConnection);
+                var templates = (null as IEnumerable<Template>).Create(templateConnection);
 
-            var container = (null as IServiceCollection).Create(settings, templates);
-            var serviceProvider = container.BuildServiceProvider();
+                var container = (null as IServiceCollection).Create(settings, templates);
+                var serviceProvider = container.BuildServiceProvider();
 
-            // TODO: Move data load here -- outside of the build process
+                // TODO: Move data load here -- outside of the build process
 
-            var siteBuilder = serviceProvider.GetService<ISiteBuilder>();
-            var sitePages = siteBuilder.Build();
+                var siteBuilder = serviceProvider.GetService<ISiteBuilder>();
+                var sitePages = siteBuilder.Build();
 
-            var outputRepo = serviceProvider.GetService<Interfaces.IOutputRepository>();
-            outputRepo.Save(sitePages);
+                // TODO: Change this to use the named provider specified in the input args
+                var outputRepo = serviceProvider.GetService<Interfaces.IOutputRepository>();
+                outputRepo.Save(sitePages);
+            }
+            else
+            {
+                // TODO: Display argument errors to user
+                throw new NotImplementedException();
+            }
         }
 
     }
