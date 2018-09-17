@@ -29,7 +29,7 @@ namespace PPTail.Data.FileSystem.Test
                 .Returns(xml);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
-            Assert.Throws(typeof(Exceptions.SettingNotFoundException), () => target.GetSiteSettings());
+            Assert.Throws<SettingNotFoundException>(() => target.GetSiteSettings());
         }
 
         [Fact]

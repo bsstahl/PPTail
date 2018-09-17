@@ -13,7 +13,6 @@ namespace PPTail.Generator.Contact
     {
         IServiceProvider _serviceProvider;
         IEnumerable<Template> _templates;
-        SiteSettings _siteSettings;
         ISettings _settings;
 
         public TemplateProvider(IServiceProvider serviceProvider)
@@ -24,7 +23,6 @@ namespace PPTail.Generator.Contact
 
             _serviceProvider.ValidateService<ISettings>();
 
-            // _siteSettings = _serviceProvider.GetService<SiteSettings>();
             _settings = _serviceProvider.GetService<ISettings>();
 
             // Guard code for a null _templates variable is not required

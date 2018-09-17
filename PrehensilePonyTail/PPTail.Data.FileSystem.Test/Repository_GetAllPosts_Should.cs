@@ -120,7 +120,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var posts = target.GetAllPosts();
 
-            Assert.Equal(0, posts.Count());
+            Assert.Empty(posts);
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var posts = target.GetAllPosts();
 
-            Assert.Equal(0, posts.Count());
+            Assert.Empty(posts);
         }
 
         [Fact]
@@ -370,7 +370,7 @@ namespace PPTail.Data.FileSystem.Test
             var actual = actualPage.CategoryIds;
 
             foreach (var categoryid in categoryIds)
-                Assert.True(actual.Contains(categoryid));
+                Assert.Contains(categoryid, actual);
         }
 
         private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)

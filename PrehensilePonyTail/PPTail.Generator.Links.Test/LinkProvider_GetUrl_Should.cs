@@ -39,7 +39,7 @@ namespace PPTail.Generator.Links.Test
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
 
-            Assert.False(actual.Contains("\\"));
+            Assert.DoesNotContain("\\", actual);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace PPTail.Generator.Links.Test
             var actual = target.GetUrl(pathToRoot, relativePath, fileName);
 
             string expected = $".{fileExtension}";
-            Assert.True(actual.EndsWith(expected));
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace PPTail.Generator.Links.Test
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
 
             string expected = $".{fileExtension}";
-            Assert.True(actual.EndsWith(expected));
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace PPTail.Generator.Links.Test
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
 
             string expected = $"{fileName}.";
-            Assert.True(actual.EndsWith(expected));
+            Assert.EndsWith(expected, actual);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace PPTail.Generator.Links.Test
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
 
-            Assert.True(actual.StartsWith(relativePath));
+            Assert.StartsWith(relativePath, actual);
         }
     }
 }

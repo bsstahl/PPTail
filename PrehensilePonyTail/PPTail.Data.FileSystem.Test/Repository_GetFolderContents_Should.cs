@@ -185,7 +185,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(Mock.Of<IFile>(), directoryProvider.Object, rootPath);
             var actual = target.GetFolderContents(relativePath);
 
-            Assert.Equal(0, actual.Count());
+            Assert.Empty(actual);
         }
 
         [Fact]
