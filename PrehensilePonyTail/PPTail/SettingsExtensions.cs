@@ -16,10 +16,6 @@ namespace PPTail
 
         const string _additionalFilePathsSettingName = "additionalFilePaths";
 
-        //const string _sourceConnectionSettingName = "sourceConnection";
-        //const string _targetConnectionSettingName = "targetConnection";
-        //const string _templateConnectionSettingName = "templateConnection";
-
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
         const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
@@ -51,7 +47,7 @@ namespace PPTail
                 TemplateConnection = templateConnection
             };
 
-            // TODO: Remove this
+            // TODO: Remove this (Provider connection string should be used instead)
             settings.ExtendedSettings.Set(_outputPathSettingName, targetConnection);
 
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
