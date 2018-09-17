@@ -16,10 +16,25 @@ namespace PPTail
         }
 
 
-        public static (bool argsAreValid, string[] argumentErrors) ValidateArguments(this string[] args)
+        public static (bool argsAreValid, IEnumerable<string> argumentErrors) ValidateArguments(this string[] args)
         {
-            string[] errors = new string[] { };
+            var errors = new List<string>();
             bool isValid = ((args?.Length == 3) && !args.IsNullOrWhiteSpace());
+
+            if ((args is null) || (args.Length != 3))
+                errors.Add("Usage - PPTail.exe SourceConnectionString TargetConnectionString TemplatePath");
+            else
+            {
+                if (string.IsNullOrEmpty(args[0]))
+                    errors.Add("A value must be supplied for the SourceConnectionString argument");
+
+                if (string.IsNullOrEmpty(args[1]))
+                    errors.Add("A value must be supplied for the TargetConnectionString argument");
+
+                if (string.IsNullOrEmpty(args[2]))
+                    errors.Add("A value must be supplied for the TemplatePath argument");
+            }
+
             return (isValid, errors);
         }
 

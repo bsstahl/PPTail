@@ -14,7 +14,8 @@ namespace PPTail.Exceptions
             this.InterfaceTypeName = interfaceTypeName;
         }
 
-        public DependencyNotFoundException(string interfaceTypeName, string instanceTypeName) : base($"Unable to locate an instance of '{instanceTypeName}' that implements '{interfaceTypeName}'")
+        public DependencyNotFoundException(string interfaceTypeName, string instanceTypeName) 
+            : base($"Unable to locate an instance of '{instanceTypeName}' that implements '{interfaceTypeName}'. Please verify that the Provider specified in the ConnectionString is available.")
         {
             this.InterfaceTypeName = interfaceTypeName;
         }

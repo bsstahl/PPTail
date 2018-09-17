@@ -14,7 +14,7 @@ namespace PPTail
 
         public static void Main(string[] args)
         {
-            (var argsAreValid, var argumentErrrors) = args.ValidateArguments();
+            (var argsAreValid, var argumentErrors) = args.ValidateArguments();
 
             if (argsAreValid)
             {
@@ -37,8 +37,10 @@ namespace PPTail
             }
             else
             {
-                // TODO: Display argument errors to user
-                throw new NotImplementedException();
+                Console.WriteLine("Invalid Arguments:");
+                foreach (var argumentError in argumentErrors)
+                    Console.WriteLine($"\t{argumentError}");
+                Console.WriteLine();
             }
         }
 
