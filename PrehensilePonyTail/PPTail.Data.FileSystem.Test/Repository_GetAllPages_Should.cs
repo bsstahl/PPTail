@@ -20,10 +20,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnAllPagesIfAllAreValid()
         {
-            var files = new List<string>();
-            files.Add("28C65CCD-D504-44D3-A54B-9E3DBB163D43.xml");
-            files.Add("8EE89C80-760E-4980-B980-5A4B70A563E2.xml");
-            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+            var files = new List<string>
+            {
+                "28C65CCD-D504-44D3-A54B-9E3DBB163D43.xml",
+                "8EE89C80-760E-4980-B980-5A4B70A563E2.xml",
+                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
+            };
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
@@ -43,14 +45,16 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void IgnoreFilesWithoutXmlExtension()
         {
-            var files = new List<string>();
-            files.Add("82B52DBC-9D33-4C9E-A933-AF515E4FF140");
-            files.Add("28C65CCD-D504-44D3-A54B-9E3DBB163D43.xml");
-            files.Add("0F716B73-9A2F-46D9-A576-3CA03EB10327.ppt");
-            files.Add("8EE89C80-760E-4980-B980-5A4B70A563E2.xml");
-            files.Add("39836B5E-C330-4670-9897-1CBF0851AB5B.txt");
-            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
-            files.Add("86F29FA4-29CD-4292-8000-CEAFEA7A2315.com");
+            var files = new List<string>
+            {
+                "82B52DBC-9D33-4C9E-A933-AF515E4FF140",
+                "28C65CCD-D504-44D3-A54B-9E3DBB163D43.xml",
+                "0F716B73-9A2F-46D9-A576-3CA03EB10327.ppt",
+                "8EE89C80-760E-4980-B980-5A4B70A563E2.xml",
+                "39836B5E-C330-4670-9897-1CBF0851AB5B.txt",
+                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml",
+                "86F29FA4-29CD-4292-8000-CEAFEA7A2315.com"
+            };
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
@@ -71,8 +75,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void RequestFilesFromThePagesFolder()
         {
-            var files = new List<string>();
-            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+            var files = new List<string>
+            {
+                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
+            };
 
             string rootPath = $"c:\\{string.Empty.GetRandom()}";
             string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "pages");
@@ -103,8 +109,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void SkipPagesWithInvalidSchema()
         {
-            var files = new List<string>();
-            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+            var files = new List<string>
+            {
+                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
+            };
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
@@ -125,8 +133,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void SkipPagesWithTheWrongRootNode()
         {
-            var files = new List<string>();
-            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+            var files = new List<string>
+            {
+                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
+            };
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
@@ -148,7 +158,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInTheAuthorField()
         {
             string fieldName = "author";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Author;
+            string fieldValueDelegate(ContentItem c) => c.Author;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
@@ -156,7 +166,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInTheTitleField()
         {
             string fieldName = "title";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Title;
+            string fieldValueDelegate(ContentItem c) => c.Title;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
@@ -164,7 +174,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInTheDescriptionField()
         {
             string fieldName = "description";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Description;
+            string fieldValueDelegate(ContentItem c) => c.Description;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
@@ -172,7 +182,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInTheContentField()
         {
             string fieldName = "content";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Content;
+            string fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
@@ -180,7 +190,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTrueIfThePageIsPublished()
         {
             string fieldName = "ispublished";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
+            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = true;
             string expected = expectedValue.ToString();
@@ -193,7 +203,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnFalseIfThePageIsNotPublished()
         {
             string fieldName = "ispublished";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.IsPublished.ToString();
+            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = false;
             string expected = expectedValue.ToString();
@@ -206,7 +216,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTrueIfThePageIsMarkedShowInList()
         {
             string fieldName = "showinlist";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ShowInList.ToString();
+            string fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
 
             bool expectedValue = true;
             string expected = expectedValue.ToString();
@@ -219,7 +229,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnFalseIfThePageIsNotMarkedShowInList()
         {
             string fieldName = "showinlist";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ShowInList.ToString();
+            string fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
 
             bool expectedValue = false;
             string expected = expectedValue.ToString();
@@ -232,7 +242,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInThePubDateField()
         {
             string fieldName = "pubDate";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.PublicationDate.ToString();
+            string fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
             string expected = expectedValue.ToString();
@@ -245,7 +255,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInTheLastModifiedDateField()
         {
             string fieldName = "lastModified";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.LastModificationDate.ToString();
+            string fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
             string expected = expectedValue.ToString();
@@ -258,7 +268,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueInTheSlugField()
         {
             string fieldName = "slug";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.Slug;
+            string fieldValueDelegate(ContentItem c) => c.Slug;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
@@ -268,7 +278,7 @@ namespace PPTail.Data.FileSystem.Test
             string author = string.Empty.GetRandom();
             string expected = $"by {author}";
             string xml = $"<page><author>{author}</author></page>";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ByLine;
+            string fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
@@ -277,7 +287,7 @@ namespace PPTail.Data.FileSystem.Test
         {
             string expected = string.Empty;
             string xml = $"<page/>";
-            Func<ContentItem, string> fieldValueDelegate = (ContentItem c) => c.ByLine;
+            string fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
@@ -290,8 +300,10 @@ namespace PPTail.Data.FileSystem.Test
 
         private static void ExecutePropertyTest(string expected, Func<ContentItem, string> fieldValueDelegate, string xml)
         {
-            var files = new List<string>();
-            files.Add("68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml");
+            var files = new List<string>
+            {
+                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
+            };
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();

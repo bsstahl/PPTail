@@ -25,10 +25,8 @@ namespace PPTail.Generator.T4Html
 
             // TODO: Move the service validation into the methods where they are required
 
-            if (serviceProvider == null)
-                throw new ArgumentNullException(nameof(serviceProvider));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            _serviceProvider = serviceProvider;
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<INavigationProvider>();
 

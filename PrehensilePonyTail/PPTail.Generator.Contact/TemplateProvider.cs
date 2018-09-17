@@ -11,9 +11,10 @@ namespace PPTail.Generator.Contact
 {
     public class TemplateProvider: IContactProvider
     {
-        IServiceProvider _serviceProvider;
-        IEnumerable<Template> _templates;
-        ISettings _settings;
+        readonly IServiceProvider _serviceProvider;
+        readonly IEnumerable<Template> _templates;
+
+        readonly ISettings _settings;
 
         public TemplateProvider(IServiceProvider serviceProvider)
         {
