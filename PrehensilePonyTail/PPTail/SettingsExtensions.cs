@@ -11,9 +11,6 @@ namespace PPTail
     public static class SettingsExtensions
     {
         // TODO: See if the Additional File Paths setting needs to be modified to be provider specific
-        // TODO: Replace OuputPath extended setting with a ConnectionString implementation on the provider
-        const string _outputPathSettingName = "outputPath";
-
         const string _additionalFilePathsSettingName = "additionalFilePaths";
 
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
@@ -46,9 +43,6 @@ namespace PPTail
                 TargetConnection = targetConnection,
                 TemplateConnection = templateConnection
             };
-
-            // TODO: Remove this (Provider connection string should be used instead)
-            settings.ExtendedSettings.Set(_outputPathSettingName, targetConnection);
 
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
             settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString());

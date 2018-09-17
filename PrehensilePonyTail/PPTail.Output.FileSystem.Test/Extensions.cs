@@ -117,7 +117,8 @@ namespace PPTail.Output.FileSystem.Test
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension
+                OutputFileExtension = outputFileExtension,
+                TargetConnection = $"Provider=Test;FilePath={outputPath}"
             };
 
             result.ExtendedSettings.Add(new Tuple<string, string>("outputPath", outputPath));

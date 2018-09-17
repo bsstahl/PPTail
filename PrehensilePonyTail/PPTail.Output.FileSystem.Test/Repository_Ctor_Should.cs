@@ -14,8 +14,6 @@ namespace PPTail.Output.FileSystem.Test
 {
     public class Repository_Ctor_Should
     {
-        const string _outputPathSettingName = "outputPath";
-
         [Fact]
         public void ThrowDependencyNotFoundExceptionIfServiceProviderIsNotProvided()
         {
@@ -28,7 +26,7 @@ namespace PPTail.Output.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
             container.AddSingleton<ISettings>((null as ISettings).Create());
-            Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(container.BuildServiceProvider()));
+            Assert.Throws<DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
 
         [Fact]
@@ -55,7 +53,7 @@ namespace PPTail.Output.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<ISettings>((null as ISettings).Create());
-            Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(container.BuildServiceProvider()));
+            Assert.Throws<DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
 
         [Fact]
@@ -82,7 +80,7 @@ namespace PPTail.Output.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
-            Assert.Throws(typeof(DependencyNotFoundException), () => new Repository(container.BuildServiceProvider()));
+            Assert.Throws<DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
 
         [Fact]
@@ -110,11 +108,11 @@ namespace PPTail.Output.FileSystem.Test
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
             container.AddSingleton<ISettings>(new Settings());
-            Assert.Throws(typeof(SettingNotFoundException), () => new Repository(container.BuildServiceProvider()));
+            Assert.Throws<SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
         }
 
         [Fact]
-        public void ThrowWithProperSettingNameIfOutputPathIsNotProvided()
+        public void ThrowWithProperSettingNameIfTargetConnectionIsNotProvided()
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(Mock.Of<IFile>());
@@ -123,7 +121,8 @@ namespace PPTail.Output.FileSystem.Test
             var settings = new Settings();
             container.AddSingleton<ISettings>(settings);
 
-            string expected = _outputPathSettingName;
+            string expected = nameof(settings.TargetConnection);
+
             try
             {
                 var target = new Repository(container.BuildServiceProvider());

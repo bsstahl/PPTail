@@ -119,7 +119,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var pages = target.GetAllPages();
 
-            Assert.Equal(0, pages.Count());
+            Assert.Empty(pages);
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
             var pages = target.GetAllPages();
 
-            Assert.Equal(0, pages.Count());
+            Assert.Empty(pages);
         }
 
         [Fact]

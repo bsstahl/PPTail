@@ -11,7 +11,7 @@ namespace PPTail.Output.FileSystem
 {
     public class Repository : IOutputRepository
     {
-        const string outputPathSettingName = "outputPath";
+        const string _connectionStringFilepathKey = "FilePath";
 
         IServiceProvider _serviceProvider;
         IFile _file;
@@ -31,13 +31,12 @@ namespace PPTail.Output.FileSystem
             _file = serviceProvider.GetService<IFile>();
             _directory = serviceProvider.GetService<IDirectory>();
             _settings = serviceProvider.GetService<ISettings>();
-
-            _settings.Validate(outputPathSettingName);
+            _settings.Validate(s => s.TargetConnection, nameof(_settings.TargetConnection));
         }
 
         public void Save(IEnumerable<SiteFile> files)
         {
-            string outputPath = _settings.ExtendedSettings.Single(t => t.Item1 == outputPathSettingName).Item2;
+            string outputPath = _settings.TargetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
             foreach (var sitePage in files)
             {
