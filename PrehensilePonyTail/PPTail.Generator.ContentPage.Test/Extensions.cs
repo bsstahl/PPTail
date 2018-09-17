@@ -29,13 +29,14 @@ namespace PPTail.Generator.ContentPage.Test
             container.AddSingleton<ISettings>((null as ISettings).CreateDefault());
             container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
-            container.AddSingleton<SiteSettings>(new SiteSettings()
-            {
-                Title = string.Empty.GetRandom(),
-                Description = string.Empty.GetRandom(),
-                PostsPerPage = 10.GetRandom(5),
-                PostsPerFeed = 20.GetRandom(10)
-            });
+
+            //container.AddSingleton<SiteSettings>(new SiteSettings()
+            //{
+            //    Title = string.Empty.GetRandom(),
+            //    Description = string.Empty.GetRandom(),
+            //    PostsPerPage = 10.GetRandom(5),
+            //    PostsPerFeed = 20.GetRandom(10)
+            //});
 
             return container;
         }

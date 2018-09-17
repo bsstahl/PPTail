@@ -21,11 +21,13 @@ namespace PPTail.Generator.HomePage.Test
         {
             var container = new ServiceCollection();
 
-            var settings = (null as ISettings).CreateDefault();
-            container.AddSingleton<ISettings>(settings);
-
+            var contentRepo = new Mock<IContentRepository>();
             var siteSettings = (null as SiteSettings).Create();
-            container.AddSingleton<SiteSettings>(siteSettings);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).CreateDefault(contentRepo.Object);
+            container.AddSingleton<ISettings>(settings);
 
             var templateProcessor = (null as ITemplateProcessor).Create();
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
@@ -54,7 +56,8 @@ namespace PPTail.Generator.HomePage.Test
             var itemTemplate = new Template() { Content = itemTemplateText, TemplateType = TemplateType.Item };
             var templates = new List<Template>() { homepageTemplate, itemTemplate };
 
-            var settings = (null as ISettings).CreateDefault();
+            var contentRepo = Mock.Of<IContentRepository>();
+            var settings = (null as ISettings).CreateDefault(contentRepo);
 
             return ignore.Create(templates, settings);
         }
@@ -82,10 +85,10 @@ namespace PPTail.Generator.HomePage.Test
 
         public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
         {
-            return ignore.Create(templates, settings, navProvider, categories, (null as SiteSettings).Create(), Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, settings, navProvider, categories, Mock.Of<ILinkProvider>());
         }
 
-        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories, SiteSettings siteSettings, ILinkProvider linkProvider)
+        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
@@ -93,7 +96,7 @@ namespace PPTail.Generator.HomePage.Test
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
-            container.AddSingleton<SiteSettings>(siteSettings);
+            container.AddSingleton<IContentRepository>(Mock.Of<IContentRepository>());
             container.AddSingleton<ILinkProvider>(linkProvider);
             container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
             return ignore.Create(container);
@@ -104,21 +107,22 @@ namespace PPTail.Generator.HomePage.Test
             return new PPTail.Generator.HomePage.HomePageGenerator(container.BuildServiceProvider());
         }
 
-        public static ISettings CreateDefault(this ISettings ignore)
+        public static ISettings CreateDefault(this ISettings ignore, IContentRepository contentRepo)
         {
-            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
+            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html", contentRepo);
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, IContentRepository contentRepo)
         {
-            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
+            return ignore.CreateDefault(dateTimeFormatSpecifier, "html", contentRepo);
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension, IContentRepository contentRepo)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
             settings.OutputFileExtension = outputFileExtension;
+            settings.SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\";
             return settings;
         }
 

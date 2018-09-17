@@ -28,14 +28,6 @@ namespace PPTail.Generator.Archive.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
-        {
-            var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
-            Assert.Throws<DependencyNotFoundException>(() => new Archive.BasicProvider(container.BuildServiceProvider()));
-        }
-
-        [Fact]
         public void ReturnTheProperInterfaceNameIfTheTemplateProcessorIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
@@ -52,25 +44,6 @@ namespace PPTail.Generator.Archive.Test
             }
 
             Assert.Equal(nameof(ITemplateProcessor), interfaceName);
-        }
-
-        [Fact]
-        public void ReturnTheProperInterfaceNameIfTheSiteSettingsAreNotProvided()
-        {
-            var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
-
-            string interfaceName = string.Empty;
-            try
-            {
-                var target = new Archive.BasicProvider(container.BuildServiceProvider());
-            }
-            catch (DependencyNotFoundException ex)
-            {
-                interfaceName = ex.InterfaceTypeName;
-            }
-
-            Assert.Equal(nameof(SiteSettings), interfaceName);
         }
 
         [Fact]

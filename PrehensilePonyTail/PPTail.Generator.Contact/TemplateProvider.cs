@@ -22,10 +22,9 @@ namespace PPTail.Generator.Contact
             if (_serviceProvider == null)
                 throw new ArgumentNullException("IServiceProvider");
 
-            _serviceProvider.ValidateService<SiteSettings>();
             _serviceProvider.ValidateService<ISettings>();
 
-            _siteSettings = _serviceProvider.GetService<SiteSettings>();
+            // _siteSettings = _serviceProvider.GetService<SiteSettings>();
             _settings = _serviceProvider.GetService<ISettings>();
 
             // Guard code for a null _templates variable is not required

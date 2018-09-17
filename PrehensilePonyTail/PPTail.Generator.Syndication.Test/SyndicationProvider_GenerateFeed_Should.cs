@@ -184,7 +184,7 @@ namespace PPTail.Generator.Syndication.Test
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
+            var siteSettings = container.BuildServiceProvider().GetService<IContentRepository>().GetSiteSettings();
             templateProcessor
                 .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerFeed), Times.Once);
         }

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using PPTail.Common.Extensions;
 
 namespace PPTail.Generator.T4Html
 {

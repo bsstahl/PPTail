@@ -16,30 +16,44 @@ namespace PPTail.Common.Test
         {
             var container = new ServiceCollection();
 
-            var settings = (null as ISettings).Create();
             var siteSettings = (null as SiteSettings).Create();
+            var contentRepo = (null as IContentRepository).Create(siteSettings);
+
+            var settings = (null as ISettings).Create(contentRepo);
             var categories = (null as IEnumerable<Category>).Create();
             var linkProvider = Mock.Of<ILinkProvider>();
 
             container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<ILinkProvider>(linkProvider);
 
             return container;
         }
 
-        public static ISettings Create(this ISettings ignore)
+        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
         {
             return new Settings()
             {
                 DateFormatSpecifier = "MM/dd/yyyy",
                 DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
                 ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom()
+                OutputFileExtension = string.Empty.GetRandom(),
+                SourceConnection = contentRepo.GetSourceConnection()
             };
         }
 
+        public static IContentRepository Create(this IContentRepository ignore)
+        {
+            var siteSettings = (null as SiteSettings).Create();
+            return ignore.Create(siteSettings);
+        }
+
+        public static IContentRepository Create(this IContentRepository ignore, SiteSettings siteSettings)
+        {
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            return contentRepo.Object;
+        }
 
         public static SiteSettings Create(this SiteSettings ignore)
         {
@@ -118,6 +132,17 @@ namespace PPTail.Common.Test
             container.RemoveDependency<T>();
             container.AddSingleton<T>(serviceInstance);
             return container;
+        }
+
+        public static string GetSourceConnection(this IContentRepository contentRepo)
+        {
+            string filePath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            return contentRepo.GetSourceConnection(filePath);
+        }
+
+        public static string GetSourceConnection(this IContentRepository contentRepo, string filePath)
+        {
+            return $"Provider={contentRepo.GetType().Name};FilePath={filePath}";
         }
 
     }

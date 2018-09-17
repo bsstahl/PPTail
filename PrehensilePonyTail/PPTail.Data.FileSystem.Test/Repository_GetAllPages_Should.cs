@@ -14,6 +14,7 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetAllPages_Should
     {
+        const string _connectionStringFilepathKey = "FilePath";
         const string _dataFolder = "App_Data";
 
         [Fact]
@@ -76,8 +77,7 @@ namespace PPTail.Data.FileSystem.Test
             string rootPath = $"c:\\{string.Empty.GetRandom()}";
             string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "pages");
 
-            var settings = new Settings();
-            settings.ExtendedSettings.Set("sourceDataPath", rootPath);
+            var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();

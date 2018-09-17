@@ -153,7 +153,10 @@ namespace PPTail.Generator.Template.Test
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
-            var settings = (null as ISettings).Create();
+            var contentRepo = (null as IContentRepository).Create();
+            container.ReplaceDependency<IContentRepository>(contentRepo);
+
+            var settings = (null as ISettings).Create(contentRepo);
             settings.ItemSeparator = string.Empty.GetRandom();
             container.ReplaceDependency<ISettings>(settings);
 
@@ -407,7 +410,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             string sidebarContent = string.Empty.GetRandom();
             string navContent = string.Empty.GetRandom();
@@ -420,6 +422,8 @@ namespace PPTail.Generator.Template.Test
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var settings = (null as ISettings).Create();
 
             var target = (null as ITemplateProcessor).Create(container);
             var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);

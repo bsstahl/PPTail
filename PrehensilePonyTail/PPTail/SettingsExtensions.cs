@@ -10,14 +10,21 @@ namespace PPTail
 {
     public static class SettingsExtensions
     {
-        const string _sourceDataPathSettingName = "sourceDataPath";
+        // TODO: See if the Additional File Paths setting needs to be modified to be provider specific
+        // TODO: Replace OuputPath extended setting with a ConnectionString implementation on the provider
         const string _outputPathSettingName = "outputPath";
+
         const string _additionalFilePathsSettingName = "additionalFilePaths";
+
+        //const string _sourceConnectionSettingName = "sourceConnection";
+        //const string _targetConnectionSettingName = "targetConnection";
+        //const string _templateConnectionSettingName = "templateConnection";
+
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
         const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
 
-        public static ISettings Create(this ISettings ignore, string sourceDataPath, string outputPath)
+        public static ISettings Create(this ISettings ignore, string sourceConnection, string targetConnection, string templateConnection)
         {
             string outputFileExtension = "html";
             string dateFormatSpecifier = "yyyy-MM-dd";
@@ -28,22 +35,25 @@ namespace PPTail
             bool createDasBlogSyndicationCompatibilityFile = true;
             bool createDasBlogPostsCompatibilityFile = true;
 
-            return (null as ISettings).Create(sourceDataPath, outputPath, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
-
+            return (null as ISettings).Create(sourceConnection, targetConnection, templateConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
         }
 
-        public static ISettings Create(this ISettings ignore, string sourceDataPath, string outputPath, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths, bool createDasBlogSyndicationCompatibilityFile, bool createDasBlogPostsCompatibilityFile)
+        public static ISettings Create(this ISettings ignore, string sourceConnection, string targetConnection, string templateConnection, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string additionalFilePaths, bool createDasBlogSyndicationCompatibilityFile, bool createDasBlogPostsCompatibilityFile)
         {
             var settings = new Settings()
             {
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension
+                OutputFileExtension = outputFileExtension, 
+                SourceConnection  = sourceConnection,
+                TargetConnection = targetConnection,
+                TemplateConnection = templateConnection
             };
 
-            settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourceDataPath);
-            settings.ExtendedSettings.Set(_outputPathSettingName, outputPath);
+            // TODO: Remove this
+            settings.ExtendedSettings.Set(_outputPathSettingName, targetConnection);
+
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
             settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString());
             settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, createDasBlogPostsCompatibilityFile.ToString());

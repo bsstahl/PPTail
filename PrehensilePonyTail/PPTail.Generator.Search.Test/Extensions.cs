@@ -16,34 +16,34 @@ namespace PPTail.Generator.Search.Test
         public static ISearchProvider Create(this ISearchProvider ignore)
         {
             return ignore.Create(Mock.Of<IEnumerable<Template>>(),
-                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null, Mock.Of<ILinkProvider>());
+                Mock.Of<Settings>(), null, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), null, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, Mock.Of<Settings>(), null, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, IEnumerable<Category> categories)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), Mock.Of<SiteSettings>(), categories, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, Mock.Of<Settings>(), categories, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings)
         {
-            return ignore.Create(templates, settings, siteSettings, null, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, settings, null, Mock.Of<ILinkProvider>());
         }
 
-        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ILinkProvider linkProvider)
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
-            var container = (null as IServiceCollection).Create(templates, settings, siteSettings, categories, linkProvider, Mock.Of<ITemplateProcessor>());
+            var container = (null as IServiceCollection).Create(templates, settings, categories, linkProvider, Mock.Of<ITemplateProcessor>());
             return new PageGenerator(container.BuildServiceProvider());
         }
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             return ignore.Create((null as IEnumerable<Template>).Create(),
-                Mock.Of<Settings>(), Mock.Of<SiteSettings>(), (null as IEnumerable<Category>).Create(),
+                null, (null as IEnumerable<Category>).Create(),
                 Mock.Of<ILinkProvider>(), Mock.Of<ITemplateProcessor>());
         }
 
@@ -57,18 +57,22 @@ namespace PPTail.Generator.Search.Test
             return new PageGenerator(serviceProvider);
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, ILinkProvider linkProvider, ITemplateProcessor templateProcessor)
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories, ILinkProvider linkProvider, ITemplateProcessor templateProcessor)
         {
             var container = new ServiceCollection();
 
+            var siteSettings = new SiteSettings() { PostsPerPage = 10.GetRandom(3), PostsPerFeed = 10.GetRandom(3), Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom() };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+
+            if (settings is null)
+                container.AddSingleton<ISettings>((null as ISettings).Create(contentRepo.Object));
+            else
+                container.AddSingleton<ISettings>(settings);
+
             if (templates != null)
                 container.AddSingleton<IEnumerable<Template>>(templates);
-
-            if (settings != null)
-                container.AddSingleton<ISettings>((null as ISettings).Create());
-
-            if (siteSettings != null)
-                container.AddSingleton<SiteSettings>(siteSettings);
 
             if (categories != null)
                 container.AddSingleton<IEnumerable<Category>>(categories);
@@ -82,14 +86,15 @@ namespace PPTail.Generator.Search.Test
             return container;
         }
 
-        public static ISettings Create(this ISettings ignore)
+        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
         {
             return new Settings()
             {
                 DateFormatSpecifier = "MM/dd/yyyy",
                 DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
                 ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom()
+                OutputFileExtension = string.Empty.GetRandom(),
+                SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\"
             };
         }
 

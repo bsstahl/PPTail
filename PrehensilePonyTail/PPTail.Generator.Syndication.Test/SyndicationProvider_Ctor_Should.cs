@@ -43,20 +43,20 @@ namespace PPTail.Generator.Syndication.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheContentRepositoryIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
-
+            container.RemoveDependency<IContentRepository>();
             Assert.Throws<DependencyNotFoundException>(() => (null as ISyndicationProvider).Create(container));
         }
 
         [Fact]
-        public void ReturnTheCorrectDependencyNameIfTheSiteSettingsAreNotProvided()
+        public void ReturnTheCorrectDependencyNameIfTheContentRepositoryIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
+            container.RemoveDependency<IContentRepository>();
 
+            string expected = nameof(IContentRepository);
             string actual = string.Empty;
             try
             {
@@ -67,7 +67,7 @@ namespace PPTail.Generator.Syndication.Test
                 actual = ex.InterfaceTypeName;
             }
 
-            Assert.Equal("SiteSettings", actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

@@ -16,6 +16,7 @@ namespace PPTail.Data.FileSystem.Test
     {
         const string _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage><postsperfeed>{3}</postsperfeed></settings>";
         const string _sourceDataPathSettingName = "sourceDataPath";
+        const string _connectionStringFilepathKey = "FilePath";
 
         const string _widgetZoneNodeFormat = "<widget id=\"{0}\" title=\"{1}\" showTitle=\"{2}\">{3}</widget>";
         const string _categoryNodeFormat = "<category id=\"{0}\" description=\"{2}\" parent=\"\">{1}</category>";
@@ -35,9 +36,9 @@ namespace PPTail.Data.FileSystem.Test
         {
             var container = new ServiceCollection();
 
-            var settings = new Settings();
+            string sourceConnection = $"Provider=Test;{_connectionStringFilepathKey}={sourcePath}";
+            var settings = new Settings() { SourceConnection = sourceConnection };
             container.AddSingleton<ISettings>(settings);
-            settings.ExtendedSettings.Set(_sourceDataPathSettingName, sourcePath);
 
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directoryProvider);

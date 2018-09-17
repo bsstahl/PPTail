@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PPTail.Common.Extensions
+namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
@@ -24,5 +24,26 @@ namespace PPTail.Common.Extensions
             return tagCounts;
         }
 
+
+        public static string GetConnectionStringValue(this string connectionString, string key)
+        {
+            string result = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentNullException(nameof(connectionString));
+
+            var parts = connectionString.Split(';');
+            foreach (var part in parts)
+            {
+                var values = part.Split('=');
+                if (values.Length == 2)
+                {
+                    if (values[0].ToLower() == key.ToLower())
+                        result = values[1];
+                }
+            }
+
+            return result;
+        }
     }
 }

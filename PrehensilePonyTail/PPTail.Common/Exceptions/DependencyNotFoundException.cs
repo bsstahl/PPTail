@@ -9,7 +9,12 @@ namespace PPTail.Exceptions
     {
         public string InterfaceTypeName { get; set; }
 
-        public DependencyNotFoundException(string interfaceTypeName) : base($"Unable to locate dependency for type {interfaceTypeName}")
+        public DependencyNotFoundException(string interfaceTypeName) : base($"Unable to locate dependency for type '{interfaceTypeName}'")
+        {
+            this.InterfaceTypeName = interfaceTypeName;
+        }
+
+        public DependencyNotFoundException(string interfaceTypeName, string instanceTypeName) : base($"Unable to locate an instance of '{instanceTypeName}' that implements '{interfaceTypeName}'")
         {
             this.InterfaceTypeName = interfaceTypeName;
         }

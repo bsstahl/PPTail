@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+    <ProjectReference Include="..\PPTail.Data.Ef\PPTail.Data.Ef.csproj" />
     <ProjectReference Include="..\PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj" />
     <ProjectReference Include="..\PPTail.Generator.Archive\PPTail.Generator.Archive.csproj" />
     <ProjectReference Include="..\PPTail.Generator.Contact\PPTail.Generator.Contact.csproj" />

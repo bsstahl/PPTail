@@ -284,7 +284,7 @@ namespace PPTail.Generator.Search.Test
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
+            var siteSettings = container.BuildServiceProvider().GetService<IContentRepository>().GetSiteSettings();
             templateProcessor
                 .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerPage), Times.Once);
         }
@@ -303,18 +303,20 @@ namespace PPTail.Generator.Search.Test
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
-            var settings = (null as ISettings).Create();
+            var siteSettings = new SiteSettings();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var settings = (null as ISettings).Create(contentRepo.Object);
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            var siteSettings = container.BuildServiceProvider().GetService<SiteSettings>();
             templateProcessor
                 .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), settings.ItemSeparator, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
-
-
 
     }
 }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using PPTail.Extensions;
 using PPTail.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 
 namespace PPTail.Generator.Template
 {
@@ -70,8 +68,12 @@ namespace PPTail.Generator.Template
 
         internal static string ReplaceSettingsVariables(this string template, IServiceProvider serviceProvider)
         {
-            serviceProvider.ValidateService<SiteSettings>();
-            var siteSettings = serviceProvider.GetService<SiteSettings>();
+            serviceProvider.ValidateService<ISettings>();
+            serviceProvider.ValidateService<IContentRepository>();
+
+            var settings = serviceProvider.GetService<ISettings>();
+            var contentRepo = serviceProvider.GetContentRepository(settings.SourceConnection);
+            var siteSettings = contentRepo.GetSiteSettings();
 
             return template.Replace("{SiteTitle}", siteSettings.Title)
                 .Replace("{SiteDescription}", siteSettings.Description);

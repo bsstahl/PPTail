@@ -22,7 +22,7 @@ namespace PPTail.Generator.Archive
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider.ValidateService<ITemplateProcessor>();
-            _serviceProvider.ValidateService<SiteSettings>();
+            // _serviceProvider.ValidateService<IContentRepository>();
 
             _templates = serviceProvider.GetService<IEnumerable<Template>>();
             _templates.Validate(TemplateType.Archive);

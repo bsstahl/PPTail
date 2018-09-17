@@ -11,9 +11,15 @@ namespace PPTail.Entities
         public string DateTimeFormatSpecifier { get; set; }
         public string DateFormatSpecifier { get; set; }
         public string ItemSeparator { get; set; }
+
         public string OutputFileExtension { get; set; }
 
+        public string SourceConnection { get; set; }
+        public string TargetConnection { get; set; }
+        public string TemplateConnection { get; set; }
+
         public ExtendedSettingsCollection ExtendedSettings { get; private set; }
+
 
         public Settings()
         {

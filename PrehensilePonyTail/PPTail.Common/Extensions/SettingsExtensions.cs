@@ -14,6 +14,12 @@ namespace PPTail.Extensions
                 throw new Exceptions.SettingNotFoundException(extendedSettingName);
         }
 
+        public static void Validate(this ISettings settings, Func<ISettings, string> setting, string settingName)
+        {
+            if (settings == null || string.IsNullOrWhiteSpace(setting.Invoke(settings)))
+                throw new Exceptions.SettingNotFoundException(settingName);
+        }
+
         public static void AddExtendedSetting(this ISettings settings, string settingName, string settingValue)
         {
             if (settings == null)

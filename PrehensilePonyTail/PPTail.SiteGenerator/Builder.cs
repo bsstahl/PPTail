@@ -16,6 +16,8 @@ namespace PPTail.SiteGenerator
         const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
         const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
+        const string _providerKey = "Provider";
+
         private IServiceProvider _serviceProvider;
 
         public Builder(IServiceProvider serviceProvider)
@@ -46,7 +48,6 @@ namespace PPTail.SiteGenerator
         {
             var result = new List<SiteFile>();
 
-            var contentRepo = ServiceProvider.GetService<IContentRepository>();
             var pageGen = ServiceProvider.GetService<IPageGenerator>();
             var contentItemPageGen = ServiceProvider.GetService<IContentItemPageGenerator>();
             var homePageGen = ServiceProvider.GetService<IHomePageGenerator>();
@@ -60,6 +61,10 @@ namespace PPTail.SiteGenerator
             var contentEncoder = ServiceProvider.GetService<IContentEncoder>();
 
             var categories = ServiceProvider.GetService<IEnumerable<Category>>();
+
+            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
+            var sourceProviderName = settings.SourceConnection.GetConnectionStringValue(_providerKey);
+            var contentRepo = ServiceProvider.GetNamedService<IContentRepository>(sourceProviderName);
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();

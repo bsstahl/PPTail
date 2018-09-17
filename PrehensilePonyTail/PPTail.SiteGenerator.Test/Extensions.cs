@@ -36,21 +36,38 @@ namespace PPTail.SiteGenerator.Test
             return new Builder(container.BuildServiceProvider());
         }
 
+        public static IContentRepository Create(this IContentRepository ignore)
+        {
+            var siteSettings = (null as SiteSettings).Create();
+            return ignore.Create(siteSettings);
+        }
+
+        public static IContentRepository Create(this IContentRepository ignore, SiteSettings siteSettings)
+        {
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            return contentRepo.Object;
+        }
+
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             return ignore.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
                 Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
-                Mock.Of<ISettings>(), Mock.Of<SiteSettings>(), new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
+                Mock.Of<ISettings>(), new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, SiteSettings siteSettings, IEnumerable<Category> categories, IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen)
+        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo)
+        {
+            return ignore.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
+                Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
+                Mock.Of<ISettings>(), new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, IEnumerable<Category> categories, IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen)
         {
             IServiceCollection container = new ServiceCollection();
-            container.AddSingleton<IContentRepository>(contentRepo);
             container.AddSingleton<IPageGenerator>(pageGen);
             container.AddSingleton<IHomePageGenerator>(homePageGen);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<SiteSettings>(siteSettings);
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IArchiveProvider>(archiveProvider);
             container.AddSingleton<IContactProvider>(contactProvider);
@@ -60,7 +77,23 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IRedirectProvider>(redirectProvider);
             container.AddSingleton<IContentEncoder>(contentEncoder);
             container.AddSingleton<IContentItemPageGenerator>(contentItemPageGen);
+
+            container.AddSingleton<IContentRepository>(contentRepo);
+            settings.SourceConnection = contentRepo.GetSourceConnection();
+            container.AddSingleton<ISettings>(settings);
+
             return container;
+        }
+
+        public static string GetSourceConnection(this IContentRepository contentRepo)
+        {
+            string filePath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            return contentRepo.GetSourceConnection(filePath);
+        }
+
+        public static string GetSourceConnection(this IContentRepository contentRepo, string filePath)
+        {
+            return $"Provider={contentRepo.GetType().FullName};FilePath={filePath}";
         }
 
         public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class

@@ -18,11 +18,27 @@ namespace PPTail.Generator.Template.Test
             container.AddSingleton<IEnumerable<Entities.Template>>((null as IEnumerable<Entities.Template>).Create());
             container.AddSingleton<IEnumerable<Category>>(new List<Category>());
 
-            container.AddSingleton<ISettings>((null as ISettings).Create());
-            container.AddSingleton<SiteSettings>((null as SiteSettings).Create());
+            var siteSettings = (null as SiteSettings).Create();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+
+            container.AddSingleton<ISettings>((null as ISettings).Create(contentRepo.Object));
             container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
             return container;
+        }
+
+        public static IContentRepository Create(this IContentRepository ignore)
+        {
+            return ignore.Create(new SiteSettings());
+        }
+
+        public static IContentRepository Create(this IContentRepository ignore, SiteSettings siteSettings)
+        {
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            return contentRepo.Object;
         }
 
         public static ITemplateProcessor Create(this ITemplateProcessor ignore, IServiceCollection container)
@@ -37,18 +53,25 @@ namespace PPTail.Generator.Template.Test
 
         public static ISettings Create(this ISettings ignore)
         {
-            return ignore.Create("MM/dd/yyyy", "MM/dd/yyyy hh:mm", string.Empty.GetRandom(), string.Empty.GetRandom(3));
+            return ignore.Create((null as IContentRepository).Create());
+        }
+
+        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
+        {
+            return ignore.Create("MM/dd/yyyy", "MM/dd/yyyy hh:mm", string.Empty.GetRandom(), string.Empty.GetRandom(3), contentRepo);
         }
 
         public static ISettings Create(this ISettings ignore, string dateFormatSpecifier,
-            string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
+            string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension,
+            IContentRepository contentRepo)
         {
             return new Entities.Settings()
             {
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension
+                OutputFileExtension = outputFileExtension,
+                SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\"
             };
         }
 
@@ -111,7 +134,7 @@ namespace PPTail.Generator.Template.Test
                 result.Add((null as ContentItem).Create());
             return result;
         }
-        
+
         public static SiteSettings Create(this SiteSettings ignore)
         {
             return new SiteSettings()

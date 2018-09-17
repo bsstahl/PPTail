@@ -25,8 +25,8 @@ namespace PPTail.Generator.Archive.Test
             var settings = (null as ISettings).CreateDefault();
             container.AddSingleton<ISettings>(settings);
 
-            var siteSettings = (null as SiteSettings).Create();
-            container.AddSingleton<SiteSettings>(siteSettings);
+            // var siteSettings = (null as SiteSettings).Create();
+            // container.AddSingleton<SiteSettings>(siteSettings);
 
             var templates = (null as IEnumerable<Template>).Create();
             container.AddSingleton<IEnumerable<Template>>(templates);

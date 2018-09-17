@@ -15,7 +15,8 @@ namespace PPTail.Data.FileSystem
         const int _defaultPostsPerPage = 3;
         const int _defaultPostsPerFeed = 5;
 
-        const string _sourceDataPathSettingName = "sourceDataPath";
+        const string _connectionStringFilepathKey = "FilePath";
+
         const string _widgetRelativePath = "datastore\\widgets";
         const string _categoriesRelativePath = "categories.xml";
 
@@ -31,14 +32,17 @@ namespace PPTail.Data.FileSystem
             _serviceProvider.ValidateService<IFile>();
 
             var settings = _serviceProvider.GetService<ISettings>();
-            settings.Validate(_sourceDataPathSettingName);
+            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
 
-            _rootSitePath = settings.ExtendedSettings.Get(_sourceDataPathSettingName);
+            _rootSitePath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
             _rootDataPath = System.IO.Path.Combine(_rootSitePath, "App_Data");
         }
 
         public SiteSettings GetSiteSettings()
         {
+            // TODO: Implement caching here since this method may be called
+            // several times but the settings will not change in the interim
+
             var fileSystem = _serviceProvider.GetService<IFile>();
             string settingsPath = System.IO.Path.Combine(_rootDataPath, "settings.xml");
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();

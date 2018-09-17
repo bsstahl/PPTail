@@ -10,6 +10,10 @@ namespace PPTail.Interfaces
         string ItemSeparator { get; set; }
         string OutputFileExtension { get; set; }
 
+        string SourceConnection { get; set; }
+        string TargetConnection { get; set; }
+        string TemplateConnection { get; set; }
+
         ExtendedSettingsCollection ExtendedSettings { get; }
     }
 }

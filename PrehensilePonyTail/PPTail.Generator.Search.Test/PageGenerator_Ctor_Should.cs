@@ -22,20 +22,20 @@ namespace PPTail.Generator.Search.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheContentRepositoryIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
+            container.RemoveDependency<IContentRepository>();
             Assert.Throws<DependencyNotFoundException>(() => (null as ISearchProvider).Create(container));
         }
 
         [Fact]
-        public void ThrowWithTheProperInterfaceTypeNameIfTheSiteSettingsAreNotProvided()
+        public void ThrowWithTheProperInterfaceTypeNameIfTheContentRepositoryIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
+            container.RemoveDependency<IContentRepository>();
 
-            string expected = typeof(SiteSettings).Name;
+            string expected = typeof(IContentRepository).Name;
             try
             {
                 var target = (null as ISearchProvider).Create(container);
@@ -76,7 +76,7 @@ namespace PPTail.Generator.Search.Test
         {
             var template = (null as Template).Create(Enumerations.TemplateType.Item);
             IEnumerable<Template> templates = (null as IEnumerable<Template>).Create(template, null);
-            Assert.Throws(typeof(TemplateNotFoundException), () => (null as ISearchProvider).Create(templates));
+            Assert.Throws<TemplateNotFoundException>(() => (null as ISearchProvider).Create(templates));
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace PPTail.Generator.Search.Test
         {
             var template = (null as Template).Create(Enumerations.TemplateType.SearchPage);
             IEnumerable<Template> templates = (null as IEnumerable<Template>).Create(null, template);
-            Assert.Throws(typeof(TemplateNotFoundException), () => (null as ISearchProvider).Create(templates));
+            Assert.Throws<TemplateNotFoundException>(() => (null as ISearchProvider).Create(templates));
         }
 
     }

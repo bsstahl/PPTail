@@ -18,9 +18,13 @@ namespace PPTail
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IEnumerable<Template>>(templates);
 
+            // Source Repositories
+            container.AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>();
+            container.AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>();
+
+            // Additional Service Providers
             container.AddSingleton<IFile>(c => new PPTail.Io.File());
             container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
-            container.AddSingleton<IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c));
             container.AddSingleton<ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
             container.AddSingleton<IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
@@ -37,13 +41,11 @@ namespace PPTail
             container.AddSingleton<IContentEncoder>(c => new PPTail.Generator.Encoder.ContentEncoder(c));
             container.AddSingleton<ISiteBuilder>(c => new PPTail.SiteGenerator.Builder(c));
 
-            var contentRepo = container.BuildServiceProvider().GetService<Interfaces.IContentRepository>();
+            //var siteSettings = contentRepo.GetSiteSettings();
+            //container.AddSingleton<SiteSettings>(siteSettings);
 
-            var siteSettings = contentRepo.GetSiteSettings();
-            container.AddSingleton<SiteSettings>(siteSettings);
-
-            var categories = contentRepo.GetCategories();
-            container.AddSingleton<IEnumerable<Category>>(categories);
+            //var categories = contentRepo.GetCategories();
+            //container.AddSingleton<IEnumerable<Category>>(categories);
 
             return container;
         }

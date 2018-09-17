@@ -23,7 +23,7 @@ namespace PPTail.Generator.Search
             if (serviceProvider == null)
                 throw new ArgumentNullException("IServiceProvider");
 
-            _serviceProvider.ValidateService<SiteSettings>();
+            _serviceProvider.ValidateService<IContentRepository>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
             _serviceProvider.ValidateService<ISettings>(); // TODO: Add code coverage
 
@@ -39,9 +39,12 @@ namespace PPTail.Generator.Search
         public string GenerateSearchResultsPage(string tag, IEnumerable<ContentItem> contentItems, string navigationContent, string sidebarContent, string pathToRoot)
         {
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-            var siteSettings = _serviceProvider.GetService<SiteSettings>();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
             var settings = _serviceProvider.GetService<ISettings>();
+
+            // var siteSettings = _serviceProvider.GetService<SiteSettings>();
+            var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
+            var siteSettings = contentRepo.GetSiteSettings();
 
             var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
             Guid categoryId = (category == null) ? Guid.Empty : category.Id;

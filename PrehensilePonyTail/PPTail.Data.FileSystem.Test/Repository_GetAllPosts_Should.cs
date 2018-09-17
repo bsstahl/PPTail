@@ -15,6 +15,7 @@ namespace PPTail.Data.FileSystem.Test
     public class Repository_GetAllPosts_Should
     {
         const string _dataFolder = "App_Data";
+        const string _connectionStringFilepathKey = "FilePath";
 
         [Fact]
         public void ReturnAllPostsIfAllAreValid()
@@ -77,8 +78,7 @@ namespace PPTail.Data.FileSystem.Test
             string rootPath = $"c:\\{string.Empty.GetRandom()}";
             string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "posts");
 
-            var settings = new Settings();
-            settings.ExtendedSettings.Set("sourceDataPath", rootPath);
+            var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();

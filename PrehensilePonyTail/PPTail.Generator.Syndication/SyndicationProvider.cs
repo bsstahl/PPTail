@@ -20,8 +20,8 @@ namespace PPTail.Generator.Syndication
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _serviceProvider.ValidateService<SiteSettings>();
-
+            _serviceProvider.ValidateService<IContentRepository>();
+            _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
@@ -33,7 +33,12 @@ namespace PPTail.Generator.Syndication
         {
             var syndicationTemplate = _templates.Find(Enumerations.TemplateType.Syndication);
             var syndicationItemTemplate = _templates.Find(Enumerations.TemplateType.SyndicationItem);
-            var siteSettings = _serviceProvider.GetService<SiteSettings>();
+
+            // var siteSettings = _serviceProvider.GetService<SiteSettings>();
+            var settings = _serviceProvider.GetService<ISettings>();
+            var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
+            var siteSettings = contentRepo.GetSiteSettings();
+
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
             return templateProcessor.Process(syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, posts, "Syndication", ".", string.Empty, true, siteSettings.PostsPerFeed);
         }

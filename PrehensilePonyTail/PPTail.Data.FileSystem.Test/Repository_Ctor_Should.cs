@@ -11,14 +11,10 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_Ctor_Should
     {
-        const string _sourceDataPathSettingName = "sourceDataPath";
-
         [Fact]
         public void NotThrowAnExceptionIfAllDependenciesAreSupplied() 
         {
-            var settings = new Settings();
-            settings.ExtendedSettings.Set(_sourceDataPathSettingName, string.Empty.GetRandom());
-
+            var settings = new Settings() { SourceConnection = string.Empty.GetRandom() };
             var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
@@ -61,8 +57,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ThrowADependencyNotFoundExceptionIfAFileSystemIsNotProvided()
         {
-            var settings = new Settings();
-            settings.ExtendedSettings.Set(_sourceDataPathSettingName, string.Empty.GetRandom());
+            var settings = new Settings() { SourceConnection = string.Empty.GetRandom() };
 
             var container = new ServiceCollection();
             container.AddSingleton<ISettings>(settings);
@@ -73,8 +68,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ThrowWithProperInterfaceTypeNameIfFileSystemIsNotProvided()
         {
-            var settings = new Settings();
-            settings.ExtendedSettings.Set(_sourceDataPathSettingName, string.Empty.GetRandom());
+            var settings = new Settings() { SourceConnection = string.Empty.GetRandom() };
 
             var container = new ServiceCollection();
             container.AddSingleton<ISettings>(settings);
@@ -91,7 +85,7 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
-        public void ThrowASettingNotFoundExceptionIfTheSourceDataPathIsNotSpecified()
+        public void ThrowASettingNotFoundExceptionIfTheSourceConnectionIsNotSpecified()
         {
             var settings = new Settings();
             var fileSystem = Mock.Of<IFile>();
@@ -104,7 +98,7 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
-        public void ThrowWithProperSettingNameIfTheSourceDataPathIsNotSpecified()
+        public void ThrowWithProperSettingNameIfTheSourceConnectionIsNotSpecified()
         {
             var settings = new Settings();
             var fileSystem = Mock.Of<IFile>();
@@ -113,7 +107,7 @@ namespace PPTail.Data.FileSystem.Test
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IFile>(fileSystem);
 
-            string expected = _sourceDataPathSettingName;
+            string expected = nameof(settings.SourceConnection);
             try
             {
                 var target = new Repository(container.BuildServiceProvider());

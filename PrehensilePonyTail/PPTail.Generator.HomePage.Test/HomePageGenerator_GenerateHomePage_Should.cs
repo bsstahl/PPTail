@@ -218,7 +218,8 @@ namespace PPTail.Generator.HomePage.Test
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
-            var settings = (null as ISettings).CreateDefault();
+            var contentRepo = Mock.Of<IContentRepository>();
+            var settings = (null as ISettings).CreateDefault(contentRepo);
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as IHomePageGenerator).Create(container);
@@ -253,13 +254,17 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var siteSettings = (null as SiteSettings).Create();
+
             string sidebarContent = string.Empty.GetRandom();
             string navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
-            container.ReplaceDependency<SiteSettings>(siteSettings);
+
+            var contentRepo = new Mock<IContentRepository>();
+            var siteSettings = (null as SiteSettings).Create();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);

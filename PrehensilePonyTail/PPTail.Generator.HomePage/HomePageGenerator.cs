@@ -22,7 +22,7 @@ namespace PPTail.Generator.HomePage
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _serviceProvider.ValidateService<SiteSettings>();
+            _serviceProvider.ValidateService<IContentRepository>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
             _serviceProvider.ValidateService<ISettings>(); // TODO: Add code coverage
 
@@ -36,9 +36,12 @@ namespace PPTail.Generator.HomePage
         {
             var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
-            var siteSettings = _serviceProvider.GetService<SiteSettings>();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
             var settings = _serviceProvider.GetService<ISettings>();
+
+            var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
+            var siteSettings = contentRepo.GetSiteSettings(); 
+
             return templateProcessor.Process(homepageTemplate, itemTemplate, sidebarContent, navigationContent, posts, "Home", ".", settings.ItemSeparator, false, siteSettings.PostsPerPage);
         }
 

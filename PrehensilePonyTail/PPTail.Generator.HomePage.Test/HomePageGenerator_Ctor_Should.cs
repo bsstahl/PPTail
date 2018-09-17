@@ -28,10 +28,10 @@ namespace PPTail.Generator.HomePage.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSiteSettingsAreNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheContentRepositoryIsNotProvided()
         {
             var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<SiteSettings>();
+            container.RemoveDependency<IContentRepository>();
             Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.HomePage.HomePageGenerator(container.BuildServiceProvider()));
         }
 

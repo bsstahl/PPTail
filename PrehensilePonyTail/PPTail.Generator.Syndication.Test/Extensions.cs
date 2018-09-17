@@ -20,9 +20,11 @@ namespace PPTail.Generator.Syndication.Test
             var container = new ServiceCollection();
 
             var siteSettings = (null as SiteSettings).Create();
-            container.AddSingleton<SiteSettings>(siteSettings);
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create();
+            var settings = (null as ISettings).Create(contentRepo.Object);
             container.AddSingleton<ISettings>(settings);
 
             var linkProvider = Mock.Of<ILinkProvider>();
@@ -129,24 +131,25 @@ namespace PPTail.Generator.Syndication.Test
             };
         }
 
-        public static ISettings Create(this ISettings ignore)
+        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
         {
-            return ignore.Create(string.Empty.GetRandom(3));
+            return ignore.Create(string.Empty.GetRandom(3), contentRepo);
         }
 
-        public static ISettings Create(this ISettings ignore, string outputFileExtension)
+        public static ISettings Create(this ISettings ignore, string outputFileExtension, IContentRepository contentRepo)
         {
-            return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
+            return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null, contentRepo);
         }
 
-        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
+        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings, IContentRepository contentRepo)
         {
             var result = new Settings()
             {
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 OutputFileExtension = outputFileExtension,
-                ItemSeparator = itemSeparator
+                ItemSeparator = itemSeparator,
+                SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\"
             };
 
             if (extendedSettings != null && extendedSettings.Any())

@@ -16,8 +16,8 @@ namespace PPTail.Generator.Contact.Test
         {
             var container = new ServiceCollection();
 
-            var siteSettings = (null as SiteSettings).Create();
-            container.AddSingleton<SiteSettings>(siteSettings);
+            //var siteSettings = (null as SiteSettings).Create();
+            //container.AddSingleton<SiteSettings>(siteSettings);
 
             var settings = (null as Settings).Create();
             container.AddSingleton<ISettings>(settings);

@@ -20,6 +20,28 @@ namespace PPTail.SiteGenerator.Test
         const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
         [Fact]
+        public void UseTheProperContentRepositoryInstance()
+        {
+            var container = (null as IServiceCollection).Create();
+            container.RemoveDependency<IContentRepository>();
+
+            var contentRepo1 = new Mock<IContentRepository>();
+            container.AddSingleton<IContentRepository>(contentRepo1.Object);
+
+            var contentRepo2 = new FakeContentRepository();
+            container.AddSingleton<IContentRepository>(contentRepo2);
+
+            var settings = (null as Settings).Create();
+            settings.SourceConnection = contentRepo1.Object.GetSourceConnection();
+            container.ReplaceDependency<ISettings>(settings);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+            contentRepo1.Verify(c => c.GetAllPages(), Times.AtLeastOnce());
+        }
+
+
+        [Fact]
         public void RequestAllPagesFromTheRepository()
         {
             var container = (null as IServiceCollection).Create();
@@ -80,14 +102,15 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            string extension = string.Empty.GetRandom(3);
-            var settings = (null as Settings).Create(extension);
-            container.ReplaceDependency<ISettings>(settings);
-
             var contentItem = (null as ContentItem).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            string extension = string.Empty.GetRandom(3);
+            var settings = (null as Settings).Create(extension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
+            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actualPages = target.Build();
@@ -102,14 +125,15 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            string extension = string.Empty.GetRandom(4);
-            var settings = (null as ISettings).Create(extension);
-            container.ReplaceDependency<ISettings>(settings);
-
             var contentItem = (null as ContentItem).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            string extension = string.Empty.GetRandom(4);
+            var settings = (null as ISettings).Create(extension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
+            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actualPages = target.Build();
@@ -266,21 +290,17 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CallThePageGeneratorExactlyOnceWithEachPublishedPage()
         {
-            var container = (null as IServiceCollection).Create();
-
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var container = (null as IServiceCollection).Create(contentRepo.Object);
 
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
 
             var pageGen = new Mock<IContentItemPageGenerator>();
             container.ReplaceDependency<IContentItemPageGenerator>(pageGen.Object);
-
-            var settings = new Settings();
-            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -376,9 +396,6 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = new Mock<IPageGenerator>();
             container.ReplaceDependency<IPageGenerator>(pageGen.Object);
 
-            var settings = new Settings();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -392,9 +409,6 @@ namespace PPTail.SiteGenerator.Test
 
             var pageGen = new Mock<IPageGenerator>();
             container.ReplaceDependency<IPageGenerator>(pageGen.Object);
-
-            var settings = new Settings();
-            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -410,9 +424,6 @@ namespace PPTail.SiteGenerator.Test
             var pageGen = new Mock<IHomePageGenerator>();
             container.ReplaceDependency<IHomePageGenerator>(pageGen.Object);
 
-            var settings = new Settings();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -422,12 +433,10 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateOneRawSiteFileForEachSourceFile()
         {
-            var container = (null as IServiceCollection).Create();
-
             var contentRepo = new Mock<IContentRepository>();
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+            var container = (null as IServiceCollection).Create(contentRepo.Object);
 
-            var settings = new Settings();
+            var settings = new Settings() { SourceConnection = contentRepo.Object.GetSourceConnection() };
             string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
@@ -457,6 +466,7 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
@@ -490,6 +500,7 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
@@ -515,9 +526,6 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            var settings = new Settings();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -530,6 +538,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var settings = new Settings();
+            settings.SourceConnection = container.BuildServiceProvider().GetService<IContentRepository>().GetSourceConnection();
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, string.Empty);
             container.ReplaceDependency<ISettings>(settings);
 
@@ -545,6 +554,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var settings = new Settings();
+            settings.SourceConnection = container.BuildServiceProvider().GetService<IContentRepository>().GetSourceConnection();
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, null);
             container.ReplaceDependency<ISettings>(settings);
 
@@ -785,6 +795,7 @@ namespace PPTail.SiteGenerator.Test
 
             string filenameExtension = string.Empty.GetRandom();
             var settings = (null as ISettings).Create(filenameExtension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
@@ -805,13 +816,14 @@ namespace PPTail.SiteGenerator.Test
 
             string filenameExtension = string.Empty.GetRandom();
             var settings = (null as ISettings).Create(filenameExtension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             var actualPages = actual.Where(p => p.SourceTemplateType == Enumerations.TemplateType.SearchPage);
-            Assert.False(actualPages.Any(p => p.IsBase64Encoded));
+            Assert.DoesNotContain(actualPages, p => p.IsBase64Encoded);
         }
 
         [Fact]
@@ -826,6 +838,7 @@ namespace PPTail.SiteGenerator.Test
 
             string filenameExtension = string.Empty.GetRandom();
             var settings = (null as ISettings).Create(filenameExtension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
@@ -848,6 +861,7 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create(filenameExtension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
 
             var redirectProvider = new Mock<IRedirectProvider>();
@@ -881,6 +895,7 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create(filenameExtension);
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
 
             var redirectProvider = new Mock<IRedirectProvider>();
@@ -912,10 +927,8 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
@@ -938,10 +951,8 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
@@ -967,10 +978,8 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(syndicationContent);
@@ -995,10 +1004,8 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
@@ -1022,11 +1029,9 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             settings.AddExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
@@ -1050,11 +1055,9 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             settings.AddExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName, true.ToString());
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
@@ -1078,10 +1081,8 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
@@ -1105,11 +1106,9 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             settings.AddExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -1129,11 +1128,9 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
+            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             settings.AddExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName, true.ToString());
             container.ReplaceDependency<ISettings>(settings);
-
-            var siteSettings = (null as SiteSettings).Create();
-            container.ReplaceDependency<SiteSettings>(siteSettings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();

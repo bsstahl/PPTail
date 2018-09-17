@@ -107,7 +107,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(0, actual.Count());
+            Assert.Empty(actual);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(0, actual.Count());
+            Assert.Empty(actual);
         }
 
         [Fact]
@@ -145,7 +145,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(0, actual.Count());
+            Assert.Empty(actual);
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetCategories();
 
-            Assert.Equal(1, actual.Count());
+            Assert.Single(actual);
         }
     }
 }

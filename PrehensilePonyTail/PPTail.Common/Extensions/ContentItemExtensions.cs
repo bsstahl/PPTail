@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PPTail.Common.Extensions
+namespace PPTail.Extensions
 {
     public static class ContentItemExtensions
     {
