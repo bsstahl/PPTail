@@ -65,32 +65,5 @@ namespace PPTail.Generator.T4Html
                 result = _templates.Find(templateType).Content;
             return result;
         }
-
-        //TODO: Remove scar tissue
-
-        //public string GenerateContentPage(string sidebarContent, string navContent, ContentItem pageData)
-        //{
-        //    var templateType = TemplateType.ContentPage;
-        //    string pathToRoot = "..";
-        //    bool xmlEncodeContent = false;
-        //    return GenerateTemplatePage(sidebarContent, navContent, pageData, templateType, pathToRoot, xmlEncodeContent);
-        //}
-
-        //public string GeneratePostPage(string sidebarContent, string navContent, ContentItem article)
-        //{
-        //    var templateType = TemplateType.PostPage;
-        //    string pathToRoot = "..";
-        //    bool xmlEncodeContent = false;
-        //    return GenerateTemplatePage(sidebarContent, navContent, article, templateType, pathToRoot, xmlEncodeContent);
-        //}
-
-        //private string GenerateTemplatePage(string sidebarContent, string navContent, ContentItem pageData, TemplateType templateType, string pathToRoot, bool xmlEncodeContent)
-        //{
-        //    var template = _templates.Find(templateType);
-        //    var categories = _serviceProvider.GetService<IEnumerable<Category>>();
-        //    var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-        //    return templateProcessor.ProcessContentItemTemplate(template, pageData, sidebarContent, navContent, pathToRoot, xmlEncodeContent);
-        //}
-
     }
 }
