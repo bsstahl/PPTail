@@ -4,11 +4,14 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using PPTail.Interfaces;
+using PPTail.Extensions;
 
 namespace PPTail
 {
     public class Program
     {
+        const string _connectionStringProviderKey = "Provider";
+
         public static void Main(string[] args)
         {
             (var argsAreValid, var argumentErrrors) = args.ValidateArguments();
@@ -23,16 +26,13 @@ namespace PPTail
                 var container = (null as IServiceCollection).Create(settings, templates);
                 var serviceProvider = container.BuildServiceProvider();
 
-                // TODO: Move data load here -- outside of the build process
-                //var contentRepos = serviceProvider.GetServices<IContentRepository>();
-                //var contentRepo = contentRepos.First(); // TODO: Implement properly
-
-
+                // Generate the website pages
                 var siteBuilder = serviceProvider.GetService<ISiteBuilder>();
                 var sitePages = siteBuilder.Build();
 
-                // TODO: Change this to use the named provider specified in the input args
-                var outputRepo = serviceProvider.GetService<Interfaces.IOutputRepository>();
+                // Store the resulting output
+                var outputRepoInstanceName = settings.TargetConnection.GetConnectionStringValue(_connectionStringProviderKey);
+                var outputRepo = serviceProvider.GetNamedService<IOutputRepository>(outputRepoInstanceName);
                 outputRepo.Save(sitePages);
             }
             else
