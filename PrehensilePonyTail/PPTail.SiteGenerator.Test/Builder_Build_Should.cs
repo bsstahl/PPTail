@@ -20,6 +20,20 @@ namespace PPTail.SiteGenerator.Test
         const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
         [Fact]
+        public void NotFailIfNoSiteSettingsArePresent()
+        {
+            var container = (null as IServiceCollection).Create();
+            SiteSettings siteSettings = null;
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+        }
+
+        [Fact]
         public void UseTheProperContentRepositoryInstance()
         {
             var container = (null as IServiceCollection).Create();
@@ -705,8 +719,8 @@ namespace PPTail.SiteGenerator.Test
 
             var sidebarContent = string.Empty.GetRandom();
             var pageGen = new Mock<IPageGenerator>();
-            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<IEnumerable<ContentItem>>(), 
-                It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<Widget>>(), 
+            pageGen.Setup(n => n.GenerateSidebarContent(It.IsAny<IEnumerable<ContentItem>>(),
+                It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<IEnumerable<Widget>>(),
                 It.IsAny<string>()))
                 .Returns(sidebarContent);
             container.ReplaceDependency<IPageGenerator>(pageGen.Object);
@@ -1138,5 +1152,73 @@ namespace PPTail.SiteGenerator.Test
             Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
         }
 
+        [Fact]
+        public void NotLookForThemeItemsIfNoThemeIsSpecifiedInSiteSettings()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            string theme = string.Empty;
+            SiteSettings siteSettings = new SiteSettings()
+            {
+                Title = string.Empty.GetRandom(),
+                Description = string.Empty.GetRandom(),
+                Theme = theme
+            };
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            contentRepo.Verify(r => r.GetFolderContents(It.Is<string>(s => s.StartsWith(".\\themes\\"))), Times.Never);
+        }
+
+        [Fact]
+        public void GetsTheContentsOfTheThemeFolderExactlyOnce()
+        {
+            string theme = string.Empty.GetRandom();
+            int expectedItemCount = 25.GetRandom(10);
+            var contents = (null as IEnumerable<SourceFile>).Create(expectedItemCount);
+
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = (null as SiteSettings).Create();
+            siteSettings.Theme = theme;
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            contentRepo.Setup(r => r.GetFolderContents(It.Is<string>(s => s == $".\\themes\\{theme}"))).Returns(contents);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            contentRepo.Verify(r => r.GetFolderContents(It.Is<string>(s => s == $".\\themes\\{theme}")), Times.Once);
+        }
+
+        [Fact]
+        public void CreateOneFileInTheThemeFolderForEveryFileInTheSpecifiedTheme()
+        {
+            string theme = string.Empty.GetRandom();
+            int expectedItemCount = 25.GetRandom(10);
+            var contents = (null as IEnumerable<SourceFile>).Create(expectedItemCount);
+
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = (null as SiteSettings).Create();
+            siteSettings.Theme = theme;
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            contentRepo.Setup(r => r.GetFolderContents(It.Is<string>(s => s == $".\\themes\\{theme}"))).Returns(contents);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(expectedItemCount, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.StartsWith("Theme")));
+        }
     }
 }

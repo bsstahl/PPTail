@@ -213,6 +213,23 @@ namespace PPTail.SiteGenerator
                 });
             }
 
+            // Add files from Theme if there are any
+            if (!string.IsNullOrWhiteSpace(siteSettings?.Theme))
+            {
+                string path = $".\\themes\\{siteSettings.Theme}";
+                var additionalFiles = contentRepo.GetFolderContents(path);
+                foreach (var rawFile in additionalFiles)
+                {
+                    result.Add(new SiteFile()
+                    {
+                        RelativeFilePath = System.IO.Path.Combine("Theme", rawFile.FileName),
+                        SourceTemplateType = Enumerations.TemplateType.Raw,
+                        Content = System.Convert.ToBase64String(rawFile.Contents),
+                        IsBase64Encoded = true
+                    });
+                }
+            }
+
             // Add additional raw files
             string relativePathString = settings.GetExtendedSetting(_additionalFilePathsSettingName);
             if (!string.IsNullOrEmpty(relativePathString))
