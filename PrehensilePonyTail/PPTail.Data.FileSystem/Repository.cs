@@ -19,6 +19,7 @@ namespace PPTail.Data.FileSystem
 
         const string _widgetRelativePath = "datastore\\widgets";
         const string _categoriesRelativePath = "categories.xml";
+        const string _settingsFilename = "settings.xml";
 
         private readonly IServiceProvider _serviceProvider;
         private readonly string _rootDataPath;
@@ -44,7 +45,7 @@ namespace PPTail.Data.FileSystem
             // several times but the settings will not change in the interim
 
             var fileSystem = _serviceProvider.GetService<IFile>();
-            string settingsPath = System.IO.Path.Combine(_rootDataPath, "settings.xml");
+            string settingsPath = System.IO.Path.Combine(_rootDataPath, _settingsFilename);
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
             if (result == null)
                 throw new Exceptions.SettingNotFoundException(typeof(SiteSettings).Name);

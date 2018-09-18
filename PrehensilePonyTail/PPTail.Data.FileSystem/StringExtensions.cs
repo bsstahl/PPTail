@@ -39,7 +39,8 @@ namespace PPTail.Data.FileSystem
                     Title = node.GetElementValue("name"),
                     Description = node.GetElementValue("description"),
                     PostsPerPage = postsPerPage,
-                    PostsPerFeed = postsPerFeed
+                    PostsPerFeed = postsPerFeed,
+                    Theme = node.GetElementValue("theme")
                 };
             }
 

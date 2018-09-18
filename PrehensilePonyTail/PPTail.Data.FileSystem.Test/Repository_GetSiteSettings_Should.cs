@@ -60,7 +60,8 @@ namespace PPTail.Data.FileSystem.Test
         {
             string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
             string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "settings.xml");
-            string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 0);
+
+            string xml = new SettingsFileBuilder().UseRandomValues().Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)))
@@ -76,7 +77,8 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueForTitle()
         {
             string expected = string.Empty.GetRandom();
-            string xml = (null as SiteSettings).BuildXml(expected, string.Empty, 0);
+            string xml = new SettingsFileBuilder().UseRandomValues()
+                .Title(expected).Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -91,12 +93,14 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ThrowSettingNotFoundExceptionIfTitleIsNotSupplied()
         {
-            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
-            xml.RemoveDescendants("name");
+            var xml = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveTitle()
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(xml.ToString());
+                .Returns(xml);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             Assert.Throws<SettingNotFoundException>(() => target.GetSiteSettings());
@@ -107,8 +111,8 @@ namespace PPTail.Data.FileSystem.Test
         {
             string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
 
-            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
-            xml.RemoveDescendants("name");
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .RemoveTitle().Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -131,7 +135,8 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueForDescription()
         {
             string expected = string.Empty.GetRandom();
-            string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), expected, 0);
+            string xml = new SettingsFileBuilder().UseRandomValues()
+                .Description(expected).Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -146,12 +151,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnAnEmptyStringIfDescriptionIsNotSupplied()
         {
-            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
-            xml.RemoveDescendants("description");
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .RemoveDescription().Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(xml.ToString());
+                .Returns(xml);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var actual = target.GetSiteSettings();
@@ -163,7 +168,8 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueForPostsPerPage()
         {
             int expected = 25.GetRandom(5);
-            string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty, expected);
+            string xml = new SettingsFileBuilder().UseRandomValues()
+                .PostsPerPage(expected).Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -178,12 +184,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheDefaultValueIfPostsPerPageIsNotSupplied()
         {
-            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2)));
-            xml.RemoveDescendants("postsperpage");
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .RemovePostsPerPage().Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(xml.ToString());
+                .Returns(xml);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var actual = target.GetSiteSettings();
@@ -195,7 +201,8 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheProperValueForPostsPerFeed()
         {
             int expected = 25.GetRandom(5);
-            string xml = (null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty, 10.GetRandom(3), expected);
+            string xml = new SettingsFileBuilder().UseRandomValues()
+                .PostsPerFeed(expected).Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -210,8 +217,41 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheDefaultValueIfPostsPerFeedIsNotSupplied()
         {
-            var xml = XElement.Parse((null as SiteSettings).BuildXml(string.Empty.GetRandom(), string.Empty.GetRandom(), 10.GetRandom(2), 100));
-            xml.RemoveDescendants("postsperfeed");
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .RemovePostsPerFeed().Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(_defaultPostsPerFeed, actual.PostsPerFeed);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForTheme()
+        {
+            string expected = string.Empty.GetRandom(25);
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .Theme(expected).Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.Theme);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyStringIfThemeNodeIsEmpty()
+        {
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .Theme(string.Empty).Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -220,7 +260,24 @@ namespace PPTail.Data.FileSystem.Test
             var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
             var actual = target.GetSiteSettings();
 
-            Assert.Equal(_defaultPostsPerFeed, actual.PostsPerFeed);
+            Assert.Equal(string.Empty, actual.Theme);
         }
+
+        [Fact]
+        public void ReturnAnEmptyStringIfThemeIsNotSupplied()
+        {
+            var xml = new SettingsFileBuilder().UseRandomValues()
+                .RemoveTheme().Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(xml.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(string.Empty, actual.Theme);
+        }
+
     }
 }

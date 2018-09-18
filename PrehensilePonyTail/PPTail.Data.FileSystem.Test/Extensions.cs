@@ -14,7 +14,6 @@ namespace PPTail.Data.FileSystem.Test
 {
     public static class Extensions
     {
-        const string _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage><postsperfeed>{3}</postsperfeed></settings>";
         const string _sourceDataPathSettingName = "sourceDataPath";
         const string _connectionStringFilepathKey = "FilePath";
 
@@ -48,24 +47,14 @@ namespace PPTail.Data.FileSystem.Test
 
         public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
         {
-            return new PPTail.Data.FileSystem.Repository(serviceProvider);
+            return new Repository(serviceProvider);
         }
 
-        public static string BuildXml(this SiteSettings ignore, string title, string description, int postsPerPage)
+        public static XElement ConditionalAddNode(this XElement node, bool addNode, string name, string value)
         {
-            return ignore.BuildXml(title, description, postsPerPage, 3);
-        }
-
-        public static string BuildXml(this SiteSettings ignore, string title, string description, int postsPerPage, int postsPerFeed)
-        {
-            return string.Format(_siteSettingsXmlTemplate, title, description, postsPerPage.ToString(), postsPerFeed.ToString());
-        }
-
-        public static XElement RemoveDescendants(this XElement element, string elementLocalName)
-        {
-            var target = element.Descendants().Where(n => n.Name.LocalName == elementLocalName);
-            target.Remove();
-            return element;
+            if (addNode)
+                node.Add(new XElement(XName.Get(name), value));
+            return node;
         }
 
         public static IEnumerable<Widget> Create(this IEnumerable<Widget> ignore)
