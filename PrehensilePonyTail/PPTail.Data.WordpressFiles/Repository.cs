@@ -221,7 +221,7 @@ namespace PPTail.Data.WordpressFiles
             foreach (var category in categories)
             {
                 result.Add(new KeyValuePair<int, Entities.Category>(
-                    category.id, 
+                    category.id,
                     new Entities.Category()
                     {
                         Description = category.description,
@@ -241,12 +241,21 @@ namespace PPTail.Data.WordpressFiles
 
         private void LoadFolderContents()
         {
+            // TODO: Implement
             throw new NotImplementedException();
         }
 
         private void LoadSiteSettings()
         {
-            throw new NotImplementedException();
+            // TODO: Implement if ever needed. The current data from WP that I have doesn't have any visible way to get this information.
+            _siteSettings = new Entities.SiteSettings()
+            {
+                Title = "Site Title",
+                Description = "A Description of the Site",
+                PostsPerFeed = 10,
+                PostsPerPage = 10,
+                Theme = "ThemeName"
+            };
         }
 
         private void LoadTags()

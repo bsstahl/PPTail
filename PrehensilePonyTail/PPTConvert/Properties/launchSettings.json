@@ -2,7 +2,7 @@
   "profiles": {
     "PPTConvert": {
       "commandName": "Project",
-      "commandLineArgs": "\"Provider=PPTail.Data.WordpressFiles.Repository;Filepath=C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\SourceData\\WP\" \"Provider=PPTail.Data.NativeJson.RepositoryWriter;FilePath=C:\\Users\\barry\\Source\\Repos\\AZGiveCamp-Wordpress-Data\\SourceData\\PPTail\\PPTail.json\" "
+      "commandLineArgs": "\"Provider=PPTail.Data.WordpressFiles.Repository;Filepath=..\\..\\..\\..\\..\\..\\SourceData\" \"Provider=PPTail.Data.NativeJson.RepositoryWriter;FilePath=..\\..\\..\\..\\..\\..\\SourceData\\PPTail.json\" "
     }
   }
 }
