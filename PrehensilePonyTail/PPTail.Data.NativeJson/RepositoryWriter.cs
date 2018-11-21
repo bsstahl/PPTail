@@ -9,29 +9,49 @@ namespace PPTail.Data.NativeJson
     public class RepositoryWriter: IContentRepositoryWriter
     {
         readonly string _filePath;
+        Context _context = null;
+
         public RepositoryWriter(string filePath)
         {
             _filePath = filePath;
         }
 
+        private Context Context
+        {
+            get
+            {
+                if (_context == null)
+                    _context = Context.Load(_filePath);
+                return _context;
+            }
+        }
+
         public void SaveAllPages(IEnumerable<ContentItem> pages)
         {
-            throw new NotImplementedException();
+            var context = this.Context;
+            context.Pages = pages;
+            context.Save(_filePath);
         }
 
         public void SaveAllPosts(IEnumerable<ContentItem> posts)
         {
-            throw new NotImplementedException();
+            var context = this.Context;
+            context.Posts = posts;
+            context.Save(_filePath);
         }
 
         public void SaveAllWidgets(IEnumerable<Widget> widgets)
         {
-            throw new NotImplementedException();
+            var context = this.Context;
+            context.Widgets = widgets;
+            context.Save(_filePath);
         }
 
         public void SaveCategories(IEnumerable<Category> categories)
         {
-            throw new NotImplementedException();
+            var context = this.Context;
+            context.Categories = categories;
+            context.Save(_filePath);
         }
 
         public void SaveFolderContents(string relativePath, IEnumerable<SourceFile> contents)
@@ -41,7 +61,9 @@ namespace PPTail.Data.NativeJson
 
         public void SaveSiteSettings(SiteSettings settings)
         {
-            throw new NotImplementedException();
+            var context = this.Context;
+            context.SiteSettings = settings;
+            context.Save(_filePath);
         }
     }
 }

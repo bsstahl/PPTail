@@ -4,12 +4,6 @@ using System.Text;
 
 namespace PPTail.Data.WordpressFiles
 {
-
-    public class Pages
-    {
-        public Page[] Property1 { get; set; }
-    }
-
     public class Page
     {
         public int id { get; set; }

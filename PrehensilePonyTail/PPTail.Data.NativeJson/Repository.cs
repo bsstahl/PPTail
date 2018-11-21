@@ -15,7 +15,6 @@ namespace PPTail.Data.NativeJson
 
         public IEnumerable<ContentItem> GetAllPages()
         {
-
             throw new NotImplementedException();
         }
 
