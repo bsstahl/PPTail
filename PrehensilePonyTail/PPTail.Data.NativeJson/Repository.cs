@@ -17,6 +17,17 @@ namespace PPTail.Data.NativeJson
             _filePath = filePath;
         }
 
+        private Context _context;
+        private Context Context
+        {
+            get
+            {
+                if (_context == null)
+                    Load();
+                return _context;
+            }
+        }
+
         public Repository(IServiceProvider serviceProvider)
         {
             serviceProvider.ValidateService<ISettings>();
@@ -29,32 +40,40 @@ namespace PPTail.Data.NativeJson
 
         public IEnumerable<ContentItem> GetAllPages()
         {
-            throw new NotImplementedException();
+            return this.Context.Pages;
         }
 
         public IEnumerable<ContentItem> GetAllPosts()
         {
-            throw new NotImplementedException();
+            return this.Context.Posts;
         }
 
         public IEnumerable<Widget> GetAllWidgets()
         {
-            throw new NotImplementedException();
+            return this.Context.Widgets;
         }
 
         public IEnumerable<Category> GetCategories()
         {
-            throw new NotImplementedException();
+            return this.Context.Categories;
         }
 
         public IEnumerable<SourceFile> GetFolderContents(string relativePath)
         {
-            throw new NotImplementedException();
+            // TODO: Implement
+            return new List<SourceFile>();
         }
 
         public SiteSettings GetSiteSettings()
         {
-            throw new NotImplementedException();
+            return this.Context.SiteSettings;
+        }
+
+        private void Load()
+        {
+            var jsonData = System.IO.File.ReadAllText(_filePath);
+            var context = Newtonsoft.Json.JsonConvert.DeserializeObject<Context>(jsonData);
+            _context = context;
         }
     }
 }
