@@ -3,16 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using PPTail.Entities;
 using PPTail.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using PPTail.Extensions;
 
 namespace PPTail.Data.WordpressFiles
 {
     public class Repository : Interfaces.IContentRepository
     {
+        const string _connectionStringFilepathKey = "FilePath";
         readonly string _dataFilePath;
 
         public Repository(string dataFilePath)
         {
             _dataFilePath = dataFilePath;
+        }
+
+        public Repository(IServiceProvider serviceProvider)
+        {
+            serviceProvider.ValidateService<ISettings>();
+
+            var settings = serviceProvider.GetService<ISettings>();
+            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
+
+            _dataFilePath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
         }
 
         #region LazyLoad/Cache properties

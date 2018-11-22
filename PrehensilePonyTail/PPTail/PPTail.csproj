@@ -15,6 +15,8 @@
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
     <ProjectReference Include="..\PPTail.Data.Ef\PPTail.Data.Ef.csproj" />
     <ProjectReference Include="..\PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj" />
+    <ProjectReference Include="..\PPTail.Data.NativeJson\PPTail.Data.NativeJson.csproj" />
+    <ProjectReference Include="..\PPTail.Data.WordpressFiles\PPTail.Data.WordpressFiles.csproj" />
     <ProjectReference Include="..\PPTail.Generator.Archive\PPTail.Generator.Archive.csproj" />
     <ProjectReference Include="..\PPTail.Generator.Contact\PPTail.Generator.Contact.csproj" />
     <ProjectReference Include="..\PPTail.Generator.ContentPage\PPTail.Generator.ContentPage.csproj" />
