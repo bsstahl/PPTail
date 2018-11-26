@@ -249,7 +249,18 @@ namespace PPTail.Data.WordpressFiles
         private void LoadWidgets()
         {
             // TODO: Implement if ever needed. The current data from WP that I have doesn't have any widgets.
-            _widgets = new List<Widget>();
+            _widgets = new List<Widget>() {
+                new Widget()
+                {
+                    Id = System.Guid.NewGuid(),
+                    Title = "Sample Widget",
+                    ShowTitle = true,
+                    WidgetType = Enumerations.WidgetType.TextBox,
+                    Dictionary = new List<Tuple<string, string>>()
+                    {
+                        new Tuple<string, string>("Content", "Place content here")
+                    }
+                }};
         }
 
         private void LoadFolderContents()
