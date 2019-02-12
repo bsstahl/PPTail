@@ -283,3 +283,10 @@ paket-files/
 /PrehensilePonyTail/GeneratedWebApp/wwwroot/Posts
 /PrehensilePonyTail/GeneratedWebApp/wwwroot/Style.css
 /PrehensilePonyTail/GeneratedWebApp/wwwroot/app_data
+
+# These files are specific to the dev environment. 
+# We want the checked-in copies to be generic so changes
+# in them locally should be ignored
+/PrehensilePonyTail/Data.json
+/PrehensilePonyTail/PPTail/Properties/launchSettings.json
+/PrehensilePonyTail/PPTConvert/Properties/launchSettings.json
