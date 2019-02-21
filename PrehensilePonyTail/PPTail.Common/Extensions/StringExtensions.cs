@@ -45,5 +45,35 @@ namespace PPTail.Extensions
 
             return result;
         }
+
+        public static string CreateSlug(this string title)
+        {
+            return title.Trim()
+                .Replace(' ', '-')
+                .Replace(',', '-')
+                .HTMLEncode()
+                .RemoveConsecutiveDashes();
+        }
+
+        public static string HTMLEncode(this string data)
+        {
+            return System.Net.WebUtility.HtmlEncode(data);
+        }
+
+        public static string RemoveConsecutiveDashes(this string data)
+        {
+            string original = string.Empty;
+            string current = data;
+
+            do
+            {
+                original = current;
+                current = current.Replace("--", "-");
+            } while (current != original);
+
+            return current;
+        }
+
+
     }
 }

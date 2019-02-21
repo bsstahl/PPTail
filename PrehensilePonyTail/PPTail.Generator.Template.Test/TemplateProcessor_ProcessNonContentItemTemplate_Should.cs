@@ -26,12 +26,13 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<IContentRepository>();
 
             var target = (null as ITemplateProcessor).Create(container);
-            Assert.Throws<DependencyNotFoundException>(() => target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle));
+            Assert.Throws<DependencyNotFoundException>(() => target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot));
         }
 
         [Fact]
@@ -45,6 +46,7 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<IContentRepository>();
@@ -55,7 +57,7 @@ namespace PPTail.Generator.Template.Test
             string expected = nameof(IContentRepository);
             try
             {
-                target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+                target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             }
             catch (DependencyNotFoundException ex)
@@ -78,12 +80,13 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             Assert.Contains(pageTitle, actual);
         }
@@ -99,12 +102,13 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             Assert.Contains(navContent, actual);
         }
@@ -120,12 +124,13 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             Assert.Contains(sidebarContent, actual);
         }
@@ -141,12 +146,13 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             Assert.Contains(content, actual);
         }
@@ -162,13 +168,14 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
             var siteSettings = container.BuildServiceProvider().GetService<IContentRepository>().GetSiteSettings();
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             Assert.Contains(siteSettings.Title, actual);
         }
@@ -184,14 +191,38 @@ namespace PPTail.Generator.Template.Test
             string navContent = string.Empty.GetRandom();
             string pageTitle = string.Empty.GetRandom();
             string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             var siteSettings = container.BuildServiceProvider().GetService<IContentRepository>().GetSiteSettings();
 
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
 
             Assert.Contains(siteSettings.Description, actual);
         }
+
+        [Fact]
+        public void ReplaceThePathToSiteRootPlaceHolderWithTheProperPath()
+        {
+            string pageTemplateContent = "-----{PathToSiteRoot}-----";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var templates = new List<Entities.Template>() { pageTemplate };
+
+            string sidebarContent = string.Empty.GetRandom();
+            string navContent = string.Empty.GetRandom();
+            string pageTitle = string.Empty.GetRandom();
+            string content = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
+
+            Assert.Contains(pathToRoot, actual);
+        }
+
     }
 }

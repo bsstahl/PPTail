@@ -12,5 +12,6 @@ namespace PPTail.Entities
         public int PostsPerPage { get; set; }
         public int PostsPerFeed { get; set; }
         public string Theme { get; set; }
+        public string Copyright { get; set; }
     }
 }

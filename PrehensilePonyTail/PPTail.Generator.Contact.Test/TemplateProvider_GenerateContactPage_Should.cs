@@ -31,7 +31,7 @@ namespace PPTail.Generator.Contact.Test
             var actual = target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace PPTail.Generator.Contact.Test
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor
-                .Setup(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(expected);
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -76,7 +76,7 @@ namespace PPTail.Generator.Contact.Test
             var template = templates.Find(Enumerations.TemplateType.ContactPage);
 
             templateProcessor
-                .Verify(t => t.ProcessNonContentItemTemplate(template, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                .Verify(t => t.ProcessNonContentItemTemplate(template, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace PPTail.Generator.Contact.Test
             var actual = target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), sidebarContent, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace PPTail.Generator.Contact.Test
             var actual = target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), navigationContent, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -134,7 +134,26 @@ namespace PPTail.Generator.Contact.Test
 
             string expected = "Contact Me";
             templateProcessor
-                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), expected), Times.Once);
+                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), expected, It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public void PassTheCorrectPathToRootToTheTemplateProcessor()
+        {
+            string navigationContent = string.Empty.GetRandom();
+            string sidebarContent = string.Empty.GetRandom();
+            string pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
+
+            var target = (null as IContactProvider).Create(container);
+            var actual = target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot);
+
+            templateProcessor
+                .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), pathToRoot), Times.Once);
         }
 
     }

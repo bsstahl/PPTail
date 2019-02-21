@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28606.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}"
 EndProject
@@ -120,11 +120,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Ef.Test", "PPTa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Test", "PPTail.Test\PPTail.Test.csproj", "{5C88D4F3-66D8-4A55-BE67-67AFE8715F1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Data.WordpressFiles", "PPTail.Data.WordpressFiles\PPTail.Data.WordpressFiles.csproj", "{28F28C25-1CF7-4C5D-92C7-A0BF52B89241}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.WordpressFiles", "PPTail.Data.WordpressFiles\PPTail.Data.WordpressFiles.csproj", "{28F28C25-1CF7-4C5D-92C7-A0BF52B89241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTConvert", "PPTConvert\PPTConvert.csproj", "{D95771E6-64F9-4D3F-AC5D-48BE5DD8CC6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTConvert", "PPTConvert\PPTConvert.csproj", "{D95771E6-64F9-4D3F-AC5D-48BE5DD8CC6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Data.NativeJson", "PPTail.Data.NativeJson\PPTail.Data.NativeJson.csproj", "{D62D8588-DCCA-4D53-AE34-05347FC46134}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.NativeJson", "PPTail.Data.NativeJson\PPTail.Data.NativeJson.csproj", "{D62D8588-DCCA-4D53-AE34-05347FC46134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Data.PhotoBlog", "PPTail.Data.PhotoBlog\PPTail.Data.PhotoBlog.csproj", "{C3488DD6-2EFF-48DD-A724-6AAA49421E38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -332,6 +334,10 @@ Global
 		{D62D8588-DCCA-4D53-AE34-05347FC46134}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D62D8588-DCCA-4D53-AE34-05347FC46134}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D62D8588-DCCA-4D53-AE34-05347FC46134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3488DD6-2EFF-48DD-A724-6AAA49421E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3488DD6-2EFF-48DD-A724-6AAA49421E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3488DD6-2EFF-48DD-A724-6AAA49421E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3488DD6-2EFF-48DD-A724-6AAA49421E38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -386,6 +392,7 @@ Global
 		{28F28C25-1CF7-4C5D-92C7-A0BF52B89241} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{D95771E6-64F9-4D3F-AC5D-48BE5DD8CC6B} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{D62D8588-DCCA-4D53-AE34-05347FC46134} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
+		{C3488DD6-2EFF-48DD-A724-6AAA49421E38} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C6FD3D6-AA5B-4B33-A93A-E8286791C3F4}

@@ -53,34 +53,6 @@ namespace PPTail.Generator.Links
         //        .Replace("{SiteDescription}", siteSettings.Description);
         //}
 
-        //public static string CreateSlug(this string title)
-        //{
-        //    return title.Trim()
-        //        .Replace(' ', '-')
-        //        .HTMLEncode()
-        //        .RemoveConsecutiveDashes();
-        //}
-
-        //public static string HTMLEncode(this string data)
-        //{
-        //    return data.Replace("&quot;", "")
-        //        .Replace("\"", "")
-        //        .Replace("'", "")
-        //        .Replace("?", "")
-        //        .Replace("<", "")
-        //        .Replace("&lt;", "")
-        //        .Replace(">", "")
-        //        .Replace("&gt;", "")
-        //        .Replace("!", "bang")
-        //        .Replace("“", "")
-        //        .Replace("”", "")
-        //        .Replace("–", "-")
-        //        .Replace(".", "dot")
-        //        .Replace("e28093", "-")
-        //        .Replace("e2809c", "")
-        //        .Replace("e2809d", "");
-        //}
-
         //public static string XmlEncode(this string content)
         //{
         //    return content.Replace("<", "&lt;")
@@ -90,20 +62,6 @@ namespace PPTail.Generator.Links
         //        .Replace("\"", "&quot;")
         //        .Replace("'", "&apos;")
         //        .Replace("&", "&amp;");
-        //}
-
-        //public static string RemoveConsecutiveDashes(this string data)
-        //{
-        //    string original = string.Empty;
-        //    string current = data;
-
-        //    do
-        //    {
-        //        original = current;
-        //        current = current.Replace("--", "-");
-        //    } while (current != original);
-
-        //    return current;
         //}
 
         //public static string TagLinkList(this IEnumerable<string> tags, ISettings settings, string pathToRoot, string cssClass)

@@ -16,9 +16,15 @@ namespace PPTail.Generator.T4Html
             string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
 
             if (widget.WidgetType == Enumerations.WidgetType.TextBox)
-                results += widget.RenderTextBoxWidget();
+            {
+                serviceProvider.ValidateService<ITemplateProcessor>();
+                var templateProcessor = serviceProvider.GetService<ITemplateProcessor>();
+                results += widget.RenderTextBoxWidget(templateProcessor, string.Empty, string.Empty, pathToRoot);
+            }
+
             if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
                 results += widget.RenderTagCloudWidget(serviceProvider, settings, posts, pathToRoot);
+
             if (widget.WidgetType == Enumerations.WidgetType.TagList)
                 results += widget.RenderTagListWidget(serviceProvider, settings, posts, pathToRoot);
 
@@ -26,12 +32,14 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTextBoxWidget(this Widget widget)
+        private static string RenderTextBoxWidget(this Widget widget, ITemplateProcessor templateProcessor, string content, string pageTitle, string pathToRoot)
         {
             string results = string.Empty;
+            var template = new Template() { Content = widget.FirstDictionaryItemContent(), TemplateType = Enumerations.TemplateType.Raw };
+            string widgetContent = templateProcessor.ProcessNonContentItemTemplate(template, string.Empty, string.Empty, content, pageTitle, pathToRoot);
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
-            results += $"<div class=\"content\">{widget.FirstDictionaryItemContent()}</div>";
+            results += $"<div class=\"content\">{widgetContent}</div>";
             return results;
         }
 

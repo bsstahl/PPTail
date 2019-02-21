@@ -57,12 +57,13 @@ namespace PPTail.Generator.Template
                 .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, settings, pathToRoot, "small"));
         }
 
-        internal static string ReplaceNonContentItemSpecificVariables(this string template, IServiceProvider serviceProvider, string sidebarContent, string navContent, string content)
+        internal static string ReplaceNonContentItemSpecificVariables(this string template, IServiceProvider serviceProvider, string sidebarContent, string navContent, string content, string pathToRoot)
         {
             return template
                 .Replace("{NavigationMenu}", navContent)
                 .Replace("{Sidebar}", sidebarContent)
                 .Replace("{Content}", content)
+                .Replace("{PathToSiteRoot}", pathToRoot)
                 .ReplaceSettingsVariables(serviceProvider);
         }
 
@@ -76,7 +77,8 @@ namespace PPTail.Generator.Template
             var siteSettings = contentRepo.GetSiteSettings();
 
             return template.Replace("{SiteTitle}", siteSettings.Title)
-                .Replace("{SiteDescription}", siteSettings.Description);
+                .Replace("{SiteDescription}", siteSettings.Description)
+                .Replace("{Copyright}", siteSettings.Copyright);
         }
 
 
@@ -89,7 +91,7 @@ namespace PPTail.Generator.Template
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
 
             string encodedTitle = contentEncoder.UrlEncode(title);
-            string url = linkProvider.GetUrl(pathToRoot, "search", encodedTitle);
+            string url = linkProvider.GetUrl(pathToRoot, "Search", encodedTitle);
             return $"<a title=\"{linkType}: {title}\" class=\"{cssClass}\" href=\"{url}\">{title}</a>";
         }
 

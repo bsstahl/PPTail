@@ -36,21 +36,21 @@ namespace PPTail.Generator.Template
                 contentItems.Add(ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent));
 
             var pageContent = string.Join(itemSeparator, contentItems);
-            return ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, pageContent, pageTitle);
+            return ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, pageContent, pageTitle, pathToRoot);
         }
 
         public string ProcessContentItemTemplate(Entities.Template template, ContentItem item, string sidebarContent, string navContent, string pathToRoot, bool xmlEncodeContent)
         {
             return template.Content
                 .ReplaceContentItemVariables(_serviceProvider, item, pathToRoot, xmlEncodeContent)
-                .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, string.Empty);
+                .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, string.Empty, pathToRoot);
         }
 
-        public string ProcessNonContentItemTemplate(Entities.Template template, string sidebarContent, string navContent, string content, string pageTitle)
+        public string ProcessNonContentItemTemplate(Entities.Template template, string sidebarContent, string navContent, string content, string pageTitle, string pathToRoot)
         {
             return template.Content
                   .Replace("{Title}", pageTitle)
-                  .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, content);
+                  .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, content, pathToRoot);
         }
 
 
