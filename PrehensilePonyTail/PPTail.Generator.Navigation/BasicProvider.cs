@@ -31,7 +31,7 @@ namespace PPTail.Generator.Navigation
             result += "<ul class=\"pagelist\" id=\"pagelist\">";
             foreach (var page in pages.Where(p => p.IsPublished && p.ShowInList))
             {
-                var pageUri = System.IO.Path.Combine(relativePathToRootFolder, "pages", $"{page.Slug}.{outputFileExtension}");
+                var pageUri = System.IO.Path.Combine(relativePathToRootFolder, "Pages", $"{page.Slug}.{outputFileExtension}");
                 result += $"<li><a href=\"{pageUri}\">{page.Title}</a></li>";
             }
 
