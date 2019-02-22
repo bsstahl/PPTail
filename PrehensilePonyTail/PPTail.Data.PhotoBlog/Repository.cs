@@ -98,10 +98,8 @@ namespace PPTail.Data.PhotoBlog
         public IEnumerable<Category> GetCategories()
         {
             var categoriesFilePath = System.IO.Path.Combine(_rootPath, "Categories.json");
-
-            // TODO: Replace this using the proper abstraction
-            var json = System.IO.File.ReadAllText(categoriesFilePath); 
-
+            var fileSystem = _serviceProvider.GetService<IFile>();
+            var json = fileSystem.ReadAllText(categoriesFilePath); 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Category>>(json);
         }
 
