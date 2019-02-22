@@ -34,8 +34,23 @@ namespace PPTail.Data.PhotoBlog
 
         public IEnumerable<ContentItem> GetAllPages()
         {
-            // TODO: Implement Pages
-            return new List<ContentItem>();
+            var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
+
+            var results = new List<ContentItem>();
+            string pagePath = System.IO.Path.Combine(_rootPath, "pages");
+            var files = directory.EnumerateFiles(pagePath);
+            foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
+            {
+                var contentJson = fileSystem.ReadAllText(file);
+                var contentItem = Newtonsoft.Json.JsonConvert.DeserializeObject<Entities.ContentItem>(contentJson);
+                if (contentItem != null)
+                {
+                    contentItem.Id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
+                    results.Add(contentItem);
+                }
+            }
+            return results;
         }
 
         public IEnumerable<ContentItem> GetAllPosts()
