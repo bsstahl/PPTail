@@ -51,6 +51,7 @@ namespace PPTail.Extensions
             return title.Trim()
                 .Replace(' ', '-')
                 .Replace(',', '-')
+                .Replace("\'", "")
                 .HTMLEncode()
                 .RemoveConsecutiveDashes();
         }
