@@ -11,8 +11,8 @@ namespace PPTail.Generator.Syndication
 {
     public class SyndicationProvider: ISyndicationProvider
     {
-        IServiceProvider _serviceProvider;
-        IEnumerable<Template> _templates;
+        readonly IServiceProvider _serviceProvider;
+        readonly IEnumerable<Template> _templates;
 
         public SyndicationProvider(IServiceProvider serviceProvider)
         {

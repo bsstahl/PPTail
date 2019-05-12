@@ -13,10 +13,10 @@ namespace PPTail.Output.FileSystem
     {
         const string _connectionStringFilepathKey = "FilePath";
 
-        IServiceProvider _serviceProvider;
-        IFile _file;
-        IDirectory _directory;
-        ISettings _settings;
+        readonly IServiceProvider _serviceProvider;
+        readonly IFile _file;
+        readonly IDirectory _directory;
+        readonly ISettings _settings;
 
         public Repository(IServiceProvider serviceProvider)
         {

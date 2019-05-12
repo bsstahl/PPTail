@@ -18,7 +18,7 @@ namespace PPTail.SiteGenerator
 
         const string _providerKey = "Provider";
 
-        private IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         public Builder(IServiceProvider serviceProvider)
         {
@@ -129,8 +129,7 @@ namespace PPTail.SiteGenerator
             });
 
             string createCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName);
-            bool createCompatibilityFile = false;
-            bool.TryParse(createCompatibilityFileValue, out createCompatibilityFile);
+            bool.TryParse(createCompatibilityFileValue, out var createCompatibilityFile);
             if (createCompatibilityFile)
                 result.Add(new SiteFile()
                 {
@@ -250,8 +249,7 @@ namespace PPTail.SiteGenerator
 
             // Create DasBlog Compatibility Data File for Posts.aspx
             string createPostsCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName);
-            bool createPostsCompatibilityFile = false;
-            bool.TryParse(createPostsCompatibilityFileValue, out createPostsCompatibilityFile);
+            bool.TryParse(createPostsCompatibilityFileValue, out var createPostsCompatibilityFile);
 
             if (createPostsCompatibilityFile)
             {
