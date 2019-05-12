@@ -1,0 +1,33 @@
+[
+	{
+	"Id":"7e22394f-a84f-4216-a278-552778d23d7c",
+	"Title":"About this site",
+	"ShowTitle": "true",
+	"WidgetType":"TextBox",
+	"Content" : "<p><strong>This site is a sample media blog website generated using <a href=\"http://github.com/bsstahl/pptail\">Prehensile Pony Tail</a></p>",
+	"Active" : "true"
+	},
+	{
+	"Id":"1ef27b78-0218-420c-bfda-038163510def",
+	"Title":"About the Editor",
+	"ShowTitle": "true",
+	"WidgetType":"TextBox",
+	"Content":"<p><strong>This Site's Editor</strong> is a wonderful human being who does a great job of maintaining it.</p>",
+	"Active" : "true"
+	},
+	{
+	"Id":"b5ed7ace-3b86-455a-acad-a66f654f4867",
+	"Title":"Social Media",
+	"ShowTitle": "true",
+	"WidgetType":"TextBox",
+	"Content":"<p>Twitter: <a href=&quot;http://twitter.com/bsstahl&quot;>@BSStahl</a></p><p>Flickr: <a href=&quot;http://flickr.com/bsstahl&quot;>BSStahl</a></p></p>",
+	"Active" : "true"
+	},
+	{
+	"Id":"76dfb6eb-1931-47b6-bece-167a7d0a0b79",
+	"Title":"Tag cloud",
+	"ShowTitle": "true",
+	"WidgetType":"Tag_cloud",
+	"Active" : "true"
+	}
+]

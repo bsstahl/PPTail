@@ -2,7 +2,7 @@
   "profiles": {
     "PPTail": {
       "commandName": "Project",
-      "commandLineArgs": "Provider=PPTail.Data.FileSystem.Repository;Filepath=C:\\SourceDataLocation Provider=PPTail.Output.FileSystem.Repository;FilePath=C:\\OutputDataLocation C:\\TemplateFolderPath"
+      "commandLineArgs": "Provider=PPTail.Data.MediaBlog.Repository;Filepath=..\\..\\..\\..\\..\\SampleMediaBlog\\Source\\ Provider=PPTail.Output.FileSystem.Repository;FilePath=..\\..\\..\\.\\..\\..\\SampleMediaBlog\\Target\\wwwroot ..\\..\\..\\..\\..\\SampleMediaBlog\\Templates\\"
     }
   }
 }

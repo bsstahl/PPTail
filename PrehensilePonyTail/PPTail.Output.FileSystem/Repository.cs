@@ -60,6 +60,8 @@ namespace PPTail.Output.FileSystem
                 else
                     _file.WriteAllText(fullPath, sitePage.Content);
             }
+
+            Console.WriteLine($"Site written to {System.IO.Path.GetFullPath(outputPath)}");
         }
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
+  <channel>
+    <title>My Sample Blog Site</title>
+    <description>A Sample Media Blog Site</description>
+    <link>http://www.giveemhelldevils.com/</link>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>Prehensile Pony Tail 1.0</generator>
+    <language>en-US</language>
+    <geo:lat>33.4716724</geo:lat>
+    <geo:long>-112.0891115</geo:long>
+	<item>
+  <title>Sophomore Trevor Hauver</title>
+  <description>&lt;a data-flickr-embed=&quot;true&quot; href=&quot;https://www.flickr.com/photos/bsstahl/47086513192/in/album-72157706982039844/&quot; title=&quot;Sophomore Trevor Hauver&quot;&gt;&lt;img class=&quot;img-responsive&quot; src=&quot;https://farm8.staticflickr.com/7868/47086513192_e94f21446e_c.jpg&quot; alt=&quot;Sophomore Trevor Hauver&quot;&gt;&lt;/a&gt;&lt;p&gt;Hauver emerged as a key component of the young 2018 Sun Devils team, becoming one of 6 Freshman to start more than 20 games for ASU Baseball that year. The young outfielder is back in 2019 and is again a critical piece of this squad, starting all 23 games thusfar and slashing .379/.496/.667.&lt;/p&gt;</description>
+  <link>Posts/Sophomore-Trevor-Hauver.html</link>
+  <author>Barry S. Stahl</author>
+  <guid><a href="Permalinks/1bcb2b0f-c9f3-470c-b8ce-51d06642ece2.html" rel="bookmark">Permalink</a></guid>
+  <pubDate>2019-03-25T00:00:00.0000000-07:00</pubDate>
+</item>
+<item>
+  <title>My Favorite Action Shot</title>
+  <description>&lt;a data-flickr-embed=&quot;true&quot; href=&quot;https://www.flickr.com/photos/bsstahl/39757287404/in/album-72157664107073067/&quot; title=&quot;Hunter Bishop Brings it In&quot;&gt;&lt;img class=&quot;img-responsive&quot; src=&quot;https://farm5.staticflickr.com/4624/39757287404_9e3870a187_z.jpg&quot; alt=&quot;Hunter Bishop Brings it In&quot;&gt;&lt;/a&gt;&lt;p&gt;I love this photo, taken early in the 2018 season. The 2018 Devils may not have been as talented as some of the teams we&apos;ve been spoiled with over the years, but they made up for any deficiencies with their heart and hustle. They were flat-out fun to watch!&lt;/p&gt;</description>
+  <link>Posts/My-Favorite-Action-Shot.html</link>
+  <author>Barry S. Stahl</author>
+  <guid><a href="Permalinks/5f2c7692-e612-430d-bdac-5154a8c0ce81.html" rel="bookmark">Permalink</a></guid>
+  <pubDate>2019-02-18T00:00:00.0000000</pubDate>
+</item>
+
+</channel>
+</rss>

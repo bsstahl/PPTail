@@ -48,23 +48,23 @@ namespace PPTail.SiteGenerator
         {
             var result = new List<SiteFile>();
 
-            var pageGen = ServiceProvider.GetService<IPageGenerator>();
-            var contentItemPageGen = ServiceProvider.GetService<IContentItemPageGenerator>();
-            var homePageGen = ServiceProvider.GetService<IHomePageGenerator>();
-            var settings = ServiceProvider.GetService<ISettings>();
-            var navProvider = ServiceProvider.GetService<INavigationProvider>();
-            var archiveProvider = ServiceProvider.GetService<IArchiveProvider>();
-            var contactProvider = ServiceProvider.GetService<IContactProvider>();
-            var searchProvider = ServiceProvider.GetService<ISearchProvider>();
-            var redirectProvider = ServiceProvider.GetService<IRedirectProvider>();
-            var syndicationProvider = ServiceProvider.GetService<ISyndicationProvider>();
-            var contentEncoder = ServiceProvider.GetService<IContentEncoder>();
+            var pageGen = this.ServiceProvider.GetService<IPageGenerator>();
+            var contentItemPageGen = this.ServiceProvider.GetService<IContentItemPageGenerator>();
+            var homePageGen = this.ServiceProvider.GetService<IHomePageGenerator>();
+            var settings = this.ServiceProvider.GetService<ISettings>();
+            var navProvider = this.ServiceProvider.GetService<INavigationProvider>();
+            var archiveProvider = this.ServiceProvider.GetService<IArchiveProvider>();
+            var contactProvider = this.ServiceProvider.GetService<IContactProvider>();
+            var searchProvider = this.ServiceProvider.GetService<ISearchProvider>();
+            var redirectProvider = this.ServiceProvider.GetService<IRedirectProvider>();
+            var syndicationProvider = this.ServiceProvider.GetService<ISyndicationProvider>();
+            var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
 
-            var categories = ServiceProvider.GetService<IEnumerable<Category>>();
+            var categories = this.ServiceProvider.GetService<IEnumerable<Category>>();
 
             settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
             var sourceProviderName = settings.SourceConnection.GetConnectionStringValue(_providerKey);
-            var contentRepo = ServiceProvider.GetNamedService<IContentRepository>(sourceProviderName);
+            var contentRepo = this.ServiceProvider.GetNamedService<IContentRepository>(sourceProviderName);
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();
