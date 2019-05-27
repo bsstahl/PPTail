@@ -1,6 +1,6 @@
 ﻿using Moq;
 using Newtonsoft.Json;
-using PPTail.Common.Builders;
+using PPTail.Builders;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using System;

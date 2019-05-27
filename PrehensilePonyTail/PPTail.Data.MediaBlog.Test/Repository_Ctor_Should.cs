@@ -6,7 +6,7 @@ using TestHelperExtensions;
 using Moq;
 using PPTail.Entities;
 using PPTail.Exceptions;
-using PPTail.Common.Builders;
+using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {

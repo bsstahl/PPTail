@@ -1,7 +1,7 @@
-﻿using PPTail.Common.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {

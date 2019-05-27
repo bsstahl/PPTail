@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using PPTail.Entities;
 
-namespace PPTail.Common.Builders
+namespace PPTail.Builders
 {
     public class SourceFileBuilder : SourceFile
     {

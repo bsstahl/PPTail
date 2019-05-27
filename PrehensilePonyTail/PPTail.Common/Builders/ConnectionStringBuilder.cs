@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace PPTail.Common.Builders
+namespace PPTail.Builders
 {
     public class ConnectionStringBuilder
     {

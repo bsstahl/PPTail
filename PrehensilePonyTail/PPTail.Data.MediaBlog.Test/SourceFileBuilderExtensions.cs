@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PPTail.Common.Builders;
+using PPTail.Builders;
 using PPTail.Entities;
 using TestHelperExtensions;
 

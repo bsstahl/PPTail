@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 using PPTail.Entities;
 using System.Xml.Linq;
 using PPTail.Enumerations;
-using PPTail.Common.Builders;
+using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {

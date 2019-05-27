@@ -8,7 +8,7 @@ using Xunit;
 using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
-using PPTail.Common.Builders;
+using PPTail.Builders;
 using System.IO;
 
 namespace PPTail.Data.MediaBlog.Test

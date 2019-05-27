@@ -9,7 +9,7 @@ using TestHelperExtensions;
 using Moq;
 using System.Linq.Expressions;
 using PPTail.Entities;
-using PPTail.Common.Builders;
+using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {
