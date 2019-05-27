@@ -1,0 +1,1 @@
+dotnet "..\..\..\pptail\PrehensilePonyTail\PPTail\bin\Debug\netcoreapp2.1\pptail.dll" "Provider=PPTail.Data.MediaBlog.Repository;Filepath=..\..\SampleMediaBlog\Source\" "Provider=PPTail.Output.FileSystem.Repository;FilePath=..\..\SampleMediaBlog\Target\wwwroot" "..\..\SampleMediaBlog\Templates\"

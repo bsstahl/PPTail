@@ -16,14 +16,16 @@ namespace PPTail.Data.PhotoBlog
 
         const string _connectionStringFilepathKey = "FilePath";
 
-        private string _rootPath;
-        private IServiceProvider _serviceProvider;
+        private readonly string _rootPath;
+        private readonly IServiceProvider _serviceProvider;
 
         public Repository(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
 
             _serviceProvider.ValidateService<ISettings>();
+            _serviceProvider.ValidateService<IFile>();
+
             var settings = _serviceProvider.GetService<ISettings>();
             _rootPath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
@@ -86,8 +88,10 @@ namespace PPTail.Data.PhotoBlog
 
             foreach (var zone in widgetZones)
             {
-                var thisDictionary = new List<Tuple<string, string>>();
-                thisDictionary.Add(new Tuple<string, string>("Content", zone.Content));
+                var thisDictionary = new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>("Content", zone.Content)
+                };
 
                 var thisWidgetType = (Enumerations.WidgetType)Enum.Parse(typeof(Enumerations.WidgetType), zone.WidgetType);
 
@@ -143,10 +147,7 @@ namespace PPTail.Data.PhotoBlog
                         results.Add(new SourceFile()
                         {
                             Contents = contents,
-
-                            // TODO: Replace this using the proper abstraction
                             FileName = System.IO.Path.GetFileName(sourceFile),
-
                             RelativePath = relativePath
                         });
                 }
@@ -158,10 +159,8 @@ namespace PPTail.Data.PhotoBlog
         public SiteSettings GetSiteSettings()
         {
             var settingsFilePath = System.IO.Path.Combine(_rootPath, "SiteSettings.json");
-            
-            // TODO: Replace this using the proper abstraction
-            var json = System.IO.File.ReadAllText(settingsFilePath);
-
+            var fileProvider = _serviceProvider.GetService<IFile>();
+            var json = fileProvider.ReadAllText(settingsFilePath);
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SiteSettings>(json);
         }
     }

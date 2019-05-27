@@ -1,0 +1,10 @@
+[{
+"Id":"aad7d963-8dc0-4306-9247-1ff86995f54a",
+"Name":"Category1",
+"Description":"Items relating to Category 1"
+},
+{
+"Id":"d1dcbde8-2b40-461c-8968-af78e4ac8798",
+"Name":"Other",
+"Description":"Items not relating to Category 1"
+}]

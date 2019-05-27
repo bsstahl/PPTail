@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PPTail.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,7 @@ namespace PPTail.Extensions
             string result = string.Empty;
 
             if (string.IsNullOrWhiteSpace(connectionString))
-                throw new ArgumentNullException(nameof(connectionString));
+                throw new SettingNotFoundException(key);
 
             var parts = connectionString.Split(';');
             foreach (var part in parts)

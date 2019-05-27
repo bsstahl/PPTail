@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135039379-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-135039379-1');
+    </script>
+
+    <title>{SiteTitle} - {Title}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{PathToSiteRoot}/bootstrap.min.css">
+    <link rel="stylesheet" href="{PathToSiteRoot}/Style.css" type="text/css" />
+
+    <link rel="icon" type="image/jpg" href="{PathToSiteRoot}/images/Favicon.jpg" />
+
+    <!-- Flickr Script -->
+    <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header">
+                    <h1>
+                        <a href="{PathToSiteRoot}/index.html">
+                            {SiteTitle}
+                        </a>
+                    </h1>
+                    <h2>
+                        {SiteDescription}
+                    </h2>
+                </div>
+                {NavigationMenu}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h3>{Title}</h3>
+                    <h5>Posted: <strong>{PublicationDate}</strong> Tags: {Tags}</h5>
+                    <p style="text-align: center">
+                        {Content}
+                        <figcaption>Photo taken by {Author} on {LastModificationDate}</figcaption>
+                    </p>
+                    <p>{Description}</p>
+                    <div class="share">{Permalink}</div>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                {Sidebar}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p></p>
+                <div class="footer">{Copyright}</div>
+                <p></p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

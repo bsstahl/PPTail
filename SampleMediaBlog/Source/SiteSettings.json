@@ -1,0 +1,8 @@
+{
+    "Description":"A Sample Media Blog Site",
+    "PostsPerFeed":10,
+    "PostsPerPage":5,
+    "Theme":"SampleTheme",
+    "Title":"My Sample Blog Site",
+    "Copyright": "<p>Copyright &copy; 2019 by MyCompany. All Rights Reserved.</p>"
+}

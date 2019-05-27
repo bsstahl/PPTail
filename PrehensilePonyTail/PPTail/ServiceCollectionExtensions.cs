@@ -24,6 +24,7 @@ namespace PPTail
             container.AddSingleton<IContentRepository, PPTail.Data.NativeJson.Repository>();
             container.AddSingleton<IContentRepository, PPTail.Data.WordpressFiles.Repository>();
             container.AddSingleton<IContentRepository, PPTail.Data.PhotoBlog.Repository>();
+            container.AddSingleton<IContentRepository, PPTail.Data.MediaBlog.Repository>();
 
             // Additional Service Providers
             container.AddSingleton<IFile>(c => new PPTail.Io.File());

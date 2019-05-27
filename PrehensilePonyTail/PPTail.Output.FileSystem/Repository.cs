@@ -13,10 +13,10 @@ namespace PPTail.Output.FileSystem
     {
         const string _connectionStringFilepathKey = "FilePath";
 
-        IServiceProvider _serviceProvider;
-        IFile _file;
-        IDirectory _directory;
-        ISettings _settings;
+        readonly IServiceProvider _serviceProvider;
+        readonly IFile _file;
+        readonly IDirectory _directory;
+        readonly ISettings _settings;
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -60,6 +60,8 @@ namespace PPTail.Output.FileSystem
                 else
                     _file.WriteAllText(fullPath, sitePage.Content);
             }
+
+            Console.WriteLine($"Site written to {System.IO.Path.GetFullPath(outputPath)}");
         }
     }
 }
