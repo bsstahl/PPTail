@@ -8,11 +8,15 @@ namespace PPTail.Data.MediaBlog
     public abstract class MediaItem
     {
         public MediaItem(JObject json)
+            :this(json["Title"].Value<string>(), json["DisplayWidth"].Value<int>(), json["DisplayHeight"].Value<int>(), json["CreateDate"].Value<DateTime>())
+        {}
+
+        public MediaItem(string title, int displayWidth, int displayHeight, DateTime createDate)
         {
-            this.Title = json["Title"].Value<string>();
-            this.DisplayWidth = json["DisplayWidth"].Value<int>();
-            this.DisplayHeight = json["DisplayHeight"].Value<int>();
-            this.CreateDate = json["CreateDate"].Value<DateTime>();
+            this.Title = title;
+            this.DisplayWidth = displayWidth;
+            this.DisplayHeight = displayHeight;
+            this.CreateDate = createDate;
         }
 
         public string Title { get; set; }

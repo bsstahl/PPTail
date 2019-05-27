@@ -7,7 +7,7 @@ using PPTail.Extensions;
 
 namespace PPTail.Data.MediaBlog
 {
-    internal class MediaPost
+    public class MediaPost
     {
 
         public string Author { get; set; }
@@ -16,8 +16,8 @@ namespace PPTail.Data.MediaBlog
         public DateTime Posted { get; set; }
         public IEnumerable<string> Tags { get; set; }
 
-        public string MediaItemType { get; set; }
-        public JObject MediaItem { get; private set; }
+        public string MediaType { get; set; }
+        public JObject MediaItem { get; internal set; }
 
         public MediaItem Media { get; private set; }
 
@@ -31,7 +31,7 @@ namespace PPTail.Data.MediaBlog
             {
                 Author = post["Author"]?.Value<string>(),
                 Description = post["Description"]?.Value<string>(),
-                MediaItemType = post["MediaType"]?.Value<string>(),
+                MediaType = post["MediaType"]?.Value<string>(),
                 MediaItem = mediaItem,
                 Posted = (posted == null) ? DateTime.MinValue : posted.Value<DateTime>(),
                 Tags = post["Tags"]?.Select(t => t.Value<string>()),
@@ -45,7 +45,7 @@ namespace PPTail.Data.MediaBlog
         private MediaItem CreateMediaItem()
         {
             MediaItem result = null;
-            string mediaTypeName = (this.MediaItemType == null) ? "Unknown" : this.MediaItemType.ToString();
+            string mediaTypeName = this.MediaType ?? "None";
 
             switch (mediaTypeName.ToLower())
             {
@@ -53,9 +53,16 @@ namespace PPTail.Data.MediaBlog
                     result = new FlickrMediaItem(this.MediaItem);
                     break;
 
+                case "youtubevideo":
+                    result = new YouTubeMediaItem(this.MediaItem);
+                    break;
+
+                case "none":
+                    result = new EmptyMediaItem(this.MediaItem);
+                    break;
+
                 default:
                     throw new InvalidOperationException("Unknown media type");
-                    break;
             }
 
             return result;
@@ -71,7 +78,7 @@ namespace PPTail.Data.MediaBlog
             return new Entities.ContentItem()
             {
                 Author = this.Author,
-                ByLine = $"by {this.Author}",
+                ByLine = string.IsNullOrWhiteSpace(this.Author) ? string.Empty : $"by {this.Author}",
                 CategoryIds = new Guid[] { Guid.Parse("663D2D20-6B79-47B1-AFAD-615F15E226A7") },
                 Content = this.Media?.CreateContent(),
                 Description = this.Description,
