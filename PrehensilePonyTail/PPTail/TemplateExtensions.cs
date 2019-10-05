@@ -1,5 +1,6 @@
 ﻿using PPTail.Entities;
 using PPTail.Enumerations;
+using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,19 +31,19 @@ namespace PPTail
 
         public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, string styleTemplatePath, string bootstrapTemplatePath, string homePageTemplatePath, string contentPageTemplatePath, string postPageTemplatePath, string contactPageTemplatePath, string redirectTemplatePath, string syndicationTemplatePath, string syndicationItemTemplatePath, string itemTemplatePath, string searchTemplatePath, string archiveTemplatePath, string archiveItemTemplatePath)
         {
-            string contentPageTemplate = System.IO.File.ReadAllText(contentPageTemplatePath);
-            string styleTemplate = System.IO.File.ReadAllText(styleTemplatePath);
-            string bootstrapTemplate = System.IO.File.ReadAllText(bootstrapTemplatePath);
-            string homePageTemplate = System.IO.File.ReadAllText(homePageTemplatePath);
-            string postPageTemplate = System.IO.File.ReadAllText(postPageTemplatePath);
-            string contactPageTemplate = System.IO.File.ReadAllText(contactPageTemplatePath);
-            string redirectTemplate = System.IO.File.ReadAllText(redirectTemplatePath);
-            string syndicationTemplate = System.IO.File.ReadAllText(syndicationTemplatePath);
-            string syndicationItemTemplate = System.IO.File.ReadAllText(syndicationItemTemplatePath);
-            string itemTemplate = System.IO.File.ReadAllText(itemTemplatePath);
-            string searchTemplate = System.IO.File.ReadAllText(searchTemplatePath);
-            string archiveTemplate = System.IO.File.ReadAllText(archiveTemplatePath);
-            string archiveItemTemplate = System.IO.File.ReadAllText(archiveItemTemplatePath);
+            string contentPageTemplate = contentPageTemplatePath.ReadAllTextFromFile();
+            string styleTemplate = styleTemplatePath.ReadAllTextFromFile();
+            string bootstrapTemplate = bootstrapTemplatePath.ReadAllTextFromFile();
+            string homePageTemplate = homePageTemplatePath.ReadAllTextFromFile();
+            string postPageTemplate = postPageTemplatePath.ReadAllTextFromFile();
+            string contactPageTemplate = contactPageTemplatePath.ReadAllTextFromFile();
+            string redirectTemplate = redirectTemplatePath.ReadAllTextFromFile();
+            string syndicationTemplate = syndicationTemplatePath.ReadAllTextFromFile();
+            string syndicationItemTemplate = syndicationItemTemplatePath.ReadAllTextFromFile();
+            string itemTemplate = itemTemplatePath.ReadAllTextFromFile();
+            string searchTemplate = searchTemplatePath.ReadAllTextFromFile();
+            string archiveTemplate = archiveTemplatePath.ReadAllTextFromFile();
+            string archiveItemTemplate = archiveItemTemplatePath.ReadAllTextFromFile();
 
             return new List<Template>()
             {

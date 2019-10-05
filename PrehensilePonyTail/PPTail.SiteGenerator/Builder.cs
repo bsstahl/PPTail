@@ -80,12 +80,16 @@ namespace PPTail.SiteGenerator
             var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.OutputFileExtension);
 
             // Create bootstrap file
-            result.Add(new SiteFile()
+            var bootstrapFile = new SiteFile()
             {
                 RelativeFilePath = $"./bootstrap.min.css",
                 SourceTemplateType = Enumerations.TemplateType.Bootstrap,
                 Content = pageGen.GenerateBootstrapPage()
-            });
+            };
+
+            if (!string.IsNullOrEmpty(bootstrapFile.Content))
+                result.Add(bootstrapFile);
+
 
             // Create Style page
             result.Add(new SiteFile()

@@ -8,6 +8,14 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
+        public static string ReadAllTextFromFile(this string path)
+        {
+            string result = string.Empty;
+            if (System.IO.File.Exists(path))
+                result = System.IO.File.ReadAllText(path);
+            return result;
+        }
+
         public static IEnumerable<Tuple<string, int>> GetTagCounts(this IEnumerable<string> tags)
         {
             var tagCounts = new List<Tuple<string, int>>();
