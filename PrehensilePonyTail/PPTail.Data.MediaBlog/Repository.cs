@@ -178,7 +178,7 @@ namespace PPTail.Data.MediaBlog
             {
                 result = JsonConvert.DeserializeObject<SiteSettings>(json);
             }
-            catch (Newtonsoft.Json.JsonReaderException jre)
+            catch (Newtonsoft.Json.JsonReaderException)
             {
                 // Site settings file not parseable 
                 // as a SiteSettings object

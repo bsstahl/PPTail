@@ -1,0 +1,8 @@
+﻿// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameter is required as the type parameter for the extension method.", Scope = "member", Target = "~M:PPTail.ServiceCollectionExtensions.Create(Microsoft.Extensions.DependencyInjection.IServiceCollection,PPTail.Interfaces.ISettings,System.Collections.Generic.IEnumerable{PPTail.Entities.Template})~Microsoft.Extensions.DependencyInjection.IServiceCollection")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameter is required as the type parameter for the extension method.", Scope = "member", Target = "~M:PPTail.TemplateExtensions.Create(System.Collections.Generic.IEnumerable{PPTail.Entities.Template},System.String)~System.Collections.Generic.IEnumerable{PPTail.Entities.Template}")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameter is required as the type parameter for the extension method.", Scope = "member", Target = "~M:PPTail.TemplateExtensions.Create(System.Collections.Generic.IEnumerable{PPTail.Entities.Template},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)~System.Collections.Generic.IEnumerable{PPTail.Entities.Template}")]

@@ -12,7 +12,7 @@ namespace PPTail.Generator.ContentPage
 {
     public class PageGenerator: IContentItemPageGenerator
     {
-        IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public PageGenerator(IServiceProvider serviceProvider)
         {

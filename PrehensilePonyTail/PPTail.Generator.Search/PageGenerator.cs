@@ -12,10 +12,10 @@ namespace PPTail.Generator.Search
 {
     public class PageGenerator: Interfaces.ISearchProvider
     {
-        IServiceProvider _serviceProvider;
-        IEnumerable<Template> _templates;
-        Template _searchTemplate;
-        Template _itemTemplate;
+        readonly IServiceProvider _serviceProvider;
+        readonly IEnumerable<Template> _templates;
+        readonly Template _searchTemplate;
+        readonly Template _itemTemplate;
 
         public PageGenerator(IServiceProvider serviceProvider)
         {

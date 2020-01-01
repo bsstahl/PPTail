@@ -11,7 +11,7 @@ namespace PPTail.Generator.Template
 {
     public class TemplateProcessor : ITemplateProcessor
     {
-        IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public TemplateProcessor(IServiceProvider serviceProvider)
         {
@@ -33,10 +33,10 @@ namespace PPTail.Generator.Template
 
             var contentItems = new List<string>();
             foreach (var post in recentPosts)
-                contentItems.Add(ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent));
+                contentItems.Add(this.ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent));
 
             var pageContent = string.Join(itemSeparator, contentItems);
-            return ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, pageContent, pageTitle, pathToRoot);
+            return this.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, pageContent, pageTitle, pathToRoot);
         }
 
         public string ProcessContentItemTemplate(Entities.Template template, ContentItem item, string sidebarContent, string navContent, string pathToRoot, bool xmlEncodeContent)
@@ -50,6 +50,7 @@ namespace PPTail.Generator.Template
         {
             return template.Content
                   .Replace("{Title}", pageTitle)
+                  .Replace("{ByLine}", string.Empty)
                   .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, content, pathToRoot);
         }
 

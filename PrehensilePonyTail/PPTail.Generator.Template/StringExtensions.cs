@@ -25,8 +25,8 @@ namespace PPTail.Generator.Template
             string description = item.Description;
             string pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
             string pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
-            string lastModDate = item.LastModificationDate.ToString(settings.DateFormatSpecifier);
-            string lastModDateTime = item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+            string lastModDate = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.ToString(settings.DateFormatSpecifier);
+            string lastModDateTime = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
 
             if (xmlEncodeContent)
             {
@@ -34,8 +34,8 @@ namespace PPTail.Generator.Template
                 description = contentEncoder.XmlEncode(item.Description);
                 pubDate = item.PublicationDate.Date.ToString("o");
                 pubDateTime = item.PublicationDate.ToString("o");
-                lastModDate = item.LastModificationDate.Date.ToString("o");
-                lastModDateTime = item.LastModificationDate.ToString("o");
+                lastModDate = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.Date.ToString("o");
+                lastModDateTime = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.ToString("o");
             }
 
             string permaLinkUrl = linkProvider.GetUrl(pathToRoot, "Permalinks", item.Id.ToString());
