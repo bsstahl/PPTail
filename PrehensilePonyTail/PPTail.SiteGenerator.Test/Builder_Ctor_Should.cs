@@ -25,7 +25,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnTheCorrectParameterNameIfTheServiceProviderIsNotSupplied()
         {
-            string expected = "serviceProvider";
+            String expected = "serviceProvider";
             try
             {
                 var target = new Builder(null);
@@ -168,7 +168,7 @@ namespace PPTail.SiteGenerator.Test
         {
             IServiceCollection container = (null as IServiceCollection).Create();
             container.RemoveDependency<T>();
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var target = (null as Builder).Create(container);

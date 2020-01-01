@@ -7,9 +7,9 @@ namespace PPTail.Data.PhotoBlog
 {
     internal class FlickrImagePost
     {
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public string Title { get; set; }
+        public String Author { get; set; }
+        public String Description { get; set; }
+        public String Title { get; set; }
         public DateTime Posted { get; set; }
         public IEnumerable<string> Tags { get; set; }
         public FlickrImage Image { get; set; }

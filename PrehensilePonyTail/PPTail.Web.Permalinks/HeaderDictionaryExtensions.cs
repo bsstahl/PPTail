@@ -8,7 +8,7 @@ namespace PPTail.Web.Permalinks
 {
     public static class HeaderDictionaryExtensions
     {
-        public static void AddHeader(this IHeaderDictionary headers, string key, string value)
+        public static void AddHeader(this IHeaderDictionary headers, String key, String value)
         {
             var values = new Microsoft.Extensions.Primitives.StringValues(value);
             var pair = new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>(key, values);

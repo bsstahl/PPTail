@@ -7,9 +7,9 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public static class CategoryCollectionBuilderExtensions
     {
-        public static CategoryCollectionBuilder AddRandomCategories(this CategoryCollectionBuilder builder, int count)
+        public static CategoryCollectionBuilder AddRandomCategories(this CategoryCollectionBuilder builder, Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 builder.AddCategory(new CategoryBuilder()
                     .UseRandom()

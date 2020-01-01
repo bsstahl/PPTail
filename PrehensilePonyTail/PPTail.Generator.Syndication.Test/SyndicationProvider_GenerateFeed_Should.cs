@@ -38,7 +38,7 @@ namespace PPTail.Generator.Syndication.Test
         public void ReturnTheOutputOfTheTemplateProcessor()
         {
             var posts = new List<ContentItem>() { (null as ContentItem).Create() };
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 

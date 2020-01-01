@@ -40,7 +40,7 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void ReturnTheOriginalStyleTemplateIfThereAreNoReplacementFieldsPresent()
         {
-            string styleTemplate = string.Empty.GetRandom();
+            String styleTemplate = string.Empty.GetRandom();
             var target = (null as IPageGenerator).Create(string.Empty, string.Empty, styleTemplate);
             var actual = target.GenerateStylesheet();
             Assert.Equal(styleTemplate, actual);

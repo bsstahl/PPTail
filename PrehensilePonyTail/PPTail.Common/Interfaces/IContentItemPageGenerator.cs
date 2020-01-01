@@ -9,6 +9,6 @@ namespace PPTail.Interfaces
 {
     public interface IContentItemPageGenerator
     {
-        string Generate(string sidebarContent, string navContent, ContentItem pageData, TemplateType templateType, string pathToRoot, bool xmlEncodeContent);
+        String Generate(String sidebarContent, String navContent, ContentItem pageData, TemplateType templateType, String pathToRoot, bool xmlEncodeContent);
     }
 }

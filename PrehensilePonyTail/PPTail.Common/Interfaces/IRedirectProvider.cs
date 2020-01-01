@@ -7,6 +7,6 @@ namespace PPTail.Interfaces
 {
     public interface IRedirectProvider
     {
-        string GenerateRedirect(string redirectToUrl);
+        String GenerateRedirect(String redirectToUrl);
     }
 }

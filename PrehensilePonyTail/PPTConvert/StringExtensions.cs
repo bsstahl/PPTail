@@ -7,7 +7,7 @@ namespace PPTConvert
     public static class StringExtensions
     {
 
-        public static (string sourceConnection, string targetConnection) ParseArguments(this string[] args)
+        public static (String sourceConnection, String targetConnection) ParseArguments(this string[] args)
         {
             if (args is null)
                 return (null, null);
@@ -18,7 +18,7 @@ namespace PPTConvert
 
         public static (bool argsAreValid, IEnumerable<string> argumentErrors) ValidateArguments(this string[] args)
         {
-            const int expectedArgCount = 2;
+            const Int32 expectedArgCount = 2;
 
             var errors = new List<string>();
             bool isValid = ((args?.Length == expectedArgCount) && !args.IsNullOrWhiteSpace());
@@ -41,7 +41,7 @@ namespace PPTConvert
         /// <summary>
         /// Checks to see if any of the supplied values are null or empty whitespace
         /// </summary>
-        /// <param name="args">A string array containing the strings to be checked for nullness</param>
+        /// <param name="args">A String array containing the strings to be checked for nullness</param>
         /// <returns>Returns TRUE if ANY of the supplied values are null or empty whitespace, FALSE if
         /// all contain values.  Returns FALSE if the argument array is empty or null since none of
         /// it's containing values are then null or whitespace (since there are none).</returns>

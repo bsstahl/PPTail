@@ -10,7 +10,7 @@ namespace PPTail.Data.FileSystem
     public static class StringExtensions
     {
 
-        public static SiteSettings ParseSettings(this string xmlText)
+        public static SiteSettings ParseSettings(this String xmlText)
         {
             SiteSettings result = null;
 
@@ -26,12 +26,12 @@ namespace PPTail.Data.FileSystem
 
             if (node != null)
             {
-                string ppPage = node.GetElementValue("postsperpage");
-                int postsPerPage = 0;
+                String ppPage = node.GetElementValue("postsperpage");
+                Int32 postsPerPage = 0;
                 Int32.TryParse(ppPage, out postsPerPage);
 
-                string ppFeed = node.GetElementValue("postsperfeed");
-                int postsPerFeed = 0;
+                String ppFeed = node.GetElementValue("postsperfeed");
+                Int32 postsPerFeed = 0;
                 Int32.TryParse(ppFeed, out postsPerFeed);
 
                 result = new SiteSettings()
@@ -47,7 +47,7 @@ namespace PPTail.Data.FileSystem
             return result;
         }
 
-        public static ContentItem ParseContentItem(this string xmlText, string filename, string nodeLocalName)
+        public static ContentItem ParseContentItem(this String xmlText, String filename, String nodeLocalName)
         {
             ContentItem result = null;
 
@@ -63,10 +63,10 @@ namespace PPTail.Data.FileSystem
 
             if (node != null && node.Name.LocalName == nodeLocalName)
             {
-                string fileId = System.IO.Path.GetFileNameWithoutExtension(filename);
+                String fileId = System.IO.Path.GetFileNameWithoutExtension(filename);
                 Guid id = Guid.Parse(fileId);
 
-                string author = node.GetElementValue("author");
+                String author = node.GetElementValue("author");
 
                 bool isPublished = false;
                 bool.TryParse(node.GetElementValue("ispublished"), out isPublished);

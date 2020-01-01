@@ -10,10 +10,10 @@ namespace PPTail.Exceptions
         public Enumerations.TemplateType TemplateType { get; set; }
 
         // Not yet needed
-        // public string TemplateName { get; set; }
+        // public String TemplateName { get; set; }
 
 
-        public TemplateNotFoundException(Enumerations.TemplateType templateType, string templateName) 
+        public TemplateNotFoundException(Enumerations.TemplateType templateType, String templateName) 
             : base($"Unable to load template '{templateName}' of type '{templateType.ToString()}'")
         {
             this.TemplateType = templateType;

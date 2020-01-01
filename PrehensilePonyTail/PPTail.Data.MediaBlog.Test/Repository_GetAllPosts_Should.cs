@@ -15,14 +15,14 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public class Repository_GetAllPosts_Should
     {
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _connectionStringFilepathKey = "FilePath";
 
         [Fact]
         public void ReturnAllPostsIfAllAreValid()
         {
-            int postCount = 3;
+            Int32 postCount = 3;
 
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var settings = new SettingsBuilder()
                 .SourceConnection(
                     new ConnectionStringBuilder("this")
@@ -56,7 +56,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void IgnoreFilesWithoutJsonExtension()
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var settings = new SettingsBuilder()
                 .SourceConnection(
                     new ConnectionStringBuilder("this")
@@ -97,7 +97,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void RequestFilesFromThePostsFolder()
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var settings = new SettingsBuilder()
                 .SourceConnection(
                     new ConnectionStringBuilder("this")
@@ -132,9 +132,9 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheTagFromASingleTagPost()
         {
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var settings = new SettingsBuilder()
                 .SourceConnection(
                     new ConnectionStringBuilder("this")
@@ -177,12 +177,12 @@ namespace PPTail.Data.MediaBlog.Test
         {
             var expected = 30.GetRandom(3);
             var tags = new List<string>();
-            for (int i = 0; i < expected; i++)
+            for (Int32 i = 0; i < expected; i++)
             {
                 tags.Add(string.Empty.GetRandom());
             }
 
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var settings = new SettingsBuilder()
                 .SourceConnection(
                     new ConnectionStringBuilder("this")
@@ -223,47 +223,47 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
-            string expected = string.Empty.GetRandom();
-            string json = new MediaPostBuilder()
+            String expected = string.Empty.GetRandom();
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Author(expected)
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.Author;
+            String fieldValueDelegate(ContentItem c) => c.Author;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheTitleField()
         {
-            string expected = string.Empty.GetRandom();
-            string json = new MediaPostBuilder()
+            String expected = string.Empty.GetRandom();
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Title(expected)
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.Title;
+            String fieldValueDelegate(ContentItem c) => c.Title;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheDescriptionField()
         {
-            string expected = string.Empty.GetRandom();
-            string json = new MediaPostBuilder()
+            String expected = string.Empty.GetRandom();
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Description(expected)
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.Description;
+            String fieldValueDelegate(ContentItem c) => c.Description;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheContentFieldForAnEmptyPost()
         {
-            string expected = string.Empty;
-            string json = new MediaPostBuilder()
+            String expected = string.Empty;
+            String json = new MediaPostBuilder()
                 .UseRandomEmptyPost()
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.Content;
+            String fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
@@ -274,13 +274,13 @@ namespace PPTail.Data.MediaBlog.Test
                 .UseRandom()
                 .Build();
 
-            string json = new MediaPostBuilder()
+            String json = new MediaPostBuilder()
                 .AddFlickrImage(post)
                 .Build();
 
-            string expected = $"<a data-flickr-embed=\"true\" href=\"{post.FlickrListUrl}\" title=\"{post.Title}\"><img class=\"img-responsive\" src=\"{post.ImageUrl}\" alt=\"{post.Title}\"></a>";
+            String expected = $"<a data-flickr-embed=\"true\" href=\"{post.FlickrListUrl}\" title=\"{post.Title}\"><img class=\"img-responsive\" src=\"{post.ImageUrl}\" alt=\"{post.Title}\"></a>";
 
-            string fieldValueDelegate(ContentItem c) => c.Content;
+            String fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
@@ -291,12 +291,12 @@ namespace PPTail.Data.MediaBlog.Test
                 .UseRandom()
                 .Build();
 
-            string json = new MediaPostBuilder()
+            String json = new MediaPostBuilder()
                 .AddYouTubeVideo(video)
                 .Build();
 
-            string expected = $"<img class=\"img-responsive\"  title=\"{video.Title}\" src=\"{video.VideoUrl}\" alt=\"{video.Title}\" />";
-            string fieldValueDelegate(ContentItem c) => c.Content;
+            String expected = $"<img class=\"img-responsive\"  title=\"{video.Title}\" src=\"{video.VideoUrl}\" alt=\"{video.Title}\" />";
+            String fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
@@ -308,23 +308,23 @@ namespace PPTail.Data.MediaBlog.Test
             // the repo if they are not. Thus, all must return
             // a ContentItem that has IsPublished = True
 
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
             bool expectedValue = true;
-            string json = new MediaPostBuilder()
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Build();
-            string expected = expectedValue.ToString();
+            String expected = expectedValue.ToString();
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
         [Fact]
         public void ReturnTheProperValueInThePubDateField()
         {
-            string fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
+            String fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string json = new MediaPostBuilder()
+            String expected = expectedValue.ToString();
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Posted(expectedValue)
                 .Build();
@@ -338,17 +338,17 @@ namespace PPTail.Data.MediaBlog.Test
             // LastModifiedDate should be set to the
             // create date of the Media Item
 
-            string fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
+            String fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
+            String expected = expectedValue.ToString();
 
             var flickrItem = new FlickrMediaItemBuilder()
                 .UseRandom()
                 .CreateDate(expectedValue)
                 .Build();
 
-            string json = new MediaPostBuilder()
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .AddFlickrImage(flickrItem)
                 .Build();
@@ -363,44 +363,44 @@ namespace PPTail.Data.MediaBlog.Test
         [InlineData("With Space,Comma'Apostrophe", "With-Space-CommaApostrophe")]
         [InlineData("With,,Multiple,,,Dashes", "With-Multiple-Dashes")]
         [InlineData("with <html>", "with-&lt;html&gt;")]
-        public void ReturnTheProperValueInTheSlugField(string title, string expected)
+        public void ReturnTheProperValueInTheSlugField(String title, String expected)
         {
-            string json = new MediaPostBuilder()
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Title(title)
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.Slug;
+            String fieldValueDelegate(ContentItem c) => c.Slug;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheByLineField()
         {
-            string author = string.Empty.GetRandom();
-            string expected = $"by {author}";
-            string json = new MediaPostBuilder()
+            String author = string.Empty.GetRandom();
+            String expected = $"by {author}";
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Author(author)
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
         [Fact]
         public void ReturnAnEmptyStringInTheByLineFieldIfAuthorFieldIsEmpty()
         {
-            string expected = string.Empty;
-            string json = new MediaPostBuilder()
+            String expected = string.Empty;
+            String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
                 .Author(expected)
                 .Build();
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
-        private static void ExecutePropertyTest(string expected, Func<ContentItem, string> fieldValueDelegate, string json)
+        private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String json)
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var settings = new SettingsBuilder()
                 .SourceConnection(
                     new ConnectionStringBuilder("this")

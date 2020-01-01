@@ -15,7 +15,7 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public class Repository_GetAllPages_Should
     {
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _connectionStringFilepathKey = "FilePath";
 
         [Fact]
         public void ReturnAllPagesIfAllAreValid()
@@ -88,8 +88,8 @@ namespace PPTail.Data.MediaBlog.Test
                 "68AA2FE5-58F9-421A-9C1B-02254B953BC5.json"
             };
 
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string expectedPath = System.IO.Path.Combine(rootPath, "pages");
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String expectedPath = System.IO.Path.Combine(rootPath, "pages");
 
             var settings = new SettingsBuilder()
                 .SourceConnection($"Provider=this;{_connectionStringFilepathKey}={rootPath}")
@@ -118,44 +118,44 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
-            string fieldName = "author";
-            string fieldValueDelegate(ContentItem c) => c.Author;
+            String fieldName = "author";
+            String fieldValueDelegate(ContentItem c) => c.Author;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheTitleField()
         {
-            string fieldName = "title";
-            string fieldValueDelegate(ContentItem c) => c.Title;
+            String fieldName = "title";
+            String fieldValueDelegate(ContentItem c) => c.Title;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheDescriptionField()
         {
-            string fieldName = "description";
-            string fieldValueDelegate(ContentItem c) => c.Description;
+            String fieldName = "description";
+            String fieldValueDelegate(ContentItem c) => c.Description;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheContentField()
         {
-            string fieldName = "content";
-            string fieldValueDelegate(ContentItem c) => c.Content;
+            String fieldName = "content";
+            String fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTrueIfThePageIsPublished()
         {
-            string fieldName = "IsPublished";
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldName = "IsPublished";
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = true;
-            string expected = expectedValue.ToString();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = expectedValue.ToString();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
 
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
@@ -163,12 +163,12 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnFalseIfThePageIsNotPublished()
         {
-            string fieldName = "IsPublished";
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldName = "IsPublished";
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = false;
-            string expected = expectedValue.ToString();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = expectedValue.ToString();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
 
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
@@ -176,12 +176,12 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTrueIfThePageIsMarkedShowInList()
         {
-            string fieldName = "ShowInList";
-            string fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
+            String fieldName = "ShowInList";
+            String fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
 
             bool expectedValue = true;
-            string expected = expectedValue.ToString();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = expectedValue.ToString();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
 
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
@@ -189,12 +189,12 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnFalseIfThePageIsNotMarkedShowInList()
         {
-            string fieldName = "showinlist";
-            string fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
+            String fieldName = "showinlist";
+            String fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
 
             bool expectedValue = false;
-            string expected = expectedValue.ToString();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = expectedValue.ToString();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
 
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
@@ -202,12 +202,12 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueInThePubDateField()
         {
-            string fieldName = "PublicationDate";
-            string fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
+            String fieldName = "PublicationDate";
+            String fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = expectedValue.ToString();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
 
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
@@ -215,12 +215,12 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueInTheLastModifiedDateField()
         {
-            string fieldName = "LastModificationDate";
-            string fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
+            String fieldName = "LastModificationDate";
+            String fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = expectedValue.ToString();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
 
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
@@ -228,39 +228,39 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueInTheSlugField()
         {
-            string fieldName = "slug";
-            string fieldValueDelegate(ContentItem c) => c.Slug;
+            String fieldName = "slug";
+            String fieldValueDelegate(ContentItem c) => c.Slug;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheByLineField()
         {
-            string author = string.Empty.GetRandom();
-            string expected = $"by {author}";
-            string json = $"{{\"Author\" : \"{author}\"}}";
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String author = string.Empty.GetRandom();
+            String expected = $"by {author}";
+            String json = $"{{\"Author\" : \"{author}\"}}";
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
-        // TODO: Determine if this actually requires an empty string or if a null string is ok
+        // TODO: Determine if this actually requires an empty String or if a null String is ok
         //[Fact]
         //public void ReturnAnEmptyStringInTheByLineFieldIfAuthorFieldIsEmpty()
         //{
-        //    string expected = string.Empty;
-        //    string json = "{}";
-        //    string fieldValueDelegate(ContentItem c) => c.ByLine;
+        //    String expected = string.Empty;
+        //    String json = "{}";
+        //    String fieldValueDelegate(ContentItem c) => c.ByLine;
         //    ExecutePropertyTest(expected, fieldValueDelegate, json);
         //}
 
-        private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
+        private static void ExecutePropertyTest(String fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
-            string expected = string.Empty.GetRandom();
-            string json = $"{{\"{fieldName}\" : \"{expected}\"}}";
+            String expected = string.Empty.GetRandom();
+            String json = $"{{\"{fieldName}\" : \"{expected}\"}}";
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
-        private static void ExecutePropertyTest(string expected, Func<ContentItem, string> fieldValueDelegate, string json)
+        private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String json)
         {
             var files = new List<string>
             {

@@ -12,8 +12,8 @@ namespace PPTail.Common.Test
         [Fact]
         public void AddTheSettingIfTheSettingDoesNotExist()
         {
-            string settingName = string.Empty.GetRandom();
-            string updatedValue = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
+            String updatedValue = string.Empty.GetRandom();
 
             var target = new ExtendedSettingsCollection();
             target.Set(settingName, updatedValue);
@@ -25,9 +25,9 @@ namespace PPTail.Common.Test
         [Fact]
         public void UpdateTheValueInTheSettingIfTheSettingExists()
         {
-            string settingName = string.Empty.GetRandom();
-            string originalValue = string.Empty.GetRandom();
-            string updatedValue = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
+            String originalValue = string.Empty.GetRandom();
+            String updatedValue = string.Empty.GetRandom();
 
             var target = new ExtendedSettingsCollection();
             target.Add(new Tuple<string, string>(settingName, originalValue));
@@ -41,8 +41,8 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnTheSettingWithTheProperName()
         {
-            string settingName = string.Empty.GetRandom();
-            string updatedValue = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
+            String updatedValue = string.Empty.GetRandom();
 
             var target = new ExtendedSettingsCollection();
             var actual = target.Set(settingName, updatedValue);
@@ -53,8 +53,8 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnTheSettingWithTheProperValue()
         {
-            string settingName = string.Empty.GetRandom();
-            string updatedValue = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
+            String updatedValue = string.Empty.GetRandom();
 
             var target = new ExtendedSettingsCollection();
             var actual = target.Set(settingName, updatedValue);

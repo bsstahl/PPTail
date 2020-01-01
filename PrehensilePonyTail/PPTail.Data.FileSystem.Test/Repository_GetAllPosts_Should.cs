@@ -14,8 +14,8 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetAllPosts_Should
     {
-        const string _dataFolder = "App_Data";
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _dataFolder = "App_Data";
+        const String _connectionStringFilepathKey = "FilePath";
 
         [Fact]
         public void ReturnAllPostsIfAllAreValid()
@@ -81,8 +81,8 @@ namespace PPTail.Data.FileSystem.Test
                 "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
             };
 
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "posts");
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "posts");
 
             var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
 
@@ -158,44 +158,44 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
-            string fieldName = "author";
-            string fieldValueDelegate(ContentItem c) => c.Author;
+            String fieldName = "author";
+            String fieldValueDelegate(ContentItem c) => c.Author;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheTitleField()
         {
-            string fieldName = "title";
-            string fieldValueDelegate(ContentItem c) => c.Title;
+            String fieldName = "title";
+            String fieldValueDelegate(ContentItem c) => c.Title;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheDescriptionField()
         {
-            string fieldName = "description";
-            string fieldValueDelegate(ContentItem c) => c.Description;
+            String fieldName = "description";
+            String fieldValueDelegate(ContentItem c) => c.Description;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheContentField()
         {
-            string fieldName = "content";
-            string fieldValueDelegate(ContentItem c) => c.Content;
+            String fieldName = "content";
+            String fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTrueIfThePostIsPublished()
         {
-            string fieldName = "ispublished";
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldName = "ispublished";
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = true;
-            string expected = expectedValue.ToString();
-            string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
+            String expected = expectedValue.ToString();
+            String xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -203,12 +203,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnFalseIfThePostIsNotPublished()
         {
-            string fieldName = "ispublished";
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldName = "ispublished";
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = false;
-            string expected = expectedValue.ToString();
-            string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
+            String expected = expectedValue.ToString();
+            String xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -216,12 +216,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInThePubDateField()
         {
-            string fieldName = "pubDate";
-            string fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
+            String fieldName = "pubDate";
+            String fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
+            String expected = expectedValue.ToString();
+            String xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -229,12 +229,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheLastModifiedDateField()
         {
-            string fieldName = "lastModified";
-            string fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
+            String fieldName = "lastModified";
+            String fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
+            String expected = expectedValue.ToString();
+            String xml = $"<post><{fieldName}>{expected}</{fieldName}></post>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -242,35 +242,35 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheSlugField()
         {
-            string fieldName = "slug";
-            string fieldValueDelegate(ContentItem c) => c.Slug;
+            String fieldName = "slug";
+            String fieldValueDelegate(ContentItem c) => c.Slug;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheByLineField()
         {
-            string author = string.Empty.GetRandom();
-            string expected = $"by {author}";
-            string xml = $"<post><author>{author}</author></post>";
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String author = string.Empty.GetRandom();
+            String expected = $"by {author}";
+            String xml = $"<post><author>{author}</author></post>";
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
         public void ReturnAnEmptyStringInTheByLineFieldIfAuthorFieldIsEmpty()
         {
-            string expected = string.Empty;
-            string xml = $"<post/>";
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String expected = string.Empty;
+            String xml = $"<post/>";
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
         public void ReturnTheTagFromASingleTagPost()
         {
-            string expected = string.Empty.GetRandom();
-            string xml = $"<post><tags><tag>{expected}</tag></tags></post>";
+            String expected = string.Empty.GetRandom();
+            String xml = $"<post><tags><tag>{expected}</tag></tags></post>";
 
             var files = new List<string>
             {
@@ -299,10 +299,10 @@ namespace PPTail.Data.FileSystem.Test
         {
             var expected = 10.GetRandom(3);
 
-            string tagNodes = string.Empty;
-            for (int i = 0; i < expected; i++)
+            String tagNodes = string.Empty;
+            for (Int32 i = 0; i < expected; i++)
                 tagNodes += $"<tag>{string.Empty.GetRandom()}</tag>";
-            string xml = $"<post><tags>{tagNodes}</tags></post>";
+            String xml = $"<post><tags>{tagNodes}</tags></post>";
 
             var files = new List<string>
             {
@@ -330,7 +330,7 @@ namespace PPTail.Data.FileSystem.Test
         public void ReturnTheCategoryFromASingleCategoryPost()
         {
             var expected = Guid.NewGuid();
-            string xml = $"<post><categories><category>{expected.ToString()}</category></categories></post>";
+            String xml = $"<post><categories><category>{expected.ToString()}</category></categories></post>";
 
             var files = new List<string>
             {
@@ -364,7 +364,7 @@ namespace PPTail.Data.FileSystem.Test
             var expected3 = Guid.NewGuid();
             var categoryIds = new List<Guid>() { expected1, expected2, expected3 };
 
-            string xml = $"<post><categories><category>{expected1.ToString()}</category><category>{expected2.ToString()}</category><category>{expected3.ToString()}</category></categories></post>";
+            String xml = $"<post><categories><category>{expected1.ToString()}</category><category>{expected2.ToString()}</category><category>{expected3.ToString()}</category></categories></post>";
 
             var files = new List<string>
             {
@@ -391,15 +391,15 @@ namespace PPTail.Data.FileSystem.Test
                 Assert.Contains(categoryid, actual);
         }
 
-        private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
+        private static void ExecutePropertyTest(String fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             // Added a "decoy" value to make sure we are getting the right elements
-            string expected = string.Empty.GetRandom();
-            string xml = $"<post><{fieldName}>{expected}</{fieldName}><childElement><{fieldName}>{string.Empty.GetRandom()}</{fieldName}></childElement></post>";
+            String expected = string.Empty.GetRandom();
+            String xml = $"<post><{fieldName}>{expected}</{fieldName}><childElement><{fieldName}>{string.Empty.GetRandom()}</{fieldName}></childElement></post>";
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
-        private static void ExecutePropertyTest(string expected, Func<ContentItem, string> fieldValueDelegate, string xml)
+        private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String xml)
         {
             var files = new List<string>
             {

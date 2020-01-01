@@ -21,7 +21,7 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnTheCorrectArgumentNameIfSettingsIsNull()
         {
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 (null as ISettings).AddExtendedSetting(string.Empty, string.Empty);
@@ -43,7 +43,7 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnTheCorrectArgumentNameIfExtendedSettingsIsNull()
         {
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var settings = Mock.Of<ISettings>();

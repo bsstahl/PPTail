@@ -7,6 +7,6 @@ namespace PPTail.Interfaces
 {
     public interface IContactProvider
     {
-        string GenerateContactPage(string navigationContent, string sidebarContent, string pathToRoot);
+        String GenerateContactPage(String navigationContent, String sidebarContent, String pathToRoot);
     }
 }

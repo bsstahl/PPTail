@@ -10,7 +10,7 @@ namespace PPTail.Extensions
         public static double StdDev(this IEnumerable<int> values)
         {
             double ret = 0;
-            int count = values.Count();
+            Int32 count = values.Count();
             if (count < 2)
                 throw new InvalidOperationException("Cannot determine the deviation of a list of fewer than 2 items.");
             else

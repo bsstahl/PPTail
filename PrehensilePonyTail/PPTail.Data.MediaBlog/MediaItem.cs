@@ -11,7 +11,7 @@ namespace PPTail.Data.MediaBlog
             :this(json["Title"].Value<string>(), json["DisplayWidth"].Value<int>(), json["DisplayHeight"].Value<int>(), json["CreateDate"].Value<DateTime>())
         {}
 
-        public MediaItem(string title, int displayWidth, int displayHeight, DateTime createDate)
+        public MediaItem(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate)
         {
             this.Title = title;
             this.DisplayWidth = displayWidth;
@@ -19,11 +19,11 @@ namespace PPTail.Data.MediaBlog
             this.CreateDate = createDate;
         }
 
-        public string Title { get; set; }
-        public int DisplayWidth { get; set; }
-        public int DisplayHeight { get; set; }
+        public String Title { get; set; }
+        public Int32 DisplayWidth { get; set; }
+        public Int32 DisplayHeight { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public abstract string CreateContent();
+        public abstract String CreateContent();
     }
 }

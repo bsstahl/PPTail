@@ -9,7 +9,7 @@ namespace PPTail.Generator.Template
 {
     public static class StringExtensions
     {
-        internal static string ReplaceContentItemVariables(this string template, IServiceProvider serviceProvider, ContentItem item, string pathToRoot, bool xmlEncodeContent)
+        internal static String ReplaceContentItemVariables(this String template, IServiceProvider serviceProvider, ContentItem item, String pathToRoot, Boolean xmlEncodeContent)
         {
             serviceProvider.ValidateService<ISettings>();
             serviceProvider.ValidateService<ILinkProvider>();
@@ -21,12 +21,12 @@ namespace PPTail.Generator.Template
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
             var categories = serviceProvider.GetService<IEnumerable<Category>>();
 
-            string content = item.Content;
-            string description = item.Description;
-            string pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
-            string pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
-            string lastModDate = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.ToString(settings.DateFormatSpecifier);
-            string lastModDateTime = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+            var content = item.Content;
+            var description = item.Description;
+            var pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
+            var pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
+            var lastModDate = item.LastModificationDate.IsMinDate() ? String.Empty : item.LastModificationDate.ToString(settings.DateFormatSpecifier);
+            var lastModDateTime = item.LastModificationDate.IsMinDate() ? String.Empty : item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
 
             if (xmlEncodeContent)
             {
@@ -34,12 +34,12 @@ namespace PPTail.Generator.Template
                 description = contentEncoder.XmlEncode(item.Description);
                 pubDate = item.PublicationDate.Date.ToString("o");
                 pubDateTime = item.PublicationDate.ToString("o");
-                lastModDate = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.Date.ToString("o");
-                lastModDateTime = (item.LastModificationDate.IsMinDate()) ? string.Empty : item.LastModificationDate.ToString("o");
+                lastModDate = item.LastModificationDate.IsMinDate() ? String.Empty : item.LastModificationDate.Date.ToString("o");
+                lastModDateTime = item.LastModificationDate.IsMinDate() ? String.Empty : item.LastModificationDate.ToString("o");
             }
 
-            string permaLinkUrl = linkProvider.GetUrl(pathToRoot, "Permalinks", item.Id.ToString());
-            string permaLink = $"<a href=\"{permaLinkUrl}\" rel=\"bookmark\">Permalink</a>";
+            var permaLinkUrl = linkProvider.GetUrl(pathToRoot, "Permalinks", item.Id.ToString());
+            var permaLink = $"<a href=\"{permaLinkUrl}\" rel=\"bookmark\">Permalink</a>";
 
             return template.Replace("{Title}", item.Title)
                 .Replace("{Content}", content)
@@ -57,7 +57,7 @@ namespace PPTail.Generator.Template
                 .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, settings, pathToRoot, "small"));
         }
 
-        internal static string ReplaceNonContentItemSpecificVariables(this string template, IServiceProvider serviceProvider, string sidebarContent, string navContent, string content, string pathToRoot)
+        internal static String ReplaceNonContentItemSpecificVariables(this String template, IServiceProvider serviceProvider, String sidebarContent, String navContent, String content, String pathToRoot)
         {
             return template
                 .Replace("{NavigationMenu}", navContent)
@@ -67,7 +67,7 @@ namespace PPTail.Generator.Template
                 .ReplaceSettingsVariables(serviceProvider);
         }
 
-        internal static string ReplaceSettingsVariables(this string template, IServiceProvider serviceProvider)
+        internal static String ReplaceSettingsVariables(this String template, IServiceProvider serviceProvider)
         {
             serviceProvider.ValidateService<ISettings>();
             serviceProvider.ValidateService<IContentRepository>();
@@ -82,7 +82,7 @@ namespace PPTail.Generator.Template
         }
 
 
-        internal static string CreateSearchLink(this string title, IServiceProvider serviceProvider, string pathToRoot, string linkType, string cssClass)
+        internal static String CreateSearchLink(this String title, IServiceProvider serviceProvider, String pathToRoot, String linkType, String cssClass)
         {
             serviceProvider.ValidateService<ILinkProvider>();
             serviceProvider.ValidateService<IContentEncoder>();
@@ -90,16 +90,18 @@ namespace PPTail.Generator.Template
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
 
-            string encodedTitle = contentEncoder.UrlEncode(title);
-            string url = linkProvider.GetUrl(pathToRoot, "Search", encodedTitle);
+            var encodedTitle = contentEncoder.UrlEncode(title);
+            var url = linkProvider.GetUrl(pathToRoot, "Search", encodedTitle);
             return $"<a title=\"{linkType}: {title}\" class=\"{cssClass}\" href=\"{url}\">{title}</a>";
         }
 
-        internal static string TagLinkList(this IEnumerable<string> tags, IServiceProvider serviceProvider, string pathToRoot, string cssClass)
+        internal static String TagLinkList(this IEnumerable<String> tags, IServiceProvider serviceProvider, String pathToRoot, String cssClass)
         {
-            var results = string.Empty;
+            var results = String.Empty;
             foreach (var tag in tags)
+            {
                 results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
+            }
             return results;
         }
 

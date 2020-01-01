@@ -23,8 +23,8 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ThrowWithTheProperArgumentNameIfServiceProviderNotProvided()
         {
-            string expected = "serviceProvider";
-            string actual = string.Empty;
+            String expected = "serviceProvider";
+            String actual = string.Empty;
             try
             {
                 var target = new TemplateProcessor(null);

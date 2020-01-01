@@ -11,15 +11,15 @@ namespace PPTail.Web.Syndication.Test
 {
     public class DasBlogCompatibility_Invoke_Should
     {
-        const string _dasBlogSyndicationFile = "syndication.axd";
-        const string _currentSyndicationFile = "syndication.xml";
+        const String _dasBlogSyndicationFile = "syndication.axd";
+        const String _currentSyndicationFile = "syndication.xml";
 
         [Fact]
         public void CallInvokeOnTheNextDelegateIfNotACallToTheSyndicationFile()
         {
             bool executed = false;
 
-            string path = $"/{string.Empty.GetRandom()}.html";
+            String path = $"/{string.Empty.GetRandom()}.html";
             System.Diagnostics.Debug.Assert(!path.EndsWith(_dasBlogSyndicationFile));
 
             var context = (null as HttpContext).CreateMockContext(path);
@@ -40,7 +40,7 @@ namespace PPTail.Web.Syndication.Test
         public void PassTheHttpContextToTheInvokeCallOnTheNextDelegate()
         {
             HttpContext actual = null;
-            string path = $"/{string.Empty.GetRandom()}.html";
+            String path = $"/{string.Empty.GetRandom()}.html";
             var context = (null as HttpContext).CreateMockContext(path);
 
             var target = new DasBlogCompatibility((HttpContext c) =>
@@ -58,7 +58,7 @@ namespace PPTail.Web.Syndication.Test
         [Fact]
         public void RedirectIfCallIsToDasBlogSyndicationFile()
         {
-            string path = $"/{_dasBlogSyndicationFile}";
+            String path = $"/{_dasBlogSyndicationFile}";
 
             var request = (null as HttpRequest).CreateMockRequest(path, null);
             var response = (null as HttpResponse).CreateMockResponse();
@@ -78,8 +78,8 @@ namespace PPTail.Web.Syndication.Test
         [Fact]
         public void RedirectToNewSyndicationFileIfCallIsToDasBlogSyndicationFile()
         {
-            string path = $"/{_dasBlogSyndicationFile}";
-            string expectedPath = $"/{_currentSyndicationFile}";
+            String path = $"/{_dasBlogSyndicationFile}";
+            String expectedPath = $"/{_currentSyndicationFile}";
 
             var request = (null as HttpRequest).CreateMockRequest(path, null);
             var response = (null as HttpResponse).CreateMockResponse();
@@ -99,9 +99,9 @@ namespace PPTail.Web.Syndication.Test
         [Fact]
         public void RedirectToSameFolderIfCallIsToDasBlogSyndicationFile()
         {
-            string folderName = string.Empty.GetRandom();
-            string expectedPath = $"/{folderName}/{_currentSyndicationFile}";
-            string path = $"/{folderName}/{_dasBlogSyndicationFile}";
+            String folderName = string.Empty.GetRandom();
+            String expectedPath = $"/{folderName}/{_currentSyndicationFile}";
+            String path = $"/{folderName}/{_dasBlogSyndicationFile}";
 
             var request = (null as HttpRequest).CreateMockRequest(path, null);
             var response = (null as HttpResponse).CreateMockResponse();
@@ -121,9 +121,9 @@ namespace PPTail.Web.Syndication.Test
         [Fact]
         public void IssuesAPermanantRedirectIfCallIsToDasBlogSyndicationFile()
         {
-            string folderName = string.Empty.GetRandom();
-            string expectedPath = $"/{folderName}/{_currentSyndicationFile}";
-            string path = $"/{folderName}/{_dasBlogSyndicationFile}";
+            String folderName = string.Empty.GetRandom();
+            String expectedPath = $"/{folderName}/{_currentSyndicationFile}";
+            String path = $"/{folderName}/{_dasBlogSyndicationFile}";
 
             var request = (null as HttpRequest).CreateMockRequest(path, null);
             var response = (null as HttpResponse).CreateMockResponse();

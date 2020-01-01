@@ -9,10 +9,10 @@ namespace PPTail.Interfaces
     // such as the System.IO.Abstraction project
     public interface IFile
     {
-        string ReadAllText(string path);
-        byte[] ReadAllBytes(string path);
-        void WriteAllText(string path, string data);
-        void WriteAllBytes(string path, byte[] data);
-        bool Exists(string path);
+        String ReadAllText(String path);
+        byte[] ReadAllBytes(String path);
+        void WriteAllText(String path, String data);
+        void WriteAllBytes(String path, byte[] data);
+        bool Exists(String path);
     }
 }

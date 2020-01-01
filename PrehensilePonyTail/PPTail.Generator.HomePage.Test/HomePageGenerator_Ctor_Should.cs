@@ -13,7 +13,7 @@ namespace PPTail.Generator.HomePage.Test
 {
     public class HomePageGenerator_Ctor_Should
     {
-        const string _defaultDateTimeSpecifier = "MM/dd/yyyy";
+        const String _defaultDateTimeSpecifier = "MM/dd/yyyy";
 
         [Fact]
         public void NotThrowAnExceptionIfAllDependenciesAreProvided()

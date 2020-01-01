@@ -12,49 +12,49 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SettingsBuilder DateFormatSpecifier(string dateFormatSpecifier)
+        public new SettingsBuilder DateFormatSpecifier(String dateFormatSpecifier)
         {
             base.DateFormatSpecifier = dateFormatSpecifier;
             return this;
         }
 
-        public new SettingsBuilder DateTimeFormatSpecifier(string dateTimeFormatSpecifier)
+        public new SettingsBuilder DateTimeFormatSpecifier(String dateTimeFormatSpecifier)
         {
             base.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
             return this;
         }
 
-        public new SettingsBuilder ItemSeparator (string itemSeparator)
+        public new SettingsBuilder ItemSeparator (String itemSeparator)
         {
             base.ItemSeparator = itemSeparator;
             return this;
         }
 
-        public new SettingsBuilder OutputFileExtension(string outputFileExtension)
+        public new SettingsBuilder OutputFileExtension(String outputFileExtension)
         {
             base.OutputFileExtension = outputFileExtension;
             return this;
         }
 
-        public new SettingsBuilder SourceConnection(string sourceConnection)
+        public new SettingsBuilder SourceConnection(String sourceConnection)
         {
             base.SourceConnection = sourceConnection;
             return this;
         }
 
-        public new SettingsBuilder TargetConnection(string TargetConnection)
+        public new SettingsBuilder TargetConnection(String TargetConnection)
         {
             base.TargetConnection = TargetConnection;
             return this;
         }
 
-        public new SettingsBuilder TemplateConnection(string templateConnection)
+        public new SettingsBuilder TemplateConnection(String templateConnection)
         {
             base.TemplateConnection = templateConnection;
             return this;
         }
 
-        public SettingsBuilder AddExtendedSetting(string name, string value)
+        public SettingsBuilder AddExtendedSetting(String name, String value)
         {
             this.ExtendedSettings.Add(new Tuple<string, string>(name, value));
             return this;

@@ -13,13 +13,13 @@ namespace PPTail.Data.MediaBlog
             this.VideoUrl = json["VideoUrl"].Value<string>();
         }
 
-        public YouTubeMediaItem(string title, int displayWidth, int displayHeight, DateTime createDate, string videoUrl)
+        public YouTubeMediaItem(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate, String videoUrl)
             : base(title, displayWidth, displayHeight, createDate)
         {
             this.VideoUrl = videoUrl;
         }
 
-        public string VideoUrl { get; set; }
+        public String VideoUrl { get; set; }
 
         public override String CreateContent() => $"<img class=\"img-responsive\"  title=\"{this.Title}\" src=\"{this.VideoUrl}\" alt=\"{this.Title}\" />";
 

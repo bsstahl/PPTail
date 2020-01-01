@@ -20,7 +20,7 @@ namespace PPTail.Builders
             return this;
         }
 
-        public CategoryCollectionBuilder AddCategory(Guid id, string name, string description)
+        public CategoryCollectionBuilder AddCategory(Guid id, String name, String description)
         {
             _categories.Add(new CategoryBuilder()
                 .Id(id)

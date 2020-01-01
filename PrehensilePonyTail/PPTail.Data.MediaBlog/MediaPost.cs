@@ -10,18 +10,18 @@ namespace PPTail.Data.MediaBlog
     public class MediaPost
     {
 
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public string Title { get; set; }
+        public String Author { get; set; }
+        public String Description { get; set; }
+        public String Title { get; set; }
         public DateTime Posted { get; set; }
         public IEnumerable<string> Tags { get; set; }
 
-        public string MediaType { get; set; }
+        public String MediaType { get; set; }
         public JObject MediaItem { get; internal set; }
 
         public MediaItem Media { get; private set; }
 
-        internal static MediaPost Create(string json)
+        internal static MediaPost Create(String json)
         {
             var post = Newtonsoft.Json.Linq.JObject.Parse(json);
             var posted = post["Posted"];
@@ -45,7 +45,7 @@ namespace PPTail.Data.MediaBlog
         private MediaItem CreateMediaItem()
         {
             MediaItem result = null;
-            string mediaTypeName = this.MediaType ?? "None";
+            String mediaTypeName = this.MediaType ?? "None";
 
             switch (mediaTypeName.ToLower())
             {

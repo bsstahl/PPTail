@@ -7,18 +7,18 @@ namespace PPTail.Builders
 {
     public class ConnectionStringBuilder
     {
-        const string _filePathKey = "Filepath";
+        const String _filePathKey = "Filepath";
 
         private readonly List<KeyValuePair<string, string>> _pairs = new List<KeyValuePair<string, string>>();
 
-        string _providerName = string.Empty;
+        String _providerName = string.Empty;
 
-        public ConnectionStringBuilder(string providerName)
+        public ConnectionStringBuilder(String providerName)
         {
             _providerName = providerName;
         }
 
-        public string Build()
+        public String Build()
         {
             var sb = new StringBuilder();
             sb.Append($"Provider={_providerName};");
@@ -29,19 +29,19 @@ namespace PPTail.Builders
             return sb.ToString();
         }
 
-        public ConnectionStringBuilder ProviderName(string name)
+        public ConnectionStringBuilder ProviderName(String name)
         {
             _providerName = name;
             return this;
         }
 
-        public ConnectionStringBuilder AddPair(string key, string value)
+        public ConnectionStringBuilder AddPair(String key, String value)
         {
             _pairs.Add(new KeyValuePair<string, string>(key, value));
             return this;
         }
 
-        public ConnectionStringBuilder AddFilePath(string value)
+        public ConnectionStringBuilder AddFilePath(String value)
         {
             return this.AddPair(_filePathKey, value);
         }

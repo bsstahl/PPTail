@@ -70,12 +70,12 @@ namespace PPTail.Generator.Archive.Test
             return ignore.CreateDefault("MM/dd/yyyy hh:mm");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
         {
             return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
@@ -94,7 +94,7 @@ namespace PPTail.Generator.Archive.Test
 
         public static ContentItem Create(this ContentItem ignore)
         {
-            string author = string.Empty.GetRandom();
+            String author = string.Empty.GetRandom();
             return new ContentItem()
             {
                 Author = author,
@@ -111,10 +111,10 @@ namespace PPTail.Generator.Archive.Test
             };
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
         {
             var result = new List<ContentItem>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add((null as ContentItem).Create());
             return result;
         }

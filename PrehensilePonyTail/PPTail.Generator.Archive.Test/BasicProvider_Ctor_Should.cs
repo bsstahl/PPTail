@@ -33,7 +33,7 @@ namespace PPTail.Generator.Archive.Test
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ITemplateProcessor>();
 
-            string interfaceName = string.Empty;
+            String interfaceName = string.Empty;
             try
             {
                 var target = new Archive.BasicProvider(container.BuildServiceProvider());

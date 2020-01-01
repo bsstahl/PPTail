@@ -14,7 +14,7 @@ namespace PPTail.Test
         public void ReturnNullForSourceConnectionIfArgsIsNull()
         {
             string[] target = null;
-            (string actualSource, string actualTarget, string actualTemplate) = target.ParseArguments();
+            (String actualSource, String actualTarget, String actualTemplate) = target.ParseArguments();
             Assert.Null(actualSource);
         }
 
@@ -22,7 +22,7 @@ namespace PPTail.Test
         public void ReturnNullForTargetConnectionIfArgsIsNull()
         {
             string[] target = null;
-            (string actualSource, string actualTarget, string actualTemplate) = target.ParseArguments();
+            (String actualSource, String actualTarget, String actualTemplate) = target.ParseArguments();
             Assert.Null(actualTarget);
         }
 
@@ -30,40 +30,40 @@ namespace PPTail.Test
         public void ReturnNullForTemplateConnectionIfArgsIsNull()
         {
             string[] target = null;
-            (string actualSource, string actualTarget, string actualTemplate) = target.ParseArguments();
+            (String actualSource, String actualTarget, String actualTemplate) = target.ParseArguments();
             Assert.Null(actualTemplate);
         }
 
         [Fact]
         public void ReturnTheSpecifiedValueForSourceConnection()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate};
-            (string actualSource, string actualTarget, string actualTemplate) = target.ParseArguments();
+            (String actualSource, String actualTarget, String actualTemplate) = target.ParseArguments();
             Assert.Equal(expectedSource, actualSource);
         }
 
         [Fact]
         public void ReturnTheSpecifiedValueForTargetConnection()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (string actualSource, string actualTarget, string actualTemplate) = target.ParseArguments();
+            (String actualSource, String actualTarget, String actualTemplate) = target.ParseArguments();
             Assert.Equal(expectedTarget, actualTarget);
         }
 
         [Fact]
         public void ReturnTheSpecifiedValueForTemplateConnection()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (string actualSource, string actualTarget, string actualTemplate) = target.ParseArguments();
+            (String actualSource, String actualTarget, String actualTemplate) = target.ParseArguments();
             Assert.Equal(expectedTemplate, actualTemplate);
         }
     }

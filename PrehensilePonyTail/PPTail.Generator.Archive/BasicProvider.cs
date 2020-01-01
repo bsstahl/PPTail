@@ -29,7 +29,7 @@ namespace PPTail.Generator.Archive
             _templates.Validate(TemplateType.ArchiveItem);
         }
 
-        public string GenerateArchive(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, string navContent, string sidebarContent, string pathToRoot)
+        public String GenerateArchive(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, String navContent, String sidebarContent, String pathToRoot)
         {
             var pageTemplate = _templates.Find(TemplateType.Archive);
             var itemTemplate = _templates.Find(TemplateType.ArchiveItem);

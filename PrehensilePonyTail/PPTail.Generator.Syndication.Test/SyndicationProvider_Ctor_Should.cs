@@ -29,7 +29,7 @@ namespace PPTail.Generator.Syndication.Test
         {
             IServiceProvider serviceProvider = null;
 
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var target = (null as ISyndicationProvider).Create(serviceProvider);
@@ -56,8 +56,8 @@ namespace PPTail.Generator.Syndication.Test
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<IContentRepository>();
 
-            string expected = nameof(IContentRepository);
-            string actual = string.Empty;
+            String expected = nameof(IContentRepository);
+            String actual = string.Empty;
             try
             {
                 var target = (null as ISyndicationProvider).Create(container);
@@ -84,7 +84,7 @@ namespace PPTail.Generator.Syndication.Test
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ITemplateProcessor>();
 
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var target = (null as ISyndicationProvider).Create(container);

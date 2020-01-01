@@ -14,8 +14,8 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetAllPages_Should
     {
-        const string _connectionStringFilepathKey = "FilePath";
-        const string _dataFolder = "App_Data";
+        const String _connectionStringFilepathKey = "FilePath";
+        const String _dataFolder = "App_Data";
 
         [Fact]
         public void ReturnAllPagesIfAllAreValid()
@@ -80,8 +80,8 @@ namespace PPTail.Data.FileSystem.Test
                 "68AA2FE5-58F9-421A-9C1B-02254B953BC5.xml"
             };
 
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "pages");
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "pages");
 
             var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
 
@@ -157,44 +157,44 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
-            string fieldName = "author";
-            string fieldValueDelegate(ContentItem c) => c.Author;
+            String fieldName = "author";
+            String fieldValueDelegate(ContentItem c) => c.Author;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheTitleField()
         {
-            string fieldName = "title";
-            string fieldValueDelegate(ContentItem c) => c.Title;
+            String fieldName = "title";
+            String fieldValueDelegate(ContentItem c) => c.Title;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheDescriptionField()
         {
-            string fieldName = "description";
-            string fieldValueDelegate(ContentItem c) => c.Description;
+            String fieldName = "description";
+            String fieldValueDelegate(ContentItem c) => c.Description;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheContentField()
         {
-            string fieldName = "content";
-            string fieldValueDelegate(ContentItem c) => c.Content;
+            String fieldName = "content";
+            String fieldValueDelegate(ContentItem c) => c.Content;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTrueIfThePageIsPublished()
         {
-            string fieldName = "ispublished";
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldName = "ispublished";
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = true;
-            string expected = expectedValue.ToString();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = expectedValue.ToString();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -202,12 +202,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnFalseIfThePageIsNotPublished()
         {
-            string fieldName = "ispublished";
-            string fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String fieldName = "ispublished";
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
 
             bool expectedValue = false;
-            string expected = expectedValue.ToString();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = expectedValue.ToString();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -215,12 +215,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTrueIfThePageIsMarkedShowInList()
         {
-            string fieldName = "showinlist";
-            string fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
+            String fieldName = "showinlist";
+            String fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
 
             bool expectedValue = true;
-            string expected = expectedValue.ToString();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = expectedValue.ToString();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -228,12 +228,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnFalseIfThePageIsNotMarkedShowInList()
         {
-            string fieldName = "showinlist";
-            string fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
+            String fieldName = "showinlist";
+            String fieldValueDelegate(ContentItem c) => c.ShowInList.ToString();
 
             bool expectedValue = false;
-            string expected = expectedValue.ToString();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = expectedValue.ToString();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -241,12 +241,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInThePubDateField()
         {
-            string fieldName = "pubDate";
-            string fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
+            String fieldName = "pubDate";
+            String fieldValueDelegate(ContentItem c) => c.PublicationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = expectedValue.ToString();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -254,12 +254,12 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheLastModifiedDateField()
         {
-            string fieldName = "lastModified";
-            string fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
+            String fieldName = "lastModified";
+            String fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToString();
 
             DateTime expectedValue = DateTime.UtcNow.AddHours(20.GetRandom(10));
-            string expected = expectedValue.ToString();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = expectedValue.ToString();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
 
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
@@ -267,38 +267,38 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueInTheSlugField()
         {
-            string fieldName = "slug";
-            string fieldValueDelegate(ContentItem c) => c.Slug;
+            String fieldName = "slug";
+            String fieldValueDelegate(ContentItem c) => c.Slug;
             ExecutePropertyTest(fieldName, fieldValueDelegate);
         }
 
         [Fact]
         public void ReturnTheProperValueInTheByLineField()
         {
-            string author = string.Empty.GetRandom();
-            string expected = $"by {author}";
-            string xml = $"<page><author>{author}</author></page>";
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String author = string.Empty.GetRandom();
+            String expected = $"by {author}";
+            String xml = $"<page><author>{author}</author></page>";
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
         [Fact]
         public void ReturnAnEmptyStringInTheByLineFieldIfAuthorFieldIsEmpty()
         {
-            string expected = string.Empty;
-            string xml = $"<page/>";
-            string fieldValueDelegate(ContentItem c) => c.ByLine;
+            String expected = string.Empty;
+            String xml = $"<page/>";
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
-        private static void ExecutePropertyTest(string fieldName, Func<ContentItem, string> fieldValueDelegate)
+        private static void ExecutePropertyTest(String fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
-            string expected = string.Empty.GetRandom();
-            string xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
+            String expected = string.Empty.GetRandom();
+            String xml = $"<page><{fieldName}>{expected}</{fieldName}></page>";
             ExecutePropertyTest(expected, fieldValueDelegate, xml);
         }
 
-        private static void ExecutePropertyTest(string expected, Func<ContentItem, string> fieldValueDelegate, string xml)
+        private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String xml)
         {
             var files = new List<string>
             {

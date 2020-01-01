@@ -8,6 +8,6 @@ namespace PPTail.Entities
     public class Template
     {
         public Enumerations.TemplateType TemplateType { get; set; }
-        public string Content { get; set; }
+        public String Content { get; set; }
     }
 }

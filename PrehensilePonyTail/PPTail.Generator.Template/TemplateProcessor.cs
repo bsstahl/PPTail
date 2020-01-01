@@ -13,15 +13,9 @@ namespace PPTail.Generator.Template
     {
         readonly IServiceProvider _serviceProvider;
 
-        public TemplateProcessor(IServiceProvider serviceProvider)
-        {
-            if (serviceProvider == null)
-                throw new ArgumentNullException(nameof(serviceProvider));
+        public TemplateProcessor(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            _serviceProvider = serviceProvider;
-        }
-
-        public string Process(Entities.Template pageTemplate, Entities.Template itemTemplate, string sidebarContent, string navContent, IEnumerable<ContentItem> posts, string pageTitle, string pathToRoot, string itemSeparator, bool xmlEncodeContent, int maxPostCount)
+        public String Process(Entities.Template pageTemplate, Entities.Template itemTemplate, String sidebarContent, String navContent, IEnumerable<ContentItem> posts, String pageTitle, String pathToRoot, String itemSeparator, Boolean xmlEncodeContent, Int32 maxPostCount)
         {
             // MaxPosts is not pulled from the SiteSettings because
             // there are 2 possible values that might be used to
@@ -29,28 +23,32 @@ namespace PPTail.Generator.Template
 
             var recentPosts = posts.OrderByDescending(p => p.PublicationDate).Where(pub => pub.IsPublished);
             if (maxPostCount > 0)
+            {
                 recentPosts = recentPosts.Take(maxPostCount);
+            }
 
-            var contentItems = new List<string>();
+            var contentItems = new List<String>();
             foreach (var post in recentPosts)
+            {
                 contentItems.Add(this.ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent));
+            }
 
-            var pageContent = string.Join(itemSeparator, contentItems);
+            var pageContent = String.Join(itemSeparator, contentItems);
             return this.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, pageContent, pageTitle, pathToRoot);
         }
 
-        public string ProcessContentItemTemplate(Entities.Template template, ContentItem item, string sidebarContent, string navContent, string pathToRoot, bool xmlEncodeContent)
+        public String ProcessContentItemTemplate(Entities.Template template, ContentItem item, String sidebarContent, String navContent, String pathToRoot, Boolean xmlEncodeContent)
         {
             return template.Content
                 .ReplaceContentItemVariables(_serviceProvider, item, pathToRoot, xmlEncodeContent)
-                .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, string.Empty, pathToRoot);
+                .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, String.Empty, pathToRoot);
         }
 
-        public string ProcessNonContentItemTemplate(Entities.Template template, string sidebarContent, string navContent, string content, string pageTitle, string pathToRoot)
+        public String ProcessNonContentItemTemplate(Entities.Template template, String sidebarContent, String navContent, String content, String pageTitle, String pathToRoot)
         {
             return template.Content
                   .Replace("{Title}", pageTitle)
-                  .Replace("{ByLine}", string.Empty)
+                  .Replace("{ByLine}", String.Empty)
                   .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, content, pathToRoot);
         }
 

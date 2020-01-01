@@ -38,7 +38,7 @@ namespace PPTail.Data.Ef
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
             throw new NotImplementedException();
         }

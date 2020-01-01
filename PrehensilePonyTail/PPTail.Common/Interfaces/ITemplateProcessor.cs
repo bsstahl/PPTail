@@ -8,8 +8,8 @@ namespace PPTail.Interfaces
 {
     public interface ITemplateProcessor
     {
-        string Process(Template pageTemplate, Template itemTemplate, string sidebarContent, string navContent, IEnumerable<ContentItem> posts, string pageTitle, string pathToRoot, string itemSeparator, bool xmlEncodeContent, int maxPostCount);
-        string ProcessContentItemTemplate(Entities.Template template, ContentItem item, string sidebarContent, string navContent, string pathToRoot, bool xmlEncodeContent);
-        string ProcessNonContentItemTemplate(Entities.Template template, string sidebarContent, string navContent, string content, string pageTitle, string pathToRoot);
+        String Process(Template pageTemplate, Template itemTemplate, String sidebarContent, String navContent, IEnumerable<ContentItem> posts, String pageTitle, String pathToRoot, String itemSeparator, Boolean xmlEncodeContent, Int32 maxPostCount);
+        String ProcessContentItemTemplate(Entities.Template template, ContentItem item, String sidebarContent, String navContent, String pathToRoot, Boolean xmlEncodeContent);
+        String ProcessNonContentItemTemplate(Entities.Template template, String sidebarContent, String navContent, String content, String pageTitle, String pathToRoot);
     }
 }

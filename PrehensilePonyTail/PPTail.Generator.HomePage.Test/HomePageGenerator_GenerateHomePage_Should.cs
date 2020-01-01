@@ -20,8 +20,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -38,12 +38,12 @@ namespace PPTail.Generator.HomePage.Test
         [Fact]
         public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -65,8 +65,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -86,8 +86,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -107,8 +107,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -127,8 +127,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -147,8 +147,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -167,8 +167,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -179,7 +179,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            string pageTitle = "Home";
+            String pageTitle = "Home";
             templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), pageTitle, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
@@ -188,8 +188,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -200,7 +200,7 @@ namespace PPTail.Generator.HomePage.Test
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            string pathToRoot = ".";
+            String pathToRoot = ".";
             templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), pathToRoot, It.IsAny<string>(), It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
@@ -209,8 +209,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -233,8 +233,8 @@ namespace PPTail.Generator.HomePage.Test
         {
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);
@@ -255,8 +255,8 @@ namespace PPTail.Generator.HomePage.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Template>>(templates);

@@ -10,8 +10,8 @@ namespace PPTail.Interfaces
 
     public interface IDirectory
     {
-        bool Exists(string path);
-        void CreateDirectory(string path);
-        IEnumerable<string> EnumerateFiles(string path);
+        bool Exists(String path);
+        void CreateDirectory(String path);
+        IEnumerable<string> EnumerateFiles(String path);
     }
 }

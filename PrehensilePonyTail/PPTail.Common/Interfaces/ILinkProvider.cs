@@ -7,8 +7,8 @@ namespace PPTail.Interfaces
 {
     public interface ILinkProvider
     {
-        string GetUrl(string pathToRoot, string relativePath, string fileName);
+        String GetUrl(String pathToRoot, String relativePath, String fileName);
 
-        string GetUrl(string pathToRoot, string relativePath, string fileName, string fileExtension);
+        String GetUrl(String pathToRoot, String relativePath, String fileName, String fileExtension);
     }
 }

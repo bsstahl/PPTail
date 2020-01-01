@@ -15,13 +15,13 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public class Repository_GetSiteSettings_Should
     {
-        const int _defaultPostsPerPage = 3;
-        const int _defaultPostsPerFeed = 5;
+        const Int32 _defaultPostsPerPage = 3;
+        const Int32 _defaultPostsPerFeed = 5;
 
         [Fact]
         public void ThrowSettingNotFoundExceptionIfSettingsContentIsInvalid()
         {
-            string invalidJson = "<xml/>";
+            String invalidJson = "<xml/>";
 
             var fileService = new MockFileServiceBuilder()
                 .AddSiteSettingsFile(invalidJson)
@@ -39,8 +39,8 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ThrowWithProperSettingNameIfSettingsCannotBeLoaded()
         {
-            string expected = typeof(SiteSettings).Name;
-            string invalidJson = "<xml/>";
+            String expected = typeof(SiteSettings).Name;
+            String invalidJson = "<xml/>";
 
             var fileService = new MockFileServiceBuilder()
                 .AddSiteSettingsFile(invalidJson)
@@ -65,10 +65,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReadsTheProperFileFromTheFileSystem()
         {
-            string rootPath = string.Empty;
-            string expectedPath = System.IO.Path.Combine(rootPath, "SiteSettings.json");
+            String rootPath = string.Empty;
+            String expectedPath = System.IO.Path.Combine(rootPath, "SiteSettings.json");
 
-            string json = new SiteSettingsFileBuilder()
+            String json = new SiteSettingsFileBuilder()
                 .UseRandomValues()
                 .Build();
 
@@ -91,7 +91,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueForTitle()
         {
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
             Func<SiteSettings, string> fieldValueDelegate = s => s.Title;
             var siteSettings = new SiteSettingsBuilder()
                 .Title(expected)
@@ -102,7 +102,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueForDescription()
         {
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
             Func<SiteSettings, string> fieldValueDelegate = s => s.Description;
             var siteSettings = new SiteSettingsBuilder()
                 .Description(expected)
@@ -113,8 +113,8 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueForPostsPerPage()
         {
-            int expectedValue = 25.GetRandom(5);
-            string expected = expectedValue.ToString();
+            Int32 expectedValue = 25.GetRandom(5);
+            String expected = expectedValue.ToString();
             Func<SiteSettings, string> fieldValueDelegate = s => s.PostsPerPage.ToString();
             var siteSettings = new SiteSettingsBuilder()
                 .PostsPerPage(expectedValue)
@@ -125,8 +125,8 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheDefaultValueIfPostsPerPageIsNotSupplied()
         {
-            int expectedValue = _defaultPostsPerPage;
-            string expected = expectedValue.ToString();
+            Int32 expectedValue = _defaultPostsPerPage;
+            String expected = expectedValue.ToString();
             Func<SiteSettings, string> fieldValueDelegate = s => s.PostsPerPage.ToString();
             var siteSettings = new SiteSettingsBuilder()
                 .PostsPerPage(0)
@@ -137,8 +137,8 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueForPostsPerFeed()
         {
-            int expectedValue = 25.GetRandom(5);
-            string expected = expectedValue.ToString();
+            Int32 expectedValue = 25.GetRandom(5);
+            String expected = expectedValue.ToString();
             Func<SiteSettings, string> fieldValueDelegate = s => s.PostsPerFeed.ToString();
             var siteSettings = new SiteSettingsBuilder()
                 .PostsPerFeed(expectedValue)
@@ -149,8 +149,8 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheDefaultValueIfPostsPerFeedIsNotSupplied()
         {
-            int expectedValue = _defaultPostsPerFeed;
-            string expected = expectedValue.ToString();
+            Int32 expectedValue = _defaultPostsPerFeed;
+            String expected = expectedValue.ToString();
             Func<SiteSettings, string> fieldValueDelegate = s => s.PostsPerFeed.ToString();
             var siteSettings = new SiteSettingsBuilder()
                 .PostsPerFeed(0)
@@ -161,7 +161,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperValueForTheme()
         {
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
             Func<SiteSettings, string> fieldValueDelegate = s => s.Theme;
             var siteSettings = new SiteSettingsBuilder()
                 .Theme(expected)

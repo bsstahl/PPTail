@@ -16,9 +16,9 @@ namespace PPTail.Generator.Navigation
             _serviceProvider = serviceProvider;
         }
 
-        public string CreateNavigation(IEnumerable<ContentItem> pages, string relativePathToRootFolder, string outputFileExtension)
+        public String CreateNavigation(IEnumerable<ContentItem> pages, String relativePathToRootFolder, String outputFileExtension)
         {
-            string result = "<div class=\"menu\">";
+            String result = "<div class=\"menu\">";
 
             var homePageUri = System.IO.Path.Combine(relativePathToRootFolder, $"index.{outputFileExtension}");
             var archiveUri = System.IO.Path.Combine(relativePathToRootFolder, $"archive.{outputFileExtension}");

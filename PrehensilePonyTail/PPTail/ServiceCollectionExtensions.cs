@@ -15,35 +15,35 @@ namespace PPTail
             IServiceCollection container = new ServiceCollection();
 
             // Configure Dependencies
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            _ = container.AddSingleton<ISettings>(settings);
+            _ = container.AddSingleton<IEnumerable<Template>>(templates);
 
             // Source Repositories
-            container.AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>();
-            container.AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>();
-            container.AddSingleton<IContentRepository, PPTail.Data.NativeJson.Repository>();
-            container.AddSingleton<IContentRepository, PPTail.Data.WordpressFiles.Repository>();
-            container.AddSingleton<IContentRepository, PPTail.Data.PhotoBlog.Repository>();
-            container.AddSingleton<IContentRepository, PPTail.Data.MediaBlog.Repository>();
+            _ = container.AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>();
+            _ = container.AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>();
+            _ = container.AddSingleton<IContentRepository, PPTail.Data.NativeJson.Repository>();
+            _ = container.AddSingleton<IContentRepository, PPTail.Data.WordpressFiles.Repository>();
+            _ = container.AddSingleton<IContentRepository, PPTail.Data.PhotoBlog.Repository>();
+            _ = container.AddSingleton<IContentRepository, PPTail.Data.MediaBlog.Repository>();
 
             // Additional Service Providers
-            container.AddSingleton<IFile>(c => new PPTail.Io.File());
-            container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
-            container.AddSingleton<ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
-            container.AddSingleton<INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
-            container.AddSingleton<IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
-            container.AddSingleton<IContactProvider>(c => new PPTail.Generator.Contact.TemplateProvider(c));
-            container.AddSingleton<IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
-            container.AddSingleton<IContentItemPageGenerator>(c => new PPTail.Generator.ContentPage.PageGenerator(c));
-            container.AddSingleton<IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
-            container.AddSingleton<ISearchProvider>(c => new PPTail.Generator.Search.PageGenerator(c));
-            container.AddSingleton<IRedirectProvider>(c => new PPTail.Generator.Redirect.RedirectProvider(c));
-            container.AddSingleton<ISyndicationProvider>(c => new PPTail.Generator.Syndication.SyndicationProvider(c));
-            container.AddSingleton<IHomePageGenerator>(c => new PPTail.Generator.HomePage.HomePageGenerator(c));
-            container.AddSingleton<ILinkProvider>(c => new PPTail.Generator.Links.LinkProvider(c));
-            container.AddSingleton<ITemplateProcessor>(c => new PPTail.Generator.Template.TemplateProcessor(c));
-            container.AddSingleton<IContentEncoder>(c => new PPTail.Generator.Encoder.ContentEncoder(c));
-            container.AddSingleton<ISiteBuilder>(c => new PPTail.SiteGenerator.Builder(c));
+            _ = container.AddSingleton<IFile>(c => new PPTail.Io.File());
+            _ = container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
+            _ = container.AddSingleton<ITagCloudStyler>(c => new PPTail.Generator.TagCloudStyler.DeviationStyler(c));
+            _ = container.AddSingleton<INavigationProvider>(c => new Generator.Navigation.BasicProvider(c));
+            _ = container.AddSingleton<IArchiveProvider>(c => new PPTail.Generator.Archive.BasicProvider(c));
+            _ = container.AddSingleton<IContactProvider>(c => new PPTail.Generator.Contact.TemplateProvider(c));
+            _ = container.AddSingleton<IPageGenerator>(c => new PPTail.Generator.T4Html.PageGenerator(c));
+            _ = container.AddSingleton<IContentItemPageGenerator>(c => new PPTail.Generator.ContentPage.PageGenerator(c));
+            _ = container.AddSingleton<IOutputRepository>(c => new PPTail.Output.FileSystem.Repository(c));
+            _ = container.AddSingleton<ISearchProvider>(c => new PPTail.Generator.Search.PageGenerator(c));
+            _ = container.AddSingleton<IRedirectProvider>(c => new PPTail.Generator.Redirect.RedirectProvider(c));
+            _ = container.AddSingleton<ISyndicationProvider>(c => new PPTail.Generator.Syndication.SyndicationProvider(c));
+            _ = container.AddSingleton<IHomePageGenerator>(c => new PPTail.Generator.HomePage.HomePageGenerator(c));
+            _ = container.AddSingleton<ILinkProvider>(c => new PPTail.Generator.Links.LinkProvider(c));
+            _ = container.AddSingleton<ITemplateProcessor>(c => new PPTail.Generator.Template.TemplateProcessor(c));
+            _ = container.AddSingleton<IContentEncoder>(c => new PPTail.Generator.Encoder.ContentEncoder(c));
+            _ = container.AddSingleton<ISiteBuilder>(c => new PPTail.SiteGenerator.Builder(c));
 
             //var siteSettings = contentRepo.GetSiteSettings();
             //container.AddSingleton<SiteSettings>(siteSettings);

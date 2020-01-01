@@ -15,10 +15,10 @@ namespace PPTail.Generator.T4Html.Test
 {
     public static class Extensions
     {
-        const string _contentPageTemplatePath = @"..\..\..\..\ContentPage.template.html";
-        const string _postPageTemplatePath = @"..\..\..\..\PostPage.template.html";
-        const string _styleTemplatePath = @"..\..\..\..\Style.template.css";
-        const string _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
+        const String _contentPageTemplatePath = @"..\..\..\..\ContentPage.template.html";
+        const String _postPageTemplatePath = @"..\..\..\..\PostPage.template.html";
+        const String _styleTemplatePath = @"..\..\..\..\Style.template.css";
+        const String _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";
 
         public static IPageGenerator Create(this IPageGenerator ignore)
         {
@@ -29,22 +29,22 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create(cpt, ppt, styleTemplate, nav);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string styleTemplate)
+        public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String styleTemplate)
         {
             return ignore.Create(contentPageTemplate, postPageTemplate, styleTemplate, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, INavigationProvider navProvider)
+        public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String stylePageTemplate, INavigationProvider navProvider)
         {
             return ignore.Create(contentPageTemplate, postPageTemplate, stylePageTemplate, _defaultDateTimeFormatSpecifier, navProvider);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, string dateTimeFormatSpecifier)
+        public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String stylePageTemplate, String dateTimeFormatSpecifier)
         {
             return ignore.Create(contentPageTemplate, postPageTemplate, stylePageTemplate, dateTimeFormatSpecifier, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, string contentPageTemplate, string postPageTemplate, string stylePageTemplate, string dateTimeFormatSpecifier, INavigationProvider navProvider)
+        public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String stylePageTemplate, String dateTimeFormatSpecifier, INavigationProvider navProvider)
         {
             var contentTemplate = new Template() { Content = contentPageTemplate, TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = postPageTemplate, TemplateType = Enumerations.TemplateType.PostPage };
@@ -135,12 +135,12 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
         {
             return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
@@ -168,7 +168,7 @@ namespace PPTail.Generator.T4Html.Test
 
         public static ContentItem Create(this ContentItem ignore, IEnumerable<string> tags, IEnumerable<Guid> categoryIds)
         {
-            string author = string.Empty.GetRandom();
+            String author = string.Empty.GetRandom();
             var lastModDate = DateTime.UtcNow.AddDays(-10.GetRandom(1));
             var pubDate = DateTime.UtcNow.AddDays(-20.GetRandom(10));
             var slug = string.Empty.GetRandom();
@@ -177,9 +177,9 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         private static ContentItem Create(this ContentItem ignore, 
-            string author, IEnumerable<Guid> categoryIds, string content,
-            string description, bool isPublished, DateTime lastModDate, DateTime pubDate,
-            string slug, IEnumerable<string> tags, string title)
+            String author, IEnumerable<Guid> categoryIds, String content,
+            String description, bool isPublished, DateTime lastModDate, DateTime pubDate,
+            String slug, IEnumerable<string> tags, String title)
         {
             return new ContentItem()
             {
@@ -202,20 +202,20 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.CreateBlankTemplates("<html/>", "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", "");
         }
 
-        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, string contentpageTemplate, string itemTemplate)
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, String contentpageTemplate, String itemTemplate)
         {
             return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
         }
 
-        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, string contentpageTemplate, string homePageTemplate, string itemTemplate)
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, String contentpageTemplate, String homePageTemplate, String itemTemplate)
         {
             return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", homePageTemplate, "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
         }
 
         public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, 
-            string contentTemplateText, string postTemplateText, 
-            string homepageTemplateText, string styleTemplateText,
-            string bootstrapTemplateText, string itemTemplateText)
+            String contentTemplateText, String postTemplateText, 
+            String homepageTemplateText, String styleTemplateText,
+            String bootstrapTemplateText, String itemTemplateText)
         {
             var contentTemplate = new Template() { Content = contentTemplateText, TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = postTemplateText, TemplateType = Enumerations.TemplateType.PostPage };
@@ -231,7 +231,7 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2));
         }
 
-        public static SiteSettings Create(this SiteSettings ignore, string title, string description, int postsPerPage)
+        public static SiteSettings Create(this SiteSettings ignore, String title, String description, Int32 postsPerPage)
         {
             return new SiteSettings()
             {
@@ -256,10 +256,10 @@ namespace PPTail.Generator.T4Html.Test
             };
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
         {
             var contentItems = new List<ContentItem>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 contentItems.Add((null as ContentItem).Create());
             return contentItems;
         }
@@ -267,17 +267,17 @@ namespace PPTail.Generator.T4Html.Test
         public static Category Create(this Category ignore)
         {
             var id = Guid.NewGuid();
-            string name = $"nameof_{id.ToString()}";
+            String name = $"nameof_{id.ToString()}";
             return ignore.Create(id, name);
         }
 
-        public static Category Create(this Category ignore, Guid id, string name)
+        public static Category Create(this Category ignore, Guid id, String name)
         {
-            string description = $"descriptionof_{id.ToString()}";
+            String description = $"descriptionof_{id.ToString()}";
             return ignore.Create(id, name, description);
         }
 
-        public static Category Create(this Category ignore, Guid id, string name, string description)
+        public static Category Create(this Category ignore, Guid id, String name, String description)
         {
             return new Category()
             {
@@ -290,7 +290,7 @@ namespace PPTail.Generator.T4Html.Test
         public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
         {
             var categoryList = new List<Category>();
-            for (int i = 0; i < 10; i++)
+            for (Int32 i = 0; i < 10; i++)
                 categoryList.Add((null as Category).Create());
             return categoryList;
         }

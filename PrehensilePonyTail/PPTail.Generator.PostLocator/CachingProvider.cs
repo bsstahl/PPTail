@@ -12,7 +12,7 @@ namespace PPTail.Generator.PostLocator
         {
         }
 
-        public string GetUrlByPostId(Guid id)
+        public String GetUrlByPostId(Guid id)
         {
             // TODO: Implement for real
             if (id == Guid.Parse("2f823b30-355a-49e1-8ecf-121cff1b3547"))

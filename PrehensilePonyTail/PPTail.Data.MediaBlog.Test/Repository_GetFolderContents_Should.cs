@@ -19,10 +19,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void RequestTheContentsOfTheCorrectFolderPath()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -58,10 +58,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnOneEntityForEachItemInTheFolder()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -97,10 +97,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void RequestTheContentsOfTheCorrectFiles()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -132,7 +132,7 @@ namespace PPTail.Data.MediaBlog.Test
 
             foreach (var file in files)
             {
-                string filePath = System.IO.Path.Combine(relativePath, file.FileName);
+                String filePath = System.IO.Path.Combine(relativePath, file.FileName);
                 fileService.Verify(fs => fs.ReadAllBytes(filePath), Times.Once);
             }
         }
@@ -140,10 +140,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheCorrectRelativePathForEachItem()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -179,10 +179,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheCorrectFileNameForEachItem()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -219,10 +219,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheCorrectContentsForEachItem()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -259,13 +259,13 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnAnEmptyCollectionIfTheFolderDoesNotExist()
         {
-            int count = 25.GetRandom(10);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
-            string fakeFolder = String.Empty.GetRandom();
-            string fakePath = Path.Combine(rootPath, fakeFolder);
+            String fakeFolder = String.Empty.GetRandom();
+            String fakePath = Path.Combine(rootPath, fakeFolder);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -305,13 +305,13 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void SkipItemsThatRequireAuthorizationToAccess()
         {
-            int count = 35.GetRandom(20);
-            string rootPath = $"c:\\{string.Empty.GetRandom()}";
-            string relativePath = string.Empty.GetRandom();
-            string folderPath = Path.Combine(rootPath, relativePath);
+            Int32 count = 35.GetRandom(20);
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            String relativePath = string.Empty.GetRandom();
+            String folderPath = Path.Combine(rootPath, relativePath);
 
-            string fakeFolder = String.Empty.GetRandom();
-            string fakePath = Path.Combine(rootPath, fakeFolder);
+            String fakeFolder = String.Empty.GetRandom();
+            String fakePath = Path.Combine(rootPath, fakeFolder);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -331,7 +331,7 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileServiceBuilder = new MockFileServiceBuilder();
 
-            int expected = 0;
+            Int32 expected = 0;
             foreach (var file in files)
             {
                 bool secured = true.GetRandom();

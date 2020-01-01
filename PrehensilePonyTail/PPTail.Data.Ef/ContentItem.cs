@@ -11,12 +11,12 @@ namespace PPTail.Data.Ef
         [Key]
         public Guid Id { get; set; }
 
-        public string Author { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Content { get; set; }
-        public string Slug { get; set; }
-        public string ByLine { get; set; }
+        public String Author { get; set; }
+        public String Title { get; set; }
+        public String Description { get; set; }
+        public String Content { get; set; }
+        public String Slug { get; set; }
+        public String ByLine { get; set; }
 
         public DateTime PublicationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
@@ -24,8 +24,8 @@ namespace PPTail.Data.Ef
         public bool IsPublished { get; set; }
         public bool ShowInList { get; set; }
 
-        public string Tags { get; set; }
-        public string CategoryIds { get; set; }
+        public String Tags { get; set; }
+        public String CategoryIds { get; set; }
 
 
         public PPTail.Entities.ContentItem AsEntity()

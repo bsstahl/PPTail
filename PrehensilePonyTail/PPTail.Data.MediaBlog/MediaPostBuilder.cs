@@ -12,18 +12,18 @@ namespace PPTail.Data.MediaBlog
     /// </summary>
     public class MediaPostBuilder : PPTail.Data.MediaBlog.MediaPost
     {
-        public string Build()
+        public String Build()
         {
             return this.ToString();
         }
 
-        public new MediaPostBuilder Author(string author)
+        public new MediaPostBuilder Author(String author)
         {
             base.Author = author;
             return this;
         }
 
-        public new MediaPostBuilder Description(string description)
+        public new MediaPostBuilder Description(String description)
         {
             base.Description = description;
             return this;
@@ -35,7 +35,7 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public new MediaPostBuilder Title(string title)
+        public new MediaPostBuilder Title(String title)
         {
             base.Title = title;
             return this;
@@ -47,7 +47,7 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public MediaPostBuilder AddTag(string tag)
+        public MediaPostBuilder AddTag(String tag)
         {
             return this.AddTags(new string[] { tag });
         }
@@ -68,7 +68,7 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public MediaPostBuilder AddFlickrImage(string title, int displayWidth, int displayHeight, DateTime createDate, string flickrListUrl, string imageUrl)
+        public MediaPostBuilder AddFlickrImage(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate, String flickrListUrl, String imageUrl)
         {
             return this.AddFlickrImage(new FlickrMediaItem(title, displayWidth, displayHeight, createDate, flickrListUrl, imageUrl));
         }
@@ -80,7 +80,7 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public MediaPostBuilder AddYouTubeVideo(string title, int displayWidth, int displayHeight, DateTime createDate, string videoUrl)
+        public MediaPostBuilder AddYouTubeVideo(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate, String videoUrl)
         {
             return this.AddYouTubeVideo(new YouTubeMediaItem(title, displayWidth, displayHeight, createDate, videoUrl));
         }
@@ -92,7 +92,7 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public MediaPostBuilder AddEmptyPost(string title, int displayWidth, int displayHeight, DateTime createDate)
+        public MediaPostBuilder AddEmptyPost(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate)
         {
             return this.AddEmptyPost(new EmptyMediaItem(title,displayWidth, displayHeight, createDate));
         }

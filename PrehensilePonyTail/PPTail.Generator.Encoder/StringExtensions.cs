@@ -7,10 +7,10 @@ namespace PPTail.Generator.Encoder
 {
     public static class StringExtensions
     {
-        internal static string RemoveConsecutiveDashes(this string data)
+        internal static String RemoveConsecutiveDashes(this String data)
         {
-            string original = string.Empty;
-            string current = data;
+            String original = string.Empty;
+            String current = data;
 
             do
             {

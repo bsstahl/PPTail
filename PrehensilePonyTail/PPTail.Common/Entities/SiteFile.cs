@@ -8,8 +8,8 @@ namespace PPTail.Entities
 {
     public class SiteFile
     {
-        public string RelativeFilePath { get; set; }
-        public string Content { get; set; }
+        public String RelativeFilePath { get; set; }
+        public String Content { get; set; }
         public TemplateType SourceTemplateType { get; set; }
         public bool IsBase64Encoded { get; set; }
     }

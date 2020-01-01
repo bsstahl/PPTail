@@ -11,12 +11,11 @@ namespace PPTail.Data.PhotoBlog
 {
     public class Repository : PPTail.Interfaces.IContentRepository
     {
-        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
+        private const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+        private const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
+        private const String _connectionStringFilepathKey = "FilePath";
 
-        const string _connectionStringFilepathKey = "FilePath";
-
-        private readonly string _rootPath;
+        private readonly String _rootPath;
         private readonly IServiceProvider _serviceProvider;
 
         public Repository(IServiceProvider serviceProvider)
@@ -30,8 +29,8 @@ namespace PPTail.Data.PhotoBlog
             _rootPath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
             // HACK: Updating settings shouldn't be done here, it probably should be done from the command line
-            settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
-            settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
+            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
+            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
         }
 
         public IEnumerable<ContentItem> GetAllPages()
@@ -40,7 +39,7 @@ namespace PPTail.Data.PhotoBlog
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootPath, "pages");
+            var pagePath = System.IO.Path.Combine(_rootPath, "pages");
             var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
             {
@@ -61,16 +60,18 @@ namespace PPTail.Data.PhotoBlog
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string postPath = System.IO.Path.Combine(_rootPath, "posts");
+            var postPath = System.IO.Path.Combine(_rootPath, "posts");
             var files = directory.EnumerateFiles(postPath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
             {
                 var json = fileSystem.ReadAllText(file);
                 var imagePost = Newtonsoft.Json.JsonConvert.DeserializeObject<FlickrImagePost>(json);
-                Guid id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
+                var id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
                 var contentItem = imagePost.AsContentItem(id);
                 if (contentItem != null)
+                {
                     results.Add(contentItem);
+                }
             }
 
             return results;
@@ -81,16 +82,16 @@ namespace PPTail.Data.PhotoBlog
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Widget>();
-            string zoneFilePath = System.IO.Path.Combine(_rootPath, "Widgets.json");
+            var zoneFilePath = System.IO.Path.Combine(_rootPath, "Widgets.json");
 
             var zoneData = fileSystem.ReadAllText(zoneFilePath);
             var widgetZones = Newtonsoft.Json.JsonConvert.DeserializeObject<WidgetZone[]>(zoneData);
 
             foreach (var zone in widgetZones)
             {
-                var thisDictionary = new List<Tuple<string, string>>
+                var thisDictionary = new List<Tuple<String, String>>
                 {
-                    new Tuple<string, string>("Content", zone.Content)
+                    new Tuple<String, String>("Content", zone.Content)
                 };
 
                 var thisWidgetType = (Enumerations.WidgetType)Enum.Parse(typeof(Enumerations.WidgetType), zone.WidgetType);
@@ -107,7 +108,9 @@ namespace PPTail.Data.PhotoBlog
                     };
 
                     if (thisWidget.WidgetType != Enumerations.WidgetType.Unknown)
+                    {
                         results.Add(thisWidget);
+                    }
                 }
             }
 
@@ -122,7 +125,7 @@ namespace PPTail.Data.PhotoBlog
             return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Category>>(json);
         }
 
-        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
@@ -135,7 +138,7 @@ namespace PPTail.Data.PhotoBlog
                 var sourceFiles = directory.EnumerateFiles(folderPath);
                 foreach (var sourceFile in sourceFiles)
                 {
-                    byte[] contents = null;
+                    Byte[] contents = null;
                     try
                     {
                         contents = fileSystem.ReadAllBytes(sourceFile);
@@ -144,12 +147,14 @@ namespace PPTail.Data.PhotoBlog
                     { }
 
                     if (contents != null)
+                    {
                         results.Add(new SourceFile()
                         {
                             Contents = contents,
                             FileName = System.IO.Path.GetFileName(sourceFile),
                             RelativePath = relativePath
                         });
+                    }
                 }
             }
 

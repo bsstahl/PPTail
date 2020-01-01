@@ -6,9 +6,6 @@ namespace PPTail.Extensions
 {
     public static class DateTimeExtensions
     {
-        public static bool IsMinDate(this DateTime value)
-        {
-            return value.Equals(DateTime.MinValue);
-        }
+        public static Boolean IsMinDate(this DateTime value) => value.Equals(DateTime.MinValue);
     }
 }

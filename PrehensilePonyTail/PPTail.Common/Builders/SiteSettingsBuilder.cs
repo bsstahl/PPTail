@@ -12,37 +12,37 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SiteSettingsBuilder Title(string title)
+        public new SiteSettingsBuilder Title(String title)
         {
             base.Title = title;
             return this;
         }
 
-        public new SiteSettingsBuilder Description(string description)
+        public new SiteSettingsBuilder Description(String description)
         {
             base.Description = description;
             return this;
         }
 
-        public new SiteSettingsBuilder PostsPerPage(int postsPerPage)
+        public new SiteSettingsBuilder PostsPerPage(Int32 postsPerPage)
         {
             base.PostsPerPage = postsPerPage;
             return this;
         }
 
-        public new SiteSettingsBuilder PostsPerFeed(int postsPerFeed)
+        public new SiteSettingsBuilder PostsPerFeed(Int32 postsPerFeed)
         {
             base.PostsPerFeed = postsPerFeed;
             return this;
         }
 
-        public new SiteSettingsBuilder Theme(string theme)
+        public new SiteSettingsBuilder Theme(String theme)
         {
             base.Theme = theme;
             return this;
         }
 
-        public new SiteSettingsBuilder Copyright(string copyright)
+        public new SiteSettingsBuilder Copyright(String copyright)
         {
             base.Copyright = copyright;
             return this;

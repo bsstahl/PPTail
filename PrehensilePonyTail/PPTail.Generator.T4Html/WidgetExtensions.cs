@@ -11,9 +11,9 @@ namespace PPTail.Generator.T4Html
 {
     public static class WidgetExtensions
     {
-        public static string Render(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, string pathToRoot)
+        public static String Render(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, String pathToRoot)
         {
-            string results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
+            String results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
 
             if (widget.WidgetType == Enumerations.WidgetType.TextBox)
             {
@@ -32,20 +32,20 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTextBoxWidget(this Widget widget, ITemplateProcessor templateProcessor, string content, string pageTitle, string pathToRoot)
+        private static String RenderTextBoxWidget(this Widget widget, ITemplateProcessor templateProcessor, String content, String pageTitle, String pathToRoot)
         {
-            string results = string.Empty;
+            String results = string.Empty;
             var template = new Template() { Content = widget.FirstDictionaryItemContent(), TemplateType = Enumerations.TemplateType.Raw };
-            string widgetContent = templateProcessor.ProcessNonContentItemTemplate(template, string.Empty, string.Empty, content, pageTitle, pathToRoot);
+            String widgetContent = templateProcessor.ProcessNonContentItemTemplate(template, string.Empty, string.Empty, content, pageTitle, pathToRoot);
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
             results += $"<div class=\"content\">{widgetContent}</div>";
             return results;
         }
 
-        private static string RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, string pathToRoot)
+        private static String RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, String pathToRoot)
         {
-            string results = string.Empty;
+            String results = string.Empty;
 
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
@@ -64,8 +64,8 @@ namespace PPTail.Generator.T4Html
             results += "<div class=\"content\"><ul>";
             foreach (var style in styles)
             {
-                string title = contentEncoder.UrlEncode(style.Item1);
-                string url = linkProvider.GetUrl(pathToRoot, "Search", title);
+                String title = contentEncoder.UrlEncode(style.Item1);
+                String url = linkProvider.GetUrl(pathToRoot, "Search", title);
                 results += $"<li><a title=\"Tag: {title}\" class=\"{style.Item2}\" href=\"{url}\">{title}</a></li> ";
             }
 
@@ -73,14 +73,14 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static string RenderTagListWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, string pathToRoot)
+        private static String RenderTagListWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, String pathToRoot)
         {
-            const string style = "medium";
-            const int topTagCountRows = 20;
-            const int topTagCountCols = 3;
+            const String style = "medium";
+            const Int32 topTagCountRows = 20;
+            const Int32 topTagCountCols = 3;
 
-            int topTagCountItems = topTagCountRows * topTagCountCols;
-            string results = string.Empty;
+            Int32 topTagCountItems = topTagCountRows * topTagCountCols;
+            String results = string.Empty;
 
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";
@@ -95,14 +95,14 @@ namespace PPTail.Generator.T4Html
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
 
             results += "<div class=\"content\"><table>";
-            for (int i = 0; i < topTagCountItems; i = i + topTagCountCols)
+            for (Int32 i = 0; i < topTagCountItems; i = i + topTagCountCols)
             {
                 results += "<tr>";
-                for (int j = 0; j < topTagCountCols; j++)
+                for (Int32 j = 0; j < topTagCountCols; j++)
                 {
                     var tagCount = tagCounts[i + j];
-                    string title = contentEncoder.UrlEncode(tagCount.Item1);
-                    string url = linkProvider.GetUrl(pathToRoot, "search", title);
+                    String title = contentEncoder.UrlEncode(tagCount.Item1);
+                    String url = linkProvider.GetUrl(pathToRoot, "search", title);
                     results += $"<td><a title=\"Tag: {title}\" class=\"{style}\" href=\"{url}\">{title}</a></td>";
                 }
                 results += "</tr>";
@@ -112,7 +112,7 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        public static string FirstDictionaryItemContent(this Widget widget)
+        public static String FirstDictionaryItemContent(this Widget widget)
         {
             return widget.Dictionary.First().Item2;
         }

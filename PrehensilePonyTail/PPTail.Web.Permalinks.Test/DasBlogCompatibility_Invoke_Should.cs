@@ -16,13 +16,13 @@ namespace PPTail.Web.Permalinks.Test
 {
     public class DasBlogCompatibility_Invoke_Should
     {
-        const string _dasBlogPostsFile = "post.aspx";
+        const String _dasBlogPostsFile = "post.aspx";
 
         [Fact]
         public void CallInvokeOnTheNextDelegateIfNotACallToThePostFile()
         {
             bool executed = false;
-            string path = $"/{string.Empty.GetRandom()}.html";
+            String path = $"/{string.Empty.GetRandom()}.html";
             var context = (null as HttpContext).CreateMockContext(path);
             var serviceProvider = (null as IServiceProvider).Create();
 
@@ -42,7 +42,7 @@ namespace PPTail.Web.Permalinks.Test
         public void PassTheHttpContextToTheInvokeCallOnTheNextDelegate()
         {
             HttpContext actual = null;
-            string path = $"/{string.Empty.GetRandom()}.html";
+            String path = $"/{string.Empty.GetRandom()}.html";
             var context = (null as HttpContext).CreateMockContext(path);
             var serviceProvider = (null as IServiceProvider).Create();
 
@@ -63,7 +63,7 @@ namespace PPTail.Web.Permalinks.Test
         {
             HttpContext actual = null;
 
-            string path = $"/{_dasBlogPostsFile}";
+            String path = $"/{_dasBlogPostsFile}";
             var query = (null as IQueryCollection).CreateMockQueryCollection();
             query.AddQueryParameter("id", "1234");
 
@@ -88,7 +88,7 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void PassTheCorrectPostIdToThePostLocator()
         {
-            string path = $"/{_dasBlogPostsFile}";
+            String path = $"/{_dasBlogPostsFile}";
             Guid id = Guid.NewGuid();
 
             var query = (null as IQueryCollection).CreateMockQueryCollection();
@@ -115,7 +115,7 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void ReturnA404ResponseIfThePostIdIsNotFound()
         {
-            string path = $"/{_dasBlogPostsFile}";
+            String path = $"/{_dasBlogPostsFile}";
             Guid id = Guid.NewGuid();
 
             var query = (null as IQueryCollection).CreateMockQueryCollection();
@@ -147,9 +147,9 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void RedirectToThePostUrlBasedOnThePostId()
         {
-            string path = $"/{_dasBlogPostsFile}";
+            String path = $"/{_dasBlogPostsFile}";
             Guid id = Guid.NewGuid();
-            string postUrl = $"{string.Empty.GetRandom()}.html";
+            String postUrl = $"{string.Empty.GetRandom()}.html";
 
             var query = (null as IQueryCollection).CreateMockQueryCollection();
             query.AddQueryParameter("id", id.ToString());
@@ -178,9 +178,9 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void IssuesAPermanantRedirectToThePostUrl()
         {
-            string path = $"/{_dasBlogPostsFile}";
+            String path = $"/{_dasBlogPostsFile}";
             Guid id = Guid.NewGuid();
-            string postUrl = $"{string.Empty.GetRandom()}.html";
+            String postUrl = $"{string.Empty.GetRandom()}.html";
 
             var query = (null as IQueryCollection).CreateMockQueryCollection();
             query.AddQueryParameter("id", id.ToString());

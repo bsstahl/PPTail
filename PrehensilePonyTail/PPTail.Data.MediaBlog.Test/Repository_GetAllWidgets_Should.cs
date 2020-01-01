@@ -20,7 +20,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnAllTextboxWidgets()
         {
-            int widgetCount = 20.GetRandom(6);
+            Int32 widgetCount = 20.GetRandom(6);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -30,7 +30,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddTextBoxWidgets(widgetCount)
                 .Build();
 
-            int expected = widgets.Count(w => w.Active);
+            Int32 expected = widgets.Count(w => w.Active);
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
@@ -50,7 +50,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnAllTagCloudWidgets()
         {
-            int widgetCount = 20.GetRandom(6);
+            Int32 widgetCount = 20.GetRandom(6);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -60,7 +60,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddTagCloudWidgets(widgetCount)
                 .Build();
 
-            int expected = widgets.Count(w => w.Active);
+            Int32 expected = widgets.Count(w => w.Active);
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
@@ -80,7 +80,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnAllTagListWidgets()
         {
-            int widgetCount = 20.GetRandom(6);
+            Int32 widgetCount = 20.GetRandom(6);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -90,7 +90,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddTagListWidgets(widgetCount)
                 .Build();
 
-            int expected = widgets.Count(w => w.Active);
+            Int32 expected = widgets.Count(w => w.Active);
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
@@ -110,7 +110,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void IgnoreUnknownWidgetTypes()
         {
-            int widgetCount = 20.GetRandom(6);
+            Int32 widgetCount = 20.GetRandom(6);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()
@@ -120,7 +120,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddRandomWidgets(widgetCount)
                 .Build();
 
-            int expected = widgets.Count(w => w.Active && w.WidgetType.ToString() != WidgetType.Unknown.ToString());
+            Int32 expected = widgets.Count(w => w.Active && w.WidgetType.ToString() != WidgetType.Unknown.ToString());
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
@@ -177,7 +177,7 @@ namespace PPTail.Data.MediaBlog.Test
             ExecutePropertyTest(widget, widget.WidgetType.ToString(), w => w.WidgetType.ToString());
         }
 
-        private static void ExecutePropertyTest(WidgetZone widget, string expected, Func<Widget, string> fieldValueDelegate)
+        private static void ExecutePropertyTest(WidgetZone widget, String expected, Func<Widget, string> fieldValueDelegate)
         {
             var settings = new SettingsBuilder()
                 .UseGenericValues()

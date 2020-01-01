@@ -18,11 +18,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void CallTheTemplateProcessorOncePerExecution()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -41,13 +41,13 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -66,11 +66,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectSearchTemplateToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -90,11 +90,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectItemTemplateToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -114,11 +114,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectSidebarContentToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -135,11 +135,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectNavigationContentToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -156,13 +156,13 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectContentItemsCollectionForTheTagToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var post = (null as ContentItem).Create(tag);
             var posts = new List<ContentItem>() { post, (null as ContentItem).Create(string.Empty.GetRandom(5)) };
 
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -186,9 +186,9 @@ namespace PPTail.Generator.Search.Test
             var post = (null as ContentItem).Create(category.Id);
             var posts = new List<ContentItem>() { post, (null as ContentItem).Create(Guid.NewGuid()) };
 
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Category>>(categories);
@@ -207,11 +207,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectPageNameToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -228,11 +228,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectPathToRootToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -249,11 +249,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectXmlEncodeValueToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -270,11 +270,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectPostsPerPageValueToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -292,11 +292,11 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectItemSeparatorToTheTemplateProcessor()
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 

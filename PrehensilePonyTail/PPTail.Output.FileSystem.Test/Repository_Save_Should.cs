@@ -16,7 +16,7 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void CallWriteAllTextOnTheFileSystemOnceForEachFile()
         {
-            int expected = 25.GetRandom(10);
+            Int32 expected = 25.GetRandom(10);
 
             var settings = (null as Settings).Create();
             var file = new Mock<IFile>();
@@ -57,7 +57,7 @@ namespace PPTail.Output.FileSystem.Test
 
             foreach (var siteFile in files)
             {
-                string expected = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
+                String expected = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
                 file.Verify(f => f.WriteAllText(expected, It.IsAny<string>()), Times.Once);
             }
         }
@@ -108,7 +108,7 @@ namespace PPTail.Output.FileSystem.Test
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
-            string folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
+            String folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
 
             directory.Setup(d => d.Exists(folderPath)).Returns(false);
 
@@ -130,7 +130,7 @@ namespace PPTail.Output.FileSystem.Test
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
-            string folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
+            String folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
 
             directory.Setup(d => d.Exists(folderPath)).Returns(true);
 

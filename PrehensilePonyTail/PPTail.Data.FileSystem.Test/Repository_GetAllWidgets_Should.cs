@@ -19,7 +19,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnAllTextboxWidgets()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
@@ -35,7 +35,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnAllTagCloudWidgets()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
@@ -51,7 +51,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void NotFailIfAnUnknownWidgetTypeIsFound()
         {
-            string rootPath = "c:\\";
+            String rootPath = "c:\\";
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
@@ -69,7 +69,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void NotFailIfASeparateDetailFileIsNotFound()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var widgets = (null as IEnumerable<Widget>).Create();
 
@@ -130,7 +130,7 @@ namespace PPTail.Data.FileSystem.Test
 
         private static void ExecutePropertyTest(Func<Widget, string> fieldValueDelegate)
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var widgets = new List<Widget>() { Enumerations.WidgetType.TextBox.CreateWidget() };
             var fileSystem = new Mock<IFile>();

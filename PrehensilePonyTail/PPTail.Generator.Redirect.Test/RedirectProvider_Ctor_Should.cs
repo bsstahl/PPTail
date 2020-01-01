@@ -21,7 +21,7 @@ namespace PPTail.Generator.Redirect.Test
         [Fact]
         public void ReturnTheProperParameterNameIfTheServiceProviderIsNotProvided()
         {
-            string parameterName = "serviceProvider";
+            String parameterName = "serviceProvider";
             try
             {
                 var target = new RedirectProvider(null);

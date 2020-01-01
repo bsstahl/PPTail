@@ -17,10 +17,10 @@ namespace PPTail.Generator.Links.Test
         [Fact]
         public void ReturnJustTheFileNameAndExtensionIfLinkIsFromRootToRoot()
         {
-            string fileName = string.Empty.GetRandom();
-            string fileExtension = string.Empty.GetRandom(3);
-            string relativePath = string.Empty;
-            string expected = $"{fileName}.{fileExtension}";
+            String fileName = string.Empty.GetRandom();
+            String fileExtension = string.Empty.GetRandom(3);
+            String relativePath = string.Empty;
+            String expected = $"{fileName}.{fileExtension}";
 
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(".", relativePath, fileName, fileExtension);
@@ -31,10 +31,10 @@ namespace PPTail.Generator.Links.Test
         [Fact]
         public void AllSlashesShouldBeForwardSlashes()
         {
-            string fileName = string.Empty.GetRandom();
-            string fileExtension = string.Empty.GetRandom(3);
-            string relativePath = string.Empty.GetRandom();
-            string pathToRoot = ".";
+            String fileName = string.Empty.GetRandom();
+            String fileExtension = string.Empty.GetRandom(3);
+            String relativePath = string.Empty.GetRandom();
+            String pathToRoot = ".";
 
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
@@ -45,12 +45,12 @@ namespace PPTail.Generator.Links.Test
         [Fact]
         public void UseTheDefaultFileExtensionIfNoneIsProvided()
         {
-            string fileName = string.Empty.GetRandom();
-            string relativePath = string.Empty.GetRandom();
-            string pathToRoot = ".";
+            String fileName = string.Empty.GetRandom();
+            String relativePath = string.Empty.GetRandom();
+            String pathToRoot = ".";
 
             ISettings settings = (null as ISettings).Create();
-            string fileExtension = settings.OutputFileExtension;
+            String fileExtension = settings.OutputFileExtension;
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<ISettings>(settings);
@@ -58,47 +58,47 @@ namespace PPTail.Generator.Links.Test
             var target = (null as ILinkProvider).Create(container);
             var actual = target.GetUrl(pathToRoot, relativePath, fileName);
 
-            string expected = $".{fileExtension}";
+            String expected = $".{fileExtension}";
             Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void UseTheSpecifiedFileExtensionIfOneIsProvided()
         {
-            string fileName = string.Empty.GetRandom();
-            string fileExtension = string.Empty.GetRandom();
-            string relativePath = string.Empty.GetRandom();
-            string pathToRoot = ".";
+            String fileName = string.Empty.GetRandom();
+            String fileExtension = string.Empty.GetRandom();
+            String relativePath = string.Empty.GetRandom();
+            String pathToRoot = ".";
 
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
 
-            string expected = $".{fileExtension}";
+            String expected = $".{fileExtension}";
             Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void UseTheSpecifiedFileNameIfOneIsProvided()
         {
-            string fileName = string.Empty.GetRandom();
-            string fileExtension = string.Empty;
-            string relativePath = string.Empty.GetRandom();
-            string pathToRoot = ".";
+            String fileName = string.Empty.GetRandom();
+            String fileExtension = string.Empty;
+            String relativePath = string.Empty.GetRandom();
+            String pathToRoot = ".";
 
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);
 
-            string expected = $"{fileName}.";
+            String expected = $"{fileName}.";
             Assert.EndsWith(expected, actual);
         }
 
         [Fact]
         public void StartWithTheFolderNameIfLinkIsFromRoot()
         {
-            string fileName = string.Empty.GetRandom();
-            string fileExtension = string.Empty.GetRandom();
-            string relativePath = string.Empty.GetRandom();
-            string pathToRoot = ".";
+            String fileName = string.Empty.GetRandom();
+            String fileExtension = string.Empty.GetRandom();
+            String relativePath = string.Empty.GetRandom();
+            String pathToRoot = ".";
 
             var target = (null as ILinkProvider).Create();
             var actual = target.GetUrl(pathToRoot, relativePath, fileName, fileExtension);

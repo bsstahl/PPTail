@@ -14,13 +14,13 @@ namespace PPTail.SiteGenerator.Test
     public static class Extensions
     {
 
-        public static string ToBase64(this string data)
+        public static String ToBase64(this String data)
         {
             byte[] byteContent = data.Select(d => Convert.ToByte(d)).ToArray();
             return Convert.ToBase64String(byteContent);
         }
 
-        public static string FromBase64(this string data)
+        public static String FromBase64(this String data)
         {
             byte[] byteContent = Convert.FromBase64String(data);
             return System.Text.Encoding.UTF8.GetString(byteContent);
@@ -85,13 +85,13 @@ namespace PPTail.SiteGenerator.Test
             return container;
         }
 
-        public static string GetSourceConnection(this IContentRepository contentRepo)
+        public static String GetSourceConnection(this IContentRepository contentRepo)
         {
-            string filePath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            String filePath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
             return contentRepo.GetSourceConnection(filePath);
         }
 
-        public static string GetSourceConnection(this IContentRepository contentRepo, string filePath)
+        public static String GetSourceConnection(this IContentRepository contentRepo, String filePath)
         {
             return $"Provider={contentRepo.GetType().FullName};FilePath={filePath}";
         }
@@ -119,11 +119,11 @@ namespace PPTail.SiteGenerator.Test
 
         public static ContentItem Create(this ContentItem ignore, Guid categoryId)
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             return ignore.Create(categoryId, new List<string>() { tag });
         }
 
-        public static ContentItem Create(this ContentItem ignore, string tag)
+        public static ContentItem Create(this ContentItem ignore, String tag)
         {
             var categoryId = Guid.NewGuid();
             return ignore.Create(categoryId, new List<string>() { tag });
@@ -152,16 +152,16 @@ namespace PPTail.SiteGenerator.Test
             return ignore.Create(25.GetRandom(5));
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
         {
             var allCategories = (null as IEnumerable<Category>).Create();
             return ignore.Create(allCategories, count);
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, IEnumerable<Category> allCategories, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, IEnumerable<Category> allCategories, Int32 count)
         {
             var contentItems = new List<ContentItem>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 contentItems.Add((null as ContentItem).Create(allCategories.GetRandom().Id));
             return contentItems;
         }
@@ -171,7 +171,7 @@ namespace PPTail.SiteGenerator.Test
             return ignore.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2));
         }
 
-        public static SiteSettings Create(this SiteSettings ignore, string title, string description, int postsPerPage)
+        public static SiteSettings Create(this SiteSettings ignore, String title, String description, Int32 postsPerPage)
         {
             return new SiteSettings()
             {
@@ -186,12 +186,12 @@ namespace PPTail.SiteGenerator.Test
             return ignore.Create(string.Empty.GetRandom(3));
         }
 
-        public static ISettings Create(this ISettings ignore, string outputFileExtension)
+        public static ISettings Create(this ISettings ignore, String outputFileExtension)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
         }
 
-        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
+        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String outputFileExtension, String itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
         {
             var result = new Settings()
             {
@@ -212,11 +212,11 @@ namespace PPTail.SiteGenerator.Test
             return ignore.Create(10.GetRandom(3));
         }
 
-        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, int count)
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, Int32 count)
         {
             var result = new List<SourceFile>();
 
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add((null as SourceFile).Create());
 
             return result;
@@ -230,7 +230,7 @@ namespace PPTail.SiteGenerator.Test
                 string.Empty.GetRandom());
         }
 
-        public static SourceFile Create(this SourceFile ignore, byte[] content, string relativePath, string fileName)
+        public static SourceFile Create(this SourceFile ignore, byte[] content, String relativePath, String fileName)
         {
             return new SourceFile()
             {
@@ -243,8 +243,8 @@ namespace PPTail.SiteGenerator.Test
         public static IEnumerable<string> CreateTags(this IEnumerable<string> ignore)
         {
             var result = new List<string>();
-            int count = 10.GetRandom(1);
-            for (int i = 0; i < count; i++)
+            Int32 count = 10.GetRandom(1);
+            for (Int32 i = 0; i < count; i++)
                 result.Add(string.Empty.GetRandom());
             return result;
         }
@@ -254,10 +254,10 @@ namespace PPTail.SiteGenerator.Test
             return ignore.Create(8.GetRandom(3));
         }
 
-        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, int count)
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, Int32 count)
         {
             var result = new List<Category>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add((null as Category).Create());
             return result;
         }
@@ -270,7 +270,7 @@ namespace PPTail.SiteGenerator.Test
             return ignore.Create(id, name, description);
         }
 
-        public static Category Create(this Category ignore, Guid id, string name, string description)
+        public static Category Create(this Category ignore, Guid id, String name, String description)
         {
             return new Category()
             {

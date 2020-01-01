@@ -11,15 +11,15 @@ namespace PPTail.Data.MediaBlog
 {
     public class Repository : PPTail.Interfaces.IContentRepository
     {
-        const int _defaultPostsPerPage = 3;
-        const int _defaultPostsPerFeed = 5;
+        const Int32 _defaultPostsPerPage = 3;
+        const Int32 _defaultPostsPerFeed = 5;
 
-        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
+        const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+        const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _connectionStringFilepathKey = "FilePath";
 
-        private readonly string _rootPath;
+        private readonly String _rootPath;
         private readonly IServiceProvider _serviceProvider;
 
         public Repository(IServiceProvider serviceProvider)
@@ -32,14 +32,16 @@ namespace PPTail.Data.MediaBlog
 
             var settings = _serviceProvider.GetService<ISettings>();
 
-            if (string.IsNullOrWhiteSpace(settings.SourceConnection))
+            if (String.IsNullOrWhiteSpace(settings.SourceConnection))
+            {
                 throw new Exceptions.SettingNotFoundException(nameof(settings.SourceConnection));
+            }
 
             _rootPath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
             // HACK: Updating settings shouldn't be done here, it probably should be done from the command line
-            settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
-            settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
+            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
+            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
         }
 
         public IEnumerable<ContentItem> GetAllPages()
@@ -48,13 +50,13 @@ namespace PPTail.Data.MediaBlog
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootPath, "pages");
+            var pagePath = System.IO.Path.Combine(_rootPath, "pages");
             var files = directory.EnumerateFiles(pagePath);
 
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
             {
                 var contentJson = fileSystem.ReadAllText(file);
-                Guid id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
+                var id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
                 results.Add((null as ContentItem).FromJson(contentJson, id));
             }
             return results;
@@ -66,7 +68,7 @@ namespace PPTail.Data.MediaBlog
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string postPath = System.IO.Path.Combine(_rootPath, "posts");
+            var postPath = System.IO.Path.Combine(_rootPath, "posts");
 
             if (directory.Exists(postPath))
             {
@@ -74,11 +76,13 @@ namespace PPTail.Data.MediaBlog
                 foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
                 {
                     var json = fileSystem.ReadAllText(file);
-                    Guid id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
+                    var id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
                     var mediaPost = MediaPost.Create(json);
                     var contentItem = mediaPost.AsContentItem(id);
                     if (contentItem != null)
+                    {
                         results.Add(contentItem);
+                    }
                 }
             }
 
@@ -90,16 +94,16 @@ namespace PPTail.Data.MediaBlog
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Widget>();
-            string zoneFilePath = System.IO.Path.Combine(_rootPath, "Widgets.json");
+            var zoneFilePath = System.IO.Path.Combine(_rootPath, "Widgets.json");
 
             var zoneData = fileSystem.ReadAllText(zoneFilePath);
             var widgetZones = Newtonsoft.Json.JsonConvert.DeserializeObject<WidgetZone[]>(zoneData);
 
             foreach (var zone in widgetZones)
             {
-                var thisDictionary = new List<Tuple<string, string>>
+                var thisDictionary = new List<Tuple<String, String>>
                 {
-                    new Tuple<string, string>("Content", zone.Content)
+                    new Tuple<String, String>("Content", zone.Content)
                 };
 
                 var thisWidgetType = (Enumerations.WidgetType)Enum.Parse(typeof(Enumerations.WidgetType), zone.WidgetType);
@@ -116,7 +120,9 @@ namespace PPTail.Data.MediaBlog
                     };
 
                     if (thisWidget.WidgetType != Enumerations.WidgetType.Unknown)
+                    {
                         results.Add(thisWidget);
+                    }
                 }
             }
 
@@ -131,7 +137,7 @@ namespace PPTail.Data.MediaBlog
             return JsonConvert.DeserializeObject<IEnumerable<Category>>(json);
         }
 
-        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
@@ -144,7 +150,7 @@ namespace PPTail.Data.MediaBlog
                 var sourceFiles = directory.EnumerateFiles(folderPath);
                 foreach (var sourceFile in sourceFiles)
                 {
-                    byte[] contents = null;
+                    Byte[] contents = null;
                     try
                     {
                         contents = fileSystem.ReadAllBytes(sourceFile);
@@ -155,12 +161,14 @@ namespace PPTail.Data.MediaBlog
                     }
 
                     if (contents != null)
+                    {
                         results.Add(new SourceFile()
                         {
                             Contents = contents,
                             FileName = System.IO.Path.GetFileName(sourceFile),
                             RelativePath = relativePath
                         });
+                    }
                 }
             }
 
@@ -186,13 +194,19 @@ namespace PPTail.Data.MediaBlog
             }
 
             if (result == null)
+            {
                 throw new Exceptions.SettingNotFoundException(nameof(SiteSettings));
+            }
 
             if (result.PostsPerPage == 0)
+            {
                 result.PostsPerPage = _defaultPostsPerPage;
+            }
 
             if (result.PostsPerFeed == 0)
+            {
                 result.PostsPerFeed = _defaultPostsPerFeed;
+            }
 
             return result;
         }

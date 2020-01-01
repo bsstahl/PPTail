@@ -13,12 +13,12 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetCategories_Should
     {
-        const string _dataFolder = "App_Data";
+        const String _dataFolder = "App_Data";
 
         [Fact]
         public void ReturnAllCategories()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var categories = (null as IEnumerable<Category>).Create();
 
@@ -34,7 +34,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperIdForEachCategory()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var categories = (null as IEnumerable<Category>).Create();
 
@@ -51,7 +51,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperNameForEachCategory()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var categories = (null as IEnumerable<Category>).Create();
 
@@ -71,7 +71,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperDescriptionForEachCategory()
         {
-            const string rootPath = "c:\\";
+            const String rootPath = "c:\\";
 
             var categories = (null as IEnumerable<Category>).Create();
 
@@ -91,8 +91,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void SkipACategoryIfItHasNoIdAttribute()
         {
-            const string rootPath = "c:\\";
-            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+            const String rootPath = "c:\\";
+            String categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
 
             var categories = (null as IEnumerable<Category>).Create(1);
             var categoryFileContents = categories.Serialize();
@@ -113,8 +113,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void SkipACategoryIfItHasNoNameValue()
         {
-            const string rootPath = "c:\\";
-            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+            const String rootPath = "c:\\";
+            String categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
 
             var categories = (null as IEnumerable<Category>).Create(1);
             categories.Single().Name = string.Empty;
@@ -132,8 +132,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void SkipACategoryIfItHasWhitespaceForTheNameValue()
         {
-            const string rootPath = "c:\\";
-            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+            const String rootPath = "c:\\";
+            String categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
 
             var categories = (null as IEnumerable<Category>).Create(1);
             categories.Single().Name = "   ";
@@ -151,8 +151,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void LoadACategoryAnywayEvenIfItHasNoDescriptionAttribute()
         {
-            const string rootPath = "c:\\";
-            string categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
+            const String rootPath = "c:\\";
+            String categoryFilePath = System.IO.Path.Combine(rootPath, "App_Data\\categories.xml");
 
             var categories = (null as IEnumerable<Category>).Create(1);
             var categoryFileContents = categories.Serialize();

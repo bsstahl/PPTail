@@ -13,10 +13,10 @@ namespace PPTail.Generator.TagCloudStyler.Test
             return ignore.GetTagList(50.GetRandom(30));
         }
 
-        public static IEnumerable<string> GetTagList(this IEnumerable<string> ignore, int count)
+        public static IEnumerable<string> GetTagList(this IEnumerable<string> ignore, Int32 count)
         {
             var result = new List<string>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add(string.Empty.GetRandom());
             return result;
         }

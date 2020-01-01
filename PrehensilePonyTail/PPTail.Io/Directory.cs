@@ -8,17 +8,17 @@ namespace PPTail.Io
 {
     public class Directory : IDirectory
     {
-        public void CreateDirectory(string path)
+        public void CreateDirectory(String path)
         {
             System.IO.Directory.CreateDirectory(path);
         }
 
-        public bool Exists(string path)
+        public bool Exists(String path)
         {
             return System.IO.Directory.Exists(path);
         }
 
-        public IEnumerable<string> EnumerateFiles(string path)
+        public IEnumerable<string> EnumerateFiles(String path)
         {
             return System.IO.Directory.EnumerateFiles(path);
         }

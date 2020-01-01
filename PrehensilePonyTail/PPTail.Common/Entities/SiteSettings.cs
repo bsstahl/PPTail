@@ -7,11 +7,11 @@ namespace PPTail.Entities
 {
     public class SiteSettings
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int PostsPerPage { get; set; }
-        public int PostsPerFeed { get; set; }
-        public string Theme { get; set; }
-        public string Copyright { get; set; }
+        public String Title { get; set; }
+        public String Description { get; set; }
+        public Int32 PostsPerPage { get; set; }
+        public Int32 PostsPerFeed { get; set; }
+        public String Theme { get; set; }
+        public String Copyright { get; set; }
     }
 }

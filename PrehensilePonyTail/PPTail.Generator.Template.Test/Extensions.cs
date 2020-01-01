@@ -61,8 +61,8 @@ namespace PPTail.Generator.Template.Test
             return ignore.Create("MM/dd/yyyy", "MM/dd/yyyy hh:mm", string.Empty.GetRandom(), string.Empty.GetRandom(3), contentRepo);
         }
 
-        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier,
-            string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension,
+        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier,
+            String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension,
             IContentRepository contentRepo)
         {
             return new Entities.Settings()
@@ -102,7 +102,7 @@ namespace PPTail.Generator.Template.Test
             return ignore.Create(string.Empty.GetRandom(), new List<Guid>() { Guid.NewGuid() }, string.Empty.GetRandom(), string.Empty.GetRandom(), true.GetRandom(), DateTime.UtcNow.AddMinutes(10.GetRandom()), DateTime.UtcNow.AddHours(10.GetRandom(1)), string.Empty.GetRandom(), new List<string>() { string.Empty.GetRandom() }, string.Empty.GetRandom());
         }
 
-        public static ContentItem Create(this ContentItem ignore, string author, IEnumerable<Guid> categoryIds, string content, string description, bool isPublished, DateTime lastModDate, DateTime pubDate, string slug, IEnumerable<string> tags, string title)
+        public static ContentItem Create(this ContentItem ignore, String author, IEnumerable<Guid> categoryIds, String content, String description, bool isPublished, DateTime lastModDate, DateTime pubDate, String slug, IEnumerable<string> tags, String title)
         {
             return new ContentItem()
             {
@@ -127,10 +127,10 @@ namespace PPTail.Generator.Template.Test
             return ignore.Create(50.GetRandom(25));
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
         {
             var result = new List<ContentItem>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add((null as ContentItem).Create());
             return result;
         }
@@ -151,13 +151,13 @@ namespace PPTail.Generator.Template.Test
             var result = new List<Category>();
             foreach (var categoryId in categoryIds)
             {
-                string name = string.Empty.GetRandom();
+                String name = string.Empty.GetRandom();
                 result.Add(new Category() { Id = categoryId, Name = name, Description = $"descriptionOf_{name}" });
             }
             return result;
         }
 
-        public static string GetCategoryName(this Guid categoryId, IEnumerable<Category> categories)
+        public static String GetCategoryName(this Guid categoryId, IEnumerable<Category> categories)
         {
             return categories.Single(c => c.Id == categoryId).Name;
         }

@@ -123,7 +123,7 @@ namespace PPTail.Generator.Search.Test
             return ignore.Create(string.Empty.GetRandom(), string.Empty.GetRandom(), templateType);
         }
 
-        public static Template Create(this Template ignore, string content, string name, TemplateType templateType)
+        public static Template Create(this Template ignore, String content, String name, TemplateType templateType)
         {
             return new Template()
             {
@@ -137,7 +137,7 @@ namespace PPTail.Generator.Search.Test
             return new List<ContentItem>() { item };
         }
 
-        public static ContentItem Create(this ContentItem ignore, string tag)
+        public static ContentItem Create(this ContentItem ignore, String tag)
         {
             var tags = new List<string>() { tag };
             return ignore.Create(Guid.NewGuid(), tags);
@@ -151,7 +151,7 @@ namespace PPTail.Generator.Search.Test
 
         public static ContentItem Create(this ContentItem ignore, Guid categoryId, IEnumerable<string> tags)
         {
-            string author = string.Empty.GetRandom();
+            String author = string.Empty.GetRandom();
             return new ContentItem()
             {
                 Author = author,
@@ -173,12 +173,12 @@ namespace PPTail.Generator.Search.Test
             return ignore.Create(string.Empty.GetRandom(3));
         }
 
-        public static Settings Create(this Settings ignore, string outputFileExtension)
+        public static Settings Create(this Settings ignore, String outputFileExtension)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
         }
 
-        public static Settings Create(this Settings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
+        public static Settings Create(this Settings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String outputFileExtension, String itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
         {
             var result = new Settings()
             {
@@ -197,12 +197,12 @@ namespace PPTail.Generator.Search.Test
         public static Category Create(this Category ignore)
         {
             Guid id = Guid.NewGuid();
-            string name = $"nameof_{id.ToString()}";
-            string description = $"descriptionof_{id.ToString()}";
+            String name = $"nameof_{id.ToString()}";
+            String description = $"descriptionof_{id.ToString()}";
             return ignore.Create(id, name, description);
         }
 
-        public static Category Create(this Category ignore, Guid id, string name, string description)
+        public static Category Create(this Category ignore, Guid id, String name, String description)
         {
             return new Category()
             {
@@ -217,10 +217,10 @@ namespace PPTail.Generator.Search.Test
             return ignore.Create(6.GetRandom(3));
         }
 
-        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, int count)
+        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, Int32 count)
         {
             var result = new List<Category>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add((null as Category).Create());
             return result;
         }

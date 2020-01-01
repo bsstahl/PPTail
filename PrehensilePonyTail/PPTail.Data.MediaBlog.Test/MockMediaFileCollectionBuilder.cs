@@ -8,11 +8,11 @@ namespace PPTail.Data.MediaBlog.Test
 {
     internal class MockMediaFileCollectionBuilder
     {
-        readonly List<(Guid Id, string Contents)> _posts = new List<(Guid Id, string Contents)>();
+        readonly List<(Guid Id, String Contents)> _posts = new List<(Guid Id, String Contents)>();
 
-        internal IEnumerable<MockMediaFile> Build(string rootPath)
+        internal IEnumerable<MockMediaFile> Build(String rootPath)
         {
-            string postPath = System.IO.Path.Combine(rootPath, "posts");
+            String postPath = System.IO.Path.Combine(rootPath, "posts");
             var mediaFiles = new List<MockMediaFile>();
             foreach (var (id, contents) in _posts)
             {
@@ -27,16 +27,16 @@ namespace PPTail.Data.MediaBlog.Test
             return mediaFiles;
         }
 
-        internal MockMediaFileCollectionBuilder AddRandomPosts(int count)
+        internal MockMediaFileCollectionBuilder AddRandomPosts(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddRandomPost();
             }
             return this;
         }
 
-        internal MockMediaFileCollectionBuilder AddPost(string json)
+        internal MockMediaFileCollectionBuilder AddPost(String json)
         {
             _posts.Add((Guid.NewGuid(), json));
             return this;

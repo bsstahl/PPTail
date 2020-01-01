@@ -16,7 +16,7 @@ namespace PPTail.Common.Test
         public void ThrowASettingsNotFoundExceptionIfSettingsIsNull()
         {
             ISettings settings = null;
-            string settingName = string.Empty;
+            String settingName = string.Empty;
             Assert.Throws<SettingNotFoundException>(() => settings.Validate(settingName));
         }
 
@@ -28,7 +28,7 @@ namespace PPTail.Common.Test
             mockSettings.SetupGet(s => s.ExtendedSettings).Returns(extendedSettings);
             var settings = mockSettings.Object;
 
-            string settingName = string.Empty;
+            String settingName = string.Empty;
             Assert.Throws<SettingNotFoundException>(() => settings.Validate(settingName));
         }
     }

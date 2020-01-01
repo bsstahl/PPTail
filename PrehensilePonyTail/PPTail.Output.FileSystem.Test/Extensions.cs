@@ -44,21 +44,21 @@ namespace PPTail.Output.FileSystem.Test
             return ignore.Create(25.GetRandom(10));
         }
 
-        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore, int count)
+        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore, Int32 count)
         {
             var files = new List<SiteFile>();
 
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 files.Add((null as SiteFile).Create());
 
             return files;
         }
 
-        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore, int count, bool isEncoded)
+        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore, Int32 count, bool isEncoded)
         {
             var files = new List<SiteFile>();
 
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 files.Add((null as SiteFile).Create(string.Empty.GetRandom(), $"./{string.Empty.GetRandom()}", Enumerations.TemplateType.ContentPage, isEncoded));
 
             return files;
@@ -71,7 +71,7 @@ namespace PPTail.Output.FileSystem.Test
 
         public static SiteFile Create(this SiteFile ignore, bool isEncoded)
         {
-            string content;
+            String content;
             TemplateType templateType;
 
             if (isEncoded)
@@ -88,7 +88,7 @@ namespace PPTail.Output.FileSystem.Test
             return ignore.Create(content, $"./{string.Empty.GetRandom()}", templateType, isEncoded);
         }
 
-        public static SiteFile Create(this SiteFile ignore, string content, string relativeFilePath, TemplateType sourceTemplateType, bool isEncoded)
+        public static SiteFile Create(this SiteFile ignore, String content, String relativeFilePath, TemplateType sourceTemplateType, bool isEncoded)
         {
             return new SiteFile()
             {
@@ -105,12 +105,12 @@ namespace PPTail.Output.FileSystem.Test
             return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html", $"\\{string.Empty.GetRandom()}");
         }
 
-        public static Settings Create(this ISettings ignore, string outputPath)
+        public static Settings Create(this ISettings ignore, String outputPath)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html", outputPath);
         }
 
-        public static Settings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension, string outputPath)
+        public static Settings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String outputPath)
         {
             var result = new Settings()
             {

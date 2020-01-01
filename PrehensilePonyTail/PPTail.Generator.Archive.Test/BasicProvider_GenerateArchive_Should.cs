@@ -17,9 +17,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void CallTheTemplateProcessorOncePerExecution()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -42,9 +42,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -54,7 +54,7 @@ namespace PPTail.Generator.Archive.Test
             //var siteSettings = (null as SiteSettings).Create();
             //container.ReplaceDependency<SiteSettings>(siteSettings);
 
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor.Setup(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>())).Returns(expected);
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -69,9 +69,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectArchiveTemplateToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -98,9 +98,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectItemTemplateToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -127,9 +127,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectSidebarContentToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -153,9 +153,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectNavigationContentToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -179,9 +179,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectContentItemsCollectionToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -205,9 +205,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectPageNameToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -231,9 +231,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectPathToRootToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -257,9 +257,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectItemSeparatorToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -283,9 +283,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectXmlEncodeValueToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));
@@ -309,9 +309,9 @@ namespace PPTail.Generator.Archive.Test
         [Fact]
         public void PassTheCorrectPostsPerPageValueToTheTemplateProcessor()
         {
-            string pathToRoot = ".";
-            string navContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = ".";
+            String navContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
 
             var posts = (null as IEnumerable<ContentItem>).Create(25.GetRandom(10));
             var pages = (null as IEnumerable<ContentItem>).Create(5.GetRandom(1));

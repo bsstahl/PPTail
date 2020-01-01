@@ -14,8 +14,8 @@ namespace PPTail.Generator.T4Html
     public class PageGenerator : Interfaces.IPageGenerator
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly INavigationProvider _navProvider;
-        private readonly ISettings _settings;
+        // private readonly INavigationProvider _navProvider;
+        // private readonly ISettings _settings;
         private readonly IEnumerable<Template> _templates;
 
         public PageGenerator(IServiceProvider serviceProvider)
@@ -30,37 +30,43 @@ namespace PPTail.Generator.T4Html
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<INavigationProvider>();
 
-            _settings = _serviceProvider.GetService<ISettings>();
-            _navProvider = _serviceProvider.GetService<INavigationProvider>();
+            // _settings = _serviceProvider.GetService<ISettings>();
+            // _navProvider = _serviceProvider.GetService<INavigationProvider>();
 
             _templates = _serviceProvider.GetService<IEnumerable<Template>>();
         }
 
-        public string GenerateStylesheet()
+        public String GenerateStylesheet()
         {
             //TODO: Process template against additional data (such as Settings and SiteSettings)
             var template = _templates.Find(Enumerations.TemplateType.Style);
             return template.Content;
         }
 
-        public string GenerateSidebarContent(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, string pathToRoot)
+        public String GenerateSidebarContent(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, String pathToRoot)
         {
             _serviceProvider.ValidateService<ISettings>();
             var settings = _serviceProvider.GetService<ISettings>();
 
             var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets)
+            {
                 results += widget.Render(_serviceProvider, settings, posts, pathToRoot);
+            }
+
             results += "</div>";
             return results;
         }
 
-        public string GenerateBootstrapPage()
+        public String GenerateBootstrapPage()
         {
-            string result = string.Empty;
+            var result = String.Empty;
             var templateType = TemplateType.Bootstrap;
             if (_templates.Contains(templateType))
+            {
                 result = _templates.Find(templateType).Content;
+            }
+
             return result;
         }
     }

@@ -7,6 +7,6 @@ namespace PPTail.Interfaces
 {
     public interface IPostLocator
     {
-        string GetUrlByPostId(Guid id);
+        String GetUrlByPostId(Guid id);
     }
 }

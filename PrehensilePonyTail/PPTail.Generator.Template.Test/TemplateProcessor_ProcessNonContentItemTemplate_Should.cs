@@ -18,15 +18,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ThrowADependencyNotFoundExceptionIfTheContentRepositoryIsNotProvided()
         {
-            string pageTemplateContent = "-----{Title}-----";
+            String pageTemplateContent = "-----{Title}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<IContentRepository>();
@@ -38,23 +38,23 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReturnTheProperTypeNameIfTheContentRepositoryIsNotProvided()
         {
-            string pageTemplateContent = "-----{Title}-----";
+            String pageTemplateContent = "-----{Title}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<IContentRepository>();
 
             var target = (null as ITemplateProcessor).Create(container);
 
-            string actual = string.Empty;
-            string expected = nameof(IContentRepository);
+            String actual = string.Empty;
+            String expected = nameof(IContentRepository);
             try
             {
                 target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
@@ -72,15 +72,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheTitlePlaceHolderWithTheTitle()
         {
-            string pageTemplateContent = "-----{Title}-----";
+            String pageTemplateContent = "-----{Title}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -94,15 +94,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheNavigationContentPlaceHolderWithTheNavigationContent()
         {
-            string pageTemplateContent = "-----{NavigationMenu}-----";
+            String pageTemplateContent = "-----{NavigationMenu}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -116,15 +116,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheSidebarPlaceHolderWithTheSidebarContent()
         {
-            string pageTemplateContent = "-----{Sidebar}-----";
+            String pageTemplateContent = "-----{Sidebar}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -138,15 +138,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheContentPlaceHolderWithTheContent()
         {
-            string pageTemplateContent = "-----{Content}-----";
+            String pageTemplateContent = "-----{Content}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -160,15 +160,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheSiteTitlePlaceHolderWithTheSiteSettingValue()
         {
-            string pageTemplateContent = "-----{SiteTitle}-----";
+            String pageTemplateContent = "-----{SiteTitle}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -183,15 +183,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheSiteDescriptionPlaceHolderWithTheSiteSettingValue()
         {
-            string pageTemplateContent = "-----{SiteDescription}-----";
+            String pageTemplateContent = "-----{SiteDescription}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             var siteSettings = container.BuildServiceProvider().GetService<IContentRepository>().GetSiteSettings();
@@ -205,15 +205,15 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceThePathToSiteRootPlaceHolderWithTheProperPath()
         {
-            string pageTemplateContent = "-----{PathToSiteRoot}-----";
+            String pageTemplateContent = "-----{PathToSiteRoot}-----";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var templates = new List<Entities.Template>() { pageTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string content = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);

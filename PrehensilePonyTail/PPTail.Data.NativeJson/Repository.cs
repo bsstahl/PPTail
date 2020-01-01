@@ -9,10 +9,10 @@ namespace PPTail.Data.NativeJson
 {
     public class Repository : IContentRepository
     {
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _connectionStringFilepathKey = "FilePath";
 
-        readonly string _filePath;
-        public Repository(string filePath)
+        readonly String _filePath;
+        public Repository(String filePath)
         {
             _filePath = filePath;
         }
@@ -58,7 +58,7 @@ namespace PPTail.Data.NativeJson
             return this.Context.Categories;
         }
 
-        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
             // TODO: Implement
             return new List<SourceFile>();

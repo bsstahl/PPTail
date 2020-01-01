@@ -6,23 +6,23 @@ namespace PPTail.Data.WordpressFiles
 {
     public class Guid
     {
-        public string rendered { get; set; }
+        public String rendered { get; set; }
     }
 
     public class Title
     {
-        public string rendered { get; set; }
+        public String rendered { get; set; }
     }
 
     public class Content
     {
-        public string rendered { get; set; }
+        public String rendered { get; set; }
         public bool _protected { get; set; }
     }
 
     public class Excerpt
     {
-        public string rendered { get; set; }
+        public String rendered { get; set; }
         public bool _protected { get; set; }
     }
 
@@ -42,57 +42,57 @@ namespace PPTail.Data.WordpressFiles
 
     public class WpPost_Type
     {
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class WpTerm
     {
-        public string taxonomy { get; set; }
+        public String taxonomy { get; set; }
         public bool embeddable { get; set; }
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class Self
     {
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class Collection
     {
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class About
     {
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class Author
     {
         public bool embeddable { get; set; }
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class Reply
     {
         public bool embeddable { get; set; }
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class VersionHistory
     {
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class WpAttachment
     {
-        public string href { get; set; }
+        public String href { get; set; }
     }
 
     public class Cury
     {
-        public string name { get; set; }
-        public string href { get; set; }
+        public String name { get; set; }
+        public String href { get; set; }
         public bool templated { get; set; }
     }
 

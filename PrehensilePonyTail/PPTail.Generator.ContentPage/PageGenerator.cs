@@ -14,16 +14,13 @@ namespace PPTail.Generator.ContentPage
     {
         readonly IServiceProvider _serviceProvider;
 
-        public PageGenerator(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        public PageGenerator(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
-        public string Generate(string sidebarContent, string navContent, ContentItem pageData, TemplateType templateType, string pathToRoot, bool xmlEncodeContent)
+        public String Generate(String sidebarContent, String navContent, ContentItem pageData, TemplateType templateType, String pathToRoot, Boolean xmlEncodeContent)
         {
             var templates = _serviceProvider.GetService<IEnumerable<Template>>();
             var template = templates.Find(templateType);
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
+            // var categories = _serviceProvider.GetService<IEnumerable<Category>>();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
             return templateProcessor.ProcessContentItemTemplate(template, pageData, sidebarContent, navContent, pathToRoot, xmlEncodeContent);
         }

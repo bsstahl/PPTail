@@ -8,7 +8,7 @@ namespace PPTail.Generator.HomePage.Test
 {
     public class FakeNavProvider : Interfaces.INavigationProvider
     {
-        public string CreateNavigation(IEnumerable<ContentItem> pages, string homeUrl, string outputFileExtension)
+        public String CreateNavigation(IEnumerable<ContentItem> pages, String homeUrl, String outputFileExtension)
         {
             return "<div class=\"menu\">Place Nav Here</div>";
         }

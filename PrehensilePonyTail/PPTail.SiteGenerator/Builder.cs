@@ -12,11 +12,11 @@ namespace PPTail.SiteGenerator
 {
     public class Builder : ISiteBuilder
     {
-        const string _additionalFilePathsSettingName = "additionalFilePaths";
-        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
+        const String _additionalFilePathsSettingName = "additionalFilePaths";
+        const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+        const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
-        const string _providerKey = "Provider";
+        const String _providerKey = "Provider";
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -132,7 +132,7 @@ namespace PPTail.SiteGenerator
                 Content = syndicationContent
             });
 
-            string createCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName);
+            String createCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName);
             bool.TryParse(createCompatibilityFileValue, out var createCompatibilityFile);
             if (createCompatibilityFile)
                 result.Add(new SiteFile()
@@ -151,8 +151,8 @@ namespace PPTail.SiteGenerator
                         post.Slug = contentEncoder.UrlEncode(post.Title);
 
                     // Add the post page
-                    string postFileName = $"{post.Slug}.{settings.OutputFileExtension}";
-                    string postFilePath = System.IO.Path.Combine("Posts", postFileName);
+                    String postFileName = $"{post.Slug}.{settings.OutputFileExtension}";
+                    String postFilePath = System.IO.Path.Combine("Posts", postFileName);
                     var postPageTemplateType = Enumerations.TemplateType.PostPage;
                     result.Add(new SiteFile()
                     {
@@ -162,9 +162,9 @@ namespace PPTail.SiteGenerator
                     });
 
                     // Add the permalink page
-                    string permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
-                    string permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
-                    string redirectFilePath = $"../Posts/{postFileName}"; // System.IO.Path.Combine("..", postFilePath);
+                    String permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
+                    String permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
+                    String redirectFilePath = $"../Posts/{postFileName}"; // System.IO.Path.Combine("..", postFilePath);
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = permalinkFilePath,
@@ -219,7 +219,7 @@ namespace PPTail.SiteGenerator
             // Add files from Theme if there are any
             if (!string.IsNullOrWhiteSpace(siteSettings?.Theme))
             {
-                string path = $".\\themes\\{siteSettings.Theme}";
+                String path = $".\\themes\\{siteSettings.Theme}";
                 var additionalFiles = contentRepo.GetFolderContents(path);
                 foreach (var rawFile in additionalFiles)
                 {
@@ -234,7 +234,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add additional raw files
-            string relativePathString = settings.GetExtendedSetting(_additionalFilePathsSettingName);
+            String relativePathString = settings.GetExtendedSetting(_additionalFilePathsSettingName);
             if (!string.IsNullOrEmpty(relativePathString))
             {
                 var additionalFilePaths = relativePathString.Split(',');
@@ -252,12 +252,12 @@ namespace PPTail.SiteGenerator
             }
 
             // Create DasBlog Compatibility Data File for Posts.aspx
-            string createPostsCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName);
+            String createPostsCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName);
             bool.TryParse(createPostsCompatibilityFileValue, out var createPostsCompatibilityFile);
 
             if (createPostsCompatibilityFile)
             {
-                string postTemplate = "<post id=\"{0}\" url=\"Posts\\{1}.html\"/>";
+                String postTemplate = "<post id=\"{0}\" url=\"Posts\\{1}.html\"/>";
                 var postDataResults = new List<string>();
                 foreach (var post in posts)
                     postDataResults.Add(string.Format(postTemplate, post.Id.ToString(), post.Slug));

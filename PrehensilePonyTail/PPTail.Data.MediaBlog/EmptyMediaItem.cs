@@ -11,7 +11,7 @@ namespace PPTail.Data.MediaBlog
             :base(json)
         { }
 
-        public EmptyMediaItem(string title, int displayWidth, int displayHeight, DateTime createDate)
+        public EmptyMediaItem(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate)
             :base(title, displayWidth, displayHeight, createDate)
         { }
 

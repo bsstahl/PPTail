@@ -10,40 +10,40 @@ namespace PPTail
 {
     public static class TemplateExtensions
     {
-        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, string rootTemplatePath)
+        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, String rootTemplatePath)
         {
-            string styleTemplatePath = $"{rootTemplatePath}\\Style.template.css";
-            string bootstrapTemplatePath = $"{rootTemplatePath}\\bootstrap.min.css";
-            string homePageTemplatePath = $"{rootTemplatePath}\\HomePage.template.html";
-            string searchPageTemplatePath = $"{rootTemplatePath}\\ContentPage.template.html";
-            string contentPageTemplatePath = $"{rootTemplatePath}\\ContentPage.template.html";
-            string postPageTemplatePath = $"{rootTemplatePath}\\PostPage.template.html";
-            string redirectTemplatePath = $"{rootTemplatePath}\\Redirect.template.html";
-            string archiveTemplatePath = $"{rootTemplatePath}\\Archive.template.html";
-            string archiveItemTemplatePath = $"{rootTemplatePath}\\ArchiveItem.template.html";
-            string syndicationTemplatePath = $"{rootTemplatePath}\\Syndication.template.xml";
-            string syndicationItemTemplatePath = $"{rootTemplatePath}\\SyndicationItem.template.xml";
-            string contactPageTemplatePath = $"{rootTemplatePath}\\ContactPage.template.html";
-            string itemTemplatePath = $"{rootTemplatePath}\\ContentItem.template.html";
+            var styleTemplatePath = $"{rootTemplatePath}\\Style.template.css";
+            var bootstrapTemplatePath = $"{rootTemplatePath}\\bootstrap.min.css";
+            var homePageTemplatePath = $"{rootTemplatePath}\\HomePage.template.html";
+            var searchPageTemplatePath = $"{rootTemplatePath}\\ContentPage.template.html";
+            var contentPageTemplatePath = $"{rootTemplatePath}\\ContentPage.template.html";
+            var postPageTemplatePath = $"{rootTemplatePath}\\PostPage.template.html";
+            var redirectTemplatePath = $"{rootTemplatePath}\\Redirect.template.html";
+            var archiveTemplatePath = $"{rootTemplatePath}\\Archive.template.html";
+            var archiveItemTemplatePath = $"{rootTemplatePath}\\ArchiveItem.template.html";
+            var syndicationTemplatePath = $"{rootTemplatePath}\\Syndication.template.xml";
+            var syndicationItemTemplatePath = $"{rootTemplatePath}\\SyndicationItem.template.xml";
+            var contactPageTemplatePath = $"{rootTemplatePath}\\ContactPage.template.html";
+            var itemTemplatePath = $"{rootTemplatePath}\\ContentItem.template.html";
             return (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, contactPageTemplatePath, redirectTemplatePath, syndicationTemplatePath, syndicationItemTemplatePath, itemTemplatePath, searchPageTemplatePath, archiveTemplatePath, archiveItemTemplatePath);
 
         }
 
-        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, string styleTemplatePath, string bootstrapTemplatePath, string homePageTemplatePath, string contentPageTemplatePath, string postPageTemplatePath, string contactPageTemplatePath, string redirectTemplatePath, string syndicationTemplatePath, string syndicationItemTemplatePath, string itemTemplatePath, string searchTemplatePath, string archiveTemplatePath, string archiveItemTemplatePath)
+        public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, String styleTemplatePath, String bootstrapTemplatePath, String homePageTemplatePath, String contentPageTemplatePath, String postPageTemplatePath, String contactPageTemplatePath, String redirectTemplatePath, String syndicationTemplatePath, String syndicationItemTemplatePath, String itemTemplatePath, String searchTemplatePath, String archiveTemplatePath, String archiveItemTemplatePath)
         {
-            string contentPageTemplate = contentPageTemplatePath.ReadAllTextFromFile();
-            string styleTemplate = styleTemplatePath.ReadAllTextFromFile();
-            string bootstrapTemplate = bootstrapTemplatePath.ReadAllTextFromFile();
-            string homePageTemplate = homePageTemplatePath.ReadAllTextFromFile();
-            string postPageTemplate = postPageTemplatePath.ReadAllTextFromFile();
-            string contactPageTemplate = contactPageTemplatePath.ReadAllTextFromFile();
-            string redirectTemplate = redirectTemplatePath.ReadAllTextFromFile();
-            string syndicationTemplate = syndicationTemplatePath.ReadAllTextFromFile();
-            string syndicationItemTemplate = syndicationItemTemplatePath.ReadAllTextFromFile();
-            string itemTemplate = itemTemplatePath.ReadAllTextFromFile();
-            string searchTemplate = searchTemplatePath.ReadAllTextFromFile();
-            string archiveTemplate = archiveTemplatePath.ReadAllTextFromFile();
-            string archiveItemTemplate = archiveItemTemplatePath.ReadAllTextFromFile();
+            var contentPageTemplate = contentPageTemplatePath.ReadAllTextFromFile();
+            var styleTemplate = styleTemplatePath.ReadAllTextFromFile();
+            var bootstrapTemplate = bootstrapTemplatePath.ReadAllTextFromFile();
+            var homePageTemplate = homePageTemplatePath.ReadAllTextFromFile();
+            var postPageTemplate = postPageTemplatePath.ReadAllTextFromFile();
+            var contactPageTemplate = contactPageTemplatePath.ReadAllTextFromFile();
+            var redirectTemplate = redirectTemplatePath.ReadAllTextFromFile();
+            var syndicationTemplate = syndicationTemplatePath.ReadAllTextFromFile();
+            var syndicationItemTemplate = syndicationItemTemplatePath.ReadAllTextFromFile();
+            var itemTemplate = itemTemplatePath.ReadAllTextFromFile();
+            var searchTemplate = searchTemplatePath.ReadAllTextFromFile();
+            var archiveTemplate = archiveTemplatePath.ReadAllTextFromFile();
+            var archiveItemTemplate = archiveItemTemplatePath.ReadAllTextFromFile();
 
             return new List<Template>()
             {

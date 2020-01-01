@@ -7,6 +7,6 @@ namespace PPTail.Interfaces
 {
     public interface IHomePageGenerator
     {
-        string GenerateHomepage(string sidebarContent, string navigationContent, IEnumerable<Entities.ContentItem> posts);
+        String GenerateHomepage(String sidebarContent, String navigationContent, IEnumerable<Entities.ContentItem> posts);
     }
 }

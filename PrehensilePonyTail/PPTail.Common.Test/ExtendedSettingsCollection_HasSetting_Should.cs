@@ -12,7 +12,7 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnFalseIfTheSettingDoesNotExist()
         {
-            string settingName = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
             var target = new ExtendedSettingsCollection();
             var actual = target.HasSetting(settingName);
             Assert.False(actual);
@@ -21,7 +21,7 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnTrueIfTheSettingExists()
         {
-            string settingName = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
             var target = new ExtendedSettingsCollection();
             target.Add(new Tuple<string, string>(settingName, string.Empty.GetRandom()));
             var actual = target.HasSetting(settingName);

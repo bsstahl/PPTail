@@ -16,7 +16,7 @@ namespace PPTail.Extensions
                 throw new Exceptions.DependencyNotFoundException(typeof(T).Name);
         }
 
-        public static T GetNamedService<T>(this IServiceProvider serviceProvider, string instanceName) where T: class
+        public static T GetNamedService<T>(this IServiceProvider serviceProvider, String instanceName) where T: class
         {
             var services = serviceProvider.GetServices<T>();
             var service = services.SingleOrDefault(s => s.GetType().FullName.ToLower() == instanceName.ToLower());
@@ -25,9 +25,9 @@ namespace PPTail.Extensions
             return service;
         }
 
-        public static IContentRepository GetContentRepository(this IServiceProvider serviceProvider, string connectionString)
+        public static IContentRepository GetContentRepository(this IServiceProvider serviceProvider, String connectionString)
         {
-            string instanceName = connectionString.GetConnectionStringValue("Provider");
+            String instanceName = connectionString.GetConnectionStringValue("Provider");
             return serviceProvider.GetNamedService<IContentRepository>(instanceName);
         }
     }

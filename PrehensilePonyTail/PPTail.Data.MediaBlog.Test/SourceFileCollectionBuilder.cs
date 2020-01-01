@@ -27,9 +27,9 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        public SourceFileCollectionBuilder AddRandomFiles(int count, string relativePath)
+        public SourceFileCollectionBuilder AddRandomFiles(Int32 count, String relativePath)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddFile(new SourceFileBuilder()
                     .UseRandomValues(relativePath));

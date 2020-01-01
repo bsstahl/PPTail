@@ -12,7 +12,7 @@ namespace PPTail.Web.Permalinks
 {
     public class DasBlogCompatibility
     {
-        const string _dasBlogPostsFile = "post.aspx";
+        const String _dasBlogPostsFile = "post.aspx";
 
         RequestDelegate _next;
         IServiceProvider _serviceProvider;
@@ -33,7 +33,7 @@ namespace PPTail.Web.Permalinks
 
         public async Task Invoke(HttpContext context)
         {
-            string path = context.Request.Path.Value.ToLower();
+            String path = context.Request.Path.Value.ToLower();
             if (path.EndsWith(_dasBlogPostsFile))
             {
                 var request = context.Request;
@@ -46,7 +46,7 @@ namespace PPTail.Web.Permalinks
                     var postLocator = _serviceProvider.GetService<IPostLocator>();
                     try
                     {
-                        string url = postLocator.GetUrlByPostId(id);
+                        String url = postLocator.GetUrlByPostId(id);
                         context.Response.Redirect(url, true);
                     }
                     catch (PostNotFoundException ex)

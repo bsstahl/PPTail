@@ -8,6 +8,6 @@ namespace PPTail.Interfaces
 {
     public interface ISearchProvider
     {
-        string GenerateSearchResultsPage(string tag, IEnumerable<ContentItem> contentItems, string navigationContent, string sidebarContent, string pathToRoot);
+        String GenerateSearchResultsPage(String tag, IEnumerable<ContentItem> contentItems, String navigationContent, String sidebarContent, String pathToRoot);
     }
 }

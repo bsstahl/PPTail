@@ -36,7 +36,7 @@ namespace PPTail.Output.FileSystem.Test
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
             container.AddSingleton<ISettings>((null as ISettings).Create());
 
-            string expected = typeof(IFile).Name;
+            String expected = typeof(IFile).Name;
             try
             {
                 var target = new Repository(container.BuildServiceProvider());
@@ -63,7 +63,7 @@ namespace PPTail.Output.FileSystem.Test
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<ISettings>((null as ISettings).Create());
 
-            string expected = typeof(IDirectory).Name;
+            String expected = typeof(IDirectory).Name;
             try
             {
                 var target = new Repository(container.BuildServiceProvider());
@@ -90,7 +90,7 @@ namespace PPTail.Output.FileSystem.Test
             container.AddSingleton<IFile>(Mock.Of<IFile>());
             container.AddSingleton<IDirectory>(Mock.Of<IDirectory>());
 
-            string expected = typeof(ISettings).Name;
+            String expected = typeof(ISettings).Name;
             try
             {
                 var target = new Repository(container.BuildServiceProvider());
@@ -121,7 +121,7 @@ namespace PPTail.Output.FileSystem.Test
             var settings = new Settings();
             container.AddSingleton<ISettings>(settings);
 
-            string expected = nameof(settings.TargetConnection);
+            String expected = nameof(settings.TargetConnection);
 
             try
             {

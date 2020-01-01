@@ -13,7 +13,7 @@ namespace PPTail.Generator.Encoder
         {
         }
 
-        public string HTMLEncode(string data)
+        public String HTMLEncode(String data)
         {
             return data.Replace("&quot;", "")
                 .Replace("\"", "")
@@ -33,12 +33,12 @@ namespace PPTail.Generator.Encoder
                 .Replace("e2809d", "");
         }
 
-        public string UrlEncode(string data)
+        public String UrlEncode(String data)
         {
             return HTMLEncode(data.Trim().Replace(' ', '-')).RemoveConsecutiveDashes();
         }
 
-        public string XmlEncode(string data)
+        public String XmlEncode(String data)
         {
             return data.Replace("&", "&amp;")
                 .Replace("<", "&lt;")

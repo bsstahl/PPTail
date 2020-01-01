@@ -15,9 +15,9 @@ namespace PPTail.SiteGenerator.Test
 {
     public class Builder_Build_Should
     {
-        const string _additionalFilePathsSettingName = "additionalFilePaths";
-        const string _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const string _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
+        const String _additionalFilePathsSettingName = "additionalFilePaths";
+        const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
+        const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
         [Fact]
         public void NotFailIfNoSiteSettingsArePresent()
@@ -121,7 +121,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            string extension = string.Empty.GetRandom(3);
+            String extension = string.Empty.GetRandom(3);
             var settings = (null as Settings).Create(extension);
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
@@ -144,7 +144,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            string extension = string.Empty.GetRandom(4);
+            String extension = string.Empty.GetRandom(4);
             var settings = (null as ISettings).Create(extension);
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
@@ -153,7 +153,7 @@ namespace PPTail.SiteGenerator.Test
             var actualPages = target.Build();
             var actualPage = actualPages.Single(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage);
 
-            string expectedFileName = $"{contentItem.Slug}.{extension}";
+            String expectedFileName = $"{contentItem.Slug}.{extension}";
             var expectedFilePath = System.IO.Path.Combine("posts", expectedFileName);
             Assert.Equal(expectedFilePath, actualPage.RelativeFilePath.ToLowerInvariant());
         }
@@ -451,15 +451,15 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create(contentRepo.Object);
 
             var settings = new Settings() { SourceConnection = contentRepo.Object.GetSourceConnection() };
-            string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
+            String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
 
             var additionalPaths = additionalPathSettingsValue.Split(',');
-            int expected = 0;
+            Int32 expected = 0;
             foreach (var additionalPath in additionalPaths)
             {
-                int count = 10.GetRandom(3);
+                Int32 count = 10.GetRandom(3);
                 var additionalFiles = (null as IEnumerable<SourceFile>).Create(count);
                 expected += count;
                 contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
@@ -481,7 +481,7 @@ namespace PPTail.SiteGenerator.Test
 
             var settings = new Settings();
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
-            string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
+            String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
 
@@ -515,15 +515,15 @@ namespace PPTail.SiteGenerator.Test
 
             var settings = new Settings();
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
-            string additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
+            String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
 
             var additionalPaths = additionalPathSettingsValue.Split(',');
-            int expected = 0;
+            Int32 expected = 0;
             foreach (var additionalPath in additionalPaths)
             {
-                int count = 10.GetRandom(3);
+                Int32 count = 10.GetRandom(3);
                 var additionalFiles = (null as IEnumerable<SourceFile>).Create(count);
                 expected += count;
                 contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
@@ -607,7 +607,7 @@ namespace PPTail.SiteGenerator.Test
             var categories = (null as IEnumerable<Category>).Create(5);
             container.ReplaceDependency<IEnumerable<Category>>(categories);
 
-            int postCount = 25.GetRandom(10);
+            Int32 postCount = 25.GetRandom(10);
             var posts = (null as IEnumerable<ContentItem>).Create(categories, postCount);
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
@@ -630,8 +630,8 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            string overlappingName = string.Empty.GetRandom();
-            string otherTag = string.Empty.GetRandom();
+            String overlappingName = string.Empty.GetRandom();
+            String otherTag = string.Empty.GetRandom();
             var targetCategory = (null as Category).Create(Guid.NewGuid(), overlappingName, "target_category");
             var otherCategory = (null as Category).Create();
             var allCategories = new List<Category>() { targetCategory, otherCategory };
@@ -736,7 +736,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void SupplyTheCorrectPathToRootToEachSearchPage()
         {
-            string expectedPathToRoot = "../";
+            String expectedPathToRoot = "../";
 
             var container = (null as IServiceCollection).Create();
 
@@ -797,7 +797,7 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            string testTag = string.Empty.GetRandom();
+            String testTag = string.Empty.GetRandom();
             var post1 = (null as ContentItem).Create();
             post1.Tags = new List<string>() { testTag };
             var post2 = (null as ContentItem).Create();
@@ -807,7 +807,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            string filenameExtension = string.Empty.GetRandom();
+            String filenameExtension = string.Empty.GetRandom();
             var settings = (null as ISettings).Create(filenameExtension);
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
@@ -828,7 +828,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            string filenameExtension = string.Empty.GetRandom();
+            String filenameExtension = string.Empty.GetRandom();
             var settings = (null as ISettings).Create(filenameExtension);
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
@@ -850,7 +850,7 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            string filenameExtension = string.Empty.GetRandom();
+            String filenameExtension = string.Empty.GetRandom();
             var settings = (null as ISettings).Create(filenameExtension);
             settings.SourceConnection = contentRepo.Object.GetSourceConnection();
             container.ReplaceDependency<ISettings>(settings);
@@ -865,7 +865,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void PassTheUrlToTheCorrectPageForEachPostToTheRedirectProvider()
         {
-            string filenameExtension = string.Empty.GetRandom();
+            String filenameExtension = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -881,7 +881,7 @@ namespace PPTail.SiteGenerator.Test
             var redirectProvider = new Mock<IRedirectProvider>();
             foreach (var post in posts)
             {
-                string fileName = $"{post.Slug}.{filenameExtension}";
+                String fileName = $"{post.Slug}.{filenameExtension}";
                 redirectProvider
                     .Setup(r => r.GenerateRedirect(
                     It.Is<string>(s => s.EndsWith(fileName))
@@ -898,8 +898,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void PassTheUrlToTheCorrectPathForEachPostToTheRedirectProvider()
         {
-            string folderName = "Posts";
-            string filenameExtension = string.Empty.GetRandom();
+            String folderName = "Posts";
+            String filenameExtension = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -915,8 +915,8 @@ namespace PPTail.SiteGenerator.Test
             var redirectProvider = new Mock<IRedirectProvider>();
             foreach (var post in posts)
             {
-                string fileName = $"{post.Slug}.{filenameExtension}";
-                string fullPath = $"/{folderName}/{fileName}";
+                String fileName = $"{post.Slug}.{filenameExtension}";
+                String fullPath = $"/{folderName}/{fileName}";
                 redirectProvider
                     .Setup(r => r.GenerateRedirect(
                     It.Is<string>(s => s.EndsWith(fullPath))
@@ -956,7 +956,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnTheSyndicationResourcePage()
         {
-            string syndicationFileName = "syndication.xml";
+            String syndicationFileName = "syndication.xml";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -981,8 +981,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void ReturnTheOutputOfTheSyndicationProviderAsTheContentOfTheSyndicationFile()
         {
-            string syndicationFileExtension = "xml";
-            string syndicationContent = string.Empty.GetRandom();
+            String syndicationFileExtension = "xml";
+            String syndicationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -1009,7 +1009,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void NotGenerateADasBlogCompatibilitySyndicationFileIfNoExtendedSettingExists()
         {
-            string syndicationFileName = "syndication.axd";
+            String syndicationFileName = "syndication.axd";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -1034,7 +1034,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void NotGenerateADasBlogCompatibilitySyndicationFileIfTheExtendedSettingSaysNotTo()
         {
-            string syndicationFileName = "syndication.axd";
+            String syndicationFileName = "syndication.axd";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -1060,7 +1060,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void GenerateADasBlogCompatibilitySyndicationFileIfTheExtendedSettingExists()
         {
-            string syndicationFileName = "syndication.axd";
+            String syndicationFileName = "syndication.axd";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -1086,7 +1086,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void NotGenerateADasBlogPostsCompatibilityFileIfNoExtendedSettingExists()
         {
-            string postsFileName = "posts.xml";
+            String postsFileName = "posts.xml";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -1111,7 +1111,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void NotGenerateADasBlogPostsCompatibilityFileIfTheExtendedSettingSaysNotTo()
         {
-            string postsFileName = "posts.xml";
+            String postsFileName = "posts.xml";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -1133,7 +1133,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void GenerateADasBlogPostsCompatibilityFileIfTheExtendedSettingExists()
         {
-            string postsFileName = "posts.xml";
+            String postsFileName = "posts.xml";
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
@@ -1157,7 +1157,7 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            string theme = string.Empty;
+            String theme = string.Empty;
             SiteSettings siteSettings = new SiteSettings()
             {
                 Title = string.Empty.GetRandom(),
@@ -1178,8 +1178,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void GetsTheContentsOfTheThemeFolderExactlyOnce()
         {
-            string theme = string.Empty.GetRandom();
-            int expectedItemCount = 25.GetRandom(10);
+            String theme = string.Empty.GetRandom();
+            Int32 expectedItemCount = 25.GetRandom(10);
             var contents = (null as IEnumerable<SourceFile>).Create(expectedItemCount);
 
             var container = (null as IServiceCollection).Create();
@@ -1201,8 +1201,8 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateOneFileInTheThemeFolderForEveryFileInTheSpecifiedTheme()
         {
-            string theme = string.Empty.GetRandom();
-            int expectedItemCount = 25.GetRandom(10);
+            String theme = string.Empty.GetRandom();
+            Int32 expectedItemCount = 25.GetRandom(10);
             var contents = (null as IEnumerable<SourceFile>).Create(expectedItemCount);
 
             var container = (null as IServiceCollection).Create();

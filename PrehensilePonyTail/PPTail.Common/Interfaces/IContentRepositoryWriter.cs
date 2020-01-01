@@ -12,7 +12,7 @@ namespace PPTail.Interfaces
         void SaveAllPages(IEnumerable<ContentItem> pages);
         void SaveAllPosts(IEnumerable<ContentItem> posts);
         void SaveAllWidgets(IEnumerable<Widget> widgets);
-        void SaveFolderContents(string relativePath, IEnumerable<SourceFile> contents);
+        void SaveFolderContents(String relativePath, IEnumerable<SourceFile> contents);
         void SaveCategories(IEnumerable<Category> categories);
     }
 }

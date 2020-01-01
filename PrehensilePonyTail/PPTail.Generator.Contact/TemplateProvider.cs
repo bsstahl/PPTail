@@ -33,7 +33,7 @@ namespace PPTail.Generator.Contact
             _templates.Validate(Enumerations.TemplateType.ContactPage);
         }
 
-        public string GenerateContactPage(string navigationContent, string sidebarContent, string pathToRoot)
+        public String GenerateContactPage(String navigationContent, String sidebarContent, String pathToRoot)
         {
             // TODO: Handle multiple templates of the same type
             var template = _templates.Single(t => t.TemplateType == Enumerations.TemplateType.ContactPage);

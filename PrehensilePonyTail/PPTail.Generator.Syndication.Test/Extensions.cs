@@ -12,8 +12,8 @@ namespace PPTail.Generator.Syndication.Test
 {
     public static class Extensions
     {
-        const string _defaultSyndicationTemplateContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss><channel>{Content}</channel></rss>";
-        const string _defaultSyndicationItemTemplateContent = "<item><title>{Title}</title><description>{Content}</description><link>{Link}</link><author>{Author}</author><guid>{PermalinkUrl}</guid><pubDate>{PublicationDate}</pubDate><category>{CategoryList}</category></item>";
+        const String _defaultSyndicationTemplateContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss><channel>{Content}</channel></rss>";
+        const String _defaultSyndicationItemTemplateContent = "<item><title>{Title}</title><description>{Content}</description><link>{Link}</link><author>{Author}</author><guid>{PermalinkUrl}</guid><pubDate>{PublicationDate}</pubDate><category>{CategoryList}</category></item>";
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
@@ -74,11 +74,11 @@ namespace PPTail.Generator.Syndication.Test
 
         public static ContentItem Create(this ContentItem ignore, Guid categoryId)
         {
-            string tag = string.Empty.GetRandom();
+            String tag = string.Empty.GetRandom();
             return ignore.Create(categoryId, new List<string>() { tag });
         }
 
-        public static ContentItem Create(this ContentItem ignore, string tag)
+        public static ContentItem Create(this ContentItem ignore, String tag)
         {
             var categoryId = Guid.NewGuid();
             return ignore.Create(categoryId, new List<string>() { tag });
@@ -107,10 +107,10 @@ namespace PPTail.Generator.Syndication.Test
             return ignore.Create(25.GetRandom(5));
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
         {
             var contentItems = new List<ContentItem>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 contentItems.Add((null as ContentItem).Create());
             return contentItems;
         }
@@ -120,7 +120,7 @@ namespace PPTail.Generator.Syndication.Test
             return ignore.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2), 10.GetRandom(5));
         }
 
-        public static SiteSettings Create(this SiteSettings ignore, string title, string description, int postsPerPage, int postsPerFeed)
+        public static SiteSettings Create(this SiteSettings ignore, String title, String description, Int32 postsPerPage, Int32 postsPerFeed)
         {
             return new SiteSettings()
             {
@@ -136,12 +136,12 @@ namespace PPTail.Generator.Syndication.Test
             return ignore.Create(string.Empty.GetRandom(3), contentRepo);
         }
 
-        public static ISettings Create(this ISettings ignore, string outputFileExtension, IContentRepository contentRepo)
+        public static ISettings Create(this ISettings ignore, String outputFileExtension, IContentRepository contentRepo)
         {
             return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null, contentRepo);
         }
 
-        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string outputFileExtension, string itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings, IContentRepository contentRepo)
+        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String outputFileExtension, String itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings, IContentRepository contentRepo)
         {
             var result = new Settings()
             {

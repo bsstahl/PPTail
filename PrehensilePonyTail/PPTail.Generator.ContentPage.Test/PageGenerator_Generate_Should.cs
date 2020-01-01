@@ -19,8 +19,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorOncePerExecution()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();
@@ -41,8 +41,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorWithTheProperTemplate()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();
@@ -65,8 +65,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorWithTheProperContentItem()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();
@@ -87,8 +87,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorWithTheProperSidebarContent()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();
@@ -109,8 +109,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorWithTheProperNavigationContent()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();
@@ -131,8 +131,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorWithTheProperPathToRootContent()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();
@@ -153,8 +153,8 @@ namespace PPTail.Generator.ContentPage.Test
         [Fact]
         public void CallTheTemplateProcessorWithTheProperXmlEncodeValue()
         {
-            string sidebarContent = string.Empty.GetRandom();
-            string navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
             var contentItem = (null as ContentItem).Create();
             var templateType = (new List<TemplateType>() { TemplateType.PostPage, TemplateType.ContentPage }).GetRandom();
             var pathToRoot = string.Empty.GetRandom();

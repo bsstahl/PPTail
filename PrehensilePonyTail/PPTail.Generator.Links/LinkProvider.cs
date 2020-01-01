@@ -21,12 +21,12 @@ namespace PPTail.Generator.Links
             _serviceProvider.ValidateService<ISettings>();
         }
 
-        public string GetUrl(string pathToRoot, string relativePath, string fileName, string fileExtension)
+        public String GetUrl(String pathToRoot, String relativePath, String fileName, String fileExtension)
         {
             return System.IO.Path.Combine(pathToRoot, relativePath, $"{fileName}.{fileExtension}").ToHttpSlashes().RemoveLeadingDotSlash();
         }
 
-        public string GetUrl(string pathToRoot, string relativePath, string fileName)
+        public String GetUrl(String pathToRoot, String relativePath, String fileName)
         {
             var settings = _serviceProvider.GetService<ISettings>();
             return GetUrl(pathToRoot, relativePath, fileName, settings.OutputFileExtension);

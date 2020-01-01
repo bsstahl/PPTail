@@ -37,25 +37,25 @@ namespace PPTail.Data.Ef.Test
             return container.AddInMemoryContext(string.Empty.GetRandom());
         }
 
-        public static IServiceCollection AddInMemoryContext(this IServiceCollection container, string dbName)
+        public static IServiceCollection AddInMemoryContext(this IServiceCollection container, String dbName)
         {
             return container.AddDbContext<ContentContext>(p => p.UseInMemoryDatabase(databaseName: string.Empty.GetRandom()), ServiceLifetime.Transient);
         }
 
-        public static string CreateTagList(this string ignore)
+        public static String CreateTagList(this String ignore)
         {
             var tags = new List<string>();
-            int tagCount = 7.GetRandom(3);
-            for (int i = 0; i < tagCount; i++)
+            Int32 tagCount = 7.GetRandom(3);
+            for (Int32 i = 0; i < tagCount; i++)
                 tags.Add(string.Empty.GetRandom().Replace(";", ""));
             return string.Join(";", tags);
         }
 
-        public static string CreateCategoryIdList(this string ignore)
+        public static String CreateCategoryIdList(this String ignore)
         {
             var resultList = new List<string>();
-            int count = 7.GetRandom(3);
-            for (int i = 0; i < count; i++)
+            Int32 count = 7.GetRandom(3);
+            for (Int32 i = 0; i < count; i++)
                 resultList.Add(Guid.NewGuid().ToString());
             return string.Join(";", resultList);
         }

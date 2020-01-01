@@ -10,9 +10,9 @@ namespace PPTail
 {
     public class Program
     {
-        const string _connectionStringProviderKey = "Provider";
+        const String _connectionStringProviderKey = "Provider";
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             (var argsAreValid, var argumentErrors) = args.ValidateArguments();
 
@@ -39,7 +39,10 @@ namespace PPTail
             {
                 Console.WriteLine("Invalid Arguments:");
                 foreach (var argumentError in argumentErrors)
+                {
                     Console.WriteLine($"\t{argumentError}");
+                }
+
                 Console.WriteLine();
             }
         }

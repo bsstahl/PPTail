@@ -19,13 +19,13 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        public new WidgetZoneBuilder Content(string content)
+        public new WidgetZoneBuilder Content(String content)
         {
             base.Content = content;
             return this;
         }
 
-        public new WidgetZoneBuilder Id(string id)
+        public new WidgetZoneBuilder Id(String id)
         {
             base.Id = id;
             return this;
@@ -37,13 +37,13 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        public new WidgetZoneBuilder Title(string title)
+        public new WidgetZoneBuilder Title(String title)
         {
             base.Title = title;
             return this;
         }
 
-        public new WidgetZoneBuilder WidgetType(string widgetType)
+        public new WidgetZoneBuilder WidgetType(String widgetType)
         {
             base.WidgetType = widgetType;
             return this;
@@ -87,10 +87,10 @@ namespace PPTail.Data.MediaBlog.Test
 
         public WidgetZoneBuilder AddWidget(Guid id,
             bool active,
-            string content,
+            String content,
             bool showTitle,
-            string title,
-            string widgetTypeName)
+            String title,
+            String widgetTypeName)
         {
             return this
                 .Active(active)

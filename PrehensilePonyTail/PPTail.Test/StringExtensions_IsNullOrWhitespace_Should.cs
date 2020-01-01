@@ -29,7 +29,7 @@ namespace PPTail.Test
         [Fact]
         public void ReturnFalseIfTheOnlyValueIsNotNull()
         {
-            string value1 = string.Empty.GetRandom();
+            String value1 = string.Empty.GetRandom();
             var target = new string[] { value1 };
             bool actual  = target.IsNullOrWhiteSpace();
             Assert.False(actual);
@@ -38,7 +38,7 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfTheOnlyValueIsNull()
         {
-            string value1 = null;
+            String value1 = null;
             var target = new string[] { value1 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -47,7 +47,7 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfTheOnlyValueIsWhitespace()
         {
-            string value1 = "   ";
+            String value1 = "   ";
             var target = new string[] { value1  };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -56,9 +56,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnFalseIfAllValuesAreNotNull()
         {
-            string value1 = string.Empty.GetRandom();
-            string value2 = string.Empty.GetRandom();
-            string value3 = string.Empty.GetRandom();
+            String value1 = string.Empty.GetRandom();
+            String value2 = string.Empty.GetRandom();
+            String value3 = string.Empty.GetRandom();
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.False(actual);
@@ -67,9 +67,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfTheFirstValueIsNull()
         {
-            string value1 = null;
-            string value2 = string.Empty.GetRandom();
-            string value3 = string.Empty.GetRandom();
+            String value1 = null;
+            String value2 = string.Empty.GetRandom();
+            String value3 = string.Empty.GetRandom();
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -78,9 +78,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfTheFirstValueIsEmpty()
         {
-            string value1 = string.Empty;
-            string value2 = string.Empty.GetRandom();
-            string value3 = string.Empty.GetRandom();
+            String value1 = string.Empty;
+            String value2 = string.Empty.GetRandom();
+            String value3 = string.Empty.GetRandom();
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -89,9 +89,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfAMiddleValueIsNull()
         {
-            string value1 = string.Empty.GetRandom();
-            string value2 = null;
-            string value3 = string.Empty.GetRandom();
+            String value1 = string.Empty.GetRandom();
+            String value2 = null;
+            String value3 = string.Empty.GetRandom();
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -100,9 +100,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfAMiddleValueIsEmpty()
         {
-            string value1 = string.Empty.GetRandom();
-            string value2 = string.Empty;
-            string value3 = string.Empty.GetRandom();
+            String value1 = string.Empty.GetRandom();
+            String value2 = string.Empty;
+            String value3 = string.Empty.GetRandom();
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -111,9 +111,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfTheEndValueIsNull()
         {
-            string value1 = string.Empty.GetRandom();
-            string value2 = string.Empty.GetRandom();
-            string value3 = null;
+            String value1 = string.Empty.GetRandom();
+            String value2 = string.Empty.GetRandom();
+            String value3 = null;
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);
@@ -122,9 +122,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnTrueIfTheEndValueIsEmpty()
         {
-            string value1 = string.Empty.GetRandom();
-            string value2 = string.Empty.GetRandom();
-            string value3 = string.Empty;
+            String value1 = string.Empty.GetRandom();
+            String value2 = string.Empty.GetRandom();
+            String value3 = string.Empty;
             var target = new string[] { value1, value2, value3 };
             bool actual = target.IsNullOrWhiteSpace();
             Assert.True(actual);

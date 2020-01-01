@@ -48,10 +48,10 @@ namespace PPTail.Data.Ef.Test
             container.AddInMemoryContext();
             var serviceProvider = container.BuildServiceProvider();
 
-            int itemCount = 99.GetRandom(5);
+            Int32 itemCount = 99.GetRandom(5);
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
-                for (int i = 0; i < itemCount; i++)
+                for (Int32 i = 0; i < itemCount; i++)
                     dataContext.Pages.Add((null as ContentItem).Create());
                 dataContext.SaveChanges();
             }
@@ -166,9 +166,9 @@ namespace PPTail.Data.Ef.Test
             var expectedCollection = expected.Split(';').OrderBy(t => t).ToArray();
             var actualCollection = actualEntity.Tags.OrderBy(t => t).ToArray();
 
-            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null string value");
+            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null String value");
             Assert.Equal(expectedCollection.Count(), actualCollection.Count());
-            for (int i = 0; i < expectedCollection.Count(); i++)
+            for (Int32 i = 0; i < expectedCollection.Count(); i++)
                 Assert.Equal(expectedCollection[i], actualCollection[i]);
         }
 
@@ -234,9 +234,9 @@ namespace PPTail.Data.Ef.Test
             var expectedCollection = expected.Split(';').OrderBy(t => t).ToArray();
             var actualCollection = actualEntity.CategoryIds.OrderBy(t => t).ToArray();
 
-            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null string value");
+            Assert.False(string.IsNullOrWhiteSpace(expected), $"Test is invalid if using a null String value");
             Assert.Equal(expectedCollection.Count(), actualCollection.Count());
-            for (int i = 0; i < expectedCollection.Count(); i++)
+            for (Int32 i = 0; i < expectedCollection.Count(); i++)
                 Assert.Equal(new Guid(expectedCollection[i]), actualCollection[i]);
         }
 

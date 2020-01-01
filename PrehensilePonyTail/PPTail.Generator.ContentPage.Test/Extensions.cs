@@ -46,12 +46,12 @@ namespace PPTail.Generator.ContentPage.Test
             return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
         {
             return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, string dateTimeFormatSpecifier, string outputFileExtension)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
         {
             var settings = new Settings();
             settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
@@ -79,7 +79,7 @@ namespace PPTail.Generator.ContentPage.Test
 
         public static ContentItem Create(this ContentItem ignore, IEnumerable<string> tags, IEnumerable<Guid> categoryIds)
         {
-            string author = string.Empty.GetRandom();
+            String author = string.Empty.GetRandom();
             var lastModDate = DateTime.UtcNow.AddDays(-10.GetRandom(1));
             var pubDate = DateTime.UtcNow.AddDays(-20.GetRandom(10));
             var slug = string.Empty.GetRandom();
@@ -88,9 +88,9 @@ namespace PPTail.Generator.ContentPage.Test
         }
 
         private static ContentItem Create(this ContentItem ignore,
-            string author, IEnumerable<Guid> categoryIds, string content,
-            string description, bool isPublished, DateTime lastModDate, DateTime pubDate,
-            string slug, IEnumerable<string> tags, string title)
+            String author, IEnumerable<Guid> categoryIds, String content,
+            String description, bool isPublished, DateTime lastModDate, DateTime pubDate,
+            String slug, IEnumerable<string> tags, String title)
         {
             return new ContentItem()
             {
@@ -113,20 +113,20 @@ namespace PPTail.Generator.ContentPage.Test
             return ignore.CreateBlankTemplates("<html/>", "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", "");
         }
 
-        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, string contentpageTemplate, string itemTemplate)
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, String contentpageTemplate, String itemTemplate)
         {
             return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", "<html/>", "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
         }
 
-        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, string contentpageTemplate, string homePageTemplate, string itemTemplate)
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, String contentpageTemplate, String homePageTemplate, String itemTemplate)
         {
             return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", homePageTemplate, "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
         }
 
         public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore,
-            string contentTemplateText, string postTemplateText,
-            string homepageTemplateText, string styleTemplateText,
-            string bootstrapTemplateText, string itemTemplateText)
+            String contentTemplateText, String postTemplateText,
+            String homepageTemplateText, String styleTemplateText,
+            String bootstrapTemplateText, String itemTemplateText)
         {
             var contentTemplate = new Template() { Content = contentTemplateText, TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = postTemplateText, TemplateType = Enumerations.TemplateType.PostPage };

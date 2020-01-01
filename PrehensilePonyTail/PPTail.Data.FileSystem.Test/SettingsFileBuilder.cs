@@ -9,13 +9,13 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class SettingsFileBuilder: SiteSettings
     {
-        const string _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage><postsperfeed>{3}</postsperfeed><theme>{4}</theme></settings>";
+        const String _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage><postsperfeed>{3}</postsperfeed><theme>{4}</theme></settings>";
 
-        const string _defaultTitle = "My Blog";
-        const string _defaultDescription = "This is the description of my blog";
-        const int _defaultPostsPerPage = 3;
-        const int _defaultPostsPerFeed = 10;
-        const string _defaultTheme = "MyBlogTheme";
+        const String _defaultTitle = "My Blog";
+        const String _defaultDescription = "This is the description of my blog";
+        const Int32 _defaultPostsPerPage = 3;
+        const Int32 _defaultPostsPerFeed = 10;
+        const String _defaultTheme = "MyBlogTheme";
 
         private bool _removeTitle = false;
         private bool _removeDescription = false;
@@ -23,7 +23,7 @@ namespace PPTail.Data.FileSystem.Test
         private bool _removePostsPerFeed = false;
         private bool _removeTheme = false;
 
-        public string Build()
+        public String Build()
         {
             var node = new XElement(XName.Get("settings"));
             return node.ConditionalAddNode(!_removeTitle, "name", base.Title)
@@ -52,7 +52,7 @@ namespace PPTail.Data.FileSystem.Test
                 .Theme(string.Empty.GetRandom(15));
         }
 
-        public new SettingsFileBuilder Title(string title)
+        public new SettingsFileBuilder Title(String title)
         {
             base.Title = title;
             return this;
@@ -64,7 +64,7 @@ namespace PPTail.Data.FileSystem.Test
             return this;
         }
 
-        public new SettingsFileBuilder Description(string description)
+        public new SettingsFileBuilder Description(String description)
         {
             base.Description = description;
             return this;
@@ -76,7 +76,7 @@ namespace PPTail.Data.FileSystem.Test
             return this;
         }
 
-        public new SettingsFileBuilder PostsPerPage(int postsPerPage)
+        public new SettingsFileBuilder PostsPerPage(Int32 postsPerPage)
         {
             base.PostsPerPage = postsPerPage;
             return this;
@@ -88,7 +88,7 @@ namespace PPTail.Data.FileSystem.Test
             return this;
         }
 
-        public new SettingsFileBuilder PostsPerFeed(int postsPerFeed)
+        public new SettingsFileBuilder PostsPerFeed(Int32 postsPerFeed)
         {
             base.PostsPerFeed = postsPerFeed;
             return this;
@@ -100,7 +100,7 @@ namespace PPTail.Data.FileSystem.Test
             return this;
         }
 
-        public new SettingsFileBuilder Theme(string theme)
+        public new SettingsFileBuilder Theme(String theme)
         {
             base.Theme = theme;
             return this;

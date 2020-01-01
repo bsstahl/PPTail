@@ -8,10 +8,10 @@ namespace PPTail.Data.NativeJson
 {
     public class RepositoryWriter: IContentRepositoryWriter
     {
-        readonly string _filePath;
+        readonly String _filePath;
         Context _context = null;
 
-        public RepositoryWriter(string filePath)
+        public RepositoryWriter(String filePath)
         {
             _filePath = filePath;
         }
@@ -54,7 +54,7 @@ namespace PPTail.Data.NativeJson
             context.Save(_filePath);
         }
 
-        public void SaveFolderContents(string relativePath, IEnumerable<SourceFile> contents)
+        public void SaveFolderContents(String relativePath, IEnumerable<SourceFile> contents)
         {
             throw new NotImplementedException();
         }

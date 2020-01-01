@@ -86,8 +86,8 @@ namespace PPTail.Generator.T4Html.Test
             var posts = (null as IEnumerable<ContentItem>).Create(1);
 
             var thisPost = posts.Single();
-            string tag1 = string.Empty.GetRandom();
-            string tag2 = string.Empty.GetRandom();
+            String tag1 = string.Empty.GetRandom();
+            String tag2 = string.Empty.GetRandom();
             thisPost.Tags = new List<string>() { tag1, tag2 };
 
             var pages = new List<ContentItem>();
@@ -119,8 +119,8 @@ namespace PPTail.Generator.T4Html.Test
             container.ReplaceDependency<ISettings>(settings);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
-            string tag1 = posts.First().Tags.Single();
-            string tag2 = posts.Last().Tags.Single();
+            String tag1 = posts.First().Tags.Single();
+            String tag2 = posts.Last().Tags.Single();
             System.Diagnostics.Debug.Assert(tag1 != tag2);
 
             var pages = new List<ContentItem>();
@@ -135,7 +135,7 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void CallTheLinkProviderOncePerTag()
         {
-            string pathToRoot = ".";
+            String pathToRoot = ".";
 
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };
@@ -164,7 +164,7 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void ReturnTheOutputOfTheLinkProvider()
         {
-            string pathToRoot = ".";
+            String pathToRoot = ".";
 
             var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
             var widgets = new List<Widget>() { widget };

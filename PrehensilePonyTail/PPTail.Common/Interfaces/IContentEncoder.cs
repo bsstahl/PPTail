@@ -7,10 +7,10 @@ namespace PPTail.Interfaces
 {
     public interface IContentEncoder
     {
-        string HTMLEncode(string data);
+        String HTMLEncode(String data);
 
-        string XmlEncode(string data);
+        String XmlEncode(String data);
 
-        string UrlEncode(string data);
+        String UrlEncode(String data);
     }
 }

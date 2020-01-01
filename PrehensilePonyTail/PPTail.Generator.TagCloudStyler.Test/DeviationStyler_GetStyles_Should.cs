@@ -46,7 +46,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
         [InlineData(2, "small")]
         [InlineData(3, "medium")]
         [InlineData(5, "big")]
-        public void ItemsUsedWithinOnceOfEachOtherShouldNotBeMoreThanOneSizeDifferent(int n, string expected)
+        public void ItemsUsedWithinOnceOfEachOtherShouldNotBeMoreThanOneSizeDifferent(Int32 n, String expected)
         {
             var serviceProvider = new ServiceCollection().BuildServiceProvider();
             var styler = new DeviationStyler(serviceProvider);
@@ -54,13 +54,13 @@ namespace PPTail.Generator.TagCloudStyler.Test
             // Tag 1 should be used once, Tag 2 twice, etc...
             var tagUnderTest = string.Empty;
             var tags = new List<string>();
-            for (int i = 0; i < 5; i++)
+            for (Int32 i = 0; i < 5; i++)
             {
                 var tag = string.Empty.GetRandom();
                 if (n == (i + 1))
                     tagUnderTest = tag;
 
-                for (int j = 0; j <= i; j++)
+                for (Int32 j = 0; j <= i; j++)
                     tags.Add(tag);
             }
 
@@ -78,7 +78,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
-            for (int i = 0; i < 300.GetRandom(100); i++)
+            for (Int32 i = 0; i < 300.GetRandom(100); i++)
                 tags.Add(tagList.GetRandom());
 
             var actual = styler.GetStyles(tags);
@@ -94,7 +94,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
-            for (int i = 0; i < 300.GetRandom(100); i++)
+            for (Int32 i = 0; i < 300.GetRandom(100); i++)
                 tags.Add(tagList.GetRandom());
 
             var actual = styler.GetStyles(tags);
@@ -110,7 +110,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
-            for (int i = 0; i < 300.GetRandom(100); i++)
+            for (Int32 i = 0; i < 300.GetRandom(100); i++)
                 tags.Add(tagList.GetRandom());
 
             var actual = styler.GetStyles(tags);
@@ -127,7 +127,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
-            for (int i = 0; i < 300.GetRandom(100); i++)
+            for (Int32 i = 0; i < 300.GetRandom(100); i++)
             {
                 tags.Add(tagList.GetRandom());
                 tags.Add(tagUnderTest);
@@ -147,7 +147,7 @@ namespace PPTail.Generator.TagCloudStyler.Test
 
             // Each tag should be used a random # of times
             var tags = new List<string>();
-            for (int i = 0; i < 300.GetRandom(100); i++)
+            for (Int32 i = 0; i < 300.GetRandom(100); i++)
                 tags.Add(tagList.GetRandom());
 
             var actual = styler.GetStyles(tags);

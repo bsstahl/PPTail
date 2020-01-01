@@ -36,7 +36,7 @@ namespace PPTail.Generator.Encoder.Test
         [InlineData("Removes encoded e2809csmartquotese2809d", "Removes-encoded-smartquotes")]
         [InlineData("Removes.Dots", "RemovesdotDots")]
         [InlineData("Removes. all.net", "Removesdot-alldotnet")]
-        public void ProperlyEncodeTheString(string source, string expected)
+        public void ProperlyEncodeTheString(String source, String expected)
         {
             var container = (null as IServiceCollection).Create();
             var target = new ContentEncoder(container.BuildServiceProvider());

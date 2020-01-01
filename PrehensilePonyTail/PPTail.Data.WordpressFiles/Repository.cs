@@ -10,10 +10,10 @@ namespace PPTail.Data.WordpressFiles
 {
     public class Repository : Interfaces.IContentRepository
     {
-        const string _connectionStringFilepathKey = "FilePath";
-        readonly string _dataFilePath;
+        const String _connectionStringFilepathKey = "FilePath";
+        readonly String _dataFilePath;
 
-        public Repository(string dataFilePath)
+        public Repository(String dataFilePath)
         {
             _dataFilePath = dataFilePath;
         }
@@ -142,7 +142,7 @@ namespace PPTail.Data.WordpressFiles
             return this.Categories.Select(c => c.Value);
         }
 
-        public IEnumerable<Entities.SourceFile> GetFolderContents(string relativePath)
+        public IEnumerable<Entities.SourceFile> GetFolderContents(String relativePath)
         {
             return this.FolderContents;
         }
@@ -166,7 +166,7 @@ namespace PPTail.Data.WordpressFiles
 
             foreach (var page in pages)
             {
-                string authorName = this.Users.Single(a => a.Key == page.author).Value;
+                String authorName = this.Users.Single(a => a.Key == page.author).Value;
                 result.Add(new ContentItem()
                 {
                     Author = authorName,
@@ -200,7 +200,7 @@ namespace PPTail.Data.WordpressFiles
 
             foreach (var post in posts)
             {
-                string authorName = this.Users.Single(a => a.Key == post.author).Value;
+                String authorName = this.Users.Single(a => a.Key == post.author).Value;
                 result.Add(new ContentItem()
                 {
                     Author = authorName,

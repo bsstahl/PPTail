@@ -14,16 +14,16 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public class MockFileServiceBuilder
     {
-        const string _widgetFilePath = "Widgets.json";
-        const string _categoryFilePath = "Categories.json";
-        const string _settingsFilePath = "SiteSettings.json";
+        const String _widgetFilePath = "Widgets.json";
+        const String _categoryFilePath = "Categories.json";
+        const String _settingsFilePath = "SiteSettings.json";
 
-        readonly List<(string FilePath, string Content)> _posts = new List<(string, string)>();
+        readonly List<(String FilePath, String Content)> _posts = new List<(string, string)>();
         readonly List<WidgetZone> _widgets = new List<WidgetZone>();
         readonly List<Category> _categories = new List<Category>();
         readonly List<SecurableSourceFile> _sourceFiles = new List<SecurableSourceFile>();
 
-        string _settingsFile = string.Empty;
+        String _settingsFile = string.Empty;
         SiteSettings _siteSettings = null;
 
         internal Mock<IFile> Build()
@@ -38,7 +38,7 @@ namespace PPTail.Data.MediaBlog.Test
 
             foreach (var sourceFile in _sourceFiles)
             {
-                string filePath = Path.Combine(sourceFile.RelativePath, sourceFile.FileName);
+                String filePath = Path.Combine(sourceFile.RelativePath, sourceFile.FileName);
                 if (sourceFile.IsSecured)
                 {
                     fileSystem.Setup(f => f.ReadAllBytes(filePath))
@@ -92,9 +92,9 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        internal MockFileServiceBuilder AddRandomWidgets(int count)
+        internal MockFileServiceBuilder AddRandomWidgets(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddRandomWidget();
             }
@@ -136,9 +136,9 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        internal MockFileServiceBuilder AddRandomCategories(int count)
+        internal MockFileServiceBuilder AddRandomCategories(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddRandomCategory();
             }
@@ -168,7 +168,7 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        internal MockFileServiceBuilder AddSiteSettingsFile(string siteSettings)
+        internal MockFileServiceBuilder AddSiteSettingsFile(String siteSettings)
         {
             _settingsFile = siteSettings;
             _siteSettings = null;

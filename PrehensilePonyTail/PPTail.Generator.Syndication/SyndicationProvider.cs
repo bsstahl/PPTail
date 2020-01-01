@@ -29,7 +29,7 @@ namespace PPTail.Generator.Syndication
             _templates.Validate(Enumerations.TemplateType.SyndicationItem);
         }
 
-        public string GenerateFeed(IEnumerable<ContentItem> posts)
+        public String GenerateFeed(IEnumerable<ContentItem> posts)
         {
             var syndicationTemplate = _templates.Find(Enumerations.TemplateType.Syndication);
             var syndicationItemTemplate = _templates.Find(Enumerations.TemplateType.SyndicationItem);

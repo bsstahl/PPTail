@@ -19,10 +19,10 @@ namespace PPTail.Generator.Navigation.Test
             return ignore.Create(5.GetRandom(3));
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, int count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
         {
             var result = new List<ContentItem>();
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
                 result.Add(new ContentItem()
                 {
                     Title = string.Empty.GetRandom(),

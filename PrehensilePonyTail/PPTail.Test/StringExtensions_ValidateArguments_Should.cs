@@ -21,9 +21,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnValidIfAllArgumentsSupplied()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
             (bool isValid, var errors) = target.ValidateArguments();
             Assert.True(isValid);
@@ -32,9 +32,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnInvalidIfTheWrongNumberOfArgumentsAreSupplied()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate, expectedSource };
             (bool isValid, var errors) = target.ValidateArguments();
             Assert.False(isValid);
@@ -43,9 +43,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnInvalidIfSourceArgumentMissing()
         {
-            string expectedSource = string.Empty;
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty;
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
             (bool isValid, var errors) = target.ValidateArguments();
             Assert.False(isValid);
@@ -54,9 +54,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnInvalidIfTargetArgumentMissing()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty;
-            string expectedTemplate = string.Empty.GetRandom();
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty;
+            String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
             (bool isValid, var errors) = target.ValidateArguments();
             Assert.False(isValid);
@@ -65,9 +65,9 @@ namespace PPTail.Test
         [Fact]
         public void ReturnInvalidIfTemplateArgumentMissing()
         {
-            string expectedSource = string.Empty.GetRandom();
-            string expectedTarget = string.Empty.GetRandom();
-            string expectedTemplate = string.Empty;
+            String expectedSource = string.Empty.GetRandom();
+            String expectedTarget = string.Empty.GetRandom();
+            String expectedTemplate = string.Empty;
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
             (bool isValid, var errors) = target.ValidateArguments();
             Assert.False(isValid);

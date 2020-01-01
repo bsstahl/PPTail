@@ -12,8 +12,8 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnTheProperValueIfTheValueExists()
         {
-            string settingName = string.Empty.GetRandom();
-            string expected = string.Empty.GetRandom();
+            String settingName = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
             var target = new ExtendedSettingsCollection();
             target.Add(new Tuple<string, string>(settingName, expected));
             var actual = target.Get(settingName);
@@ -23,8 +23,8 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnAnEmptyStringIfTheValueDoesNotExist()
         {
-            string settingName = string.Empty.GetRandom();
-            string expected = string.Empty;
+            String settingName = string.Empty.GetRandom();
+            String expected = string.Empty;
             var target = new ExtendedSettingsCollection();
             var actual = target.Get(settingName);
             Assert.Equal(expected, actual);

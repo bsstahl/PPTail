@@ -7,7 +7,7 @@ namespace PPTail.Data.Ef
 {
     public static class StringExtensions
     {
-        public static IEnumerable<string> GetTags(this string tagString)
+        public static IEnumerable<string> GetTags(this String tagString)
         {
             var rawTags = string.IsNullOrWhiteSpace(tagString) ? new string[] { } : tagString.Split(';');
             var result = new List<string>();
@@ -19,7 +19,7 @@ namespace PPTail.Data.Ef
             return result;
         }
 
-        public static IEnumerable<Guid> GetCategoryIds(this string idString)
+        public static IEnumerable<Guid> GetCategoryIds(this String idString)
         {
             var result = new List<Guid>();
             var rawIds = string.IsNullOrWhiteSpace(idString) ? new string[] { } : idString.Split(';');

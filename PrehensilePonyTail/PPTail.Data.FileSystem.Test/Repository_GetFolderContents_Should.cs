@@ -17,10 +17,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void RequestTheContentsOfTheCorrectFolderPath()
         {
-            int count = 25.GetRandom(10);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
 
@@ -37,10 +37,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnOneEntityForEachItemInTheFolder()
         {
-            int expected = 25.GetRandom(10);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 expected = 25.GetRandom(10);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, expected);
 
@@ -51,7 +51,7 @@ namespace PPTail.Data.FileSystem.Test
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
             {
-                string fullPath = System.IO.Path.Combine(folderPath, file.FileName);
+                String fullPath = System.IO.Path.Combine(folderPath, file.FileName);
                 fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Returns(file.Contents);
             }
 
@@ -64,10 +64,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void RequestTheContentsOfTheCorrectFiles()
         {
-            int count = 25.GetRandom(10);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
 
@@ -82,7 +82,7 @@ namespace PPTail.Data.FileSystem.Test
 
             foreach (var file in files)
             {
-                string filePath = System.IO.Path.Combine(rootPath, relativePath, file.FileName);
+                String filePath = System.IO.Path.Combine(rootPath, relativePath, file.FileName);
                 fileProvider.Verify(fs => fs.ReadAllBytes(filePath), Times.Once);
             }
         }
@@ -90,10 +90,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheCorrectRelativePathForEachItem()
         {
-            int count = 25.GetRandom(10);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
 
@@ -104,7 +104,7 @@ namespace PPTail.Data.FileSystem.Test
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
             {
-                string fullPath = System.IO.Path.Combine(folderPath, file.FileName);
+                String fullPath = System.IO.Path.Combine(folderPath, file.FileName);
                 fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Returns(file.Contents);
             }
 
@@ -117,10 +117,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheCorrectFileNameForEachItem()
         {
-            int count = 25.GetRandom(10);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
 
@@ -131,7 +131,7 @@ namespace PPTail.Data.FileSystem.Test
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
             {
-                string fullPath = System.IO.Path.Combine(folderPath, file.FileName);
+                String fullPath = System.IO.Path.Combine(folderPath, file.FileName);
                 fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Returns(file.Contents);
             }
 
@@ -145,10 +145,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheCorrectContentsForEachItem()
         {
-            int count = 25.GetRandom(10);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 count = 25.GetRandom(10);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
 
@@ -159,7 +159,7 @@ namespace PPTail.Data.FileSystem.Test
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
             {
-                string fullPath = System.IO.Path.Combine(folderPath, file.FileName);
+                String fullPath = System.IO.Path.Combine(folderPath, file.FileName);
                 fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Returns(file.Contents);
             }
 
@@ -173,9 +173,9 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnAnEmptyCollectionIfTheFolderDoesNotExist()
         {
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(false);
@@ -191,10 +191,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void SkipItemsThatRequireAuthorizationToAccess()
         {
-            int count = 35.GetRandom(20);
-            string relativePath = string.Empty.GetRandom();
-            string rootPath = "c:\\";
-            string folderPath = System.IO.Path.Combine(rootPath, relativePath);
+            Int32 count = 35.GetRandom(20);
+            String relativePath = string.Empty.GetRandom();
+            String rootPath = "c:\\";
+            String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
             var fileNames = new List<string>();
@@ -205,10 +205,10 @@ namespace PPTail.Data.FileSystem.Test
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
 
             var fileProvider = new Mock<IFile>();
-            int expected = 0;
+            Int32 expected = 0;
             foreach (var file in files)
             {
-                string fullPath = System.IO.Path.Combine(folderPath, file.FileName);
+                String fullPath = System.IO.Path.Combine(folderPath, file.FileName);
                 bool bad = true.GetRandom();
                 if (bad)
                     fileProvider.Setup(fp => fp.ReadAllBytes(fullPath)).Throws(new System.UnauthorizedAccessException());

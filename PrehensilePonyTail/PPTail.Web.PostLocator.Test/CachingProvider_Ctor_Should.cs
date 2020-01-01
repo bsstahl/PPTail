@@ -28,7 +28,7 @@ namespace PPTail.Web.PostLocator.Test
             container.RemoveDependency<IFile>();
             var serviceProvider = container.BuildServiceProvider();
 
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var target = new CachingProvider(serviceProvider);

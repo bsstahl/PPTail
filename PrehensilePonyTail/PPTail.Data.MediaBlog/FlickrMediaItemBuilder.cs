@@ -6,32 +6,32 @@ namespace PPTail.Data.MediaBlog
 {
     public class FlickrMediaItemBuilder
     {
-        private string _title = string.Empty;
-        private int _displayWidth = 0;
-        private int _displayHeight = 0;
+        private String _title = string.Empty;
+        private Int32 _displayWidth = 0;
+        private Int32 _displayHeight = 0;
         private DateTime _createDate = DateTime.MinValue;
 
-        private string _flickrListUrl = string.Empty;
-        private string _imageUrl = string.Empty;
+        private String _flickrListUrl = string.Empty;
+        private String _imageUrl = string.Empty;
 
         public FlickrMediaItem Build()
         {
             return new FlickrMediaItem(_title, _displayWidth, _displayHeight, _createDate, _flickrListUrl, _imageUrl);
         }
 
-        public FlickrMediaItemBuilder Title(string title)
+        public FlickrMediaItemBuilder Title(String title)
         {
             _title = title;
             return this;
         }
 
-        public FlickrMediaItemBuilder DisplayWidth(int displayWidth)
+        public FlickrMediaItemBuilder DisplayWidth(Int32 displayWidth)
         {
             _displayWidth = displayWidth;
             return this;
         }
 
-        public FlickrMediaItemBuilder DisplayHeight(int displayHeight)
+        public FlickrMediaItemBuilder DisplayHeight(Int32 displayHeight)
         {
             _displayHeight = displayHeight;
             return this;
@@ -43,13 +43,13 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public FlickrMediaItemBuilder FlickrListUrl(string flickrListUrl)
+        public FlickrMediaItemBuilder FlickrListUrl(String flickrListUrl)
         {
             _flickrListUrl = flickrListUrl;
             return this;
         }
 
-        public FlickrMediaItemBuilder ImageUrl(string imageUrl)
+        public FlickrMediaItemBuilder ImageUrl(String imageUrl)
         {
             _imageUrl = imageUrl;
             return this;

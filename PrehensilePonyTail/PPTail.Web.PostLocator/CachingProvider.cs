@@ -27,7 +27,7 @@ namespace PPTail.Web.PostLocator
         private void Load()
         {
             var env = _serviceProvider.GetService<IHostingEnvironment>();
-            string dataFilePath = $"{env.WebRootPath}\\app_data\\posts.xml";
+            String dataFilePath = $"{env.WebRootPath}\\app_data\\posts.xml";
 
             var file = _serviceProvider.GetService<IFile>();
             var postXml = file.ReadAllText(dataFilePath);
@@ -37,15 +37,15 @@ namespace PPTail.Web.PostLocator
             _posts = new Dictionary<Guid, string>();
             foreach (var postNode in postNodes)
             {
-                string idString = postNode.Attributes().Single(a => a.Name.LocalName == "id").Value;
-                string url = postNode.Attributes().Single(a => a.Name.LocalName == "url").Value;
+                String idString = postNode.Attributes().Single(a => a.Name.LocalName == "id").Value;
+                String url = postNode.Attributes().Single(a => a.Name.LocalName == "url").Value;
                 _posts.Add(Guid.Parse(idString), url);
             }
 
             _loaded = true;
         }
 
-        public string GetUrlByPostId(Guid id)
+        public String GetUrlByPostId(Guid id)
         {
             if (!_loaded)
                 Load();

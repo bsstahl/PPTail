@@ -15,13 +15,13 @@ namespace PPTail.Data.MediaBlog.Test
         readonly List<string> _postFiles = new List<string>();
         readonly List<SourceFile> _sourceFiles = new List<SourceFile>();
 
-        public Mock<IDirectory> Build(string rootPath)
+        public Mock<IDirectory> Build(String rootPath)
         {
             var directoryService = new Mock<IDirectory>();
 
             // The path to the post files should show
             // as Exists in the Directory service
-            string postPath = Path.Combine(rootPath, "posts");
+            String postPath = Path.Combine(rootPath, "posts");
             directoryService
                 .Setup(f => f.Exists(postPath))
                 .Returns(true)
@@ -61,7 +61,7 @@ namespace PPTail.Data.MediaBlog.Test
             return directoryService;
         }
 
-        public MockDirectoryServiceBuilder AddPostFile(string fileName)
+        public MockDirectoryServiceBuilder AddPostFile(String fileName)
         {
             _postFiles.Add(fileName);
             return this;

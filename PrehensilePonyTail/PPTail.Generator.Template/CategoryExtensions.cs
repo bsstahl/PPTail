@@ -9,7 +9,7 @@ namespace PPTail.Generator.Template
 {
     public static class CategoryExtensions
     {
-        internal static string CategoryLinkList(this IEnumerable<Category> categories, IServiceProvider serviceProvider, IEnumerable<Guid> selectedCategoryIds, ISettings settings, string pathToRoot, string cssClass)
+        internal static String CategoryLinkList(this IEnumerable<Category> categories, IServiceProvider serviceProvider, IEnumerable<Guid> selectedCategoryIds, ISettings settings, String pathToRoot, String cssClass)
         {
             var results = string.Empty;
             var selectedCategories = categories.Where(c => selectedCategoryIds.Contains(c.Id));

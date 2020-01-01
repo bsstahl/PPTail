@@ -18,9 +18,9 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void CallTheTemplateProcessorOncePerExecution()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -37,11 +37,11 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void ReturnTheOutputOfTheTemplateProcessor()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -60,9 +60,9 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void PassTheCorrectContactTemplateToTheTemplateProcessor()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -82,9 +82,9 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void PassTheCorrectSidebarContentToTheTemplateProcessor()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -101,9 +101,9 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void PassTheCorrectNavigationContentToTheTemplateProcessor()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -120,9 +120,9 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void PassTheCorrectPageNameToTheTemplateProcessor()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
@@ -132,7 +132,7 @@ namespace PPTail.Generator.Contact.Test
             var target = (null as IContactProvider).Create(container);
             var actual = target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot);
 
-            string expected = "Contact Me";
+            String expected = "Contact Me";
             templateProcessor
                 .Verify(t => t.ProcessNonContentItemTemplate(It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), expected, It.IsAny<string>()), Times.Once);
         }
@@ -140,9 +140,9 @@ namespace PPTail.Generator.Contact.Test
         [Fact]
         public void PassTheCorrectPathToRootToTheTemplateProcessor()
         {
-            string navigationContent = string.Empty.GetRandom();
-            string sidebarContent = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String navigationContent = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 

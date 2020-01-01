@@ -14,15 +14,15 @@ namespace PPTail.Data.FileSystem.Test
 {
     public class Repository_GetSiteSettings_Should
     {
-        const int _defaultPostsPerPage = 3;
-        const int _defaultPostsPerFeed = 5;
-        const string _dataFolder = "App_Data";
+        const Int32 _defaultPostsPerPage = 3;
+        const Int32 _defaultPostsPerFeed = 5;
+        const String _dataFolder = "App_Data";
 
         [Fact]
         public void ThrowSettingNotFoundExceptionIfSettingsCannotBeLoaded()
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            string xml = "<badXml></bad>";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String xml = "<badXml></bad>";
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
@@ -35,14 +35,14 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ThrowWithProperSettingNameIfSettingsCannotBeLoaded()
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            string xml = "<badXml></bad>";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String xml = "<badXml></bad>";
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml);
 
-            string expected = typeof(SiteSettings).Name;
+            String expected = typeof(SiteSettings).Name;
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             try
@@ -58,10 +58,10 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReadsTheProperFileFromTheFileSystem()
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            string expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "settings.xml");
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "settings.xml");
 
-            string xml = new SettingsFileBuilder().UseRandomValues().Build();
+            String xml = new SettingsFileBuilder().UseRandomValues().Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)))
@@ -76,8 +76,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueForTitle()
         {
-            string expected = string.Empty.GetRandom();
-            string xml = new SettingsFileBuilder().UseRandomValues()
+            String expected = string.Empty.GetRandom();
+            String xml = new SettingsFileBuilder().UseRandomValues()
                 .Title(expected).Build();
 
             var fileSystem = new Mock<IFile>();
@@ -109,7 +109,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ThrowWithTheProperSettingNameIfTitleIsNotSupplied()
         {
-            string rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
 
             var xml = new SettingsFileBuilder().UseRandomValues()
                 .RemoveTitle().Build();
@@ -119,7 +119,7 @@ namespace PPTail.Data.FileSystem.Test
                 .Returns(xml.ToString());
 
             SiteSettings actual;
-            string expected = nameof(actual.Title);
+            String expected = nameof(actual.Title);
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             try
             {
@@ -134,8 +134,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueForDescription()
         {
-            string expected = string.Empty.GetRandom();
-            string xml = new SettingsFileBuilder().UseRandomValues()
+            String expected = string.Empty.GetRandom();
+            String xml = new SettingsFileBuilder().UseRandomValues()
                 .Description(expected).Build();
 
             var fileSystem = new Mock<IFile>();
@@ -167,8 +167,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueForPostsPerPage()
         {
-            int expected = 25.GetRandom(5);
-            string xml = new SettingsFileBuilder().UseRandomValues()
+            Int32 expected = 25.GetRandom(5);
+            String xml = new SettingsFileBuilder().UseRandomValues()
                 .PostsPerPage(expected).Build();
 
             var fileSystem = new Mock<IFile>();
@@ -200,8 +200,8 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueForPostsPerFeed()
         {
-            int expected = 25.GetRandom(5);
-            string xml = new SettingsFileBuilder().UseRandomValues()
+            Int32 expected = 25.GetRandom(5);
+            String xml = new SettingsFileBuilder().UseRandomValues()
                 .PostsPerFeed(expected).Build();
 
             var fileSystem = new Mock<IFile>();
@@ -233,7 +233,7 @@ namespace PPTail.Data.FileSystem.Test
         [Fact]
         public void ReturnTheProperValueForTheme()
         {
-            string expected = string.Empty.GetRandom(25);
+            String expected = string.Empty.GetRandom(25);
             var xml = new SettingsFileBuilder().UseRandomValues()
                 .Theme(expected).Build();
 

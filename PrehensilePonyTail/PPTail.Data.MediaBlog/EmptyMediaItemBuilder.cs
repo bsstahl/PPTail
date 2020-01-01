@@ -6,9 +6,9 @@ namespace PPTail.Data.MediaBlog
 {
     public class EmptyMediaItemBuilder
     {
-        private string _title = string.Empty;
-        private int _displayWidth = 0;
-        private int _displayHeight = 0;
+        private String _title = string.Empty;
+        private Int32 _displayWidth = 0;
+        private Int32 _displayHeight = 0;
         private DateTime _createDate = DateTime.MinValue;
 
         public EmptyMediaItem Build()
@@ -16,19 +16,19 @@ namespace PPTail.Data.MediaBlog
             return new EmptyMediaItem(_title, _displayWidth, _displayHeight, _createDate);
         }
 
-        public EmptyMediaItemBuilder Title(string title)
+        public EmptyMediaItemBuilder Title(String title)
         {
             _title = title;
             return this;
         }
 
-        public EmptyMediaItemBuilder DisplayWidth(int displayWidth)
+        public EmptyMediaItemBuilder DisplayWidth(Int32 displayWidth)
         {
             _displayWidth = displayWidth;
             return this;
         }
 
-        public EmptyMediaItemBuilder DisplayHeight(int displayHeight)
+        public EmptyMediaItemBuilder DisplayHeight(Int32 displayHeight)
         {
             _displayHeight = displayHeight;
             return this;

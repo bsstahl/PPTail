@@ -18,13 +18,13 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SourceFileBuilder FileName(string fileName)
+        public new SourceFileBuilder FileName(String fileName)
         {
             base.FileName = fileName;
             return this;
         }
 
-        public new SourceFileBuilder RelativePath(string path)
+        public new SourceFileBuilder RelativePath(String path)
         {
             base.RelativePath = path;
             return this;

@@ -13,8 +13,8 @@ namespace PPTail.Generator.Redirect.Test
         [Fact]
         public void IncludeTheUrlInTheOutput()
         {
-            string url = string.Empty.GetRandom();
-            string redirectTemplate = "window.location.assign(\"{Url}\");";
+            String url = string.Empty.GetRandom();
+            String redirectTemplate = "window.location.assign(\"{Url}\");";
             var target = (null as IRedirectProvider).Create(redirectTemplate);
             var actual = target.GenerateRedirect(url);
             Assert.Contains(url, actual);
@@ -23,9 +23,9 @@ namespace PPTail.Generator.Redirect.Test
         [Fact]
         public void IncludeTheRawTemplateInTheOutput()
         {
-            string url = string.Empty.GetRandom();
-            string command = "window.location";
-            string redirectTemplate = "window.location.assign(\"{Url}\");";
+            String url = string.Empty.GetRandom();
+            String command = "window.location";
+            String redirectTemplate = "window.location.assign(\"{Url}\");";
             var target = (null as IRedirectProvider).Create(redirectTemplate);
             var actual = target.GenerateRedirect(url);
             Assert.Contains(command, actual);

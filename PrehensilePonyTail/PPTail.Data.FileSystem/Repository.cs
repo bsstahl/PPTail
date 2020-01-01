@@ -12,18 +12,18 @@ namespace PPTail.Data.FileSystem
 {
     public class Repository : Interfaces.IContentRepository
     {
-        const int _defaultPostsPerPage = 3;
-        const int _defaultPostsPerFeed = 5;
+        const Int32 _defaultPostsPerPage = 3;
+        const Int32 _defaultPostsPerFeed = 5;
 
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _connectionStringFilepathKey = "FilePath";
 
-        const string _widgetRelativePath = "datastore\\widgets";
-        const string _categoriesRelativePath = "categories.xml";
-        const string _settingsFilename = "settings.xml";
+        const String _widgetRelativePath = "datastore\\widgets";
+        const String _categoriesRelativePath = "categories.xml";
+        const String _settingsFilename = "settings.xml";
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly string _rootDataPath;
-        private readonly string _rootSitePath;
+        private readonly String _rootDataPath;
+        private readonly String _rootSitePath;
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -45,7 +45,7 @@ namespace PPTail.Data.FileSystem
             // several times but the settings will not change in the interim
 
             var fileSystem = _serviceProvider.GetService<IFile>();
-            string settingsPath = System.IO.Path.Combine(_rootDataPath, _settingsFilename);
+            String settingsPath = System.IO.Path.Combine(_rootDataPath, _settingsFilename);
             var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
             if (result == null)
                 throw new Exceptions.SettingNotFoundException(typeof(SiteSettings).Name);
@@ -68,7 +68,7 @@ namespace PPTail.Data.FileSystem
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootDataPath, "pages");
+            String pagePath = System.IO.Path.Combine(_rootDataPath, "pages");
             var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
@@ -85,7 +85,7 @@ namespace PPTail.Data.FileSystem
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            string pagePath = System.IO.Path.Combine(_rootDataPath, "posts");
+            String pagePath = System.IO.Path.Combine(_rootDataPath, "posts");
             var files = directory.EnumerateFiles(pagePath);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".xml")))
             {
@@ -101,8 +101,8 @@ namespace PPTail.Data.FileSystem
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Widget>();
-            string widgetPath = System.IO.Path.Combine(_rootDataPath, _widgetRelativePath);
-            string zoneFilePath = System.IO.Path.Combine(widgetPath, "be_WIDGET_ZONE.xml");
+            String widgetPath = System.IO.Path.Combine(_rootDataPath, _widgetRelativePath);
+            String zoneFilePath = System.IO.Path.Combine(widgetPath, "be_WIDGET_ZONE.xml");
 
             var zoneData = fileSystem.ReadAllText(zoneFilePath);
             var zones = XElement.Parse(zoneData);
@@ -121,9 +121,9 @@ namespace PPTail.Data.FileSystem
                     Dictionary = thisDictionary
                 };
 
-                string fileName = $"{thisWidget.Id.ToString()}.xml";
-                string filePath = System.IO.Path.Combine(widgetPath, fileName);
-                string widgetFile = string.Empty;
+                String fileName = $"{thisWidget.Id.ToString()}.xml";
+                String filePath = System.IO.Path.Combine(widgetPath, fileName);
+                String widgetFile = string.Empty;
                 if (fileSystem.Exists(filePath))
                     widgetFile = fileSystem.ReadAllText(filePath);
 
@@ -141,7 +141,7 @@ namespace PPTail.Data.FileSystem
             return results;
         }
 
-        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
@@ -177,7 +177,7 @@ namespace PPTail.Data.FileSystem
 
         public IEnumerable<Category> GetCategories()
         {
-            const string categoryNodeName = "category";
+            const String categoryNodeName = "category";
             var fileSystem = _serviceProvider.GetService<IFile>();
 
             var results = new List<Category>();

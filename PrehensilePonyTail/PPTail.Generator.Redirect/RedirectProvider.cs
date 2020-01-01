@@ -27,7 +27,7 @@ namespace PPTail.Generator.Redirect
             _templates.Validate(Enumerations.TemplateType.Redirect);
         }
 
-        public string GenerateRedirect(string redirectToUrl)
+        public String GenerateRedirect(String redirectToUrl)
         {
             var template = _templates.Find(Enumerations.TemplateType.Redirect);
             return template.Content.Replace("{Url}", redirectToUrl);

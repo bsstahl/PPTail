@@ -131,7 +131,7 @@ namespace PPTail.Web.PostLocator.Test
         [InlineData("8f4f1c21-d85d-4cb2-9454-56cb80aadaf7", "Posts\\AZGiveCamp-is-Breaking-the-Mold.html")]
         [InlineData("72788e69-f45b-4a22-a119-ff117f5c9bf3", "Posts\\A-Busy-October-and-November.html")]
         [InlineData("68269657-e0c9-430d-acd4-9b4cc211fcc7", "Posts\\Code-Coverage-Teaches-and-Protects.html")]
-        public void ReturnTheCorrectUrlBasedOnThePostId(string idString, string url)
+        public void ReturnTheCorrectUrlBasedOnThePostId(String idString, String url)
         {
             var id = Guid.Parse(idString);
             var container = (null as IServiceCollection).Create();

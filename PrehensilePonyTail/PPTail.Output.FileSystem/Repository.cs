@@ -11,7 +11,7 @@ namespace PPTail.Output.FileSystem
 {
     public class Repository : IOutputRepository
     {
-        const string _connectionStringFilepathKey = "FilePath";
+        const String _connectionStringFilepathKey = "FilePath";
 
         readonly IServiceProvider _serviceProvider;
         readonly IFile _file;
@@ -36,12 +36,12 @@ namespace PPTail.Output.FileSystem
 
         public void Save(IEnumerable<SiteFile> files)
         {
-            string outputPath = _settings.TargetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            String outputPath = _settings.TargetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
             foreach (var sitePage in files)
             {
-                string fullPath = System.IO.Path.Combine(outputPath, sitePage.RelativeFilePath);
-                string folderPath = System.IO.Path.GetDirectoryName(fullPath);
+                String fullPath = System.IO.Path.Combine(outputPath, sitePage.RelativeFilePath);
+                String folderPath = System.IO.Path.GetDirectoryName(fullPath);
 
                 if (!_directory.Exists(folderPath))
                     _directory.CreateDirectory(folderPath);

@@ -23,7 +23,7 @@ namespace PPTail.Data.MediaBlog.Test
             return builder;
         }
 
-        public static SourceFileBuilder UseRandomValues(this SourceFileBuilder builder, string relativePath)
+        public static SourceFileBuilder UseRandomValues(this SourceFileBuilder builder, String relativePath)
         {
             builder
                 .UseRandomFileName()

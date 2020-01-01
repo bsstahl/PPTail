@@ -12,13 +12,13 @@ namespace PPTail.Data.NativeJson
         public IEnumerable<Entities.Category> Categories { get; set; }
         public Entities.SiteSettings SiteSettings { get; set; }
 
-        internal void Save(string filePath)
+        internal void Save(String filePath)
         {
             var jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(this);
             System.IO.File.WriteAllText(filePath, jsonData);
         }
 
-        internal static Context Load(string filePath)
+        internal static Context Load(String filePath)
         {
             var jsonData = System.IO.File.ReadAllText(filePath);
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Context>(jsonData);

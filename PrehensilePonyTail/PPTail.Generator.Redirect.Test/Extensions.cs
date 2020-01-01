@@ -10,7 +10,7 @@ namespace PPTail.Generator.Redirect.Test
 {
     public static class Extensions
     {
-        public static IRedirectProvider Create(this IRedirectProvider ignore, string redirectTemplateText)
+        public static IRedirectProvider Create(this IRedirectProvider ignore, String redirectTemplateText)
         {
             var redirectTemplate = new Template()
             {

@@ -56,7 +56,7 @@ namespace PPTail.Generator.Contact.Test
             return ignore.Create("{NavigationMenu} {Sidebar} {Content}", string.Empty.GetRandom(), Enumerations.TemplateType.ContactPage);
         }
 
-        public static Template Create(this Template ignore, string content, string name, Enumerations.TemplateType templateType)
+        public static Template Create(this Template ignore, String content, String name, Enumerations.TemplateType templateType)
         {
             return new Template()
             {
@@ -77,7 +77,7 @@ namespace PPTail.Generator.Contact.Test
             return ignore.Create(string.Empty.GetRandom(), 10.GetRandom(3), string.Empty.GetRandom());
         }
 
-        public static SiteSettings Create(this SiteSettings ignore, string description, int postsPerPage, string title)
+        public static SiteSettings Create(this SiteSettings ignore, String description, Int32 postsPerPage, String title)
         {
             return new SiteSettings()
             {
@@ -92,7 +92,7 @@ namespace PPTail.Generator.Contact.Test
             return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html");
         }
 
-        public static ISettings Create(this ISettings ignore, string dateFormatSpecifier, string dateTimeFormatSpecifier, string itemSeparator, string outputFileExtension)
+        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension)
         {
             return new Settings()
             {

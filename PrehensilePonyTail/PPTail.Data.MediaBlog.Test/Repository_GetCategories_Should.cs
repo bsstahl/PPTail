@@ -17,7 +17,7 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnAllCategories()
         {
-            int categoryCount = 20.GetRandom(5);
+            Int32 categoryCount = 20.GetRandom(5);
 
             var settings = new SettingsBuilder()
                 .UseGenericValues()

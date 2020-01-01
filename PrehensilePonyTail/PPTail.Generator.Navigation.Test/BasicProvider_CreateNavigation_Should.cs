@@ -17,8 +17,8 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
             Assert.Contains("home", actual.ToLower());
@@ -31,8 +31,8 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
             Assert.Contains("archive", actual.ToLower());
@@ -45,8 +45,8 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create(4);
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
             foreach (var page in pages)
@@ -60,8 +60,8 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create(4);
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
             pages.GetRandom().IsPublished = false;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
@@ -76,8 +76,8 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create(5);
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             pages.GetRandom().ShowInList = false;
             var expected = pages.Count(p => p.ShowInList);
@@ -94,11 +94,11 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
-            string href = $"index.html";
+            String href = $"index.html";
             Assert.Contains(href, actual);
         }
 
@@ -109,11 +109,11 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
-            string href = $"archive.{outputFileExtension}\"";
+            String href = $"archive.{outputFileExtension}\"";
             Assert.Contains(href, actual);
         }
 
@@ -124,11 +124,11 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
-            string href = $"contact.{outputFileExtension}\"";
+            String href = $"contact.{outputFileExtension}\"";
             Assert.Contains(href, actual);
         }
 
@@ -139,11 +139,11 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
-            string href = $"syndication.xml";
+            String href = $"syndication.xml";
             Assert.Contains(href, actual);
         }
 
@@ -154,13 +154,13 @@ namespace PPTail.Generator.Navigation.Test
             var target = (null as BasicProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create(4);
-            string outputFileExtension = "html";
-            string pathToRoot = string.Empty;
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
 
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
             foreach (var page in pages)
             {
-                string href = $"{page.Slug}.html\"";
+                String href = $"{page.Slug}.html\"";
                 Assert.Contains(href, actual);
             }
         }

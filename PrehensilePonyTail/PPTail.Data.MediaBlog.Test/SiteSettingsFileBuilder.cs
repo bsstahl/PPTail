@@ -9,43 +9,43 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public class SiteSettingsFileBuilder : SiteSettings
     {
-        public string Build()
+        public String Build()
         {
             var settings = (this as SiteSettings);
             return JsonConvert.SerializeObject(settings);
         }
 
-        public new SiteSettingsFileBuilder Title(string title)
+        public new SiteSettingsFileBuilder Title(String title)
         {
             base.Title = title;
             return this;
         }
 
-        public new SiteSettingsFileBuilder Description(string description)
+        public new SiteSettingsFileBuilder Description(String description)
         {
             base.Description = description;
             return this;
         }
 
-        public new SiteSettingsFileBuilder PostsPerPage(int postsPerPage)
+        public new SiteSettingsFileBuilder PostsPerPage(Int32 postsPerPage)
         {
             base.PostsPerPage = postsPerPage;
             return this;
         }
 
-        public new SiteSettingsFileBuilder PostsPerFeed(int postsPerFeed)
+        public new SiteSettingsFileBuilder PostsPerFeed(Int32 postsPerFeed)
         {
             base.PostsPerFeed = postsPerFeed;
             return this;
         }
 
-        public new SiteSettingsFileBuilder Theme(string theme)
+        public new SiteSettingsFileBuilder Theme(String theme)
         {
             base.Theme = theme;
             return this;
         }
 
-        public new SiteSettingsFileBuilder Copyright(string copyright)
+        public new SiteSettingsFileBuilder Copyright(String copyright)
         {
             base.Copyright = copyright;
             return this;

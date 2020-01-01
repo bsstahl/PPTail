@@ -21,7 +21,9 @@ namespace PPTail.Generator.Search
         {
             _serviceProvider = serviceProvider;
             if (serviceProvider == null)
+            {
                 throw new ArgumentNullException("IServiceProvider");
+            }
 
             _serviceProvider.ValidateService<IContentRepository>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
@@ -36,7 +38,7 @@ namespace PPTail.Generator.Search
             _itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
         }
 
-        public string GenerateSearchResultsPage(string tag, IEnumerable<ContentItem> contentItems, string navigationContent, string sidebarContent, string pathToRoot)
+        public String GenerateSearchResultsPage(String tag, IEnumerable<ContentItem> contentItems, String navigationContent, String sidebarContent, String pathToRoot)
         {
             var categories = _serviceProvider.GetService<IEnumerable<Category>>();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
@@ -47,7 +49,7 @@ namespace PPTail.Generator.Search
             var siteSettings = contentRepo.GetSiteSettings();
 
             var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
-            Guid categoryId = (category == null) ? Guid.Empty : category.Id;
+            var categoryId = (category == null) ? Guid.Empty : category.Id;
             var posts = contentItems.Where(i => i.Tags.Contains(tag) || i.CategoryIds.Contains(categoryId));
             return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, settings.ItemSeparator, false, siteSettings.PostsPerPage);
         }

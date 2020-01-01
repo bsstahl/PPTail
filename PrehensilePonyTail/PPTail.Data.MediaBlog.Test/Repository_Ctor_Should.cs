@@ -50,7 +50,7 @@ namespace PPTail.Data.MediaBlog.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystem);
 
-            string expected = typeof(ISettings).Name;
+            String expected = typeof(ISettings).Name;
             try
             {
                 var target = new Repository(container.BuildServiceProvider());
@@ -80,7 +80,7 @@ namespace PPTail.Data.MediaBlog.Test
             var container = new ServiceCollection();
             container.AddSingleton<ISettings>(settings);
 
-            string expected = typeof(IFile).Name;
+            String expected = typeof(IFile).Name;
             try
             {
                 var target = new Repository(container.BuildServiceProvider());
@@ -118,7 +118,7 @@ namespace PPTail.Data.MediaBlog.Test
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directory);
 
-            string expected = nameof(settings.SourceConnection);
+            String expected = nameof(settings.SourceConnection);
             try
             {
                 var target = new Repository(container.BuildServiceProvider());

@@ -6,31 +6,31 @@ namespace PPTail.Data.MediaBlog
 {
     public class YouTubeMediaItemBuilder
     {
-        private string _title = string.Empty;
-        private int _displayWidth = 0;
-        private int _displayHeight = 0;
+        private String _title = string.Empty;
+        private Int32 _displayWidth = 0;
+        private Int32 _displayHeight = 0;
         private DateTime _createDate = DateTime.MinValue;
 
-        private string _videoUrl = string.Empty;
+        private String _videoUrl = string.Empty;
 
         public YouTubeMediaItem Build()
         {
             return new YouTubeMediaItem(_title, _displayWidth, _displayHeight, _createDate, _videoUrl);
         }
 
-        public YouTubeMediaItemBuilder Title(string title)
+        public YouTubeMediaItemBuilder Title(String title)
         {
             _title = title;
             return this;
         }
 
-        public YouTubeMediaItemBuilder DisplayWidth(int displayWidth)
+        public YouTubeMediaItemBuilder DisplayWidth(Int32 displayWidth)
         {
             _displayWidth = displayWidth;
             return this;
         }
 
-        public YouTubeMediaItemBuilder DisplayHeight(int displayHeight)
+        public YouTubeMediaItemBuilder DisplayHeight(Int32 displayHeight)
         {
             _displayHeight = displayHeight;
             return this;
@@ -42,7 +42,7 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public YouTubeMediaItemBuilder VideoUrl(string videoUrl)
+        public YouTubeMediaItemBuilder VideoUrl(String videoUrl)
         {
             _videoUrl = videoUrl;
             return this;

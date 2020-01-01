@@ -7,9 +7,9 @@ namespace PPTail.Exceptions
 {
     public class SettingNotFoundException:Exception
     {
-        public string SettingName { get; set; }
+        public String SettingName { get; set; }
 
-        public SettingNotFoundException(string settingName):base($"Required setting '{settingName}' was not provided.")
+        public SettingNotFoundException(String settingName):base($"Required setting '{settingName}' was not provided.")
         {
             this.SettingName = settingName;
         }

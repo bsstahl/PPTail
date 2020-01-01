@@ -8,6 +8,6 @@ namespace PPTail.Interfaces
 {
     public interface INavigationProvider
     {
-        string CreateNavigation(IEnumerable<ContentItem> pages, string homeUrl, string outputFileExtension);
+        String CreateNavigation(IEnumerable<ContentItem> pages, String homeUrl, String outputFileExtension);
     }
 }

@@ -22,7 +22,7 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void ReturnTheProperArgumentNameIfTheNextDelegateIsNotSupplied()
         {
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var serviceProvider = Mock.Of<IServiceProvider>();
@@ -33,7 +33,7 @@ namespace PPTail.Web.Permalinks.Test
                 actual = ex.ParamName;
             }
 
-            string expected = "next";
+            String expected = "next";
             Assert.Equal(expected, actual);
         }
 
@@ -47,7 +47,7 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void ReturnTheProperArgumentNameIfTheServiceProviderIsNotSupplied()
         {
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var nextDelegate = Mock.Of<RequestDelegate>();
@@ -58,7 +58,7 @@ namespace PPTail.Web.Permalinks.Test
                 actual = ex.ParamName;
             }
 
-            string expected = "serviceProvider";
+            String expected = "serviceProvider";
             Assert.Equal(expected, actual);
         }
 
@@ -73,7 +73,7 @@ namespace PPTail.Web.Permalinks.Test
         [Fact]
         public void ReturnTheProperArgumentNameIfThePostLocatorIsNotSupplied()
         {
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var nextDelegate = Mock.Of<RequestDelegate>();
@@ -85,7 +85,7 @@ namespace PPTail.Web.Permalinks.Test
                 actual = ex.InterfaceTypeName;
             }
 
-            string expected = "IPostLocator";
+            String expected = "IPostLocator";
             Assert.Equal(expected, actual);
         }
     }

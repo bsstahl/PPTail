@@ -32,7 +32,7 @@ namespace PPTail.Generator.HomePage
 
         }
 
-        public string GenerateHomepage(string sidebarContent, string navigationContent, IEnumerable<ContentItem> posts)
+        public String GenerateHomepage(String sidebarContent, String navigationContent, IEnumerable<ContentItem> posts)
         {
             var homepageTemplate = _templates.Find(Enumerations.TemplateType.HomePage);
             var itemTemplate = _templates.Find(Enumerations.TemplateType.Item);

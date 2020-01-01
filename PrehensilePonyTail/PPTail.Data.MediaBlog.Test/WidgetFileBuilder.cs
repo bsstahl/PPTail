@@ -20,9 +20,9 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        public WidgetFileBuilder AddTextBoxWidgets(int count)
+        public WidgetFileBuilder AddTextBoxWidgets(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddWidget(new WidgetZoneBuilder()
                     .UseRandom()
@@ -33,9 +33,9 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        public WidgetFileBuilder AddTagCloudWidgets(int count)
+        public WidgetFileBuilder AddTagCloudWidgets(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddWidget(new WidgetZoneBuilder()
                     .UseRandom()
@@ -46,9 +46,9 @@ namespace PPTail.Data.MediaBlog.Test
             return this;
         }
 
-        public WidgetFileBuilder AddTagListWidgets(int count)
+        public WidgetFileBuilder AddTagListWidgets(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddWidget(new WidgetZoneBuilder()
                     .UseRandom()
@@ -66,9 +66,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build());
         }
 
-        public WidgetFileBuilder AddRandomWidgets(int count)
+        public WidgetFileBuilder AddRandomWidgets(Int32 count)
         {
-            for (int i = 0; i < count; i++)
+            for (Int32 i = 0; i < count; i++)
             {
                 this.AddRandomWidget();
             }

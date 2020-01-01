@@ -36,12 +36,12 @@ namespace PPTail.Generator.Links.Test
         [Fact]
         public void ReturnTheProperDependencyNameIfTheSettingsAreNotProvided()
         {
-            string expected = "ISettings";
+            String expected = "ISettings";
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ISettings>();
 
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var target = (null as ILinkProvider).Create(container);

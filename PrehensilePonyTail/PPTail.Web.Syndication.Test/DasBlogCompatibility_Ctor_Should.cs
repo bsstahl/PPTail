@@ -19,7 +19,7 @@ namespace PPTail.Web.Syndication.Test
         [Fact]
         public void ReturnTheProperArgumentNameIfTheNextDelegateIsNotSupplied()
         {
-            string actual = string.Empty;
+            String actual = string.Empty;
             try
             {
                 var serviceProvider = Mock.Of<IServiceProvider>();
@@ -30,7 +30,7 @@ namespace PPTail.Web.Syndication.Test
                 actual = ex.ParamName;
             }
 
-            string expected = "next";
+            String expected = "next";
             Assert.Equal(expected, actual);
         }
 

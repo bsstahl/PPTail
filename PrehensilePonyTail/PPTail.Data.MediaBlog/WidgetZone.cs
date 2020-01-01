@@ -6,11 +6,11 @@ namespace PPTail.Data.MediaBlog
 {
     public class WidgetZone
     {
-        public string Id { get; set; }
-        public string Title { get; set; }
+        public String Id { get; set; }
+        public String Title { get; set; }
         public bool ShowTitle { get; set; }
-        public string WidgetType { get; set; }
-        public string Content { get; set; }
+        public String WidgetType { get; set; }
+        public String Content { get; set; }
         public bool Active { get; set; }
     }
 }

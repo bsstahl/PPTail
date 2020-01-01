@@ -18,7 +18,7 @@ namespace PPTail.Generator.Encoder.Test
         [InlineData("\"regular\" quotes", "&quot;regular&quot; quotes")]
         [InlineData("John Doe's possesive", "John Doe&apos;s possesive")]
         [InlineData("Ampersands & Stuff", "Ampersands &amp; Stuff")]
-        public void ProperlyEncodeTheData(string source, string expected)
+        public void ProperlyEncodeTheData(String source, String expected)
         {
             var container = (null as IServiceCollection).Create();
             var target = new ContentEncoder(container.BuildServiceProvider());

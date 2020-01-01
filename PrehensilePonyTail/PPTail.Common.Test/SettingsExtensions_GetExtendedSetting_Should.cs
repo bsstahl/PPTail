@@ -15,7 +15,7 @@ namespace PPTail.Common.Test
         [Fact]
         public void ReturnAnEmptyStringIfSettingsIsNull()
         {
-            string actual = (null as ISettings).GetExtendedSetting(string.Empty);
+            String actual = (null as ISettings).GetExtendedSetting(string.Empty);
             Assert.Equal(string.Empty, actual);
         }
 
@@ -23,7 +23,7 @@ namespace PPTail.Common.Test
         public void ReturnAnEmptyStringIfExtendedSettingsIsNull()
         {
             var settings = Mock.Of<ISettings>();
-            string actual = settings.GetExtendedSetting(string.Empty);
+            String actual = settings.GetExtendedSetting(string.Empty);
             Assert.Equal(string.Empty, actual);
         }
 

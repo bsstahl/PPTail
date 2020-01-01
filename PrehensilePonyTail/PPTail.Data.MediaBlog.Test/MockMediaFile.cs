@@ -7,16 +7,16 @@ namespace PPTail.Data.MediaBlog.Test
     internal class MockMediaFile
     {
         public Guid Id { get; set; }
-        public string Extension { get; set; } = "json";
-        public string FolderPath { get; set; }
-        public string Contents { get; set; }
+        public String Extension { get; set; } = "json";
+        public String FolderPath { get; set; }
+        public String Contents { get; set; }
 
-        public string GetFilename()
+        public String GetFilename()
         {
             return $"{this.Id.ToString()}.{this.Extension}";
         }
 
-        public string GetFullPath()
+        public String GetFullPath()
         {
             return System.IO.Path.Combine(this.FolderPath, this.GetFilename());
         }

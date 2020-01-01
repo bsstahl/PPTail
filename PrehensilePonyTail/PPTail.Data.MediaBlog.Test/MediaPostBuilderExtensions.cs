@@ -7,12 +7,12 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public static class MediaPostBuilderExtensions
     {
-        const int _maxTags = 30;
+        const Int32 _maxTags = 30;
 
         public static MediaPostBuilder UseRandomFlickrPost(this MediaPostBuilder builder)
         {
             var tags = new List<string>();
-            for (int i = 0; i < _maxTags.GetRandom(); i++)
+            for (Int32 i = 0; i < _maxTags.GetRandom(); i++)
             {
                 tags.Add(string.Empty.GetRandom());
             }
@@ -33,7 +33,7 @@ namespace PPTail.Data.MediaBlog.Test
         public static MediaPostBuilder UseRandomYouTubePost(this MediaPostBuilder builder)
         {
             var tags = new List<string>();
-            for (int i = 0; i < _maxTags.GetRandom(); i++)
+            for (Int32 i = 0; i < _maxTags.GetRandom(); i++)
             {
                 tags.Add(string.Empty.GetRandom());
             }
@@ -54,7 +54,7 @@ namespace PPTail.Data.MediaBlog.Test
         public static MediaPostBuilder UseRandomEmptyPost(this MediaPostBuilder builder)
         {
             var tags = new List<string>();
-            for (int i = 0; i < _maxTags.GetRandom(); i++)
+            for (Int32 i = 0; i < _maxTags.GetRandom(); i++)
             {
                 tags.Add(string.Empty.GetRandom());
             }

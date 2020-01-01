@@ -8,9 +8,9 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
-        public static string ReadAllTextFromFile(this string path)
+        public static String ReadAllTextFromFile(this String path)
         {
-            string result = string.Empty;
+            String result = string.Empty;
             if (System.IO.File.Exists(path))
                 result = System.IO.File.ReadAllText(path);
             return result;
@@ -21,7 +21,7 @@ namespace PPTail.Extensions
             var tagCounts = new List<Tuple<string, int>>();
             foreach (var tag in tags)
             {
-                int startingCount = 0;
+                Int32 startingCount = 0;
                 var tagCount = tagCounts.SingleOrDefault(t => t.Item1 == tag);
                 if (tagCount != default(Tuple<string, int>))
                 {
@@ -34,9 +34,9 @@ namespace PPTail.Extensions
         }
 
 
-        public static string GetConnectionStringValue(this string connectionString, string key)
+        public static String GetConnectionStringValue(this String connectionString, String key)
         {
-            string result = string.Empty;
+            String result = string.Empty;
 
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new SettingNotFoundException(key);
@@ -55,7 +55,7 @@ namespace PPTail.Extensions
             return result;
         }
 
-        public static string CreateSlug(this string title)
+        public static String CreateSlug(this String title)
         {
             return title.Trim()
                 .Replace(' ', '-')
@@ -65,15 +65,15 @@ namespace PPTail.Extensions
                 .RemoveConsecutiveDashes();
         }
 
-        public static string HTMLEncode(this string data)
+        public static String HTMLEncode(this String data)
         {
             return System.Net.WebUtility.HtmlEncode(data);
         }
 
-        public static string RemoveConsecutiveDashes(this string data)
+        public static String RemoveConsecutiveDashes(this String data)
         {
-            string original = string.Empty;
-            string current = data;
+            String original = string.Empty;
+            String current = data;
 
             do
             {

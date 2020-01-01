@@ -24,12 +24,12 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
-            int maxPostCount = 25.GetRandom(3);
+            Int32 maxPostCount = 25.GetRandom(3);
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ISettings>();
@@ -47,20 +47,20 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
-            int maxPostCount = 25.GetRandom(3);
+            Int32 maxPostCount = 25.GetRandom(3);
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ISettings>();
 
             var target = (null as ITemplateProcessor).Create(container);
 
-            string expected = typeof(ISettings).Name;
-            string actual = string.Empty;
+            String expected = typeof(ISettings).Name;
+            String actual = string.Empty;
             try
             {
                 target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
@@ -82,12 +82,12 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
-            int maxPostCount = 25.GetRandom(3);
+            Int32 maxPostCount = 25.GetRandom(3);
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ILinkProvider>();
@@ -105,20 +105,20 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
-            int maxPostCount = 25.GetRandom(3);
+            Int32 maxPostCount = 25.GetRandom(3);
 
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ILinkProvider>();
 
             var target = (null as ITemplateProcessor).Create(container);
 
-            string expected = typeof(ILinkProvider).Name;
-            string actual = string.Empty;
+            String expected = typeof(ILinkProvider).Name;
+            String actual = string.Empty;
             try
             {
                 target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
@@ -134,8 +134,8 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void UseTheProperItemSeparatorToDelimitTheItems()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = string.Empty.GetRandom();
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = string.Empty.GetRandom();
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
@@ -143,12 +143,12 @@ namespace PPTail.Generator.Template.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
-            int maxPostCount = posts.Count() + 10.GetRandom();
+            Int32 maxPostCount = posts.Count() + 10.GetRandom();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -171,8 +171,8 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void LimitTheNumberOfPostsUsedTotheValueOfMaxPostCount()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Content}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
@@ -180,14 +180,14 @@ namespace PPTail.Generator.Template.Test
             var posts = (null as IEnumerable<ContentItem>).Create(50.GetRandom(30));
             var publishedPosts = posts.Where(p => p.IsPublished);
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
 
             // maxPostCount will be less than the # of published posts
-            int maxPostCount = (publishedPosts.Count() - 5).GetRandom(5);
+            Int32 maxPostCount = (publishedPosts.Count() - 5).GetRandom(5);
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -204,8 +204,8 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void NotLimitTheNumberOfPostsUsedIfTheMaxPostCountIsZero()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Content}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
@@ -213,12 +213,12 @@ namespace PPTail.Generator.Template.Test
             var posts = (null as IEnumerable<ContentItem>).Create(50.GetRandom(30));
             var publishedPosts = posts.Where(p => p.IsPublished);
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -234,8 +234,8 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void NotPublishUnpublishedPosts()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Content}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
@@ -243,12 +243,12 @@ namespace PPTail.Generator.Template.Test
             var posts = (null as IEnumerable<ContentItem>).Create(50.GetRandom(30));
             var publishedPosts = posts.Where(p => p.IsPublished);
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true.GetRandom();
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -265,18 +265,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheTitlePlaceHolderWithTheTitleOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Title}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Title}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -293,18 +293,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheContentPlaceHolderWithTheContentOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Content}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -321,18 +321,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheAuthorPlaceHolderWithTheAuthorOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Author}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Author}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -349,18 +349,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheDescriptionPlaceHolderWithTheDescriptionOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Description}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Description}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -377,18 +377,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheByLinePlaceHolderWithTheByLineOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{ByLine}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{ByLine}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -405,18 +405,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceThePublicationDatePlaceHolderWithThePubDateOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{PublicationDate}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{PublicationDate}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -430,7 +430,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                string expected = post.PublicationDate.ToString(settings.DateFormatSpecifier);
+                String expected = post.PublicationDate.ToString(settings.DateFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -438,19 +438,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceThePublicationDateTimePlaceHolderWithThePubDateTimeOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{PublicationDateTime}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{PublicationDateTime}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -462,7 +462,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                string expected = post.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
+                String expected = post.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -470,19 +470,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheLastModificationDatePlaceHolderWithTheLastModDateOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{LastModificationDate}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{LastModificationDate}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -494,7 +494,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                string expected = post.LastModificationDate.ToString(settings.DateFormatSpecifier);
+                String expected = post.LastModificationDate.ToString(settings.DateFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -502,19 +502,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheLastModificationDateTimePlaceHolderWithTheLastModDateTimeOfEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{LastModificationDateTime}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{LastModificationDateTime}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
@@ -526,7 +526,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                string expected = post.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+                String expected = post.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -534,19 +534,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void CallTheLinkProviderWithTheCorrectDataToCalculateTheLinkForEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Link}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Link}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -567,19 +567,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheLinkPlaceHolderWithTheOutputOfTheLinkProvider()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Link}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Link}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -604,19 +604,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void CallTheLinkProviderWithTheCorrectDataToCalculateThePermalinkForEachPost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Permalink}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Permalink}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -637,8 +637,8 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceThePermalinkPlaceHolderWithThePermalinkText()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Permalink}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Permalink}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
@@ -649,12 +649,12 @@ namespace PPTail.Generator.Template.Test
                 posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var linkProvider = new Mock<ILinkProvider>();
             foreach (var post in publishedPosts)
@@ -679,19 +679,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceThePermalinkUrlPlaceHolderWithTheOutputOfTheLinkProvider()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{PermalinkUrl}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{PermalinkUrl}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -716,19 +716,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void CallTheContentEncoderOnceWithTheProperDataToGetTheFilenameForEachTagLink()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Tags}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Tags}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -760,19 +760,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void CallTheLinkProviderOnceWithTheProperDataToGetTheCorrectLinkToEachTagPage()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Tags}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Tags}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -803,19 +803,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReturnsTheOutputOfTheLinkProviderWithinEachTagPageLink()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Tags}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Tags}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -847,19 +847,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void CallTheContentEncoderOnceWithTheProperDataToGetTheFilenameForEachCategoryLink()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Categories}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Categories}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -899,19 +899,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void CallTheLinkProviderOnceWithTheProperDataToGetTheCorrectLinkToEachCategoryPage()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Categories}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Categories}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -929,7 +929,7 @@ namespace PPTail.Generator.Template.Test
             foreach (var post in publishedPosts)
                 foreach (var categoryId in post.CategoryIds)
                 {
-                    string categoryName = categoryId.GetCategoryName(categoryList);
+                    String categoryName = categoryId.GetCategoryName(categoryList);
                     contentEncoder.Setup(e => e.UrlEncode(categoryName)).Returns(encoderValueFunction);
                     linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", categoryName))
                         .Returns(linkValueFunction).Verifiable();
@@ -950,19 +950,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReturnsTheOutputOfTheLinkProviderWithinEachCategoryPageLink()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Categories}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Categories}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create();
             var publishedPosts = posts.Where(p => p.IsPublished);
@@ -979,7 +979,7 @@ namespace PPTail.Generator.Template.Test
             foreach (var post in publishedPosts)
                 foreach (var categoryId in post.CategoryIds)
                 {
-                    string name = categoryId.GetCategoryName(categoryList);
+                    String name = categoryId.GetCategoryName(categoryList);
                     contentEncoder.Setup(e => e.UrlEncode(name)).Returns(encoderValueFunction);
                     linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", name))
                         .Returns(post.Id.ToString());
@@ -1001,19 +1001,19 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void NotThrowAnExceptionIfNoCategoriesAreOnThePost()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Categories}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Categories}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
             var settings = (null as ISettings).Create();
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = false;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
@@ -1039,18 +1039,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void PassesTheContentToTheEncoderIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Content}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
@@ -1071,23 +1071,23 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheContentPlaceHolderWithTheEncoderOutputIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Content}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
             post.IsPublished = true;
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
             var encoder = new Mock<IContentEncoder>();
             encoder.Setup(e => e.XmlEncode(post.Content)).Returns(expected);
@@ -1105,18 +1105,18 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void PassesTheDescriptionToTheEncoderIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Description}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Description}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
@@ -1137,23 +1137,23 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void ReplaceTheDescriptionPlaceHolderWithTheEncoderOutputIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{Description}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Description}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
             post.IsPublished = true;
-            string expected = string.Empty.GetRandom();
+            String expected = string.Empty.GetRandom();
 
             var encoder = new Mock<IContentEncoder>();
             encoder.Setup(e => e.XmlEncode(post.Description)).Returns(expected);
@@ -1171,24 +1171,24 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void UsesTheXmlFormatForPubDateIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{PublicationDate}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{PublicationDate}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
             post.IsPublished = true;
 
-            string expected = post.PublicationDate.Date.ToString("o");
+            String expected = post.PublicationDate.Date.ToString("o");
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -1202,24 +1202,24 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void UsesTheXmlFormatForPubDateTimeIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{PublicationDateTime}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{PublicationDateTime}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
             post.IsPublished = true;
 
-            string expected = post.PublicationDate.ToString("o");
+            String expected = post.PublicationDate.ToString("o");
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -1233,24 +1233,24 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void UsesTheXmlFormatForLastModDateIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{LastModificationDate}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{LastModificationDate}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
             post.IsPublished = true;
 
-            string expected = post.LastModificationDate.Date.ToString("o");
+            String expected = post.LastModificationDate.Date.ToString("o");
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -1264,24 +1264,24 @@ namespace PPTail.Generator.Template.Test
         [Fact]
         public void UsesTheXmlFormatForLastModDateTimeIfEncodingIsSelected()
         {
-            string pageTemplateContent = "-----{Content}-----";
-            string itemTemplateContent = "*****{LastModificationDateTime}*****";
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{LastModificationDateTime}*****";
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
 
-            string sidebarContent = string.Empty.GetRandom();
-            string navContent = string.Empty.GetRandom();
-            string pageTitle = string.Empty.GetRandom();
-            string pathToRoot = string.Empty.GetRandom();
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
             bool xmlEncodeContent = true;
-            int maxPostCount = 0;
+            Int32 maxPostCount = 0;
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var post = posts.Single();
             post.IsPublished = true;
 
-            string expected = post.LastModificationDate.ToString("o");
+            String expected = post.LastModificationDate.ToString("o");
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);

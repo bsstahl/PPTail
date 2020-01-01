@@ -9,8 +9,8 @@ namespace PPTail.Web.Syndication
 {
     public class DasBlogCompatibility
     {
-        const string _dasBlogSyndicationFile = "syndication.axd";
-        const string _currentSyndicationFile = "syndication.xml";
+        const String _dasBlogSyndicationFile = "syndication.axd";
+        const String _currentSyndicationFile = "syndication.xml";
 
         RequestDelegate _next;
 
@@ -24,10 +24,10 @@ namespace PPTail.Web.Syndication
 
         public async Task Invoke(HttpContext context)
         {
-            string path = context.Request.Path.Value.ToLower();
+            String path = context.Request.Path.Value.ToLower();
             if (path.EndsWith(_dasBlogSyndicationFile))
             {
-                string newPath = path.Replace(_dasBlogSyndicationFile, _currentSyndicationFile);
+                String newPath = path.Replace(_dasBlogSyndicationFile, _currentSyndicationFile);
                 context.Response.Redirect(newPath, true);
             }
             else

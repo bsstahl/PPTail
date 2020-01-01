@@ -8,15 +8,15 @@ namespace PPTail.Entities
 {
     public class Settings : ISettings
     {
-        public string DateTimeFormatSpecifier { get; set; }
-        public string DateFormatSpecifier { get; set; }
-        public string ItemSeparator { get; set; }
+        public String DateTimeFormatSpecifier { get; set; }
+        public String DateFormatSpecifier { get; set; }
+        public String ItemSeparator { get; set; }
 
-        public string OutputFileExtension { get; set; }
+        public String OutputFileExtension { get; set; }
 
-        public string SourceConnection { get; set; }
-        public string TargetConnection { get; set; }
-        public string TemplateConnection { get; set; }
+        public String SourceConnection { get; set; }
+        public String TargetConnection { get; set; }
+        public String TemplateConnection { get; set; }
 
         public ExtendedSettingsCollection ExtendedSettings { get; private set; }
 

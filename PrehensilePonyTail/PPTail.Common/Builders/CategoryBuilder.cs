@@ -18,13 +18,13 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new CategoryBuilder Name(string name)
+        public new CategoryBuilder Name(String name)
         {
             base.Name = name;
             return this;
         }
 
-        public new CategoryBuilder Description(string description)
+        public new CategoryBuilder Description(String description)
         {
             base.Description = description;
             return this;

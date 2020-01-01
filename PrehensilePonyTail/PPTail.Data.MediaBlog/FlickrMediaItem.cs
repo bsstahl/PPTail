@@ -14,15 +14,15 @@ namespace PPTail.Data.MediaBlog
             this.ImageUrl = json["ImageUrl"].Value<string>();
         }
 
-        public FlickrMediaItem(string title, int displayWidth, int displayHeight, DateTime createDate, string flickrListUrl, string imageUrl)
+        public FlickrMediaItem(String title, Int32 displayWidth, Int32 displayHeight, DateTime createDate, String flickrListUrl, String imageUrl)
             :base(title, displayWidth, displayHeight, createDate)
         {
             this.FlickrListUrl = flickrListUrl;
             this.ImageUrl = imageUrl;
         }
 
-        public string FlickrListUrl { get; set; }
-        public string ImageUrl { get; set; }
+        public String FlickrListUrl { get; set; }
+        public String ImageUrl { get; set; }
 
         public override String CreateContent() => $"<a data-flickr-embed=\"true\" href=\"{this.FlickrListUrl}\" title=\"{this.Title}\"><img class=\"img-responsive\" src=\"{this.ImageUrl}\" alt=\"{this.Title}\"></a>";
 

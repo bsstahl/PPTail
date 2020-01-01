@@ -7,6 +7,6 @@ namespace PPTail.Interfaces
 {
     public interface ISyndicationProvider
     {
-        string GenerateFeed(IEnumerable<Entities.ContentItem> posts);
+        String GenerateFeed(IEnumerable<Entities.ContentItem> posts);
     }
 }

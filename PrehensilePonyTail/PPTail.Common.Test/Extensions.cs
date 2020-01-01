@@ -85,8 +85,8 @@ namespace PPTail.Common.Test
         public static IEnumerable<string> CreateTags(this IEnumerable<string> ignore)
         {
             var result = new List<string>();
-            int count = 10.GetRandom(1);
-            for (int i = 0; i < count; i++)
+            Int32 count = 10.GetRandom(1);
+            for (Int32 i = 0; i < count; i++)
                 result.Add(string.Empty.GetRandom());
             return result;
         }
@@ -95,8 +95,8 @@ namespace PPTail.Common.Test
         {
             var result = new List<Category>();
 
-            int count = 10.GetRandom(5);
-            for (int i = 0; i < count; i++)
+            Int32 count = 10.GetRandom(5);
+            for (Int32 i = 0; i < count; i++)
                 result.Add((null as Category).Create());
 
             return result;
@@ -105,12 +105,12 @@ namespace PPTail.Common.Test
         public static Category Create(this Category ignore)
         {
             Guid id = Guid.NewGuid();
-            string name = $"nameof_{id.ToString()}";
-            string description = $"descriptionof_{id.ToString()}";
+            String name = $"nameof_{id.ToString()}";
+            String description = $"descriptionof_{id.ToString()}";
             return ignore.Create(id, name, description);
         }
 
-        public static Category Create(this Category ignore, Guid id, string name, string description)
+        public static Category Create(this Category ignore, Guid id, String name, String description)
         {
             return new Category()
             {
@@ -134,13 +134,13 @@ namespace PPTail.Common.Test
             return container;
         }
 
-        public static string GetSourceConnection(this IContentRepository contentRepo)
+        public static String GetSourceConnection(this IContentRepository contentRepo)
         {
-            string filePath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            String filePath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
             return contentRepo.GetSourceConnection(filePath);
         }
 
-        public static string GetSourceConnection(this IContentRepository contentRepo, string filePath)
+        public static String GetSourceConnection(this IContentRepository contentRepo, String filePath)
         {
             return $"Provider={contentRepo.GetType().Name};FilePath={filePath}";
         }

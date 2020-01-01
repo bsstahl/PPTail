@@ -6,11 +6,11 @@ namespace PPTail.Data.PhotoBlog
 {
     internal class FlickrImage
     {
-        public string FlickrListUrl { get; set; }
-        public string Title { get; set; }
-        public string ImageUrl { get; set; }
-        public int ImageWidth { get; set; }
-        public int ImageHeight { get; set; }
+        public String FlickrListUrl { get; set; }
+        public String Title { get; set; }
+        public String ImageUrl { get; set; }
+        public Int32 ImageWidth { get; set; }
+        public Int32 ImageHeight { get; set; }
         public DateTime ImageTaken { get; set; }
     }
 

@@ -9,8 +9,8 @@ namespace PPTConvert
     {
         static void Main(string[] args)
         {
-            const string _connectionStringProviderKey = "Provider";
-            const string _connectionStringFilepathKey = "Filepath";
+            const String _connectionStringProviderKey = "Provider";
+            const String _connectionStringFilepathKey = "Filepath";
 
 
             (var argsAreValid, var argumentErrors) = args.ValidateArguments();
@@ -22,7 +22,7 @@ namespace PPTConvert
                 var container = new ServiceCollection();
 
                 // Add all possible source repositories to the container
-                string inputFilePath = sourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+                String inputFilePath = sourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
                 // TODO: Make FileSystem Repository work
                 // container.AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>();
@@ -30,15 +30,15 @@ namespace PPTConvert
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.WordpressFiles.Repository(inputFilePath));
 
                 // Add all possible target repositories to the container
-                string outputFilePath = targetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+                String outputFilePath = targetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
                 container.AddSingleton<IContentRepositoryWriter>(c => new PPTail.Data.NativeJson.RepositoryWriter(outputFilePath));
 
                 var serviceProvider = container.BuildServiceProvider();
 
-                string readRepoName = sourceConnection.GetConnectionStringValue(_connectionStringProviderKey);
+                String readRepoName = sourceConnection.GetConnectionStringValue(_connectionStringProviderKey);
                 var readRepo = serviceProvider.GetNamedService<IContentRepository>(readRepoName);
 
-                string writeRepoName = targetConnection.GetConnectionStringValue(_connectionStringProviderKey);
+                String writeRepoName = targetConnection.GetConnectionStringValue(_connectionStringProviderKey);
                 var writeRepo = serviceProvider.GetNamedService<IContentRepositoryWriter>(writeRepoName);
 
                 writeRepo.SaveAllPages(readRepo.GetAllPages());

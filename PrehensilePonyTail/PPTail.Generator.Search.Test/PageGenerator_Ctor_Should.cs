@@ -35,7 +35,7 @@ namespace PPTail.Generator.Search.Test
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<IContentRepository>();
 
-            string expected = typeof(IContentRepository).Name;
+            String expected = typeof(IContentRepository).Name;
             try
             {
                 var target = (null as ISearchProvider).Create(container);
@@ -60,7 +60,7 @@ namespace PPTail.Generator.Search.Test
             var container = (null as IServiceCollection).Create();
             container.RemoveDependency<ITemplateProcessor>();
 
-            string expected = typeof(ITemplateProcessor).Name;
+            String expected = typeof(ITemplateProcessor).Name;
             try
             {
                 var target = (null as ISearchProvider).Create(container);

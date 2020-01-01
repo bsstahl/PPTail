@@ -26,7 +26,7 @@ namespace PPTail.Web.Permalinks.Test
             return (null as IServiceCollection).Create().BuildServiceProvider();
         }
 
-        public static Mock<HttpContext> CreateMockContext(this HttpContext ignore, string path)
+        public static Mock<HttpContext> CreateMockContext(this HttpContext ignore, String path)
         {
             var query = (null as IQueryCollection).CreateMockQueryCollection();
             var request = (null as HttpRequest).CreateMockRequest(path, query.Object);
@@ -50,7 +50,7 @@ namespace PPTail.Web.Permalinks.Test
             return new Mock<IQueryCollection>();
         }
 
-        public static Mock<HttpRequest> CreateMockRequest(this HttpRequest ignore, string path, IQueryCollection queryCollection)
+        public static Mock<HttpRequest> CreateMockRequest(this HttpRequest ignore, String path, IQueryCollection queryCollection)
         {
             var request = new Mock<HttpRequest>();
             request.SetupAllProperties();
@@ -65,7 +65,7 @@ namespace PPTail.Web.Permalinks.Test
             return response.SetupAllProperties();
         }
 
-        public static void AddQueryParameter(this Mock<IQueryCollection> queryValueCollection, string key, string value)
+        public static void AddQueryParameter(this Mock<IQueryCollection> queryValueCollection, String key, String value)
         {
             var values = new StringValues(value);
             var pair = new KeyValuePair<string, StringValues>(key, values);
