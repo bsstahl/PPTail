@@ -7,13 +7,15 @@ namespace PPTail
 {
     public class ExtendedSettingsCollection : List<Tuple<String, String>>
     {
-        public Tuple<string, string> Set(String name, String value)
+        public Tuple<String, String> Set(String name, String value)
         {
-            Tuple<string, string> item = this.SingleOrDefault(t => t.Item1 == name);
+            var item = this.SingleOrDefault(t => t.Item1 == name);
             if (item != null)
-                this.Remove(item);
+            {
+                _ = this.Remove(item);
+            }
 
-            item = new Tuple<string, string>(name, value);
+            item = new Tuple<String, String>(name, value);
             this.Add(item);
 
             return item;
@@ -21,13 +23,10 @@ namespace PPTail
 
         public String Get(String name)
         {
-            var setting = this.SingleOrDefault(s => s.Item1.ToLowerInvariant() == name.ToLowerInvariant());
-            return (setting != null) ? setting.Item2 : string.Empty;
+            var setting = this.SingleOrDefault(s => s.Item1.ToUpperInvariant() == name.ToUpperInvariant());
+            return (setting != null) ? setting.Item2 : String.Empty;
         }
 
-        public bool HasSetting(String name)
-        {
-            return this.Any(s => s.Item1.ToLowerInvariant() == name.ToLowerInvariant());
-        }
+        public Boolean HasSetting(String name) => this.Any(s => s.Item1.ToUpperInvariant() == name.ToUpperInvariant());
     }
 }

@@ -23,7 +23,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            var siteSettings = (null as SiteSettings).Create();
+            // var siteSettings = (null as SiteSettings).Create();
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
@@ -46,12 +46,12 @@ namespace PPTail.Generator.T4Html.Test
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
             var contentEncoder = new Mock<IContentEncoder>();
-            Func<string, string> valueFunction = p => p;
-            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+            Func<String, String> valueFunction = p => p;
+            _ = contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
 
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
-            container.ReplaceDependency<ISettings>(settings);
-            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
+            _ = container.ReplaceDependency<IEnumerable<Template>>(templates);
+            _ = container.ReplaceDependency<ISettings>(settings);
+            _ = container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
             var pages = new List<ContentItem>();
@@ -201,7 +201,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            var siteSettings = (null as SiteSettings).Create();
+            // var siteSettings = (null as SiteSettings).Create();
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
@@ -223,7 +223,7 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            var siteSettings = (null as SiteSettings).Create();
+            // var siteSettings = (null as SiteSettings).Create();
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 

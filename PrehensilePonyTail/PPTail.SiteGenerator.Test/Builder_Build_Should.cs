@@ -479,8 +479,10 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = new Settings();
-            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
+            var settings = new Settings
+            {
+                SourceConnection = contentRepo.Object.GetSourceConnection()
+            };
             String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
@@ -513,8 +515,10 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = new Settings();
-            settings.SourceConnection = contentRepo.Object.GetSourceConnection();
+            var settings = new Settings
+            {
+                SourceConnection = contentRepo.Object.GetSourceConnection()
+            };
             String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
             container.ReplaceDependency<ISettings>(settings);
@@ -551,8 +555,10 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            var settings = new Settings();
-            settings.SourceConnection = container.BuildServiceProvider().GetService<IContentRepository>().GetSourceConnection();
+            var settings = new Settings
+            {
+                SourceConnection = container.BuildServiceProvider().GetService<IContentRepository>().GetSourceConnection()
+            };
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, string.Empty);
             container.ReplaceDependency<ISettings>(settings);
 
@@ -567,8 +573,10 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            var settings = new Settings();
-            settings.SourceConnection = container.BuildServiceProvider().GetService<IContentRepository>().GetSourceConnection();
+            var settings = new Settings
+            {
+                SourceConnection = container.BuildServiceProvider().GetService<IContentRepository>().GetSourceConnection()
+            };
             settings.ExtendedSettings.Set(_additionalFilePathsSettingName, null);
             container.ReplaceDependency<ISettings>(settings);
 

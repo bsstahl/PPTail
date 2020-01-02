@@ -12,6 +12,11 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\PPTail.Generator.T4Html\PPTail.Generator.T4Html.csproj" />
     <ProjectReference Include="..\PPTail.Generator.TagCloudStyler\PPTail.Generator.TagCloudStyler.csproj" />

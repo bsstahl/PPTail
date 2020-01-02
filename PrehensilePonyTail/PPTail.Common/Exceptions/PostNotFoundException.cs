@@ -10,9 +10,6 @@ namespace PPTail.Exceptions
         public Guid PostId { get; set; }
 
         public PostNotFoundException(Guid postId)
-            : base($"Unable to locate post with Id={postId.ToString()}")
-        {
-            this.PostId = postId;
-        }
+            : base($"Unable to locate post with Id={postId.ToString()}") => this.PostId = postId;
     }
 }

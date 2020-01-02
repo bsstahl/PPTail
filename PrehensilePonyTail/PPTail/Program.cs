@@ -8,9 +8,10 @@ using PPTail.Extensions;
 
 namespace PPTail
 {
-    public class Program
+    public static class Program
     {
         const String _connectionStringProviderKey = "Provider";
+        private const String _invalidArgumentsText = "Invalid Arguments:";
 
         public static void Main(String[] args)
         {
@@ -37,7 +38,7 @@ namespace PPTail
             }
             else
             {
-                Console.WriteLine("Invalid Arguments:");
+                Console.WriteLine(_invalidArgumentsText);
                 foreach (var argumentError in argumentErrors)
                 {
                     Console.WriteLine($"\t{argumentError}");

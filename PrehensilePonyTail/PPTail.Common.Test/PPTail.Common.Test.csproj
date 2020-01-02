@@ -12,6 +12,11 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
   </ItemGroup>

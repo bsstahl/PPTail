@@ -16,7 +16,7 @@ namespace PPTail.Extensions
 
         public static void Validate(this ISettings settings, Func<ISettings, string> setting, String settingName)
         {
-            if (settings == null || string.IsNullOrWhiteSpace(setting.Invoke(settings)))
+            if (settings == null || string.IsNullOrWhiteSpace(setting?.Invoke(settings)))
                 throw new Exceptions.SettingNotFoundException(settingName);
         }
 

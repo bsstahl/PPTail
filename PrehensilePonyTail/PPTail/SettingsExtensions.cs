@@ -19,19 +19,19 @@ namespace PPTail
 
         public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String templateConnection)
         {
-            String outputFileExtension = "html";
-            String dateFormatSpecifier = "yyyy-MM-dd";
-            String dateTimeFormatSpecifier = "yyyy-MM-dd H:mm UTC";
-            String itemSeparator = "<hr/>";
-            String additionalFilePaths = "images,pics";
+            var outputFileExtension = "html";
+            var dateFormatSpecifier = "yyyy-MM-dd";
+            var dateTimeFormatSpecifier = "yyyy-MM-dd H:mm UTC";
+            var itemSeparator = "<hr/>";
+            var additionalFilePaths = "images,pics";
 
-            bool createDasBlogSyndicationCompatibilityFile = true;
-            bool createDasBlogPostsCompatibilityFile = true;
+            var createDasBlogSyndicationCompatibilityFile = true;
+            var createDasBlogPostsCompatibilityFile = true;
 
             return (null as ISettings).Create(sourceConnection, targetConnection, templateConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
         }
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String templateConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, bool createDasBlogSyndicationCompatibilityFile, bool createDasBlogPostsCompatibilityFile)
+        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String templateConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
         {
             var settings = new Settings()
             {
@@ -44,9 +44,9 @@ namespace PPTail
                 TemplateConnection = templateConnection
             };
 
-            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
-            settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString());
-            settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, createDasBlogPostsCompatibilityFile.ToString());
+            _ = settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
+            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString());
+            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, createDasBlogPostsCompatibilityFile.ToString());
 
             return settings;
         }

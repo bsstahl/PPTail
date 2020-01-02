@@ -7,7 +7,7 @@ namespace PPTail.Entities
 {
     public class SourceFile
     {
-        public byte[] Contents { get; set; }
+        public Byte[] Contents { get; set; }
         public String FileName { get; set; }
         public String RelativePath { get; set; }
     }
