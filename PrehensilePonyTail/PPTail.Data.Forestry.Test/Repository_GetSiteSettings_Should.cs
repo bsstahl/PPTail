@@ -10,23 +10,23 @@ using PPTail.Interfaces;
 using System.Xml.Linq;
 using PPTail.Exceptions;
 
-namespace PPTail.Data.FileSystem.Test
+namespace PPTail.Data.Forestry.Test
 {
     public class Repository_GetSiteSettings_Should
     {
         const Int32 _defaultPostsPerPage = 3;
         const Int32 _defaultPostsPerFeed = 5;
-        const String _dataFolder = "App_Data";
+        const String _dataFolder = "Data";
 
         [Fact]
         public void ThrowSettingNotFoundExceptionIfSettingsCannotBeLoaded()
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            String xml = "<badXml></bad>";
+            String fileContents = "Bogus SiteSettings file";
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(xml);
+                .Returns(fileContents);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             Assert.Throws<SettingNotFoundException>(() => target.GetSiteSettings());
@@ -36,11 +36,11 @@ namespace PPTail.Data.FileSystem.Test
         public void ThrowWithProperSettingNameIfSettingsCannotBeLoaded()
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            String xml = "<badXml></bad>";
+            String fileContents = "Bogus SiteSettings file";
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(xml);
+                .Returns(fileContents);
 
             String expected = typeof(SiteSettings).Name;
 
@@ -60,13 +60,13 @@ namespace PPTail.Data.FileSystem.Test
         public void ReadsTheProperFileFromTheFileSystem()
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "settings.xml");
+            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
 
-            String xml = new SettingsFileBuilder().UseRandomValues().Build();
+            String fileContents = new SettingsFileBuilder().UseRandomValues().Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.Setup(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)))
-                .Returns(xml).Verifiable();
+                .Returns(fileContents).Verifiable();
 
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             var actual = target.GetSiteSettings();
@@ -280,6 +280,30 @@ namespace PPTail.Data.FileSystem.Test
 
             Assert.Equal(string.Empty, actual.Theme);
         }
+
+        [Fact]
+        public void ReadTheSettingsFileOnceEvenIfCalledMultipleTimes()
+        {
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
+
+            String fileContents = new SettingsFileBuilder().UseRandomValues().Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem
+                .Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(fileContents);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+
+            target.GetSiteSettings();
+            target.GetSiteSettings();
+            var actual = target.GetSiteSettings();
+
+            fileSystem
+                .Verify(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)), Times.Once);
+        }
+
 
     }
 }
