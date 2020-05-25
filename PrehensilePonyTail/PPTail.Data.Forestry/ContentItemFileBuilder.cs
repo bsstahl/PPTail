@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TestHelperExtensions;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.Forestry
 {
-    internal class ContentItemFileBuilder
+    public class ContentItemFileBuilder
     {
         private readonly ContentItem _item = new ContentItem();
 
@@ -45,23 +44,6 @@ namespace PPTail.Data.Forestry.Test
                 .AppendLine("---")
                 .ConditionalAppendLine(!_removeContent, string.Empty, _item.Content)
                 .ToString();
-        }
-
-        public ContentItemFileBuilder UseRandomValues()
-        {
-            return this
-                .Tags(new[] { string.Empty.GetRandom() })
-                .Id(Guid.NewGuid())
-                .Author(string.Empty.GetRandom(10))
-                .Title(string.Empty.GetRandom(15))
-                .Description(string.Empty.GetRandom(25))
-                .IsPublished(true)
-                .ShowInList(true)
-                .PublicationDate(DateTime.Parse("1/1/2000").AddSeconds(Int32.MaxValue))
-                .LastModificationDate(DateTime.Parse("1/1/2000").AddSeconds(Int32.MaxValue))
-                .Slug(string.Empty.GetRandom(20))
-                .CategoryIds(new[] { Guid.NewGuid() })
-                .Content(string.Empty.GetRandom(200));
         }
 
         public ContentItemFileBuilder Tags(IEnumerable<String> value)
@@ -218,6 +200,19 @@ namespace PPTail.Data.Forestry.Test
         public ContentItemFileBuilder RemoveCategoryIds()
         {
             _removeCategoryIds = true;
+            return this;
+        }
+
+        public ContentItemFileBuilder MenuOrder(int value)
+        {
+            _item.MenuOrder = value;
+            _removeMenuOrder = false;
+            return this;
+        }
+
+        public ContentItemFileBuilder RemoveMenuOrder()
+        {
+            _removeMenuOrder = true;
             return this;
         }
 

@@ -56,30 +56,6 @@ namespace PPTail.Data.Forestry.Test
             return new Repository(serviceProvider);
         }
 
-        public static StringBuilder ConditionalAppendLine(this StringBuilder builder, bool addLine, String name, String value)
-        {
-            if (addLine)
-                _ = string.IsNullOrEmpty(name)
-                    ? builder.AppendLine(value)
-                    : builder.AppendLine($"{name}: {value}");
-
-            return builder;
-        }
-
-        public static StringBuilder ConditionalAppendList(this StringBuilder builder, bool addList, String name, IEnumerable<String> values)
-        {
-            if (addList)
-            {
-                builder.AppendLine($"{name}:");
-                if (!(values is null))
-                    foreach (var value in values)
-                    {
-                        builder.AppendLine($"- {value}");
-                    }
-            }
-            return builder;
-        }
-
         public static IEnumerable<Widget> Create(this IEnumerable<Widget> ignore)
         {
             return ignore.Create(25.GetRandom(10));
@@ -390,6 +366,25 @@ namespace PPTail.Data.Forestry.Test
 
             Assert.Equal(expected, fieldValueDelegate(actual));
         }
+
+        public static ContentItemFileBuilder UseRandomValues(this ContentItemFileBuilder builder)
+        {
+            return builder
+                .Tags(new[] { string.Empty.GetRandom() })
+                .Id(Guid.NewGuid())
+                .Author(string.Empty.GetRandom(10))
+                .Title(string.Empty.GetRandom(15))
+                .Description(string.Empty.GetRandom(25))
+                .IsPublished(true)
+                .ShowInList(true)
+                .PublicationDate(DateTime.Parse("1/1/2000").AddSeconds(Int32.MaxValue))
+                .LastModificationDate(DateTime.Parse("1/1/2000").AddSeconds(Int32.MaxValue))
+                .Slug(string.Empty.GetRandom(20))
+                .CategoryIds(new[] { Guid.NewGuid() })
+                .MenuOrder(10.GetRandom())
+                .Content(string.Empty.GetRandom(200));
+        }
+
 
     }
 }

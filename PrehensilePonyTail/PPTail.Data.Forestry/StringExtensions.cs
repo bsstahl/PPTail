@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace PPTail.Data.Forestry
 {
@@ -398,6 +399,31 @@ namespace PPTail.Data.Forestry
 
             return (key, value);
         }
+
+        public static StringBuilder ConditionalAppendLine(this StringBuilder builder, bool addLine, String name, String value)
+        {
+            if (addLine)
+                _ = string.IsNullOrEmpty(name)
+                    ? builder.AppendLine(value)
+                    : builder.AppendLine($"{name}: {value}");
+
+            return builder;
+        }
+
+        public static StringBuilder ConditionalAppendList(this StringBuilder builder, bool addList, String name, IEnumerable<String> values)
+        {
+            if (addList)
+            {
+                builder.AppendLine($"{name}:");
+                if (!(values is null))
+                    foreach (var value in values)
+                    {
+                        builder.AppendLine($"- {value}");
+                    }
+            }
+            return builder;
+        }
+
 
     }
 }
