@@ -340,13 +340,16 @@ namespace PPTail.Data.Forestry.Test
         public void ReturnTheCategoryFromASingleCategoryPost()
         {
             String fieldValueDelegate(ContentItem c) => c.CategoryIds.AsHash();
-            List<Guid> categories = new List<Guid>() { Guid.NewGuid() };
+            List<String> categories = new List<String>() { String.Empty.GetRandom() };
 
             var fileContent = new ContentItemFileBuilder()
                 .UseRandomValues()
-                .CategoryIds(categories)
+                .Categories(categories)
                 .Build();
-            fileContent.ExecutePostPropertyTest(categories.AsHash(), fieldValueDelegate);
+
+            var sourceCategories = categories.AsCategoryEntities().ToArray();
+            string expected = sourceCategories.Select(c => c.Id).AsHash();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate, sourceCategories);
         }
 
         [Fact]
@@ -354,31 +357,36 @@ namespace PPTail.Data.Forestry.Test
         {
             String fieldValueDelegate(ContentItem c) => c.CategoryIds.AsHash();
             Int32 expectedCount = 10.GetRandom(3);
-            List<Guid> categories = new List<Guid>();
+            var categories = new List<String>();
             for (Int32 i = 0; i < expectedCount; i++)
-                categories.Add(Guid.NewGuid());
+                categories.Add(String.Empty.GetRandom());
 
             var fileContent = new ContentItemFileBuilder()
                 .UseRandomValues()
-                .CategoryIds(categories)
+                .Categories(categories)
                 .Build();
-            fileContent.ExecutePostPropertyTest(categories.AsHash(), fieldValueDelegate);
+
+            var sourceCategories = categories.AsCategoryEntities().ToArray();
+            string expected = sourceCategories.Select(c => c.Id).AsHash();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate, sourceCategories);
         }
 
         [Fact]
-        public void ReturnTheCorrectNumberOfCategoryIds()
+        public void ReturnTheCorrectNumberOfCategories()
         {
             Int32 fieldValueDelegate(ContentItem c) => c.CategoryIds?.Count() ?? 0;
             Int32 expectedCount = 10.GetRandom(3);
-            List<Guid> categories = new List<Guid>();
+            var categories = new List<String>();
             for (Int32 i = 0; i < expectedCount; i++)
-                categories.Add(Guid.NewGuid());
+                categories.Add(String.Empty.GetRandom());
 
             var fileContent = new ContentItemFileBuilder()
                 .UseRandomValues()
-                .CategoryIds(categories)
+                .Categories(categories)
                 .Build();
-            fileContent.ExecutePostPropertyTest(expectedCount, fieldValueDelegate);
+
+            var sourceCategories = categories.AsCategoryEntities();
+            fileContent.ExecutePostPropertyTest(expectedCount, fieldValueDelegate, sourceCategories);
         }
     }
 }

@@ -39,40 +39,44 @@ namespace PPTail.Data.Forestry
             const string DESCRIPTION_KEY = "description";
 
             var result = new List<Category>();
-            var lines = fileContents.Split('\n');
 
-            Category currentCategory = null;
-            foreach (var line in lines)
+            if (!String.IsNullOrEmpty(fileContents))
             {
-                string field = string.Empty;
-                if (line.StartsWith("- "))
-                {
-                    currentCategory = new Category();
-                    result.Add(currentCategory);
-                    field = line.Substring(2);
-                }
-                else if (!String.IsNullOrWhiteSpace(line))
-                    field = line.Trim();
+                var lines = fileContents.Split('\n');
 
-                if (field.IsValidRecord())
+                Category currentCategory = null;
+                foreach (var line in lines)
                 {
-                    var (key, value) = field.ParseRecord();
-                    switch (key)
+                    string field = string.Empty;
+                    if (line.StartsWith("- "))
                     {
-                        case ID_KEY:
-                            currentCategory.Id = Guid.Parse(value);
-                            break;
+                        currentCategory = new Category();
+                        result.Add(currentCategory);
+                        field = line.Substring(2);
+                    }
+                    else if (!String.IsNullOrWhiteSpace(line))
+                        field = line.Trim();
 
-                        case NAME_KEY:
-                            currentCategory.Name = value;
-                            break;
+                    if (field.IsValidRecord())
+                    {
+                        var (key, value) = field.ParseRecord();
+                        switch (key)
+                        {
+                            case ID_KEY:
+                                currentCategory.Id = Guid.Parse(value);
+                                break;
 
-                        case DESCRIPTION_KEY:
-                            currentCategory.Description = value;
-                            break;
+                            case NAME_KEY:
+                                currentCategory.Name = value;
+                                break;
 
-                        default:
-                            break;
+                            case DESCRIPTION_KEY:
+                                currentCategory.Description = value;
+                                break;
+
+                            default:
+                                break;
+                        }
                     }
                 }
             }
@@ -156,7 +160,7 @@ namespace PPTail.Data.Forestry
                                 currentDictionaryItem = new Tuple<string, string>(currentDictionaryItem.Item1, value);
                                 currentDictionary.Add(currentDictionaryItem);
                                 currentDictionaryItem = null;
-                            }  
+                            }
                             break;
 
                         default:
@@ -240,7 +244,7 @@ namespace PPTail.Data.Forestry
             return result;
         }
 
-        public static ContentItem ParseContentItem(this String fileContents)
+        public static ContentItem ParseContentItem(this String fileContents, IEnumerable<Category> categories)
         {
             const string TAGS_KEY = "tags";
             const string ID_KEY = "id";
@@ -252,7 +256,7 @@ namespace PPTail.Data.Forestry
             const string PUBLICATIONDATE_KEY = "publicationdate";
             const string LASTMODIFICATIONDATE_KEY = "lastmodificationdate";
             const string SLUG_KEY = "slug";
-            const string CATEGORYIDS_KEY = "categoryids";
+            const string CATEGORIES_KEY = "categories";
 
             ContentItem result = new ContentItem();
             int fieldCount = 0;
@@ -266,7 +270,7 @@ namespace PPTail.Data.Forestry
                 result.Content = fileSections[1].Trim();
                 fieldCount++;
             }
-            
+
             if (fileSections.Length > 0)
             {
                 var frontMatter = fileSections[0].Trim().Split('\n');
@@ -303,9 +307,11 @@ namespace PPTail.Data.Forestry
                                 result.Tags = value;
                                 break;
 
-                            case CATEGORYIDS_KEY:
+                            case CATEGORIES_KEY:
                                 fieldCount++;
-                                result.CategoryIds = value.Select(v => Guid.Parse(v));
+                                result.CategoryIds = categories
+                                    .Where(c => value.Any(v => v == c.Name))
+                                    .Select(c => c.Id);
                                 break;
 
                             default:
@@ -389,7 +395,7 @@ namespace PPTail.Data.Forestry
         public static (string Key, IEnumerable<String> value) ParseFrontMatterCollection(this String[] frontMatter)
         {
             string key = frontMatter[0].Split(':')[0];
-            
+
             var value = new List<String>();
             for (int i = 1; i < frontMatter.Length; i++)
             {
@@ -414,16 +420,49 @@ namespace PPTail.Data.Forestry
         {
             if (addList)
             {
-                builder.AppendLine($"{name}:");
-                if (!(values is null))
+                if (values.IsNotNull() && values.Any())
+                {
+                    builder.AppendLine($"{name}:");
                     foreach (var value in values)
-                    {
                         builder.AppendLine($"- {value}");
-                    }
+                }
+                else
+                    builder.AppendLine($"{name}: []");
             }
             return builder;
         }
 
+        public static StringBuilder ConditionalAppendRepeatedField(this StringBuilder builder, bool addList, String collectionName, String fieldName, IEnumerable<String> values)
+        {
+            if (addList)
+            {
+                if (values.IsNotNull() && values.Any())
+                {
+                    builder.AppendLine($"{collectionName}:");
+                    foreach (var value in values)
+                        builder.AppendLine($"- {fieldName}: {value}");
+                }
+                else
+                    builder.AppendLine($"{collectionName}: []");
+            }
+            return builder;
+        }
+
+        public static String ToMarkdown(this string html)
+        {
+            var config = new ReverseMarkdown.Config() { UnknownTags = ReverseMarkdown.Config.UnknownTagsOption.Bypass };
+            var converter = new ReverseMarkdown.Converter(config);
+            return converter.Convert(html).Replace("<br>", "\r\n");
+        }
+
+        public static String Sanitize(this string value)
+        {
+            return value
+                .Replace(" : ", " -- ")
+                .Replace(" :", " -- ")
+                .Replace(": ", " -- ")
+                .Replace(":", "--");
+        }
 
     }
 }

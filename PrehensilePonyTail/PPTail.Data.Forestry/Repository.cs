@@ -32,6 +32,7 @@ namespace PPTail.Data.Forestry
         private readonly String _rootSitePath;
 
         private SiteSettings _siteSettings = null;
+        private IEnumerable<Category> _categories = null;
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -93,7 +94,7 @@ namespace PPTail.Data.Forestry
             {
                 var contentItem = fileSystem
                     .ReadAllText(file)
-                    .ParseContentItem();
+                    .ParseContentItem(this.GetCategories());
 
                 if (contentItem.IsNotNull())
                     results.Add(contentItem);
@@ -151,15 +152,18 @@ namespace PPTail.Data.Forestry
 
         public IEnumerable<Category> GetCategories()
         {
-            var fileSystem = _serviceProvider.GetService<IFile>();
+            if (_categories is null)
+            {
+                var fileSystem = _serviceProvider.GetService<IFile>();
 
-            string path = System.IO.Path.Combine(_rootDataPath, _categoriesFilename);
-            var results = fileSystem
-                .ReadAllText(path)
-                .ParseCategories()
-                .Where(c => c.Id != Guid.Empty && !String.IsNullOrWhiteSpace(c.Name));
+                string path = System.IO.Path.Combine(_rootDataPath, _categoriesFilename);
+                _categories = fileSystem
+                    .ReadAllText(path)
+                    .ParseCategories()
+                    .Where(c => c.Id != Guid.Empty && !String.IsNullOrWhiteSpace(c.Name));
+            }
 
-            return results;
+            return _categories;
         }
     }
 }
