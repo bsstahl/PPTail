@@ -22,7 +22,8 @@ namespace PPTail
                 var (sourceConnection, targetConnection, templateConnection) = args.ParseArguments();
 
                 var settings = (null as ISettings).Create(sourceConnection, targetConnection, templateConnection);
-                var templates = (null as IEnumerable<Template>).Create(templateConnection);
+                var templateFullPath = System.IO.Path.GetFullPath(templateConnection);
+                var templates = (null as IEnumerable<Template>).Create(templateFullPath);
 
                 var container = (null as IServiceCollection).Create(settings, templates);
                 var serviceProvider = container.BuildServiceProvider();

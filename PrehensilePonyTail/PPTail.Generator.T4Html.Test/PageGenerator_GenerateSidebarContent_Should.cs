@@ -15,21 +15,54 @@ namespace PPTail.Generator.T4Html.Test
     public class PageGenerator_GenerateSidebarContent_Should
     {
         [Fact]
-        public void RenderATextBoxWidgetsContent()
+        public void SendTheTextBoxWidgetsContentToTheTemplateProcessor()
         {
             var widget = Enumerations.WidgetType.TextBox.CreateWidget();
+            var expected = widget.Dictionary.First().Item2;
             var widgets = new List<Widget>() { widget };
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            // var siteSettings = (null as SiteSettings).Create();
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor.Setup(p => p.ProcessNonContentItemTemplate(
+                It.IsAny<Template>(), It.IsAny<String>(), It.IsAny<String>(), 
+                It.IsAny<string>(), It.IsAny<String>(), It.IsAny<String>()))
+                .Returns(expected);
+
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings, templateProcessor.Object);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
+
+            templateProcessor.Verify(p => p.ProcessNonContentItemTemplate(
+                    It.Is<Template>(t => t.Content.Equals(expected) && t.TemplateType == Enumerations.TemplateType.Raw),
+                    It.IsAny<String>(), It.IsAny<String>(), It.IsAny<string>(),
+                    It.IsAny<String>(), It.IsAny<String>()), Times.Once);
+        }
+
+        [Fact]
+        public void RenderATextBoxWidgetsContent()
+        {
+            var widget = Enumerations.WidgetType.TextBox.CreateWidget();
             var expected = widget.Dictionary.First().Item2;
+            var widgets = new List<Widget>() { widget };
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
+
+            var templateProcessor = new Mock<ITemplateProcessor>();
+            templateProcessor.Setup(p => p.ProcessNonContentItemTemplate(
+                It.IsAny<Template>(), It.IsAny<String>(), It.IsAny<String>(),
+                It.IsAny<string>(), It.IsAny<String>(), It.IsAny<String>()))
+                .Returns(expected);
+
+            var posts = new List<ContentItem>();
+            var pages = new List<ContentItem>();
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings, templateProcessor.Object);
+            var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
 
             Assert.Contains(expected, actual);
         }

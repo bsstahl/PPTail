@@ -40,17 +40,16 @@ namespace PPTail.Generator.Search
 
         public String GenerateSearchResultsPage(String tag, IEnumerable<ContentItem> contentItems, String navigationContent, String sidebarContent, String pathToRoot)
         {
-            var categories = _serviceProvider.GetService<IEnumerable<Category>>();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
             var settings = _serviceProvider.GetService<ISettings>();
 
-            // var siteSettings = _serviceProvider.GetService<SiteSettings>();
             var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
             var siteSettings = contentRepo.GetSiteSettings();
+            var categories = contentRepo.GetCategories();
 
             var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
             var categoryId = (category == null) ? Guid.Empty : category.Id;
-            var posts = contentItems.Where(i => i.Tags.Contains(tag) || i.CategoryIds.Contains(categoryId));
+            var posts = contentItems.Where(i => (i.Tags.IsNotNull() && i.Tags.Contains(tag)) || i.CategoryIds.Contains(categoryId));
             return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, settings.ItemSeparator, false, siteSettings.PostsPerPage);
         }
 

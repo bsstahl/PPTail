@@ -42,8 +42,13 @@ namespace PPTail.Generator.Search.Test
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
+            return ignore.Create((null as IEnumerable<Category>).Create());
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Category> categories)
+        {
             return ignore.Create((null as IEnumerable<Template>).Create(),
-                null, (null as IEnumerable<Category>).Create(),
+                null, categories,
                 Mock.Of<ILinkProvider>(), Mock.Of<ITemplateProcessor>());
         }
 
@@ -75,7 +80,7 @@ namespace PPTail.Generator.Search.Test
                 container.AddSingleton<IEnumerable<Template>>(templates);
 
             if (categories != null)
-                container.AddSingleton<IEnumerable<Category>>(categories);
+                contentRepo.Setup(r => r.GetCategories()).Returns(categories);
 
             if (linkProvider != null)
                 container.AddSingleton<ILinkProvider>(linkProvider);

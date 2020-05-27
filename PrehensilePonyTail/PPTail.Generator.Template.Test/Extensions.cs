@@ -151,7 +151,7 @@ namespace PPTail.Generator.Template.Test
             var result = new List<Category>();
             foreach (var categoryId in categoryIds)
             {
-                String name = string.Empty.GetRandom();
+                String name = categoryId.ToString().Substring(0, 8);
                 result.Add(new Category() { Id = categoryId, Name = name, Description = $"descriptionOf_{name}" });
             }
             return result;

@@ -16,6 +16,7 @@
     <ProjectReference Include="..\PPTail.Data.Forestry\PPTail.Data.Forestry.csproj" />
     <ProjectReference Include="..\PPTail.Data.NativeJson\PPTail.Data.NativeJson.csproj" />
     <ProjectReference Include="..\PPTail.Data.WordpressFiles\PPTail.Data.WordpressFiles.csproj" />
+    <ProjectReference Include="..\PPTail.Io\PPTail.Io.csproj" />
   </ItemGroup>
 
 </Project>

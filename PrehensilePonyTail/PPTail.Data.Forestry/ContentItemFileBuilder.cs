@@ -1,4 +1,5 @@
 ﻿using PPTail.Entities;
+using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,19 @@ namespace PPTail.Data.Forestry
 {
     public class ContentItemFileBuilder
     {
-        private readonly ContentItem _item = new ContentItem();
+        private Guid _id;
+        private String _author;
+        private String _title;
+        private String _description;
+        private String _content;
+        private bool _isPublished;
+        private bool _showInList;
+        private DateTime _publicationDate;
+        private DateTime _lastModificationDate;
+        private String _slug;
+        private IEnumerable<string> _tags;
+        private IEnumerable<String> _categories;
+        private Int32 _menuOrder;
 
         private bool _removeTags = false;
         private bool _removeMenuOrder = false;
@@ -21,34 +34,54 @@ namespace PPTail.Data.Forestry
         private bool _removePublicationDate = false;
         private bool _removeLastModificationDate = false;
         private bool _removeSlug = false;
-        private bool _removeCategoryIds = false;
+        private bool _removeCategories = false;
         private bool _removeContent = false;
+
+
+        public ContentItemFileBuilder() { }
+
+        public ContentItemFileBuilder(ContentItem item, IEnumerable<Category> categories)
+        {
+            this.Id(item.Id);
+            this.Author(item.Author);
+            this.Title(item.Title);
+            this.Description(item.Description);
+            this.Content(item.Content);
+            this.IsPublished(item.IsPublished);
+            this.ShowInList(item.ShowInList);
+            this.PublicationDate(item.PublicationDate);
+            this.LastModificationDate(item.LastModificationDate);
+            this.Slug(item.Slug);
+            this.Tags(item.Tags);
+            this.CategoryIds(item.CategoryIds, categories);
+            this.MenuOrder(item.MenuOrder);
+        }
 
         public String Build()
         {
             var node = new StringBuilder();
             return node.AppendLine("---")
-                .ConditionalAppendList(!_removeTags, "tags", _item.Tags)
-                .ConditionalAppendLine(!_removeMenuOrder, "menuorder", _item.MenuOrder.ToString())
-                .ConditionalAppendLine(!_removeId, "id", _item.Id.ToString())
-                .ConditionalAppendLine(!_removeAuthor, "author", _item.Author)
-                .ConditionalAppendLine(!_removeTitle, "title", _item.Title)
-                .ConditionalAppendLine(!_removeDescription, "description", _item.Description)
-                .ConditionalAppendLine(!_removeIsPublished, "ispublished", _item.IsPublished.ToString().ToLower())
-                .ConditionalAppendLine(!_removeShowInList, "showinlist", _item.ShowInList.ToString().ToLower())
-                .ConditionalAppendLine(!_removePublicationDate, "publicationdate", _item.PublicationDate.ToString("s"))
-                .ConditionalAppendLine(!_removeLastModificationDate, "lastmodificationdate", _item.LastModificationDate.ToString("s"))
-                .ConditionalAppendLine(!_removeSlug, "slug", _item.Slug)
-                .ConditionalAppendList(!_removeCategoryIds, "categoryids", _item.CategoryIds?.Select(i => i.ToString()))
+                .ConditionalAppendList(!_removeTags, "tags", _tags)
+                .ConditionalAppendLine(!_removeMenuOrder, "menuorder", _menuOrder.ToString())
+                .ConditionalAppendLine(!_removeId, "id", _id.ToString())
+                .ConditionalAppendLine(!_removeAuthor, "author", _author.Sanitize())
+                .ConditionalAppendLine(!_removeTitle, "title", _title.Sanitize())
+                .ConditionalAppendLine(!_removeDescription, "description", _description.Sanitize())
+                .ConditionalAppendLine(!_removeIsPublished, "ispublished", _isPublished.ToString().ToLower())
+                .ConditionalAppendLine(!_removeShowInList, "showinlist", _showInList.ToString().ToLower())
+                .ConditionalAppendLine(!_removePublicationDate, "publicationdate", _publicationDate.ToString("s"))
+                .ConditionalAppendLine(!_removeLastModificationDate, "lastmodificationdate", _lastModificationDate.ToString("s"))
+                .ConditionalAppendLine(!_removeSlug, "slug", _slug)
+                .ConditionalAppendList(!_removeCategories, "categories", _categories)
                 .AppendLine("")
                 .AppendLine("---")
-                .ConditionalAppendLine(!_removeContent, string.Empty, _item.Content)
+                .ConditionalAppendLine(!_removeContent, string.Empty, _content.ToMarkdown())
                 .ToString();
         }
 
         public ContentItemFileBuilder Tags(IEnumerable<String> value)
         {
-            _item.Tags = value;
+            _tags = value;
             _removeTags = false;
             return this;
         }
@@ -61,7 +94,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder Id(Guid value)
         {
-            _item.Id = value;
+            _id = value;
             _removeId = false;
             return this;
         }
@@ -74,7 +107,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder Author(String value)
         {
-            _item.Author = value;
+            _author = value;
             _removeAuthor = false;
             return this;
         }
@@ -87,7 +120,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder Title(String value)
         {
-            _item.Title = value;
+            _title = value;
             _removeTitle = false;
             return this;
         }
@@ -98,9 +131,9 @@ namespace PPTail.Data.Forestry
             return this;
         }
 
-        public  ContentItemFileBuilder Description(String value)
+        public ContentItemFileBuilder Description(String value)
         {
-            _item.Description = value;
+            _description = value;
             _removeDescription = false;
             return this;
         }
@@ -113,7 +146,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder IsPublished(Boolean value)
         {
-            _item.IsPublished = value;
+            _isPublished = value;
             _removeIsPublished = false;
             return this;
         }
@@ -126,7 +159,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder ShowInList(Boolean value)
         {
-            _item.ShowInList = value;
+            _showInList = value;
             _removeShowInList = false;
             return this;
         }
@@ -139,7 +172,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder PublicationDate(DateTime value)
         {
-            _item.PublicationDate = value;
+            _publicationDate = value;
             _removePublicationDate = false;
             return this;
         }
@@ -152,7 +185,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder LastModificationDate(DateTime value)
         {
-            _item.LastModificationDate = value;
+            _lastModificationDate = value;
             _removeLastModificationDate = false;
             return this;
         }
@@ -165,7 +198,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder Slug(String value)
         {
-            _item.Slug = value;
+            _slug = value;
             _removeSlug = false;
             return this;
         }
@@ -179,7 +212,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder Content(String value)
         {
-            _item.Content = value;
+            _content = value;
             _removeContent = false;
             return this;
         }
@@ -190,22 +223,35 @@ namespace PPTail.Data.Forestry
             return this;
         }
 
-        public ContentItemFileBuilder CategoryIds(IEnumerable<Guid> value)
+        public ContentItemFileBuilder Categories(IEnumerable<String> value)
         {
-            _item.CategoryIds = value;
-            _removeCategoryIds = false;
+            _categories = value;
+            _removeCategories = false;
             return this;
         }
 
-        public ContentItemFileBuilder RemoveCategoryIds()
+        public ContentItemFileBuilder CategoryIds(IEnumerable<Guid> value, IEnumerable<Category> categories)
         {
-            _removeCategoryIds = true;
+            var categoryNames = new List<String>();
+            foreach (var categoryId in value)
+            {
+                var category = categories.SingleOrDefault(c => c.Id == categoryId);
+                if (category.IsNotNull())
+                    categoryNames.Add(category.Name);
+            }
+
+            return this.Categories(categoryNames);
+        }
+
+        public ContentItemFileBuilder RemoveCategories()
+        {
+            _removeCategories = true;
             return this;
         }
 
         public ContentItemFileBuilder MenuOrder(int value)
         {
-            _item.MenuOrder = value;
+            _menuOrder = value;
             _removeMenuOrder = false;
             return this;
         }

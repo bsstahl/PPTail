@@ -190,8 +190,7 @@ namespace PPTail.Generator.Search.Test
             String sidebarContent = string.Empty.GetRandom();
             String pathToRoot = string.Empty.GetRandom();
 
-            var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Category>>(categories);
+            var container = (null as IServiceCollection).Create(categories);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);

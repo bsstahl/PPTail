@@ -58,11 +58,15 @@ namespace PPTail.Extensions
         public static String CreateSlug(this String title)
         {
             return title.Trim()
+                .Replace("&quot;", "-")
+                .Replace('?', '-')
+                .Replace(':', '-')
                 .Replace(' ', '-')
                 .Replace(',', '-')
                 .Replace("\'", "")
                 .HTMLEncode()
-                .RemoveConsecutiveDashes();
+                .RemoveConsecutiveDashes()
+                .RemoveTrailingDash();
         }
 
         public static String HTMLEncode(this String data)
@@ -84,6 +88,12 @@ namespace PPTail.Extensions
             return current;
         }
 
-
+        public static String RemoveTrailingDash(this String data)
+        {
+            string result = data;
+            if (data.IsNotNull() && data.EndsWith("-", StringComparison.InvariantCulture))
+                result = data.Substring(0, data.Length - 1);
+            return result;
+        }
     }
 }

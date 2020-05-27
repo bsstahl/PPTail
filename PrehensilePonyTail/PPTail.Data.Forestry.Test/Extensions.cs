@@ -15,6 +15,7 @@ using Xunit;
 using Castle.DynamicProxy.Contributors;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
 
 namespace PPTail.Data.Forestry.Test
 {
@@ -331,19 +332,19 @@ namespace PPTail.Data.Forestry.Test
             return result;
         }
 
-        internal static void ExecutePagePropertyTest<T>(this String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate)
+        internal static void ExecutePagePropertyTest<T>(this String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate, IEnumerable<Category> categories = null)
         {
             Func<IContentRepository, IEnumerable<ContentItem>> methodDelegate = r => r.GetAllPages();
-            ExecutePropertyTest(fileContents, expected, fieldValueDelegate, methodDelegate);
+            ExecutePropertyTest(fileContents, expected, fieldValueDelegate, methodDelegate, categories);
         }
 
-        internal static void ExecutePostPropertyTest<T>(this String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate)
+        internal static void ExecutePostPropertyTest<T>(this String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate, IEnumerable<Category> categories = null)
         {
             Func<IContentRepository, IEnumerable<ContentItem>> methodDelegate = r => r.GetAllPosts();
-            ExecutePropertyTest(fileContents, expected, fieldValueDelegate, methodDelegate);
+            ExecutePropertyTest(fileContents, expected, fieldValueDelegate, methodDelegate, categories);
         }
 
-        private static void ExecutePropertyTest<T>(String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate, Func<IContentRepository, IEnumerable<ContentItem>> methodDelegate)
+        private static void ExecutePropertyTest<T>(String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate, Func<IContentRepository, IEnumerable<ContentItem>> methodDelegate, IEnumerable<Category> categories)
         {
             var files = new List<string>
             {
@@ -353,11 +354,21 @@ namespace PPTail.Data.Forestry.Test
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
 
+            if (categories.IsNotNull() && categories.Any())
+            {
+                // Setup categories file
+                var categoriesFileBuilder = new CategoriesFileBuilder(categories);
+                var categoriesFileContents = categoriesFileBuilder.Build();
+
+                fileSystem.Setup(f => f.ReadAllText(It.Is<String>(s => s.EndsWith("c:\\Data\\Categories.md"))))
+                    .Returns(categoriesFileContents);
+            }
+
             directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
                     .Returns(files);
 
             foreach (var file in files)
-                fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                fileSystem.Setup(f => f.ReadAllText(It.Is<string>(s => s.EndsWith(file))))
                     .Returns(fileContents);
 
             var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
@@ -380,11 +391,20 @@ namespace PPTail.Data.Forestry.Test
                 .PublicationDate(DateTime.Parse("1/1/2000").AddSeconds(Int32.MaxValue))
                 .LastModificationDate(DateTime.Parse("1/1/2000").AddSeconds(Int32.MaxValue))
                 .Slug(string.Empty.GetRandom(20))
-                .CategoryIds(new[] { Guid.NewGuid() })
+                .Categories(new[] { string.Empty.GetRandom() })
                 .MenuOrder(10.GetRandom())
                 .Content(string.Empty.GetRandom(200));
         }
 
-
+        public static IEnumerable<Category> AsCategoryEntities(this IEnumerable<String> categoryNames)
+        {
+            return categoryNames.Select(n =>
+                new Category()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = n,
+                    Description = $"Category '{n}'"
+                });
+        }
     }
 }

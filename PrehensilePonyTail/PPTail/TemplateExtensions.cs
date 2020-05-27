@@ -12,19 +12,19 @@ namespace PPTail
     {
         public static IEnumerable<Template> Create(this IEnumerable<Template> ignore, String rootTemplatePath)
         {
-            var styleTemplatePath = $"{rootTemplatePath}\\Style.template.css";
-            var bootstrapTemplatePath = $"{rootTemplatePath}\\bootstrap.min.css";
-            var homePageTemplatePath = $"{rootTemplatePath}\\HomePage.template.html";
-            var searchPageTemplatePath = $"{rootTemplatePath}\\ContentPage.template.html";
-            var contentPageTemplatePath = $"{rootTemplatePath}\\ContentPage.template.html";
-            var postPageTemplatePath = $"{rootTemplatePath}\\PostPage.template.html";
-            var redirectTemplatePath = $"{rootTemplatePath}\\Redirect.template.html";
-            var archiveTemplatePath = $"{rootTemplatePath}\\Archive.template.html";
-            var archiveItemTemplatePath = $"{rootTemplatePath}\\ArchiveItem.template.html";
-            var syndicationTemplatePath = $"{rootTemplatePath}\\Syndication.template.xml";
-            var syndicationItemTemplatePath = $"{rootTemplatePath}\\SyndicationItem.template.xml";
-            var contactPageTemplatePath = $"{rootTemplatePath}\\ContactPage.template.html";
-            var itemTemplatePath = $"{rootTemplatePath}\\ContentItem.template.html";
+            var styleTemplatePath = rootTemplatePath.CombinePaths("Style.template.css");
+            var bootstrapTemplatePath = rootTemplatePath.CombinePaths("bootstrap.min.css");
+            var homePageTemplatePath = rootTemplatePath.CombinePaths("HomePage.template.html");
+            var searchPageTemplatePath = rootTemplatePath.CombinePaths("ContentPage.template.html");
+            var contentPageTemplatePath = rootTemplatePath.CombinePaths("ContentPage.template.html");
+            var postPageTemplatePath = rootTemplatePath.CombinePaths("PostPage.template.html");
+            var redirectTemplatePath = rootTemplatePath.CombinePaths("Redirect.template.html");
+            var archiveTemplatePath = rootTemplatePath.CombinePaths("Archive.template.html");
+            var archiveItemTemplatePath = rootTemplatePath.CombinePaths("ArchiveItem.template.html");
+            var syndicationTemplatePath = rootTemplatePath.CombinePaths("Syndication.template.xml");
+            var syndicationItemTemplatePath = rootTemplatePath.CombinePaths("SyndicationItem.template.xml");
+            var contactPageTemplatePath = rootTemplatePath.CombinePaths("ContactPage.template.html");
+            var itemTemplatePath = rootTemplatePath.CombinePaths("ContentItem.template.html");
             return (null as IEnumerable<Template>).Create(styleTemplatePath, bootstrapTemplatePath, homePageTemplatePath, contentPageTemplatePath, postPageTemplatePath, contactPageTemplatePath, redirectTemplatePath, syndicationTemplatePath, syndicationItemTemplatePath, itemTemplatePath, searchPageTemplatePath, archiveTemplatePath, archiveItemTemplatePath);
 
         }

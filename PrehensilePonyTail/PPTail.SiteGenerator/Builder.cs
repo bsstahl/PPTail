@@ -193,7 +193,11 @@ namespace PPTail.SiteGenerator
             }
 
             // Add Search Pages
-            var tags = posts.SelectMany(p => p.Tags).Distinct();
+            var tags = posts
+                .Where(p => p.Tags.IsNotNull())
+                .SelectMany(p => p.Tags)
+                .Distinct();
+
             var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
             var usedCategories = categories.Where(c => categoryIds.Contains(c.Id));
 

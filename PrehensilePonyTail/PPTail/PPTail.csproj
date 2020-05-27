@@ -15,6 +15,7 @@
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
     <ProjectReference Include="..\PPTail.Data.Ef\PPTail.Data.Ef.csproj" />
     <ProjectReference Include="..\PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj" />
+    <ProjectReference Include="..\PPTail.Data.Forestry\PPTail.Data.Forestry.csproj" />
     <ProjectReference Include="..\PPTail.Data.MediaBlog\PPTail.Data.MediaBlog.csproj" />
     <ProjectReference Include="..\PPTail.Data.NativeJson\PPTail.Data.NativeJson.csproj" />
     <ProjectReference Include="..\PPTail.Data.PhotoBlog\PPTail.Data.PhotoBlog.csproj" />

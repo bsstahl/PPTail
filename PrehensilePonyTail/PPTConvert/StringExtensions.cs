@@ -9,12 +9,8 @@ namespace PPTConvert
 
         public static (String sourceConnection, String targetConnection) ParseArguments(this string[] args)
         {
-            if (args is null)
-                return (null, null);
-            else
-                return (args[0], args[1]);
+            return args is null ? ((String sourceConnection, String targetConnection))(null, null) : (args[0], args[1]);
         }
-
 
         public static (bool argsAreValid, IEnumerable<string> argumentErrors) ValidateArguments(this string[] args)
         {

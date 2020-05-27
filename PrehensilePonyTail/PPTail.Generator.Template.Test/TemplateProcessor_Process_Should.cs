@@ -10,6 +10,8 @@ using PPTail.Exceptions;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using PPTail.Extensions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.DependencyModel;
 
 namespace PPTail.Generator.Template.Test
 {
@@ -744,7 +746,9 @@ namespace PPTail.Generator.Template.Test
             Func<string, string> valueFunction = p => p;
             foreach (var post in publishedPosts)
                 foreach (var tag in post.Tags)
-                    contentEncoder.Setup(e => e.UrlEncode(tag)).Returns(valueFunction).Verifiable();
+                    contentEncoder.Setup(e => e.UrlEncode(tag))
+                        .Returns(valueFunction)
+                        .Verifiable();
 
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
@@ -785,7 +789,7 @@ namespace PPTail.Generator.Template.Test
                 foreach (var tag in post.Tags)
                 {
                     contentEncoder.Setup(e => e.UrlEncode(tag)).Returns(valueFunction);
-                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tag))
+                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "Search", tag))
                         .Returns(post.Slug).Verifiable();
                 }
 
@@ -828,7 +832,7 @@ namespace PPTail.Generator.Template.Test
                 foreach (var tag in post.Tags)
                 {
                     contentEncoder.Setup(e => e.UrlEncode(tag)).Returns(valueFunction);
-                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", tag))
+                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "Search", tag))
                         .Returns(post.Id.ToString());
                 }
 
@@ -881,10 +885,24 @@ namespace PPTail.Generator.Template.Test
             Func<string, string> categoryValueFunction = p => p;
             foreach (var post in publishedPosts)
                 foreach (var categoryId in post.CategoryIds)
-                    contentEncoder.Setup(e => e.UrlEncode(categoryId.GetCategoryName(categoryList)))
-                        .Returns(categoryValueFunction).Verifiable();
+                {
+                    var categoryName = categoryId.GetCategoryName(categoryList);
+                    contentEncoder
+                        .Setup(e => e.UrlEncode(categoryName))
+                        .Returns(categoryValueFunction)
+                        .Verifiable();
+                }
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo
+                .Setup(r => r.GetCategories())
+                .Returns(categoryList);
+            contentRepo
+                .Setup(r => r.GetSiteSettings())
+                .Returns((null as SiteSettings).Create());
 
             var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
@@ -931,11 +949,20 @@ namespace PPTail.Generator.Template.Test
                 {
                     String categoryName = categoryId.GetCategoryName(categoryList);
                     contentEncoder.Setup(e => e.UrlEncode(categoryName)).Returns(encoderValueFunction);
-                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", categoryName))
+                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "Search", categoryName))
                         .Returns(linkValueFunction).Verifiable();
                 }
 
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo
+                .Setup(r => r.GetCategories())
+                .Returns(categoryList);
+            contentRepo
+                .Setup(r => r.GetSiteSettings())
+                .Returns((null as SiteSettings).Create());
+
             var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
@@ -980,12 +1007,23 @@ namespace PPTail.Generator.Template.Test
                 foreach (var categoryId in post.CategoryIds)
                 {
                     String name = categoryId.GetCategoryName(categoryList);
-                    contentEncoder.Setup(e => e.UrlEncode(name)).Returns(encoderValueFunction);
-                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "search", name))
+                    contentEncoder.Setup(e => e.UrlEncode(name))
+                        .Returns(encoderValueFunction);
+
+                    linkProvider.Setup(l => l.GetUrl(pathToRoot, "Search", name))
                         .Returns(post.Id.ToString());
                 }
 
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo
+                .Setup(r => r.GetCategories())
+                .Returns(categoryList);
+            contentRepo
+                .Setup(r => r.GetSiteSettings())
+                .Returns((null as SiteSettings).Create());
+
             var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
             container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);

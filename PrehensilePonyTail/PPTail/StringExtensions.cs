@@ -7,6 +7,11 @@ namespace PPTail
     public static class StringExtensions
     {
 
+        public static string CombinePaths(this string path1, string path2)
+        {
+            return System.IO.Path.Combine(path1, path2);
+        }
+
         public static (String sourceConnection, String targetConnection, String templateConnection) ParseArguments(this string[] args)
         {
             if (args is null)

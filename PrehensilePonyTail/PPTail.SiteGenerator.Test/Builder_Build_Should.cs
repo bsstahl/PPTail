@@ -280,8 +280,16 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateAnOutputForBootstrap()
         {
-            var target = (null as Builder).Create();
+            var pageGenerator = new Mock<IPageGenerator>();
+            pageGenerator
+                .Setup(p => p.GenerateBootstrapPage())
+                .Returns(string.Empty.GetRandom());
+
+            var container = (null as IServiceCollection).Create(pageGenerator.Object);
+            var target = (null as Builder).Create(container);
+
             var actual = target.Build();
+
             Assert.Equal(1, actual.Count(ci => ci.SourceTemplateType == Enumerations.TemplateType.Bootstrap));
         }
 

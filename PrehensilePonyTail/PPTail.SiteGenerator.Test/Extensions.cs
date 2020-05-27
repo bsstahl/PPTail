@@ -51,9 +51,17 @@ namespace PPTail.SiteGenerator.Test
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
-            return ignore.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
-                Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
-                Mock.Of<ISettings>(), new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
+            return ignore.Create(Mock.Of<IPageGenerator>());
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, IPageGenerator pageGenerator)
+        {
+            return ignore.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), 
+                Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), 
+                pageGenerator, Mock.Of<IHomePageGenerator>(), 
+                Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), 
+                Mock.Of<ISyndicationProvider>(), Mock.Of<ISettings>(), 
+                new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
         }
 
         public static IServiceCollection Create(this IServiceCollection ignore, IContentRepository contentRepo)

@@ -54,17 +54,18 @@ namespace PPTail.Generator.T4Html.Test
 
             var settings = (null as Settings).CreateDefault(dateTimeFormatSpecifier);
 
-            return ignore.Create(templates, settings, navProvider, new List<Category>());
+            return ignore.Create(templates, settings, navProvider);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings)
         {
-            return ignore.Create(templates, settings, new FakeNavProvider(), new List<Category>());
+            return ignore.Create(templates, settings, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, ITemplateProcessor templateProcessor)
         {
-            return ignore.Create(templates, settings, new FakeNavProvider(), categories);
+            var serviceCollection = (null as IServiceCollection).Create(templates, settings, new FakeNavProvider(), templateProcessor);
+            return ignore.Create(serviceCollection);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, TemplateType templateTypeToBeMissing)
@@ -87,9 +88,9 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create(container);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
         {
-            var container = (null as IServiceCollection).Create(templates, settings, navProvider, categories);
+            var container = (null as IServiceCollection).Create(templates, settings, navProvider);
             return ignore.Create(container);
         }
 
@@ -98,29 +99,25 @@ namespace PPTail.Generator.T4Html.Test
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var settings = (null as ISettings).CreateDefault();
             var navProvider = Mock.Of<INavigationProvider>();
-            var categories = (null as IEnumerable<Category>).Create();
-            return ignore.Create(templates, settings, navProvider, categories);
+            return ignore.Create(templates, settings, navProvider);
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
+        {
+            return ignore.Create(templates, settings, navProvider, Mock.Of<ITemplateProcessor>());
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, ITemplateProcessor templateProcessor)
         {
             var container = new ServiceCollection();
+
             container.AddSingleton<IEnumerable<Template>>(templates);
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
-            container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
+            container.AddSingleton<ITemplateProcessor>(templateProcessor);
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
-
-            //container.AddSingleton<SiteSettings>(new SiteSettings()
-            //{
-            //    Title = string.Empty.GetRandom(),
-            //    Description = string.Empty.GetRandom(),
-            //    PostsPerPage = 10.GetRandom(5),
-            //    PostsPerFeed = 20.GetRandom(10)
-            //});
 
             return container;
         }
@@ -176,7 +173,7 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.Create(author, categoryIds, string.Empty.GetRandom(), string.Empty.GetRandom(), true, lastModDate, pubDate, slug, tags, title);
         }
 
-        private static ContentItem Create(this ContentItem ignore, 
+        private static ContentItem Create(this ContentItem ignore,
             String author, IEnumerable<Guid> categoryIds, String content,
             String description, bool isPublished, DateTime lastModDate, DateTime pubDate,
             String slug, IEnumerable<string> tags, String title)
@@ -212,8 +209,8 @@ namespace PPTail.Generator.T4Html.Test
             return ignore.CreateBlankTemplates(contentpageTemplate, "<html/>", homePageTemplate, "body { }", "/*! * Bootstrap v0.0.0 */", itemTemplate);
         }
 
-        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore, 
-            String contentTemplateText, String postTemplateText, 
+        public static IEnumerable<Template> CreateBlankTemplates(this IEnumerable<Template> ignore,
+            String contentTemplateText, String postTemplateText,
             String homepageTemplateText, String styleTemplateText,
             String bootstrapTemplateText, String itemTemplateText)
         {

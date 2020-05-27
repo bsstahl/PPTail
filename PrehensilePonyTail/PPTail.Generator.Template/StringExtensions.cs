@@ -11,15 +11,17 @@ namespace PPTail.Generator.Template
     {
         internal static String ReplaceContentItemVariables(this String template, IServiceProvider serviceProvider, ContentItem item, String pathToRoot, Boolean xmlEncodeContent)
         {
+            serviceProvider.ValidateService<IContentRepository>();
             serviceProvider.ValidateService<ISettings>();
             serviceProvider.ValidateService<ILinkProvider>();
             serviceProvider.ValidateService<IContentEncoder>();
-            serviceProvider.ValidateService<IEnumerable<Category>>();
 
+            var contentRepo = serviceProvider.GetService<IContentRepository>();
             var settings = serviceProvider.GetService<ISettings>();
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
-            var categories = serviceProvider.GetService<IEnumerable<Category>>();
+
+            var categories = contentRepo.GetCategories();
 
             var content = item.Content;
             var description = item.Description;
@@ -98,10 +100,9 @@ namespace PPTail.Generator.Template
         internal static String TagLinkList(this IEnumerable<String> tags, IServiceProvider serviceProvider, String pathToRoot, String cssClass)
         {
             var results = String.Empty;
-            foreach (var tag in tags)
-            {
-                results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
-            }
+            if (tags.IsNotNull())
+                foreach (var tag in tags)
+                    results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
             return results;
         }
 

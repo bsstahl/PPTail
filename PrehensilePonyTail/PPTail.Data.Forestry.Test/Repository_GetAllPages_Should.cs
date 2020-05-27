@@ -153,13 +153,14 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
-        public void ReturnTheProperValueInTheContentField()
+        public void ReturnTheHtmlFormattedValueInTheContentField()
         {
-            String fieldValueDelegate(ContentItem c) => c.Content;
-            String expected = string.Empty.GetRandom(500);
+            String fieldValueDelegate(ContentItem c) => c.Content.Trim();
+            String content = string.Empty.GetRandom(500);
+            String expected = $"<p>{content}</p>";
             var fileContents = new ContentItemFileBuilder()
                 .UseRandomValues()
-                .Content(expected)
+                .Content(content)
                 .Build();
             fileContents.ExecutePagePropertyTest<String>(expected, fieldValueDelegate);
         }

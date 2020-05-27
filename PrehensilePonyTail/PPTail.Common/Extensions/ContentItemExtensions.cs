@@ -10,7 +10,10 @@ namespace PPTail.Extensions
     {
         public static IEnumerable<string> GetAllTags(this IEnumerable<ContentItem> contentItems)
         {
-            return contentItems.SelectMany(p => p.Tags).Where(t => !string.IsNullOrWhiteSpace(t));
+            return contentItems
+                .Where(p => p.Tags.IsNotNull())
+                .SelectMany(p => p.Tags)
+                .Where(t => !string.IsNullOrWhiteSpace(t));
         }
     }
 }
