@@ -92,17 +92,18 @@ namespace PPTail.Data.Forestry.Test
             };
         }
 
-        public static IEnumerable<Widget> ConfigureWidgets(this Mock<IFile> fileSystem, String rootPath, bool addInvalidTypes)
+        public static IEnumerable<Widget> ConfigureWidgets(this Mock<IFile> fileSystem, Mock<IDirectory> directory, String rootPath, bool addInvalidTypes)
         {
             var widgets = (null as IEnumerable<Widget>).Create();
-            return fileSystem.ConfigureWidgets(widgets, rootPath, addInvalidTypes);
+            return fileSystem.ConfigureWidgets(directory, widgets, rootPath, addInvalidTypes);
         }
 
-        public static IEnumerable<Widget> ConfigureWidgets(this Mock<IFile> fileSystem, IEnumerable<Widget> widgets, String rootPath, bool addInvalidTypes)
+        public static IEnumerable<Widget> ConfigureWidgets(this Mock<IFile> fileSystem, Mock<IDirectory> directory, IEnumerable<Widget> widgets, String rootPath, bool addInvalidTypes)
         {
-            const String widgetPath = "Data\\Widgets.md";
+            const String widgetPath = "Widgets";
 
             var theseWidgets = new List<Widget>(widgets);
+            var fileNames = new List<String>();
 
             // Add Invalid Widget Types
             if (addInvalidTypes)
@@ -127,25 +128,42 @@ namespace PPTail.Data.Forestry.Test
                 theseWidgets.Add(w2);
             }
 
-            String widgetFilePath = System.IO.Path.Combine(rootPath, widgetPath);
-            String widgetFileContent = theseWidgets.Serialize();
+            String fullWidgetPath = System.IO.Path.Combine(rootPath, widgetPath);
 
-            // Replace the widget type in 2 of the unknowns
-            if (addInvalidTypes)
+            bool replacedAlpha = false;
+            bool replacedNumeric = false;
+            foreach (var widget in theseWidgets)
             {
-                string pattern = "widgettype: Unknown";
+                string fileName = $"{widget.Title.CreateSlug()}.md";
+                string widgetFilePath = System.IO.Path.Combine(fullWidgetPath, fileName);
+                fileNames.Add(widgetFilePath);
 
-                // Alphanumeric widget type
-                string alphaValue = $"widgettype: {String.Empty.GetRandom()}";
-                widgetFileContent = widgetFileContent.ReplaceFirst(pattern, alphaValue);
+                string widgetText = widget.Serialize();
 
-                // Numeric widget type
-                string numericValue = $"widgettype: {9999.GetRandom(999).ToString()}";
-                widgetFileContent = widgetFileContent.ReplaceFirst(pattern, numericValue);
+                if (widget.WidgetType == WidgetType.Unknown)
+                {
+                    // Replace the widget type in 2 of the unknowns
+                    string pattern = "widgettype: Unknown";
+                    if (!replacedAlpha)
+                    {
+                        string alphaValue = $"widgettype: {String.Empty.GetRandom()}";
+                        widgetText = widgetText.Replace(pattern, alphaValue);
+                        replacedAlpha = true;
+                    }
+                    else if (!replacedNumeric)
+                    {
+                        string numericValue = $"widgettype: {9999.GetRandom(999).ToString()}";
+                        widgetText = widgetText.Replace(pattern, numericValue);
+                        replacedNumeric = true;
+                    }
+                }
+
+                fileSystem.Setup(f => f.ReadAllText(widgetFilePath))
+                    .Returns(widgetText);
             }
 
-            fileSystem.Setup(f => f.ReadAllText(widgetFilePath))
-                .Returns(widgetFileContent);
+            directory.Setup(d => d.EnumerateFiles(fullWidgetPath))
+                .Returns(fileNames);
 
             return theseWidgets;
         }
@@ -190,11 +208,15 @@ namespace PPTail.Data.Forestry.Test
         {
             var results = new List<String>
             {
-                $"- id: {widget.Id.ToString()}",
-                $"  title: {widget.Title}",
-                $"  showtitle: {widget.ShowTitle.ToString().ToLower()}",
-                $"  widgettype: {widget.WidgetType.ToString()}",
-                $"  dictionary: {widget.Dictionary.Serialize()}"
+                "---",
+                $"id: {widget.Id.ToString()}",
+                $"title: {widget.Title}",
+                $"showtitle: {widget.ShowTitle.ToString().ToLower()}",
+                $"widgettype: {widget.WidgetType.ToString()}",
+                $"showinsidebar: { widget.ShowInSidebar.ToString().ToLower() }",
+                $"orderindex: {widget.OrderIndex.ToString()}",
+                "---",
+                widget.Dictionary?.SingleOrDefault()?.Item2
             };
 
             return String.Join("\r\n", results);

@@ -49,7 +49,7 @@ namespace PPTail.Generator.T4Html
             var settings = _serviceProvider.GetService<ISettings>();
 
             var results = "<div class=\"widgetzone\">";
-            foreach (var widget in widgets)
+            foreach (var widget in widgets.OrderBy(w => w.OrderIndex))
             {
                 results += widget.Render(_serviceProvider, settings, posts, pathToRoot);
             }

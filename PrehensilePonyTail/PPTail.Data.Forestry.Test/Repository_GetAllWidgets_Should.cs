@@ -42,9 +42,10 @@ namespace PPTail.Data.Forestry.Test
         public void NotFailIfAnUnknownWidgetTypeIsFound()
         {
             var fileSystem = new Mock<IFile>();
-            var widgets = fileSystem.ConfigureWidgets(_rootPath, true);
+            var directory = new Mock<IDirectory>();
+            var widgets = fileSystem.ConfigureWidgets(directory, _rootPath, true);
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, _rootPath);
+            var target = (null as IContentRepository).Create(fileSystem.Object, directory.Object, _rootPath);
             var actual = target.GetAllWidgets();
 
             // var knownWidgetTypes = (int[])Enum.GetValues(typeof(WidgetType));
@@ -53,16 +54,6 @@ namespace PPTail.Data.Forestry.Test
             var expectedCount = widgets.Count();
             Assert.Equal(expectedCount, actual.Count());
         }
-
-        //[Fact]
-        //public void SkipWidgetsWithInvalidSchema()
-        //{
-        //}
-
-        //[Fact]
-        //public void SkipWidgetsWithTheWrongRootNode()
-        //{
-        //}
 
         [Fact]
         public void ReturnTheProperValueInTheIdField()
@@ -107,15 +98,19 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void ReturnTheProperValueInTheDictionaryValueField()
         {
-            ExecutePropertyTest((Widget w) => w.Dictionary.First().Item2);
+            var widget = Enumerations.WidgetType.TextBox.CreateWidget();
+            String expectedValue = $"<p>{widget.Dictionary.First().Item2}</p>";
+            Func<Widget, String> actualValueDelegate = (Widget w) => w.Dictionary.First().Item2.Trim();
+            ExecutePropertyTest(widget, expectedValue, actualValueDelegate);
         }
 
         private static void ExecuteWidgetTypeCountTest(WidgetType widgetType)
         {
             var fileSystem = new Mock<IFile>();
-            var widgets = fileSystem.ConfigureWidgets(_rootPath, false);
+            var directory = new Mock<IDirectory>();
+            var widgets = fileSystem.ConfigureWidgets(directory, _rootPath, false);
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, _rootPath);
+            var target = (null as IContentRepository).Create(fileSystem.Object, directory.Object, _rootPath);
             var actual = target.GetAllWidgets();
 
             Func<Widget, bool> predicate = w => w.WidgetType == widgetType;
@@ -125,20 +120,26 @@ namespace PPTail.Data.Forestry.Test
             Assert.Equal(expectedCount, actualCount);
         }
 
-        internal static void ExecutePropertyTest<T>(Widget widget, Func<Widget, T> fieldValueDelegate)
-        {
-            var fileSystem = new Mock<IFile>();
-            var widgets = fileSystem.ConfigureWidgets(new [] { widget }, _rootPath, false);
-
-            var target = (null as IContentRepository).Create(fileSystem.Object, _rootPath);
-            var actual = target.GetAllWidgets();
-
-            Assert.Equal(fieldValueDelegate(widget), fieldValueDelegate(actual.Single()));
-        }
-
         private static void ExecutePropertyTest<T>(Func<Widget, T> fieldValueDelegate)
         {
             ExecutePropertyTest(Enumerations.WidgetType.TextBox.CreateWidget(), fieldValueDelegate);
+        }
+
+        private static void ExecutePropertyTest<T>(Widget widget, Func<Widget, T> fieldValueDelegate)
+        {
+            ExecutePropertyTest(widget, fieldValueDelegate(widget), fieldValueDelegate);
+        }
+
+        private static void ExecutePropertyTest<T>(Widget widget, T expectedValue, Func<Widget, T> actualValueDelegate)
+        {
+            var fileSystem = new Mock<IFile>();
+            var directory = new Mock<IDirectory>();
+            var widgets = fileSystem.ConfigureWidgets(directory, new[] { widget }, _rootPath, false);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, directory.Object, _rootPath);
+            var actual = target.GetAllWidgets();
+
+            Assert.Equal(expectedValue, actualValueDelegate(actual.Single()));
         }
 
     }

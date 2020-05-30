@@ -50,7 +50,7 @@ namespace PPTail.Generator.Search
             var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
             var categoryId = (category == null) ? Guid.Empty : category.Id;
             var posts = contentItems.Where(i => (i.Tags.IsNotNull() && i.Tags.Contains(tag)) || i.CategoryIds.Contains(categoryId));
-            return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, settings.ItemSeparator, false, siteSettings.PostsPerPage);
+            return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, settings.ItemSeparator, false, 0);
         }
 
     }

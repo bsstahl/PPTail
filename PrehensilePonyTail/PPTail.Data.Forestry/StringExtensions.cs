@@ -88,87 +88,69 @@ namespace PPTail.Data.Forestry
             return result;
         }
 
-        public static IEnumerable<Widget> ParseWidgets(this String fileContents)
+        public static Widget ParseWidget(this String fileContents)
         {
             const string ID_KEY = "id";
             const string TITLE_KEY = "title";
             const string SHOWTITLE_KEY = "showtitle";
+            const string SHOWINSIDEBAR_KEY = "showinsidebar";
+            const string ORDERINDEX_KEY = "orderindex";
             const string WIDGETTYPE_KEY = "widgettype";
-            const string DICTIONARY_KEY = "dictionary";
-            const string DICTIONARYKEY_KEY = "- key";
-            const string DICTIONARYVALUE_KEY = "value";
 
-            var result = new List<Widget>();
-            var lines = fileContents.Split('\n');
+            var result = new Widget();
 
-            Widget currentWidget = null;
-            List<Tuple<string, string>> currentDictionary = null;
-            Tuple<string, string> currentDictionaryItem = null;
+            var fileSections = fileContents.Split(new[] { "---" }, StringSplitOptions.RemoveEmptyEntries);
+            int fieldCount = 0;
 
-            foreach (var line in lines)
+            if (fileSections.Length > 1)
             {
-                string field = string.Empty;
-                if (line.StartsWith("- "))
-                {
-                    currentWidget = new Widget();
-                    result.Add(currentWidget);
-                    field = line.Substring(2);
-                }
-                else if (!String.IsNullOrWhiteSpace(line))
-                    field = line.Trim();
+                result.Dictionary = new[] { new Tuple<string, string>("Content",
+                    fileSections[1].Trim().ToHtml()) };
+                fieldCount++;
+            }
 
-                if (field.IsValidRecord(true))
+            if (fileSections.Length > 0)
+            {
+                var lines = fileContents.Split('\n');
+
+                foreach (var line in lines)
                 {
-                    var (key, value) = field.ParseRecord();
-                    switch (key)
+                    string field = String.IsNullOrWhiteSpace(line) 
+                        ? string.Empty 
+                        : line.Trim();
+
+                    if (field.IsValidRecord(true))
                     {
-                        case ID_KEY:
-                            currentWidget.Id = Guid.Parse(value);
-                            currentDictionary = null;
-                            currentDictionaryItem = null;
-                            break;
+                        var (key, value) = field.ParseRecord();
+                        switch (key)
+                        {
+                            case ID_KEY:
+                                result.Id = Guid.Parse(value);
+                                break;
 
-                        case TITLE_KEY:
-                            currentWidget.Title = value;
-                            currentDictionary = null;
-                            currentDictionaryItem = null;
-                            break;
+                            case TITLE_KEY:
+                                result.Title = value;
+                                break;
 
-                        case WIDGETTYPE_KEY:
-                            currentWidget.WidgetType = value.ParseWidgetType();
-                            currentDictionary = null;
-                            currentDictionaryItem = null;
-                            break;
+                            case WIDGETTYPE_KEY:
+                                result.WidgetType = value.ParseWidgetType();
+                                break;
 
-                        case SHOWTITLE_KEY:
-                            currentWidget.ShowTitle = Boolean.Parse(value);
-                            currentDictionary = null;
-                            currentDictionaryItem = null;
-                            break;
+                            case SHOWTITLE_KEY:
+                                result.ShowTitle = Boolean.Parse(value);
+                                break;
 
-                        case DICTIONARY_KEY:
-                            currentDictionary = new List<Tuple<string, string>>();
-                            currentWidget.Dictionary = currentDictionary;
-                            if (value.Replace(" ", "") == "[]")
-                                currentDictionary = null;
-                            break;
+                            case SHOWINSIDEBAR_KEY:
+                                result.ShowInSidebar = Boolean.Parse(value);
+                                break;
 
-                        case DICTIONARYKEY_KEY:
-                            if (currentDictionary.IsNotNull())
-                                currentDictionaryItem = new Tuple<string, string>(value, string.Empty);
-                            break;
+                            case ORDERINDEX_KEY:
+                                result.OrderIndex = Byte.Parse(value);
+                                break;
 
-                        case DICTIONARYVALUE_KEY:
-                            if (currentDictionaryItem.IsNotNull())
-                            {
-                                currentDictionaryItem = new Tuple<string, string>(currentDictionaryItem.Item1, value);
-                                currentDictionary.Add(currentDictionaryItem);
-                                currentDictionaryItem = null;
-                            }
-                            break;
-
-                        default:
-                            break;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
@@ -192,6 +174,7 @@ namespace PPTail.Data.Forestry
             const string THEME_KEY = "theme";
             const string DESCRIPTION_KEY = "description";
             const string COPYRIGHT_KEY = "copyright";
+            const string CONTACTEMAIL_KEY = "contactemail";
 
             SiteSettings result = new SiteSettings();
             int settingsCount = 0;
@@ -235,6 +218,11 @@ namespace PPTail.Data.Forestry
                     case COPYRIGHT_KEY:
                         settingsCount++;
                         result.Copyright = line.Value;
+                        break;
+
+                    case CONTACTEMAIL_KEY:
+                        settingsCount++;
+                        result.ContactEmail = line.Value;
                         break;
 
                     default:

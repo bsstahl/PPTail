@@ -20,16 +20,17 @@ namespace PPTail.Data.Forestry
         const string _dataRelativePath = "Data";
         const string _pagesRelativePath = "Pages";
         const string _postsRelativePath = "Posts";
+        const string _widgetsRelativePath = "Widgets";
 
         const String _settingsFilename = "SiteSettings.md";
         const String _categoriesFilename = "Categories.md";
-        const String _widgetsFilename = "Widgets.md";
 
         private readonly IServiceProvider _serviceProvider;
         private readonly string _rootDataPath;
         private readonly string _rootPagesPath;
         private readonly string _rootPostsPath;
         private readonly String _rootSitePath;
+        private readonly string _rootWidgetsPath;
 
         private SiteSettings _siteSettings = null;
         private IEnumerable<Category> _categories = null;
@@ -48,6 +49,7 @@ namespace PPTail.Data.Forestry
             _rootDataPath = System.IO.Path.Combine(_rootSitePath, _dataRelativePath);
             _rootPagesPath = System.IO.Path.Combine(_rootSitePath, _pagesRelativePath);
             _rootPostsPath = System.IO.Path.Combine(_rootSitePath, _postsRelativePath);
+            _rootWidgetsPath = System.IO.Path.Combine(_rootSitePath, _widgetsRelativePath);
         }
 
         public SiteSettings GetSiteSettings()
@@ -106,12 +108,19 @@ namespace PPTail.Data.Forestry
         public IEnumerable<Widget> GetAllWidgets()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
+            var directory = _serviceProvider.GetService<IDirectory>();
 
-            string path = System.IO.Path.Combine(_rootDataPath, _widgetsFilename);
-            var results = fileSystem
-                .ReadAllText(path)
-                .ParseWidgets()
-                .Where(w => w.Id != Guid.Empty);
+            List<Widget> results = new List<Widget>();
+            var files = directory.EnumerateFiles(_rootWidgetsPath);
+            foreach (var file in files)
+            {
+                var widget = fileSystem
+                    .ReadAllText(file)
+                    .ParseWidget();
+
+                if (widget.IsNotNull())
+                    results.Add(widget);
+            }
 
             return results;
         }

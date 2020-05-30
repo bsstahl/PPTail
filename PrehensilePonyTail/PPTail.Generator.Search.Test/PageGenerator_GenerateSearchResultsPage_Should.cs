@@ -269,6 +269,8 @@ namespace PPTail.Generator.Search.Test
         [Fact]
         public void PassTheCorrectPostsPerPageValueToTheTemplateProcessor()
         {
+            // For search pages, the number of posts should be unlimited, 
+            // thus the value passed in PostsPerPage should be zero
             String tag = string.Empty.GetRandom();
             var posts = new List<ContentItem>() { (null as ContentItem).Create(tag) };
             String navigationContent = string.Empty.GetRandom();
@@ -283,9 +285,8 @@ namespace PPTail.Generator.Search.Test
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            var siteSettings = container.BuildServiceProvider().GetService<IContentRepository>().GetSiteSettings();
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), siteSettings.PostsPerPage), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), 0), Times.Once);
         }
 
         [Fact]

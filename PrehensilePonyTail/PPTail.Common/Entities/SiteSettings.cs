@@ -13,5 +13,6 @@ namespace PPTail.Entities
         public Int32 PostsPerFeed { get; set; }
         public String Theme { get; set; } = string.Empty;
         public String Copyright { get; set; }
+        public String ContactEmail { get; set; }
     }
 }

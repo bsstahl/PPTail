@@ -35,7 +35,8 @@ namespace PPTail.Generator.T4Html
         private static String RenderTextBoxWidget(this Widget widget, ITemplateProcessor templateProcessor, String content, String pageTitle, String pathToRoot)
         {
             String results = string.Empty;
-            var template = new Template() { Content = widget.FirstDictionaryItemContent(), TemplateType = Enumerations.TemplateType.Raw };
+            string templateContent = widget.FirstDictionaryItemContent().Replace("{PathToRoot}", pathToRoot);
+            var template = new Template() { Content = templateContent, TemplateType = Enumerations.TemplateType.Raw };
             String widgetContent = templateProcessor.ProcessNonContentItemTemplate(template, string.Empty, string.Empty, content, pageTitle, pathToRoot);
             if (widget.ShowTitle)
                 results += $"<h4>{widget.Title}</h4>";

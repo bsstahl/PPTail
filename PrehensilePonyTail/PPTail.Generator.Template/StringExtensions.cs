@@ -4,6 +4,7 @@ using PPTail.Extensions;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace PPTail.Generator.Template
 {
@@ -23,7 +24,7 @@ namespace PPTail.Generator.Template
 
             var categories = contentRepo.GetCategories();
 
-            var content = item.Content;
+            var content = item.Content.ReplaceField("{PathToRoot}", pathToRoot);
             var description = item.Description;
             var pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
             var pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
@@ -61,10 +62,13 @@ namespace PPTail.Generator.Template
 
         internal static String ReplaceNonContentItemSpecificVariables(this String template, IServiceProvider serviceProvider, String sidebarContent, String navContent, String content, String pathToRoot)
         {
+            var mainContentText = content.ReplaceField("{PathToRoot}", pathToRoot);
+            var sidebarContentText = sidebarContent.ReplaceField("{PathToRoot}", pathToRoot);
+            
             return template
                 .Replace("{NavigationMenu}", navContent)
-                .Replace("{Sidebar}", sidebarContent)
-                .Replace("{Content}", content)
+                .Replace("{Sidebar}", sidebarContentText)
+                .Replace("{Content}", mainContentText)
                 .Replace("{PathToSiteRoot}", pathToRoot)
                 .ReplaceSettingsVariables(serviceProvider);
         }
@@ -80,7 +84,13 @@ namespace PPTail.Generator.Template
 
             return template.Replace("{SiteTitle}", siteSettings.Title)
                 .Replace("{SiteDescription}", siteSettings.Description)
+                .Replace("{ContactEmail}", siteSettings.ContactEmail)
                 .Replace("{Copyright}", siteSettings.Copyright);
+        }
+
+        internal static String ReplaceField(this string template, string sourcefield, string replacementText)
+        {
+            return template.Replace(sourcefield, replacementText);
         }
 
 

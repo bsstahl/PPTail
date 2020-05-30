@@ -18,8 +18,8 @@ namespace PPTail.Generator.Template
         public String Process(Entities.Template pageTemplate, Entities.Template itemTemplate, String sidebarContent, String navContent, IEnumerable<ContentItem> posts, String pageTitle, String pathToRoot, String itemSeparator, Boolean xmlEncodeContent, Int32 maxPostCount)
         {
             // MaxPosts is not pulled from the SiteSettings because
-            // there are 2 possible values that might be used to
-            // define the value, they are PostsPerPage & PostsPerFeed
+            // there are multiple possible values that might be used to
+            // define the value: PostsPerPage, PostsPerFeed & 0 (unlimited)
 
             var recentPosts = posts.OrderByDescending(p => p.PublicationDate).Where(pub => pub.IsPublished);
             if (maxPostCount > 0)

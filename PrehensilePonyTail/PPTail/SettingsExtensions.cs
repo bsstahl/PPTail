@@ -23,7 +23,7 @@ namespace PPTail
             var dateFormatSpecifier = "yyyy-MM-dd";
             var dateTimeFormatSpecifier = "yyyy-MM-dd H:mm UTC";
             var itemSeparator = "<hr/>";
-            var additionalFilePaths = "images,pics";
+            var additionalFilePaths = "Images,Pics,Files";
 
             var createDasBlogSyndicationCompatibilityFile = true;
             var createDasBlogPostsCompatibilityFile = true;
