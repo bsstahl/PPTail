@@ -134,6 +134,31 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
+        public void ReturnTheProperValueInTheIdField()
+        {
+            Guid fieldValueDelegate(ContentItem c) => c.Id;
+            var expected = Guid.NewGuid();
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .Id(expected)
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueInTheIdFieldIfDelimitedBySingleQuotes()
+        {
+            Guid fieldValueDelegate(ContentItem c) => c.Id;
+            var expected = Guid.NewGuid();
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .Id(expected)
+                .IdDelimiter('\'')
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
             String fieldValueDelegate(ContentItem c) => c.Author;

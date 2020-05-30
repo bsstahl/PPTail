@@ -12,6 +12,11 @@ namespace PPTail.Data.Forestry
 {
     public static class StringExtensions
     {
+        public static String ConditionalWrap(this string value, char? delimiter)
+        {
+            return delimiter.HasValue ? $"{delimiter}{value}{delimiter}" : value;
+        }
+
         public static Boolean IsValidRecord(this string record, bool fuzzyMatch = false)
         {
             // A fuzzy match will allow any # of parts (split on colon)
@@ -20,6 +25,21 @@ namespace PPTail.Data.Forestry
             // 4 parts is TODO: Remember what this represents
             int partsCount = record.Split(':').Length;
             return fuzzyMatch ? partsCount > 1 : partsCount == 2 || partsCount == 4;
+        }
+
+        public static Guid ParseGuid(this string value)
+        {
+            Guid result = Guid.Empty;
+
+            if (value.Length == 38)
+                Guid.TryParse(value.Substring(1, 36), out result);
+            else
+                Guid.TryParse(value, out result);
+
+            if (result == Guid.Empty)
+                throw new InvalidOperationException($"Unable to parse a Guid from '{value}'");
+                
+            return result;
         }
 
         public static (String Key, String Value) ParseRecord(this string record)
@@ -325,7 +345,7 @@ namespace PPTail.Data.Forestry
                         {
                             case ID_KEY:
                                 fieldCount++;
-                                result.Id = Guid.Parse(line.Value);
+                                result.Id = line.Value.ParseGuid();
                                 break;
 
                             case AUTHOR_KEY:

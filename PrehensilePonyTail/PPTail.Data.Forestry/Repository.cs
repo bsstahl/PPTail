@@ -94,9 +94,17 @@ namespace PPTail.Data.Forestry
             var files = directory.EnumerateFiles(path);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".md")))
             {
-                var contentItem = fileSystem
-                    .ReadAllText(file)
-                    .ParseContentItem(this.GetCategories());
+                var contentText = fileSystem.ReadAllText(file);
+                ContentItem contentItem = null;
+                try
+                {
+                    contentItem = contentText.ParseContentItem(this.GetCategories());
+                }
+                catch (Exception ex)
+                {
+                    string message = $"Unable to parse a ContentItem from '{file}'\r\n\r\n{contentText}";
+                    throw new InvalidOperationException(message, ex);
+                }
 
                 if (contentItem.IsNotNull())
                     results.Add(contentItem);

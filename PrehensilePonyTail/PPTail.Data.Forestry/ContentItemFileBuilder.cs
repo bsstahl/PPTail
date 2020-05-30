@@ -25,6 +25,7 @@ namespace PPTail.Data.Forestry
 
         private String _publicationDateSerializationFormat = "s";
         private String _lastModificationDateSerializationFormat = "s";
+        private char? _idDelimiter = null;
 
         private bool _removeTags = false;
         private bool _removeMenuOrder = false;
@@ -66,7 +67,7 @@ namespace PPTail.Data.Forestry
             return node.AppendLine("---")
                 .ConditionalAppendList(!_removeTags, "tags", _tags)
                 .ConditionalAppendLine(!_removeMenuOrder, "menuorder", _menuOrder.ToString())
-                .ConditionalAppendLine(!_removeId, "id", _id.ToString())
+                .ConditionalAppendLine(!_removeId, "id", _id.ToString().ConditionalWrap(_idDelimiter))
                 .ConditionalAppendLine(!_removeAuthor, "author", _author.Sanitize())
                 .ConditionalAppendLine(!_removeTitle, "title", _title.Sanitize())
                 .ConditionalAppendLine(!_removeDescription, "description", _description.Sanitize())
@@ -99,6 +100,12 @@ namespace PPTail.Data.Forestry
         {
             _id = value;
             _removeId = false;
+            return this;
+        }
+
+        public ContentItemFileBuilder IdDelimiter(char? value)
+        {
+            _idDelimiter = value;
             return this;
         }
 
