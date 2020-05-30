@@ -24,7 +24,7 @@ namespace PPTail.Generator.Template
 
             var categories = contentRepo.GetCategories();
 
-            var content = item.Content.ReplaceField("{PathToRoot}", pathToRoot);
+            var content = item.Content.ReplacePathToRootVariables(pathToRoot);
             var description = item.Description;
             var pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
             var pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
@@ -62,15 +62,24 @@ namespace PPTail.Generator.Template
 
         internal static String ReplaceNonContentItemSpecificVariables(this String template, IServiceProvider serviceProvider, String sidebarContent, String navContent, String content, String pathToRoot)
         {
-            var mainContentText = content.ReplaceField("{PathToRoot}", pathToRoot);
-            var sidebarContentText = sidebarContent.ReplaceField("{PathToRoot}", pathToRoot);
+            var mainContentText = content.ReplacePathToRootVariables(pathToRoot);
+            var sidebarContentText = sidebarContent.ReplacePathToRootVariables(pathToRoot);
             
             return template
                 .Replace("{NavigationMenu}", navContent)
                 .Replace("{Sidebar}", sidebarContentText)
                 .Replace("{Content}", mainContentText)
-                .Replace("{PathToSiteRoot}", pathToRoot)
+                .ReplacePathToRootVariables(pathToRoot)
                 .ReplaceSettingsVariables(serviceProvider);
+        }
+
+        internal static String ReplacePathToRootVariables(this String content, String pathToRoot)
+        {
+            return content
+                .Replace("{PathToRoot}", pathToRoot)
+                .Replace("{PathToSiteRoot}", pathToRoot)
+                .Replace("%7BPathToRoot%7D", pathToRoot)
+                .Replace("%7BPathToSiteRoot%7D", pathToRoot);
         }
 
         internal static String ReplaceSettingsVariables(this String template, IServiceProvider serviceProvider)

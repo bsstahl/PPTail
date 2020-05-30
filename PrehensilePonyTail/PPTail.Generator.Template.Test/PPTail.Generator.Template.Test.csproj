@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PPTail.Generator.Encoder\PPTail.Generator.Encoder.csproj" />
     <ProjectReference Include="..\PPTail.Generator.Template\PPTail.Generator.Template.csproj" />
   </ItemGroup>
 

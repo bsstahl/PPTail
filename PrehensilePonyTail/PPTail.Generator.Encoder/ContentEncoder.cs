@@ -23,6 +23,8 @@ namespace PPTail.Generator.Encoder
                 .Replace("&lt;", "")
                 .Replace(">", "")
                 .Replace("&gt;", "")
+                .Replace("{", "%7B")
+                .Replace("}", "%7D")
                 .Replace("!", "bang")
                 .Replace("“", "")
                 .Replace("”", "")

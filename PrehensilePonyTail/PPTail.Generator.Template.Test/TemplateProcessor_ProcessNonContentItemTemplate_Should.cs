@@ -203,6 +203,28 @@ namespace PPTail.Generator.Template.Test
         }
 
         [Fact]
+        public void ReplaceThePathToRootPlaceHolderWithTheProperPath()
+        {
+            String pageTemplateContent = "-----{PathToRoot}-----";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var templates = new List<Entities.Template>() { pageTemplate };
+
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
+
+            Assert.Contains(pathToRoot, actual);
+        }
+
+        [Fact]
         public void ReplaceThePathToSiteRootPlaceHolderWithTheProperPath()
         {
             String pageTemplateContent = "-----{PathToSiteRoot}-----";
@@ -216,6 +238,56 @@ namespace PPTail.Generator.Template.Test
             String pathToRoot = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
+
+            Assert.Contains(pathToRoot, actual);
+        }
+
+        [Fact]
+        public void ReplaceThePathToRootPlaceHolderWithTheProperPathEventIfEncoded()
+        {
+            var container = (null as IServiceCollection).Create();
+            var encoder = new PPTail.Generator.Encoder.ContentEncoder(container.BuildServiceProvider());
+
+            String pageTemplateContentRaw = "-----{PathToRoot}-----";
+            String pageTemplateContent = encoder.HTMLEncode(pageTemplateContentRaw);
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var templates = new List<Entities.Template>() { pageTemplate };
+
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
+
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
+
+            Assert.Contains(pathToRoot, actual);
+        }
+
+        [Fact]
+        public void ReplaceThePathToSiteRootPlaceHolderWithTheProperPathEvenIfEncoded()
+        {
+            var container = (null as IServiceCollection).Create();
+            var encoder = new PPTail.Generator.Encoder.ContentEncoder(container.BuildServiceProvider());
+
+            String pageTemplateContentRaw = "-----{PathToSiteRoot}-----";
+            String pageTemplateContent = encoder.HTMLEncode(pageTemplateContentRaw);
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var templates = new List<Entities.Template>() { pageTemplate };
+
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
+
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
