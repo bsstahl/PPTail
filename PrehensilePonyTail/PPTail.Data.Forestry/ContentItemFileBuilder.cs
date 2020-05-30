@@ -23,6 +23,9 @@ namespace PPTail.Data.Forestry
         private IEnumerable<String> _categories;
         private Int32 _menuOrder;
 
+        private String _publicationDateSerializationFormat = "s";
+        private String _lastModificationDateSerializationFormat = "s";
+
         private bool _removeTags = false;
         private bool _removeMenuOrder = false;
         private bool _removeId = false;
@@ -69,8 +72,8 @@ namespace PPTail.Data.Forestry
                 .ConditionalAppendLine(!_removeDescription, "description", _description.Sanitize())
                 .ConditionalAppendLine(!_removeIsPublished, "ispublished", _isPublished.ToString().ToLower())
                 .ConditionalAppendLine(!_removeShowInList, "showinlist", _showInList.ToString().ToLower())
-                .ConditionalAppendLine(!_removePublicationDate, "publicationdate", _publicationDate.ToString("s"))
-                .ConditionalAppendLine(!_removeLastModificationDate, "lastmodificationdate", _lastModificationDate.ToString("s"))
+                .ConditionalAppendLine(!_removePublicationDate, "publicationdate", _publicationDate.ToString(_publicationDateSerializationFormat))
+                .ConditionalAppendLine(!_removeLastModificationDate, "lastmodificationdate", _lastModificationDate.ToString(_lastModificationDateSerializationFormat))
                 .ConditionalAppendLine(!_removeSlug, "slug", _slug)
                 .ConditionalAppendList(!_removeCategories, "categories", _categories)
                 .AppendLine("")
@@ -177,6 +180,12 @@ namespace PPTail.Data.Forestry
             return this;
         }
 
+        public ContentItemFileBuilder PublicationDateSerializationFormat(String value)
+        {
+            _publicationDateSerializationFormat = value;
+            return this;
+        }
+
         public ContentItemFileBuilder RemovePublicationDate()
         {
             _removePublicationDate = true;
@@ -187,6 +196,12 @@ namespace PPTail.Data.Forestry
         {
             _lastModificationDate = value;
             _removeLastModificationDate = false;
+            return this;
+        }
+
+        public ContentItemFileBuilder LastModificationDateSerializationFormat(String value)
+        {
+            _lastModificationDateSerializationFormat = value;
             return this;
         }
 

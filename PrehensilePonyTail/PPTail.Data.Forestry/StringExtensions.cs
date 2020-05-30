@@ -29,7 +29,7 @@ namespace PPTail.Data.Forestry
             if (recordParts.Length == 2)
                 result = (recordParts[0].Trim(), recordParts[1].Trim());
             else if (recordParts.Length > 1)
-                result = (recordParts[0].Trim(), String.Join(":", recordParts.Skip(1).ToArray()));
+                result = (recordParts[0].Trim(), String.Join(":", recordParts.Skip(1).ToArray()).Trim());
             else
                 throw new ArgumentException(nameof(record));
 
@@ -274,7 +274,7 @@ namespace PPTail.Data.Forestry
             {
                 var frontMatter = fileSections[0].Trim().Split('\n');
                 int[] keyIndexes = frontMatter
-                    .Where(l => l.IsValidRecord())
+                    .Where(l => l.IsValidRecord(true))
                     .Select(l => Array.IndexOf(frontMatter, l))
                     .ToArray();
 

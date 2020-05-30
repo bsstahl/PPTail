@@ -231,6 +231,19 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
+        public void ReturnTheProperValueInThePublicationDateFieldIfFullIso8601Format()
+        {
+            DateTime fieldValueDelegate(ContentItem c) => c.PublicationDate.ToSecondPrecision();
+            DateTime expected = DateTime.Parse("1/1/1900").AddSeconds(Int32.MaxValue.GetRandom());
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .PublicationDate(expected)
+                .PublicationDateSerializationFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffzzz")
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
         public void ReturnTheProperValueInTheLastModifiedDateField()
         {
             DateTime fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToSecondPrecision();
@@ -240,6 +253,19 @@ namespace PPTail.Data.Forestry.Test
                 .LastModificationDate(expected)
                 .Build();
             fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueInTheLastModifiedDateFieldIfFullIso8601Format()
+        {
+            DateTime fieldValueDelegate(ContentItem c) => c.LastModificationDate.ToSecondPrecision();
+            DateTime expected = DateTime.Parse("1/1/1900").AddSeconds(Int32.MaxValue.GetRandom());
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .LastModificationDate(expected)
+                .LastModificationDateSerializationFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffzzz")
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected.ToSecondPrecision(), fieldValueDelegate);
         }
 
         [Fact]
