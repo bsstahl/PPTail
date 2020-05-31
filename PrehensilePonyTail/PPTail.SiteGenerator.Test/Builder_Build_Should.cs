@@ -621,13 +621,14 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var categories = (null as IEnumerable<Category>).Create(5);
-            container.ReplaceDependency<IEnumerable<Category>>(categories);
 
             Int32 postCount = 25.GetRandom(10);
             var posts = (null as IEnumerable<ContentItem>).Create(categories, postCount);
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            contentRepo.Setup(r => r.GetCategories()).Returns(categories);
 
             var searchProvider = new Mock<ISearchProvider>();
             container.ReplaceDependency<ISearchProvider>(searchProvider.Object);

@@ -17,7 +17,7 @@ namespace PPTail.Generator.Template
             {
                 var selectedCategories = categories.Where(c => selectedCategoryIds.Contains(c.Id));
                 foreach (var category in selectedCategories)
-                    results += $"{category.Name.CreateSearchLink(serviceProvider, pathToRoot, "Category", cssClass)}&nbsp;";
+                    results += $"{category.Name.ToLower().CreateSearchLink(serviceProvider, pathToRoot, "Category", cssClass)}&nbsp;";
             }
             return results;
         }

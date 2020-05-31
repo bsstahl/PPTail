@@ -60,8 +60,6 @@ namespace PPTail.SiteGenerator
             var syndicationProvider = this.ServiceProvider.GetService<ISyndicationProvider>();
             var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
 
-            var categories = this.ServiceProvider.GetService<IEnumerable<Category>>();
-
             settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
             var sourceProviderName = settings.SourceConnection.GetConnectionStringValue(_providerKey);
             var contentRepo = this.ServiceProvider.GetNamedService<IContentRepository>(sourceProviderName);
@@ -70,6 +68,7 @@ namespace PPTail.SiteGenerator
             var posts = contentRepo.GetAllPosts();
             var pages = contentRepo.GetAllPages();
             var widgets = contentRepo.GetAllWidgets();
+            var categories = contentRepo.GetCategories();
 
             // Create Sidebar Content
             var rootLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "./");
@@ -201,15 +200,19 @@ namespace PPTail.SiteGenerator
             var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
             var usedCategories = categories.Where(c => categoryIds.Contains(c.Id));
 
-            IEnumerable<string> usedCategoryNames = new List<string>();
-            if (usedCategories.Any())
-                usedCategoryNames = usedCategories.Select(c => c.Name);
+            IEnumerable<string> usedCategoryNames = usedCategories.Any() 
+                ? usedCategories.Select(c => c.Name.ToLower()) 
+                : new List<String>();
 
             var searchNames = new List<string>();
             searchNames.AddRange(tags);
             searchNames.AddRange(usedCategoryNames);
 
-            foreach (var name in searchNames.Distinct().Where(t => !string.IsNullOrEmpty(t)))
+            var distinctSearchTerms = searchNames
+                .Distinct()
+                .Where(t => !string.IsNullOrEmpty(t));
+
+            foreach (var name in distinctSearchTerms)
             {
                 result.Add(new SiteFile()
                 {
