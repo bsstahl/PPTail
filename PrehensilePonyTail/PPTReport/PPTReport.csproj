@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+    <ProjectReference Include="..\PPTail.Data.Ef\PPTail.Data.Ef.csproj" />
+    <ProjectReference Include="..\PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj" />
+    <ProjectReference Include="..\PPTail.Data.Forestry\PPTail.Data.Forestry.csproj" />
+    <ProjectReference Include="..\PPTail.Data.NativeJson\PPTail.Data.NativeJson.csproj" />
+    <ProjectReference Include="..\PPTail.Data.WordpressFiles\PPTail.Data.WordpressFiles.csproj" />
+    <ProjectReference Include="..\PPTail.Io\PPTail.Io.csproj" />
+  </ItemGroup>
+
+</Project>

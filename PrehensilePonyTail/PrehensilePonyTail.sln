@@ -138,6 +138,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Forestry", "PPT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Forestry.Test", "PPTail.Data.Forestry.Test\PPTail.Data.Forestry.Test.csproj", "{E3D69688-CA4D-4A37-899A-D93FAA79FF0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTReport", "PPTReport\PPTReport.csproj", "{B78FE80A-1ED7-46D9-83DC-9EE35C765D94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -364,6 +366,10 @@ Global
 		{E3D69688-CA4D-4A37-899A-D93FAA79FF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D69688-CA4D-4A37-899A-D93FAA79FF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D69688-CA4D-4A37-899A-D93FAA79FF0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78FE80A-1ED7-46D9-83DC-9EE35C765D94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78FE80A-1ED7-46D9-83DC-9EE35C765D94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78FE80A-1ED7-46D9-83DC-9EE35C765D94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78FE80A-1ED7-46D9-83DC-9EE35C765D94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -423,6 +429,7 @@ Global
 		{A8747BFA-B710-4E22-8800-75820B6A9A75} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 		{F2632130-BAD3-4B4D-BF99-296D3DD82AC7} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{E3D69688-CA4D-4A37-899A-D93FAA79FF0E} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{B78FE80A-1ED7-46D9-83DC-9EE35C765D94} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C6FD3D6-AA5B-4B33-A93A-E8286791C3F4}
