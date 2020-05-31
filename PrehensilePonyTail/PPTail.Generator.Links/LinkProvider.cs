@@ -29,7 +29,7 @@ namespace PPTail.Generator.Links
         public String GetUrl(String pathToRoot, String relativePath, String fileName)
         {
             var settings = _serviceProvider.GetService<ISettings>();
-            return GetUrl(pathToRoot, relativePath, fileName, settings.OutputFileExtension);
+            return this.GetUrl(pathToRoot, relativePath, fileName, settings.OutputFileExtension);
         }
 
     }

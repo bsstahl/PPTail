@@ -4,7 +4,9 @@ using PPTail.Extensions;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace PPTail.Generator.Template
 {
@@ -27,6 +29,7 @@ namespace PPTail.Generator.Template
             var content = item
                 .Content
                 .ReplacePathToRootVariables(pathToRoot)
+                .ReplacePageLinks(linkProvider, pathToRoot)
                 .ReplaceSettingsVariables(serviceProvider);
 
             var description = item.Description;
@@ -120,6 +123,28 @@ namespace PPTail.Generator.Template
         internal static String ReplaceField(this string template, string sourcefield, string replacementText)
         {
             return template.Replace(sourcefield, replacementText);
+        }
+
+        internal static String ReplacePageLinks(this string template, ILinkProvider linkProvider, String pathToRoot)
+        {
+            var match = Regex.Match(template, @"\{PageLink:([^\|\}]+)\|*([^\}]*)\}");
+            foreach (Match capture in match.Captures)
+            {
+                var sourceText = capture.Groups[0].Value;
+                var fileName = capture.Groups[1].Value;
+                var linkText = capture.Groups[2].Value ?? String.Empty;
+
+                // TODO: Handle the root-level pages like Home and contact.html
+                // TODO: Handle the case where linkText is empty
+
+                string relativePath = "Pages";
+                string linkUrl = linkProvider.GetUrl(pathToRoot, relativePath, fileName);
+                string result = $"[{linkText}]({linkUrl})";
+
+                template = template.Replace(sourceText, result);
+            }
+
+            return template;
         }
 
 

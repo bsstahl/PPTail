@@ -1330,6 +1330,41 @@ namespace PPTail.Generator.Template.Test
             Assert.Contains(expected, actual);
         }
 
+        [Fact]
+        public void ReplaceAPageLinkWithTheProperMarkdownLink()
+        {
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
+
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
+            var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
+
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
+            bool xmlEncodeContent = false;
+            Int32 maxPostCount = 0;
+
+            String pageLinkTitle = string.Empty.GetRandom();
+            String pageLinkDescription = string.Empty.GetRandom();
+            String content = $"======={{PageLink:{pageLinkTitle}|{pageLinkDescription}}}=======";
+            
+            var contentItem = (null as ContentItem).Create();
+            contentItem.Content = content;
+            var posts = new List<ContentItem>() { contentItem };
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
+
+            foreach (var post in posts.Where(p => p.IsPublished))
+                Assert.Contains(post.Title, actual);
+        }
+
 
     }
 }
