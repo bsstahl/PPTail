@@ -196,14 +196,20 @@ namespace PPTail.Data.Forestry
             const string COPYRIGHT_KEY = "copyright";
             const string CONTACTEMAIL_KEY = "contactemail";
 
+            const string SITEVARIABLES_KEY = "sitevariables";
+            const string SITEVARIABLENAME_KEY = "- variablename";
+            const string SITEVARIABLEVALUE_KEY = "variablevalue";
+
             SiteSettings result = new SiteSettings();
             int settingsCount = 0;
 
             IEnumerable<(String Key, string Value)> lines = fileContents
                 .Split('\n')
-                .Where(l => l.IsValidRecord())
+                .Where(l => l.IsValidRecord(true))
                 .Select(l => l.ParseRecord());
 
+            List<SiteVariable> siteVariables = null;
+            SiteVariable currentSiteVariable = null;
             foreach (var line in lines)
             {
                 switch (line.Key)
@@ -245,10 +251,29 @@ namespace PPTail.Data.Forestry
                         result.ContactEmail = line.Value;
                         break;
 
+                    case SITEVARIABLES_KEY:
+                        siteVariables = new List<SiteVariable>();
+                        break;
+
+                    case SITEVARIABLENAME_KEY:
+                        currentSiteVariable = new SiteVariable { Name = line.Value.Trim() };
+                        break;
+
+                    case SITEVARIABLEVALUE_KEY:
+                        if (currentSiteVariable.IsNotNull())
+                        {
+                            currentSiteVariable.Value = line.Value.Trim().Trim('"');
+                            siteVariables.Add(currentSiteVariable);
+                        }
+                        break;
+
                     default:
                         break;
                 }
             }
+
+            if (siteVariables.IsNotNull())
+                result.Variables = siteVariables;
 
             if (settingsCount == 0)
                 throw new SettingNotFoundException(nameof(SiteSettings));
@@ -460,6 +485,25 @@ namespace PPTail.Data.Forestry
                     builder.AppendLine($"{collectionName}:");
                     foreach (var value in values)
                         builder.AppendLine($"- {fieldName}: {value}");
+                }
+                else
+                    builder.AppendLine($"{collectionName}: []");
+            }
+            return builder;
+        }
+
+        public static StringBuilder ConditionalAppendSiteVariables(this StringBuilder builder, bool addList, String collectionName, String fieldNameKey, String fieldValueKey, IEnumerable<SiteVariable> values)
+        {
+            if (addList)
+            {
+                if (values.IsNotNull() && values.Any())
+                {
+                    builder.AppendLine($"{collectionName}:");
+                    foreach (var value in values)
+                    {
+                        builder.AppendLine($"{fieldNameKey}: {value.Name}");
+                        builder.AppendLine($"{fieldValueKey}: \"{value.Value}\"");
+                    }
                 }
                 else
                     builder.AppendLine($"{collectionName}: []");

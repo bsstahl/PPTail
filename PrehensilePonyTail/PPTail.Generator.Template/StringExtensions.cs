@@ -24,7 +24,11 @@ namespace PPTail.Generator.Template
 
             var categories = contentRepo.GetCategories();
 
-            var content = item.Content.ReplacePathToRootVariables(pathToRoot);
+            var content = item
+                .Content
+                .ReplacePathToRootVariables(pathToRoot)
+                .ReplaceSettingsVariables(serviceProvider);
+
             var description = item.Description;
             var pubDate = item.PublicationDate.ToString(settings.DateFormatSpecifier);
             var pubDateTime = item.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
@@ -91,10 +95,26 @@ namespace PPTail.Generator.Template
             var contentRepo = serviceProvider.GetContentRepository(settings.SourceConnection);
             var siteSettings = contentRepo.GetSiteSettings();
 
-            return template.Replace("{SiteTitle}", siteSettings.Title)
+            return template
+                .ReplaceSiteVariables(siteSettings.Variables)
+                .Replace("{SiteTitle}", siteSettings.Title)
                 .Replace("{SiteDescription}", siteSettings.Description)
                 .Replace("{ContactEmail}", siteSettings.ContactEmail)
                 .Replace("{Copyright}", siteSettings.Copyright);
+        }
+
+        internal static String ReplaceSiteVariables(this string template, IEnumerable<SiteVariable> variables)
+        {
+            string result = template;
+
+            if (variables.IsNotNull())
+                foreach (var variable in variables)
+                {
+                    string key = "{" + variable.Name + "}";
+                    result = result.Replace(key, variable.Value);
+                }
+
+            return result;
         }
 
         internal static String ReplaceField(this string template, string sourcefield, string replacementText)

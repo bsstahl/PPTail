@@ -304,6 +304,129 @@ namespace PPTail.Data.Forestry.Test
                 .Verify(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)), Times.Once);
         }
 
+        [Fact]
+        public void ReturnTheCorrectNumberOfSiteVariables()
+        {
+            var siteVariables = (null as IEnumerable<SiteVariable>)
+                .CreateRandom();
 
+            var fileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .Variables(siteVariables)
+                .RemoveTheme()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(fileData.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(siteVariables.Count(), actual.Variables.Count());
+        }
+
+        [Fact]
+        public void ReturnTheCorrectSiteVariableNames()
+        {
+            var siteVariables = (null as IEnumerable<SiteVariable>)
+                .CreateRandom();
+
+            var fileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .Variables(siteVariables)
+                .RemoveTheme()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(fileData.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            var expectedVariableNames = siteVariables.Select(v => v.Name).AsHash();
+            var actualVariableNames = actual.Variables.Select(v => v.Name).AsHash();
+
+            Assert.Equal(expectedVariableNames, actualVariableNames);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectSiteVariableValues()
+        {
+            var siteVariables = (null as IEnumerable<SiteVariable>)
+                .CreateRandom();
+
+            var fileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .Variables(siteVariables)
+                .RemoveTheme()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(fileData.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            var expectedVariableValues = siteVariables.Select(v => v.Value).AsHash();
+            var actualVariableValues = actual.Variables.Select(v => v.Value).AsHash();
+
+            Assert.Equal(expectedVariableValues, actualVariableValues);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectSiteVariable()
+        {
+            var siteVariables = (null as IEnumerable<SiteVariable>)
+                .CreateRandom(1);
+
+            var fileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .Variables(siteVariables)
+                .RemoveTheme()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(fileData.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            var expectedVariable = siteVariables.Single();
+            var actualVariable = actual.Variables.Single();
+
+            Assert.Equal(expectedVariable.Name, actualVariable.Name);
+            Assert.Equal(expectedVariable.Value, actualVariable.Value);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectSiteVariableEvenIfItContainsAColon()
+        {
+            var siteVariableName = String.Empty.GetRandom();
+            var siteVariableValue = $"{string.Empty.GetRandom()}:{string.Empty.GetRandom()}";
+            var siteVariables = new List<SiteVariable>() { new SiteVariable() { Name = siteVariableName, Value = siteVariableValue } };
+
+            var fileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .Variables(siteVariables)
+                .RemoveTheme()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(fileData.ToString());
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            var expectedVariable = siteVariables.Single();
+            var actualVariable = actual.Variables.Single();
+
+            Assert.Equal(expectedVariable.Name, actualVariable.Name);
+            Assert.Equal(expectedVariable.Value, actualVariable.Value);
+        }
     }
 }

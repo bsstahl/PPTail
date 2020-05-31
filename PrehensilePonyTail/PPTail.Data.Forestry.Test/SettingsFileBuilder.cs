@@ -1,5 +1,7 @@
 ﻿using PPTail.Entities;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using TestHelperExtensions;
 
@@ -14,12 +16,16 @@ namespace PPTail.Data.Forestry.Test
         const String _defaultTheme = "MyBlogTheme";
         const String _defaultCopyright = "Copyright &copy; Now by Me. All Rights Reserved.";
 
+        const String _defaultVariableName = "TwitterLink";
+        const String _defaultVariableValue = "[@mytwittername](https://twitter.com/mytwittername)";
+
         private bool _removeTitle = false;
         private bool _removeDescription = false;
         private bool _removePostsPerPage = false;
         private bool _removePostsPerFeed = false;
         private bool _removeTheme = false;
         private bool _removeCopyright = false;
+        private bool _removeVariables = false;
 
         public String Build()
         {
@@ -31,6 +37,7 @@ namespace PPTail.Data.Forestry.Test
                 .ConditionalAppendLine(!_removePostsPerFeed, "postsperfeed", base.PostsPerFeed.ToString())
                 .ConditionalAppendLine(!_removeTheme, "theme", base.Theme)
                 .ConditionalAppendLine(!_removeCopyright, "copyright", base.Copyright)
+                .ConditionalAppendSiteVariables(!_removeVariables, "sitevariables", "- variablename", "  variablevalue", base.Variables)
                 .AppendLine("")
                 .AppendLine("---")
                 .AppendLine("")
@@ -44,7 +51,8 @@ namespace PPTail.Data.Forestry.Test
                 .PostsPerPage(_defaultPostsPerPage)
                 .PostsPerFeed(_defaultPostsPerFeed)
                 .Copyright(_defaultCopyright)
-                .Theme(_defaultTheme);
+                .Theme(_defaultTheme)
+                .Variables(new List<SiteVariable>() { new SiteVariable() { Name = _defaultVariableName, Value = _defaultVariableValue } });
         }
 
         public SettingsFileBuilder UseRandomValues()
@@ -54,7 +62,8 @@ namespace PPTail.Data.Forestry.Test
                 .PostsPerPage(10.GetRandom())
                 .PostsPerFeed(25.GetRandom())
                 .Copyright(string.Empty.GetRandom(30))
-                .Theme(string.Empty.GetRandom(15));
+                .Theme(string.Empty.GetRandom(15))
+                .Variables((null as IEnumerable<SiteVariable>).CreateRandom());
         }
 
         public new SettingsFileBuilder Title(String title)
@@ -126,6 +135,18 @@ namespace PPTail.Data.Forestry.Test
         public SettingsFileBuilder RemoveTheme()
         {
             _removeTheme = true;
+            return this;
+        }
+
+        public new SettingsFileBuilder Variables(IEnumerable<SiteVariable> value)
+        {
+            base.Variables = value;
+            return this;
+        }
+
+        public SettingsFileBuilder RemoveVariables()
+        {
+            _removeVariables = true;
             return this;
         }
 

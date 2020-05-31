@@ -428,5 +428,19 @@ namespace PPTail.Data.Forestry.Test
                     Description = $"Category '{n}'"
                 });
         }
+
+        public static IEnumerable<SiteVariable> CreateRandom(this IEnumerable<SiteVariable> ignore)
+        {
+            return ignore.CreateRandom(10.GetRandom(2));
+        }
+
+        public static IEnumerable<SiteVariable> CreateRandom(this IEnumerable<SiteVariable> ignore, int count)
+        {
+            var results = new List<SiteVariable>();
+            for (int i = 0; i < count; i++)
+                results.Add(new SiteVariable() { Name = String.Empty.GetRandom(), Value = String.Empty.GetRandom() });
+            return results;
+        }
+
     }
 }
