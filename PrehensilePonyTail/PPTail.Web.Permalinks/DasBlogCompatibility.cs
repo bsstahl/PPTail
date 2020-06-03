@@ -49,10 +49,10 @@ namespace PPTail.Web.Permalinks
                         String url = postLocator.GetUrlByPostId(id);
                         context.Response.Redirect(url, true);
                     }
-                    catch (PostNotFoundException ex)
+                    catch (ContentItemNotFoundException ex)
                     {
                         context.Response.Headers.AddHeader("ErrorMessage", ex.Message);
-                        context.Response.Headers.AddHeader("PostId", ex.PostId.ToString());
+                        context.Response.Headers.AddHeader("PostId", ex.Id.ToString());
                         context.Response.StatusCode = 404;
                     }
                 }

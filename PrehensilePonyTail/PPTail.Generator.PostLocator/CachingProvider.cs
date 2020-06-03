@@ -18,7 +18,7 @@ namespace PPTail.Generator.PostLocator
             if (id == Guid.Parse("2f823b30-355a-49e1-8ecf-121cff1b3547"))
                 return "Posts/Exception-Handling-Block.html";
             else
-                throw new PostNotFoundException(id);
+                throw new ContentItemNotFoundException(id);
         }
     }
 }

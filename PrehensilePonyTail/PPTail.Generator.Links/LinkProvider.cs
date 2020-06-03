@@ -23,7 +23,10 @@ namespace PPTail.Generator.Links
 
         public String GetUrl(String pathToRoot, String relativePath, String fileName, String fileExtension)
         {
-            return System.IO.Path.Combine(pathToRoot, relativePath, $"{fileName}.{fileExtension}").ToHttpSlashes().RemoveLeadingDotSlash();
+            // HACK: Use native HTML pathing
+            string fileNameWithExtension = $"{fileName}.{fileExtension}";
+            string fullPath = System.IO.Path.Combine(pathToRoot, relativePath, fileNameWithExtension).ToHttpSlashes().RemoveLeadingDotSlash();
+            return fullPath;
         }
 
         public String GetUrl(String pathToRoot, String relativePath, String fileName)

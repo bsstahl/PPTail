@@ -130,7 +130,7 @@ namespace PPTail.Web.Permalinks.Test
             var context = (null as HttpContext).CreateMockContext(request, response);
             var postLocator = new Mock<IPostLocator>();
             postLocator.Setup(l => l.GetUrlByPostId(It.IsAny<Guid>()))
-                .Throws(new PostNotFoundException(id));
+                .Throws(new ContentItemNotFoundException(id));
 
             var serviceCollection = (null as IServiceCollection).Create();
             serviceCollection.ReplaceDependency<IPostLocator>(postLocator.Object);

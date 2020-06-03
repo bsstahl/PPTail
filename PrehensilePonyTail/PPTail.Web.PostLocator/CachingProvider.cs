@@ -54,7 +54,7 @@ namespace PPTail.Web.PostLocator
             if (_posts.Any(predicate))
                 return _posts.Single(predicate).Value;
             else
-                throw new PostNotFoundException(id);
+                throw new ContentItemNotFoundException(id);
         }
     }
 }

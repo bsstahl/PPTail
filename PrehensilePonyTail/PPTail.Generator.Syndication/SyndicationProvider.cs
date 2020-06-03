@@ -39,8 +39,13 @@ namespace PPTail.Generator.Syndication
             var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
             var siteSettings = contentRepo.GetSiteSettings();
 
+            // HACK: Get the fully qualified link to the site from Settings
+            // It should be Settings and not SiteSettings because it will be different
+            // depending on the execution context
+            var pathToRoot = "https://www.cognitiveinheritance.com/";
+
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-            return templateProcessor.Process(syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, posts, "Syndication", ".", string.Empty, true, siteSettings.PostsPerFeed);
+            return templateProcessor.Process(syndicationTemplate, syndicationItemTemplate, string.Empty, string.Empty, posts, "Syndication", pathToRoot, string.Empty, true, siteSettings.PostsPerFeed);
         }
     }
 }

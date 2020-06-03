@@ -148,7 +148,7 @@ namespace PPTail.Web.PostLocator.Test
             var container = (null as IServiceCollection).Create();
             var serviceProvider = container.BuildServiceProvider();
             var target = new CachingProvider(serviceProvider);
-            Assert.Throws<PostNotFoundException>(() => target.GetUrlByPostId(id));
+            Assert.Throws<ContentItemNotFoundException>(() => target.GetUrlByPostId(id));
         }
     }
 }
