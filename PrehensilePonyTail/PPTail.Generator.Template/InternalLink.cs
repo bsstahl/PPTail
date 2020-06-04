@@ -36,7 +36,7 @@ namespace PPTail.Generator.Template
 
         public String FileExtension
         {
-            get => System.IO.Path.GetExtension(this.FileName).Substring(1);
+            get => System.IO.Path.GetExtension(this.FileName).Trim('.');
         }
 
         public String AsImageEmbedding()
@@ -51,13 +51,21 @@ namespace PPTail.Generator.Template
             return result;
         }
 
+        public string AsUrl(bool addDefaultFileExtension = false)
+        {
+            return this.GetUrl(addDefaultFileExtension);
+        }
+
         public string AsLink(bool addDefaultFileExtension = false)
         {
-            string linkUrl = string.Empty;
-            linkUrl = addDefaultFileExtension
+            return  $"<a href=\"{this.GetUrl(addDefaultFileExtension)}\">{this.LinkText}</a>";
+        }
+
+        private string GetUrl(bool addDefaultFileExtension)
+        {
+            return addDefaultFileExtension
                 ? _linkProvider.GetUrl(this.PathToRoot, this.RelativePath, this.FileName)
                 : _linkProvider.GetUrl(this.PathToRoot, this.RelativePath, this.FileNameWithoutExtension, this.FileExtension);
-            return  $"<a href=\"{linkUrl}\">{this.LinkText}</a>";
         }
 
         public override String ToString()

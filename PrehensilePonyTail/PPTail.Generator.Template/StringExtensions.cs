@@ -137,6 +137,7 @@ namespace PPTail.Generator.Template
                 .ReplaceHomePageLinks(linkProvider, pathToRoot)
                 .ReplaceArchivePageLinks(linkProvider, pathToRoot)
                 .ReplaceContactPageLinks(linkProvider, pathToRoot)
+                .ReplaceFeedLinks(linkProvider, pathToRoot)
                 .ReplaceSearchPageLinks(linkProvider, pathToRoot)
                 .ReplaceContentPageLinks(serviceProvider, pathToRoot)
                 .ReplaceContentPostLinks(serviceProvider, pathToRoot)
@@ -174,6 +175,17 @@ namespace PPTail.Generator.Template
             string defaultLinkText = "Contact Me";
 
             var replacements = template.GetLinkReplacementsForRootPage(linkProvider, regexPattern, pathToRoot, relativePath, fileName, defaultLinkText);
+            return template.Replace(replacements);
+        }
+
+        internal static String ReplaceFeedLinks(this string template, ILinkProvider linkProvider, String pathToRoot)
+        {
+            string regexPattern = @"\{FeedLink\}";
+            string relativePath = String.Empty;
+            string fileName = "syndication.xml";
+            string defaultLinkText = String.Empty;
+
+            var replacements = template.GetLinkReplacementsForFeed(linkProvider, regexPattern, pathToRoot, relativePath, fileName, defaultLinkText);
             return template.Replace(replacements);
         }
 
@@ -222,26 +234,43 @@ namespace PPTail.Generator.Template
             return template.Replace(replacements);
         }
 
-        internal static IEnumerable<(String, InternalLink)> GetLinkReplacementsForRootPage(this String template, ILinkProvider linkProvider, String regexPattern, String pathToRoot, String relativePath, string fileName, String defaultLinkText)
+        internal static IEnumerable<(String, String)> GetLinkReplacementsForRootPage(this String template, ILinkProvider linkProvider, String regexPattern, String pathToRoot, String relativePath, string fileName, String defaultLinkText)
         {
             var matches = Regex.Matches(template, regexPattern);
-            var linkReplacements = new List<(String, InternalLink)>();
+            var linkReplacements = new List<(String, String)>();
             foreach (Match match in matches)
             {
                 var sourceText = match.Groups[0].Value;
                 var linkText = match.Groups[1].Value ?? defaultLinkText;
 
                 var pageLink = new InternalLink(linkProvider, linkText, pathToRoot, relativePath, fileName);
-                linkReplacements.Add((sourceText, pageLink));
+                linkReplacements.Add((sourceText, pageLink.AsLink(true)));
             }
 
             return linkReplacements;
         }
 
-        internal static IEnumerable<(String, InternalLink)> GetLinkReplacementsForSearchTags(this String template, ILinkProvider linkProvider, String regexPattern, String pathToRoot, String relativePath)
+        internal static IEnumerable<(String, String)> GetLinkReplacementsForFeed(this String template, ILinkProvider linkProvider, String regexPattern, String pathToRoot, String relativePath, string fileName, String defaultLinkText)
         {
             var matches = Regex.Matches(template, regexPattern);
-            var linkReplacements = new List<(String, InternalLink)>();
+            var linkReplacements = new List<(String, String)>();
+            foreach (Match match in matches)
+            {
+                var sourceText = match.Groups[0].Value;
+                var linkText = match.Groups[1].Value ?? defaultLinkText;
+
+                var pageLink = new InternalLink(linkProvider, linkText, pathToRoot, relativePath, fileName);
+                linkReplacements.Add((sourceText, pageLink.AsUrl(false)));
+            }
+
+            return linkReplacements;
+        }
+
+
+        internal static IEnumerable<(String, String)> GetLinkReplacementsForSearchTags(this String template, ILinkProvider linkProvider, String regexPattern, String pathToRoot, String relativePath)
+        {
+            var matches = Regex.Matches(template, regexPattern);
+            var linkReplacements = new List<(String, String)>();
             foreach (Match match in matches)
             {
                 var sourceText = match.Groups[0].Value;
@@ -251,7 +280,7 @@ namespace PPTail.Generator.Template
                 string linkText = String.IsNullOrWhiteSpace(group2Value) ? tagName : group2Value;
 
                 var imageEmbedding = new InternalLink(linkProvider, linkText, pathToRoot, relativePath, tagName.ToLower());
-                linkReplacements.Add((sourceText, imageEmbedding));
+                linkReplacements.Add((sourceText, imageEmbedding.AsLink(true)));
             }
 
             return linkReplacements;
@@ -295,13 +324,13 @@ namespace PPTail.Generator.Template
             return linkReplacements;
         }
 
-        internal static IEnumerable<(String, InternalLink)> GetLinkReplacementsForContentItem(this String template, IServiceProvider serviceProvider, String regexPattern, String pathToRoot, String relativePath, Enumerations.TemplateType contentItemType)
+        internal static IEnumerable<(String, String)> GetLinkReplacementsForContentItem(this String template, IServiceProvider serviceProvider, String regexPattern, String pathToRoot, String relativePath, Enumerations.TemplateType contentItemType)
         {
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
             var contentRepo = serviceProvider.GetService<IContentRepository>();
 
             MatchCollection matches = Regex.Matches(template, regexPattern);
-            var linkReplacements = new List<(String, InternalLink)>();
+            var linkReplacements = new List<(String, String)>();
             foreach (Match match in matches)
             {
                 var sourceText = match.Groups[0].Value;
@@ -325,23 +354,12 @@ namespace PPTail.Generator.Template
                     // LinkText defaults to the item title if none supplied
                     linkText = String.IsNullOrWhiteSpace(linkText) ? item.Title : linkText;
                     var pageLink = new InternalLink(linkProvider, linkText, pathToRoot, relativePath, item.Slug);
-                    linkReplacements.Add((sourceText, pageLink));
+                    linkReplacements.Add((sourceText, pageLink.AsLink(true)));
                 }
 
             }
 
             return linkReplacements;
-        }
-
-        internal static String Replace(this String template, IEnumerable<(String, InternalLink)> linkReplacements)
-        {
-            foreach (var (sourceText, pageLink) in linkReplacements)
-            {
-                var result = pageLink.ToString();
-                template = template.Replace(sourceText, result);
-            }
-
-            return template;
         }
 
         internal static String Replace(this String template, IEnumerable<(String, String)> linkReplacements)
