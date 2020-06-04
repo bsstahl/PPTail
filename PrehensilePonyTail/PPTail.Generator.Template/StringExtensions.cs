@@ -35,6 +35,7 @@ namespace PPTail.Generator.Template
             var description = item.Description;
             var pubDate = item.PublicationDate.ToUniversalTime().ToString(settings.DateFormatSpecifier);
             var pubDateTime = item.PublicationDate.ToUniversalTime().ToString(settings.DateTimeFormatSpecifier);
+            var pubDateTimeRFC = item.PublicationDate.ToUniversalTime().ToString("R"); // Wed, 02 Oct 2002 13:00:00 GMT
             var lastModDate = item.LastModificationDate.ToUniversalTime().IsMinDate() ? String.Empty : item.LastModificationDate.ToString(settings.DateFormatSpecifier);
             var lastModDateTime = item.LastModificationDate.ToUniversalTime().IsMinDate() ? String.Empty : item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
 
@@ -58,6 +59,7 @@ namespace PPTail.Generator.Template
                 .Replace("{ByLine}", item.ByLine)
                 .Replace("{PublicationDate}", pubDate)
                 .Replace("{PublicationDateTime}", pubDateTime)
+                .Replace("{PublicationDateTimeRFC}", pubDateTimeRFC)
                 .Replace("{LastModificationDate}", lastModDate)
                 .Replace("{LastModificationDateTime}", lastModDateTime)
                 .Replace("{Link}", linkProvider.GetUrl(pathToRoot, "Posts", item.Slug))
