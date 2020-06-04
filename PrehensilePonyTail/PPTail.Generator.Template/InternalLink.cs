@@ -29,11 +29,45 @@ namespace PPTail.Generator.Template
             this.FileName = fileName;
         }
 
+        public String FileNameWithoutExtension 
+        { 
+            get => System.IO.Path.GetFileNameWithoutExtension(this.FileName);
+        }
+
+        public String FileExtension
+        {
+            get => System.IO.Path.GetExtension(this.FileName).Substring(1);
+        }
+
+        public String AsImageEmbedding()
+        {
+            string src = _linkProvider.GetUrl(this.PathToRoot, this.RelativePath, this.FileNameWithoutExtension, this.FileExtension);
+            
+            string result = $"<img src=\"{src}\" ";
+            if (this.HasLinkText())
+                result += $"alt=\"{this.LinkText}\"";
+            result += " />";
+
+            return result;
+        }
+
+        public string AsLink(bool addDefaultFileExtension = false)
+        {
+            string linkUrl = string.Empty;
+            linkUrl = addDefaultFileExtension
+                ? _linkProvider.GetUrl(this.PathToRoot, this.RelativePath, this.FileName)
+                : _linkProvider.GetUrl(this.PathToRoot, this.RelativePath, this.FileNameWithoutExtension, this.FileExtension);
+            return  $"<a href=\"{linkUrl}\">{this.LinkText}</a>";
+        }
+
         public override String ToString()
         {
-            string linkUrl = _linkProvider.GetUrl(this.PathToRoot, this.RelativePath, this.FileName);
-            string result = $"<a href=\"{linkUrl}\">{this.LinkText}</a>";
-            return result;
+            return this.AsLink(true);
+        }
+
+        private bool HasLinkText()
+        {
+            return (!String.IsNullOrWhiteSpace(this.LinkText));
         }
 
     }
