@@ -223,6 +223,20 @@ namespace PPTail.SiteGenerator
                 });
             }
 
+            // Add favicon.ico file if it exists
+            var rootFiles = contentRepo.GetFolderContents(".");
+            var faviconFile = rootFiles.SingleOrDefault(f => f.FileName == "favicon.ico");
+            if (faviconFile.IsNotNull())
+            {
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = System.IO.Path.Combine("", faviconFile.FileName),
+                    SourceTemplateType = Enumerations.TemplateType.Raw,
+                    Content = System.Convert.ToBase64String(faviconFile.Contents),
+                    IsBase64Encoded = true
+                });
+            }
+
             // Add files from Theme if there are any
             if (!string.IsNullOrWhiteSpace(siteSettings?.Theme))
             {
