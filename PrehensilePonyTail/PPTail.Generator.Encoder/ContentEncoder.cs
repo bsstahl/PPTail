@@ -43,13 +43,13 @@ namespace PPTail.Generator.Encoder
         public String XmlEncode(String data)
         {
             return data
+                .Replace("&", "&amp;")
                 .Replace("<", "&lt;")
                 .Replace(">", "&gt;")
                 .Replace("“", "&quot;")
                 .Replace("”", "&quot;")
                 .Replace("\"", "&quot;")
-                .Replace("'", "&apos;")
-                .Replace("&", "&amp;");
+                .Replace("'", "&apos;");
         }
 
 

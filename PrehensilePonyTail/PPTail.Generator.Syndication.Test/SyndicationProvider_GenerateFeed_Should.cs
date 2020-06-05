@@ -127,6 +127,10 @@ namespace PPTail.Generator.Syndication.Test
         [Fact]
         public void PassTheCorrectPathToRootToTheTemplateProcessor()
         {
+            // TODO: This will have to change when the path
+            // for Syndication is pulled from settings
+            string expected = "https://www.cognitiveinheritance.com/";
+
             var posts = new List<ContentItem>() { (null as ContentItem).Create() };
             var container = (null as IServiceCollection).Create();
 
@@ -137,7 +141,7 @@ namespace PPTail.Generator.Syndication.Test
             var actual = target.GenerateFeed(posts);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), ".", It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), expected, It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -153,7 +157,7 @@ namespace PPTail.Generator.Syndication.Test
             var actual = target.GenerateFeed(posts);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), ".", string.Empty, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<String>(), string.Empty, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]

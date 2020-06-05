@@ -14,18 +14,24 @@ namespace PPTail.Generator.Template.Test
     {
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
+            var contentRepo = new Mock<IContentRepository>();
+            return ignore.Create(contentRepo);
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, Mock<IContentRepository> mockContentRepo)
+        {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Entities.Template>>((null as IEnumerable<Entities.Template>).Create());
             container.AddSingleton<IEnumerable<Category>>(new List<Category>());
 
             var siteSettings = (null as SiteSettings).Create();
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
-            container.AddSingleton<IContentRepository>(contentRepo.Object);
+            mockContentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.AddSingleton<IContentRepository>(mockContentRepo.Object);
 
-            container.AddSingleton<ISettings>((null as ISettings).Create(contentRepo.Object));
+            container.AddSingleton<ISettings>((null as ISettings).Create(mockContentRepo.Object));
             container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
+
             return container;
         }
 

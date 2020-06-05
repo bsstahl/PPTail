@@ -1331,7 +1331,7 @@ namespace PPTail.Generator.Template.Test
         }
 
         [Fact]
-        public void ReplaceAPageLinkWithTheProperMarkdownLink()
+        public void ReplaceAPageLinkWithTheProperLinkTagContents()
         {
             String pageTemplateContent = "-----{Content}-----";
             String itemTemplateContent = "*****{Content}*****";
@@ -1347,24 +1347,85 @@ namespace PPTail.Generator.Template.Test
             bool xmlEncodeContent = false;
             Int32 maxPostCount = 0;
 
-            String pageLinkTitle = string.Empty.GetRandom();
+            String pageLinkSlug = string.Empty.GetRandom();
             String pageLinkDescription = string.Empty.GetRandom();
-            String content = $"======={{PageLink:{pageLinkTitle}|{pageLinkDescription}}}=======";
-            
+            String content = $"======={{PageLink:{pageLinkSlug}|{pageLinkDescription}}}=======";
+
+            var linkedContentItem = (null as ContentItem).Create();
+            linkedContentItem.Slug = pageLinkSlug;
+            linkedContentItem.IsPublished = true;
+
+            var linkedItemRepo = new Mock<IContentRepository>();
+            linkedItemRepo
+                .Setup(r => r.GetAllPages())
+                .Returns(new[] { linkedContentItem });
+
             var contentItem = (null as ContentItem).Create();
+            contentItem.IsPublished = true;
             contentItem.Content = content;
             var posts = new List<ContentItem>() { contentItem };
 
-            var container = (null as IServiceCollection).Create();
+            var container = (null as IServiceCollection).Create(linkedItemRepo);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
             var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
-            foreach (var post in posts.Where(p => p.IsPublished))
-                Assert.Contains(post.Title, actual);
+            string expected = $">{pageLinkDescription}<";
+            Assert.Contains(expected, actual);
         }
 
+        [Fact]
+        public void ReplaceAPageLinkWithTheProperLinkTagAnchor()
+        {
+            String pageTemplateContent = "-----{Content}-----";
+            String itemTemplateContent = "*****{Content}*****";
+
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
+            var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
+
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
+            bool xmlEncodeContent = false;
+            Int32 maxPostCount = 0;
+
+            String pageLinkSlug = string.Empty.GetRandom();
+            String pageLinkDescription = string.Empty.GetRandom();
+            String content = $"======={{PageLink:{pageLinkSlug}|{pageLinkDescription}}}=======";
+
+            var linkedContentItem = (null as ContentItem).Create();
+            linkedContentItem.Slug = pageLinkSlug;
+            linkedContentItem.IsPublished = true;
+
+            var linkedItemRepo = new Mock<IContentRepository>();
+            linkedItemRepo
+                .Setup(r => r.GetAllPages())
+                .Returns(new[] { linkedContentItem });
+
+            var contentItem = (null as ContentItem).Create();
+            contentItem.IsPublished = true;
+            contentItem.Content = content;
+            var posts = new List<ContentItem>() { contentItem };
+
+            string expectedLink = string.Empty.GetRandom();
+            var linkProvider = new Mock<ILinkProvider>();
+            linkProvider
+                .Setup(l => l.GetUrl(pathToRoot, "Pages", linkedContentItem.Slug))
+                .Returns(expectedLink);
+
+            var container = (null as IServiceCollection).Create(linkedItemRepo);
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+            container.ReplaceDependency<ILinkProvider>(linkProvider.Object);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
+
+            string expected = $"<a href=\"{expectedLink}\">";
+            Assert.Contains(expected, actual);
+        }
 
     }
 }

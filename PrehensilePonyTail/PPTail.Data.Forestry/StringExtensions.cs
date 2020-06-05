@@ -117,9 +117,11 @@ namespace PPTail.Data.Forestry
             const string ORDERINDEX_KEY = "orderindex";
             const string WIDGETTYPE_KEY = "widgettype";
 
+            const string HR = "---";
+
             var result = new Widget();
 
-            var fileSections = fileContents.Split(new[] { "---" }, StringSplitOptions.RemoveEmptyEntries);
+            var fileSections = fileContents.Split(new[] { HR }, StringSplitOptions.RemoveEmptyEntries);
             int fieldCount = 0;
 
             if (fileSections.Length > 1)
@@ -295,6 +297,8 @@ namespace PPTail.Data.Forestry
             const string SLUG_KEY = "slug";
             const string CATEGORIES_KEY = "categories";
 
+            const string HR = "---";
+
             ContentItem result = new ContentItem
             {
                 ByLine = string.Empty,
@@ -304,11 +308,12 @@ namespace PPTail.Data.Forestry
             int fieldCount = 0;
 
 
-            var fileSections = fileContents.Split(new[] { "---" }, StringSplitOptions.RemoveEmptyEntries);
+            var fileSections = fileContents.Split(new[] { HR }, StringSplitOptions.RemoveEmptyEntries);
 
             if (fileSections.Length > 1)
             {
-                result.Content = fileSections[1]
+                string contentSection = String.Join($"\r\n{HR}\r\n", fileSections.Skip(1).Select(s => s.Trim()));
+                result.Content = contentSection
                     .Trim()
                     .ToHtml();
 

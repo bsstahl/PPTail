@@ -208,6 +208,23 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
+        public void ReturnTheCorrectValueInTheContentFieldEvenIfItContainsAHorizontalRule()
+        {
+            String fieldValueDelegate(ContentItem c) => c.Content.Trim();
+            string field1 = string.Empty.GetRandom();
+            string field2 = string.Empty.GetRandom();
+            string content = $"# {field1}\n---\n## {field2}";
+            String expected = $"<h1>{field1}</h1>\n<hr />\n<h2>{field2}</h2>\n".Trim();
+
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .Content(content)
+                .Build();
+
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
         public void ReturnTrueIfThePostIsPublished()
         {
             Boolean fieldValueDelegate(ContentItem c) => c.IsPublished;
