@@ -1,4 +1,5 @@
-﻿using PPTail.Entities;
+﻿using PPTail.Builders;
+using PPTail.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,15 @@ namespace PPTail.Generator.Navigation.Test
 {
     public static class Extensions
     {
+
         public static BasicProvider Create(this BasicProvider ignore, IServiceProvider serviceProvider)
         {
             return new BasicProvider(serviceProvider);
+        }
+
+        public static BootstrapProvider Create(this BootstrapProvider ignore, IServiceProvider serviceProvider)
+        {
+            return new BootstrapProvider(serviceProvider);
         }
 
         public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore)
@@ -32,5 +39,6 @@ namespace PPTail.Generator.Navigation.Test
                 });
             return result;
         }
+
     }
 }
