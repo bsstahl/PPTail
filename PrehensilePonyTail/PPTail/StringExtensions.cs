@@ -83,8 +83,8 @@ namespace PPTail
         public static (String[] args, String[] switches) SeparateArgumentsAndSwitches(this string[] allArgs)
         {
             const string SWITCH_KEY = "--";
-            var argResults = allArgs.Where(a => !a.StartsWith(SWITCH_KEY, StringComparison.InvariantCulture)).ToArray();
-            var switchResults = allArgs.Where(a => a.StartsWith(SWITCH_KEY, StringComparison.InvariantCulture)).Select(a => a.ToLower(CultureInfo.InvariantCulture)).ToArray();
+            var argResults = allArgs?.Where(a => !a.StartsWith(SWITCH_KEY, StringComparison.InvariantCulture)).ToArray();
+            var switchResults = allArgs?.Where(a => a.StartsWith(SWITCH_KEY, StringComparison.InvariantCulture)).Select(a => a.ToLower(CultureInfo.InvariantCulture)).ToArray();
             return (argResults, switchResults);
         }
 

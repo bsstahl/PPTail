@@ -31,9 +31,9 @@ namespace PPTail.Data.Forestry
             return converter.Convert(html).Replace("<br>", "\r\n");
         }
 
-        public static String ToHtml(this string markdown)
+        public static String ToHtml(this string markdown, Markdig.MarkdownPipeline markdownPipeline)
         {
-            return Markdig.Markdown.ToHtml(markdown);
+            return Markdig.Markdown.ToHtml(markdown, markdownPipeline);
         }
 
         public static String ConditionalWrap(this string value, char? delimiter)
@@ -116,7 +116,7 @@ namespace PPTail.Data.Forestry
             return results.AsEntity();
         }
 
-        public static Entities.ContentItem ParseContentItem(this string value, IEnumerable<Category> categories)
+        public static Entities.ContentItem ParseContentItem(this string value, IEnumerable<Category> categories, Markdig.MarkdownPipeline markdownPipeline)
         {
             var (frontMatter, content) = value.ParseForestryYaml();
             var yamlDeserializer = new DeserializerBuilder()
@@ -126,12 +126,12 @@ namespace PPTail.Data.Forestry
             var results = yamlDeserializer
                 .Deserialize<ContentItem>(frontMatter);
             results.ByLine = String.IsNullOrEmpty(results.Author) ? String.Empty : $"by {results.Author}";
-            results.Content = content.ToHtml();
+            results.Content = content.ToHtml(markdownPipeline);
 
             return results.AsEntity(categories);
         }
 
-        public static Entities.Widget ParseWidget(this string value)
+        public static Entities.Widget ParseWidget(this string value, Markdig.MarkdownPipeline markdownPipeline)
         {
             var (frontMatter, content) = value.ParseForestryYaml();
             var yamlDeserializer = new DeserializerBuilder()
@@ -144,7 +144,7 @@ namespace PPTail.Data.Forestry
             var entity = results.AsEntity();
             entity.Dictionary = new List<Tuple<string, string>>()
             {
-                new Tuple<string, string>("Content", content.ToHtml())
+                new Tuple<string, string>("Content", content.ToHtml(markdownPipeline))
             };
 
             return entity;

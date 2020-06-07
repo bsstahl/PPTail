@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Xml.Linq;
 using PPTail.Interfaces;
 using PPTail.Extensions;
+using Markdig;
+using Markdig.SyntaxHighlighting;
 
 namespace PPTail.Data.Forestry
 {
@@ -34,6 +36,24 @@ namespace PPTail.Data.Forestry
 
         private Entities.SiteSettings _siteSettings = null;
         private IEnumerable<Category> _categories = null;
+
+        private MarkdownPipeline _markdownPipeline = null;
+
+        public MarkdownPipeline MarkdownPipeline 
+        { 
+            get
+            {
+                if (_markdownPipeline is null)
+                {
+                    _markdownPipeline = new MarkdownPipelineBuilder()
+                        // .UseAdvancedExtensions()
+                        .UseSyntaxHighlighting()
+                        .Build();
+                }
+                return _markdownPipeline;
+            }
+        }
+
 
         public Repository(IServiceProvider serviceProvider)
         {
@@ -99,7 +119,7 @@ namespace PPTail.Data.Forestry
                 Entities.ContentItem contentItem = null;
                 try
                 {
-                    contentItem = contentText.ParseContentItem(categories);
+                    contentItem = contentText.ParseContentItem(categories, this.MarkdownPipeline);
                 }
                 catch (Exception ex)
                 {
@@ -125,7 +145,7 @@ namespace PPTail.Data.Forestry
             {
                 var widget = fileSystem
                     .ReadAllText(file)
-                    .ParseWidget();
+                    .ParseWidget(this.MarkdownPipeline);
 
                 if (widget.IsNotNull())
                     results.Add(widget);
