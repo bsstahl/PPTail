@@ -140,6 +140,18 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
+        public void ReturnAnEmptyStringInTheByDescriptionFieldIfDescriptionIsMissing()
+        {
+            String fieldValueDelegate(ContentItem c) => c.Description;
+            String expected = string.Empty;
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .RemoveDescription()
+                .Build();
+            fileContent.ExecutePagePropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
         public void ReturnTheHtmlFormattedValueInTheContentField()
         {
             String fieldValueDelegate(ContentItem c) => c.Content.Trim();

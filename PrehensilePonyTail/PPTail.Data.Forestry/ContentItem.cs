@@ -33,7 +33,7 @@ namespace PPTail.Data.Forestry
                 Author = this.Author,
                 ByLine = this.ByLine,
                 Content = this.Content,
-                Description = this.Description,
+                Description = this.Description ?? string.Empty,
                 IsPublished = this.IsPublished,
                 LastModificationDate = this.LastModificationDate,
                 MenuOrder = this.MenuOrder,
