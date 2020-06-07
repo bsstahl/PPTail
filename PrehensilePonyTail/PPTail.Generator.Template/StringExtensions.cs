@@ -241,7 +241,7 @@ namespace PPTail.Generator.Template
             foreach (Match match in matches)
             {
                 var sourceText = match.Groups[0].Value;
-                var linkText = match.Groups[1].Value ?? defaultLinkText;
+                var linkText = String.IsNullOrWhiteSpace(match.Groups[1].Value) ? defaultLinkText : match.Groups[1].Value;
 
                 var pageLink = new InternalLink(linkProvider, linkText, pathToRoot, relativePath, fileName);
                 linkReplacements.Add((sourceText, pageLink.AsLink(true)));
