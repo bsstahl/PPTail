@@ -14,6 +14,7 @@ namespace PPTail.Data.Forestry
         public String Theme { get; set; } = string.Empty;
         public String Copyright { get; set; }
         public String ContactEmail { get; set; }
+        public IEnumerable<String> ExtendedSettings { get; set; }
         public IEnumerable<SiteVariable> SiteVariables { get; set; } = new List<SiteVariable>();
 
         public Entities.SiteSettings AsEntity()

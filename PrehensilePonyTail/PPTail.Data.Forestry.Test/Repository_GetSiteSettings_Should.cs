@@ -18,6 +18,9 @@ namespace PPTail.Data.Forestry.Test
         const Int32 _defaultPostsPerFeed = 5;
         const String _dataFolder = "Data";
 
+        const string _sampleFileWithSiteVariables = "---\r\npostsperpage: 9\r\npostsperfeed: 10\r\ntheme: ThemeName\r\ntitle: Site Title\r\ndescription: Long form site description\r\ncopyright: \"&copy; 2020 by Joe Cool\"\r\nextendedsettings: []\r\ncontactemail: TestEmail@MyDomain.com\r\nsitevariables:\r\n- variablename: TwitterLink\r\n  variablevalue: <a href=\"https://twitter.com/mytwitter\">@mytwitter</a>\r\n\r\n---\r\n";
+        const string _sampleFileWithoutSiteVariables = "---\r\npostsperpage: 9\r\npostsperfeed: 10\r\ntheme: ThemeName\r\ntitle: Site Title\r\ndescription: Long form site description\r\ncopyright: \"&copy; 2020 by Joe Cool\"\r\nextendedsettings: []\r\ncontactemail: TestEmail@MyDomain.com\r\n\r\n---\r\n";
+
         [Fact]
         public void ThrowSettingNotFoundExceptionIfSettingsCannotBeLoaded()
         {
@@ -57,7 +60,7 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
-        public void ReadsTheProperFileFromTheFileSystem()
+        public void ReadTheProperFileFromTheFileSystem()
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
             String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
@@ -72,6 +75,34 @@ namespace PPTail.Data.Forestry.Test
             var actual = target.GetSiteSettings();
 
             fileSystem.VerifyAll();
+        }
+
+        [Fact]
+        public void SuccessfullyReadAKnownGoodFileWithSiteVariables()
+        {
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String filePath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(_sampleFileWithSiteVariables);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetSiteSettings();
+        }
+
+        [Fact]
+        public void SuccessfullyReadAKnownGoodFileWithoutSiteVariables()
+        {
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String filePath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(_sampleFileWithoutSiteVariables);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetSiteSettings();
         }
 
         [Fact]
