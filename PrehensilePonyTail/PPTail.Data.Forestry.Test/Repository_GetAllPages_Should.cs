@@ -20,88 +20,75 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void ReturnAllPagesIfAllAreValid()
         {
-            var fileNames = new List<string>
-            {
-                $"{String.Empty.GetRandom()}.md",
-                $"{String.Empty.GetRandom()}.md",
-                $"{String.Empty.GetRandom()}.md"
-            };
+            int expected = 10.GetRandom(3);
 
+            var fileSystemBuilder = new FileSystemBuilder()
+                .AddRandomContentItemFiles(expected)
+                .AddRandomCategories();
+                
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
-                .Returns(fileNames);
+                .Returns(fileSystemBuilder.ContentItemFileNames);
 
-            var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.ReadAllText(It.IsAny<String>()))
-                .Returns(new ContentItemFileBuilder().UseRandomValues().Build());
+            var fileSystem = fileSystemBuilder.Build();
 
-            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystem, directoryProvider.Object, "c:\\");
             var pages = target.GetAllPages();
 
-            Assert.Equal(fileNames.Count(), pages.Count());
+            Assert.Equal(expected, pages.Count());
         }
 
         [Fact]
         public void IgnoreFilesWithoutMDExtension()
         {
-            var files = new List<string>
-            {
-                "82B52DBC-9D33-4C9E-A933-AF515E4FF140",
-                "28C65CCD-D504-44D3-A54B-9E3DBB163D43.md",
-                "0F716B73-9A2F-46D9-A576-3CA03EB10327.ppt",
-                "8EE89C80-760E-4980-B980-5A4B70A563E2.md",
-                "39836B5E-C330-4670-9897-1CBF0851AB5B.txt",
-                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.md",
-                "86F29FA4-29CD-4292-8000-CEAFEA7A2315.com"
-            };
+            var fileSystemBuilder = new FileSystemBuilder()
+                .AddRandomContentItemFiles(2)
+                .AddContentItemFileWithRandomContent(string.Empty.GetRandom())
+                .AddRandomContentItemFiles(1)
+                .AddContentItemFileWithRandomContent($"{string.Empty.GetRandom()}.ppt")
+                .AddRandomContentItemFiles(1)
+                .AddContentItemFileWithRandomContent($"{string.Empty.GetRandom()}.txt")
+                .AddRandomContentItemFiles(3)
+                .AddContentItemFileWithRandomContent($"{string.Empty.GetRandom()}.com")
+                .AddRandomContentItemFiles(1)
+                .AddRandomCategories();
 
-            var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
-
             directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
-                .Returns(files);
+                .Returns(fileSystemBuilder.ContentItemFileNames);
 
-            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(new ContentItemFileBuilder().UseRandomValues().Build());
-
-            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystemBuilder.Build(), directoryProvider.Object, "c:\\");
             var pages = target.GetAllPages();
 
-            Assert.Equal(3, pages.Count());
+            Assert.Equal(8, pages.Count());
         }
 
         [Fact]
         public void RequestFilesFromThePagesFolder()
         {
-            var files = new List<string>
-            {
-                "68AA2FE5-58F9-421A-9C1B-02254B953BC5.md"
-            };
+            var fileSystemBuilder = new FileSystemBuilder()
+                .AddRandomContentItemFiles()
+                .AddRandomCategories();
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
             String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder);
 
             var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
 
-            var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
-
             directoryProvider.Setup(f => f.EnumerateFiles(expectedPath))
-                .Returns(files)
+                .Returns(fileSystemBuilder.ContentItemFileNames)
                 .Verifiable();
 
-            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(new ContentItemFileBuilder().UseRandomValues().Build());
-
             var container = new ServiceCollection();
-            container.AddSingleton<IFile>(fileSystem.Object);
+            container.AddSingleton<IFile>(fileSystemBuilder.Build());
             container.AddSingleton<IDirectory>(directoryProvider.Object);
             container.AddSingleton<ISettings>(settings);
 
             var target = (null as IContentRepository).Create(container.BuildServiceProvider());
             var pages = target.GetAllPages();
 
-            fileSystem.VerifyAll();
+            directoryProvider.VerifyAll();
         }
 
         [Fact]

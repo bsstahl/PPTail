@@ -44,7 +44,7 @@ namespace PPTail.Data.Forestry
 
         public ContentItemFileBuilder() { }
 
-        public ContentItemFileBuilder(ContentItem item, IEnumerable<Category> categories)
+        public ContentItemFileBuilder(Entities.ContentItem item, IEnumerable<Category> categories)
         {
             this.Id(item.Id);
             this.Author(item.Author);

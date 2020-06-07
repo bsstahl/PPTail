@@ -368,32 +368,20 @@ namespace PPTail.Data.Forestry.Test
 
         private static void ExecutePropertyTest<T>(String fileContents, T expected, Func<ContentItem, T> fieldValueDelegate, Func<IContentRepository, IEnumerable<ContentItem>> methodDelegate, IEnumerable<Category> categories)
         {
-            var files = new List<string>
-            {
-                $"{String.Empty.GetRandom(25)}.md"
-            };
-
-            var fileSystem = new Mock<IFile>();
-            var directoryProvider = new Mock<IDirectory>();
+            var fileSystemBuilder = new FileSystemBuilder()
+                .AddContentItemFile($"{string.Empty.GetRandom()}.md", fileContents);
 
             if (categories.IsNotNull() && categories.Any())
-            {
-                // Setup categories file
-                var categoriesFileBuilder = new CategoriesFileBuilder(categories);
-                var categoriesFileContents = categoriesFileBuilder.Build();
+                fileSystemBuilder.AddCategories(categories);
+            else
+                fileSystemBuilder.AddRandomCategories();
 
-                fileSystem.Setup(f => f.ReadAllText(It.Is<String>(s => s.EndsWith("c:\\Data\\Categories.md"))))
-                    .Returns(categoriesFileContents);
-            }
+            var directoryProvider = new Mock<IDirectory>();
 
             directoryProvider.Setup(f => f.EnumerateFiles(It.IsAny<string>()))
-                    .Returns(files);
+                    .Returns(fileSystemBuilder.ContentItemFileNames);
 
-            foreach (var file in files)
-                fileSystem.Setup(f => f.ReadAllText(It.Is<string>(s => s.EndsWith(file))))
-                    .Returns(fileContents);
-
-            var target = (null as IContentRepository).Create(fileSystem.Object, directoryProvider.Object, "c:\\");
+            var target = (null as IContentRepository).Create(fileSystemBuilder.Build(), directoryProvider.Object, "c:\\");
             var contentItems = methodDelegate.Invoke(target);
             var actual = contentItems.ToArray()[0];
 

@@ -119,7 +119,7 @@ namespace PPTail.Data.Forestry.Test
             fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
                 .Returns(xml.ToString());
 
-            SiteSettings actual;
+            Entities.SiteSettings actual;
             String expected = nameof(actual.Title);
             var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
             try

@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TestHelperExtensions;
 
 namespace PPTail.Data.Forestry.Test
 {
     public class CategoriesFileBuilder
     {
-        public readonly List<Category> _categories;
+        private readonly List<Category> _categories;
 
         public CategoriesFileBuilder()
         {
@@ -20,15 +21,15 @@ namespace PPTail.Data.Forestry.Test
             _categories = new List<Category>(categories);
         }
 
-        public CategoriesFileBuilder Category(Category category)
+        public CategoriesFileBuilder AddCategory(Category category)
         {
             _categories.Add(category);
             return this;
         }
 
-        public CategoriesFileBuilder Category(Guid id, string name, string description)
+        public CategoriesFileBuilder AddCategory(Guid id, string name, string description)
         {
-            return this.Category(new Entities.Category()
+            return this.AddCategory(new Entities.Category()
             {
                 Id = id,
                 Name = name,
@@ -36,16 +37,30 @@ namespace PPTail.Data.Forestry.Test
             });
         }
 
-        //public CategoriesFileBuilder CategoryNames(IEnumerable<String> names)
-        //{
-        //    foreach (var name in names)
-        //    {
-        //        Guid id = Guid.NewGuid();
-        //        string description = $"{id.ToString()}_{name}";
-        //        this.Category(id, name, description);
-        //    }
-        //    return this;
-        //}
+        public CategoriesFileBuilder AddCategories(IEnumerable<Entities.Category> categories)
+        {
+            foreach (var category in categories)
+                this.AddCategory(category);
+            return this;
+        }
+
+        public CategoriesFileBuilder AddRandomCategory()
+        {
+            this.AddCategory(Guid.NewGuid(), string.Empty.GetRandom(), string.Empty.GetRandom());
+            return this;
+        }
+
+        public CategoriesFileBuilder AddRandomCategories()
+        {
+            return this.AddRandomCategories(10.GetRandom(3));
+        }
+
+        public CategoriesFileBuilder AddRandomCategories(int count)
+        {
+            for (int i = 0; i < count; i++)
+                this.AddRandomCategory();
+            return this;
+        }
 
         public String Build()
         {
@@ -66,9 +81,5 @@ namespace PPTail.Data.Forestry.Test
             return sb.ToString();
         }
 
-        //public IEnumerable<Guid> BuildIds()
-        //{
-        //    return _categories.Select(c => c.Id);
-        //}
     }
 }

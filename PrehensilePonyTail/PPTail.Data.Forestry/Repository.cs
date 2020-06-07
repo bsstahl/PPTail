@@ -32,7 +32,7 @@ namespace PPTail.Data.Forestry
         private readonly String _rootSitePath;
         private readonly string _rootWidgetsPath;
 
-        private SiteSettings _siteSettings = null;
+        private Entities.SiteSettings _siteSettings = null;
         private IEnumerable<Category> _categories = null;
 
         public Repository(IServiceProvider serviceProvider)
@@ -52,7 +52,7 @@ namespace PPTail.Data.Forestry
             _rootWidgetsPath = System.IO.Path.Combine(_rootSitePath, _widgetsRelativePath);
         }
 
-        public SiteSettings GetSiteSettings()
+        public Entities.SiteSettings GetSiteSettings()
         {
             if (_siteSettings == null)
             {
@@ -75,30 +75,31 @@ namespace PPTail.Data.Forestry
             return _siteSettings;
         }
 
-        public IEnumerable<ContentItem> GetAllPages()
+        public IEnumerable<Entities.ContentItem> GetAllPages()
         {
             return this.GetContentItems(_rootPagesPath);
         }
 
-        public IEnumerable<ContentItem> GetAllPosts()
+        public IEnumerable<Entities.ContentItem> GetAllPosts()
         {
             return this.GetContentItems(_rootPostsPath);
         }
 
-        private IEnumerable<ContentItem> GetContentItems(String path)
+        private IEnumerable<Entities.ContentItem> GetContentItems(String path)
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
 
-            var results = new List<ContentItem>();
+            var results = new List<Entities.ContentItem>();
             var files = directory.EnumerateFiles(path);
             foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".md")))
             {
                 var contentText = fileSystem.ReadAllText(file);
-                ContentItem contentItem = null;
+                var categories = this.GetCategories();
+                Entities.ContentItem contentItem = null;
                 try
                 {
-                    contentItem = contentText.ParseContentItem(this.GetCategories());
+                    contentItem = contentText.ParseContentItem(categories);
                 }
                 catch (Exception ex)
                 {
@@ -113,12 +114,12 @@ namespace PPTail.Data.Forestry
             return results;
         }
 
-        public IEnumerable<Widget> GetAllWidgets()
+        public IEnumerable<Entities.Widget> GetAllWidgets()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
 
-            List<Widget> results = new List<Widget>();
+            List<Entities.Widget> results = new List<Entities.Widget>();
             var files = directory.EnumerateFiles(_rootWidgetsPath);
             foreach (var file in files)
             {

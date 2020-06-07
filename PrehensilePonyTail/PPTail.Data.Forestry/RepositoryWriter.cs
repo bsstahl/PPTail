@@ -43,27 +43,27 @@ namespace PPTail.Data.Forestry
             }
         }
 
-        public void SaveAllPages(IEnumerable<ContentItem> pages)
+        public void SaveAllPages(IEnumerable<Entities.ContentItem> pages)
         {
             string path = System.IO.Path.Combine(_rootFilePath, PAGES_RELATIVE_PATH);
             SaveContentItems(pages, path);
         }
 
-        public void SaveAllPosts(IEnumerable<ContentItem> posts)
+        public void SaveAllPosts(IEnumerable<Entities.ContentItem> posts)
         {
             string path = System.IO.Path.Combine(_rootFilePath, POSTS_RELATIVE_PATH);
             SaveContentItems(posts, path);
         }
 
 
-        public void SaveAllWidgets(IEnumerable<Widget> widgets) => throw new NotImplementedException();
+        public void SaveAllWidgets(IEnumerable<Entities.Widget> widgets) => throw new NotImplementedException();
         public void SaveCategories(IEnumerable<Category> categories) => throw new NotImplementedException();
         public void SaveFolderContents(String relativePath, IEnumerable<SourceFile> contents) => throw new NotImplementedException();
-        public void SaveSiteSettings(SiteSettings settings) => throw new NotImplementedException();
+        public void SaveSiteSettings(Entities.SiteSettings settings) => throw new NotImplementedException();
 
 
 
-        private void SaveContentItems(IEnumerable<ContentItem> contentItems, String relativePath)
+        private void SaveContentItems(IEnumerable<Entities.ContentItem> contentItems, String relativePath)
         {
             string fullPath = System.IO.Path.GetFullPath(relativePath);
             foreach (var item in contentItems)

@@ -7,7 +7,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.Forestry.Test
 {
-    public class SettingsFileBuilder: SiteSettings
+    public class SettingsFileBuilder: Entities.SiteSettings
     {
         const String _defaultTitle = "My Blog";
         const String _defaultDescription = "This is the description of my blog";
@@ -138,7 +138,7 @@ namespace PPTail.Data.Forestry.Test
             return this;
         }
 
-        public new SettingsFileBuilder Variables(IEnumerable<SiteVariable> value)
+        public new SettingsFileBuilder Variables(IEnumerable<Entities.SiteVariable> value)
         {
             base.Variables = value;
             return this;
