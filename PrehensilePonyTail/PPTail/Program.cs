@@ -10,16 +10,16 @@ namespace PPTail
 {
     public static class Program
     {
-        const String _connectionStringProviderKey = "Provider";
+        private const String _connectionStringProviderKey = "Provider";
         private const String _invalidArgumentsText = "Invalid Arguments:";
 
         public static void Main(String[] args)
         {
-            (var argsAreValid, var argumentErrors) = args.ValidateArguments();
+            (var argsAreValid, var argumentErrors) = args.ValidateParameters();
 
             if (argsAreValid)
             {
-                var (sourceConnection, targetConnection, templateConnection) = args.ParseArguments();
+                var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
 
                 var settings = (null as ISettings).Create(sourceConnection, targetConnection, templateConnection);
                 var templateFullPath = System.IO.Path.GetFullPath(templateConnection);
@@ -35,7 +35,11 @@ namespace PPTail
                 // Store the resulting output
                 var outputRepoInstanceName = settings.TargetConnection.GetConnectionStringValue(_connectionStringProviderKey);
                 var outputRepo = serviceProvider.GetNamedService<IOutputRepository>(outputRepoInstanceName);
-                outputRepo.Save(sitePages);
+
+                if (switches.Contains(Constants.VALIDATEONLY_SWITCH))
+                    Console.WriteLine($"Site output skipped due to '{Constants.VALIDATEONLY_SWITCH}' switch setting.");
+                else
+                    outputRepo.Save(sitePages);
             }
             else
             {

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
+using PPTail.Extensions;
 
 namespace PPTail
 {
@@ -12,22 +15,32 @@ namespace PPTail
             return System.IO.Path.Combine(path1, path2);
         }
 
-        public static (String sourceConnection, String targetConnection, String templateConnection) ParseArguments(this string[] args)
+        public static (String sourceConnection, String targetConnection, String templateConnection, String[] switches) ParseArguments(this string[] allArgs)
         {
-            if (args is null)
-                return (null, null, null);
+            var (args, switches) = SeparateArgumentsAndSwitches(allArgs);
+            if ((args is null) || (switches is null))
+                return (null, null, null, null);
             else
-                return (args[0], args[1], args[2]);
+                return (args[0], args[1], args[2], switches);
         }
 
 
-        public static (bool argsAreValid, IEnumerable<string> argumentErrors) ValidateArguments(this string[] args)
+        public static (bool argsAreValid, IEnumerable<string> argumentErrors) ValidateParameters(this string[] allArgs)
         {
+            var (args, switches) = allArgs.SeparateArgumentsAndSwitches();
+
             var errors = new List<string>();
+            var isValid = ValidateArguments(errors, args) && ValidateSwitches(errors, switches);
+
+            return (isValid, errors);
+        }
+
+        private static Boolean ValidateArguments(List<String> errors, String[] args)
+        {
             bool isValid = ((args?.Length == 3) && !args.IsNullOrWhiteSpace());
 
             if ((args is null) || (args.Length != 3))
-                errors.Add("Usage - PPTail.exe SourceConnectionString TargetConnectionString TemplatePath");
+                errors.Add("Usage - PPTail.exe SourceConnectionString TargetConnectionString TemplatePath [--Switches]");
             else
             {
                 if (string.IsNullOrEmpty(args[0]))
@@ -40,7 +53,39 @@ namespace PPTail
                     errors.Add("A value must be supplied for the TemplatePath argument");
             }
 
-            return (isValid, errors);
+            return isValid;
+        }
+
+        public static Boolean ValidateSwitches(List<String> errors, string[] switches)
+        {
+            bool result = true;
+
+            if (switches.IsNotNull())
+                foreach (var item in switches)
+                {
+                    switch (item)
+                    {
+                        // Add switches here
+
+                        case Constants.VALIDATEONLY_SWITCH:
+                            break;
+
+                        default:
+                            result = false;
+                            errors?.Add($"Invalid Switch '{item}'");
+                            break;
+                    }
+                }
+
+            return result;
+        }
+
+        public static (String[] args, String[] switches) SeparateArgumentsAndSwitches(this string[] allArgs)
+        {
+            const string SWITCH_KEY = "--";
+            var argResults = allArgs.Where(a => !a.StartsWith(SWITCH_KEY, StringComparison.InvariantCulture)).ToArray();
+            var switchResults = allArgs.Where(a => a.StartsWith(SWITCH_KEY, StringComparison.InvariantCulture)).Select(a => a.ToLower(CultureInfo.InvariantCulture)).ToArray();
+            return (argResults, switchResults);
         }
 
 

@@ -14,7 +14,7 @@ namespace PPTail.Test
         public void ReturnInvalidIfArgsIsNull()
         {
             string[] target = null;
-            (bool isValid, var errors) = target.ValidateArguments();
+            (bool isValid, var errors) = target.ValidateParameters();
             Assert.False(isValid);
         }
 
@@ -25,7 +25,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (bool isValid, var errors) = target.ValidateArguments();
+            (bool isValid, var errors) = target.ValidateParameters();
             Assert.True(isValid);
         }
 
@@ -36,7 +36,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate, expectedSource };
-            (bool isValid, var errors) = target.ValidateArguments();
+            (bool isValid, var errors) = target.ValidateParameters();
             Assert.False(isValid);
         }
 
@@ -47,7 +47,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (bool isValid, var errors) = target.ValidateArguments();
+            (bool isValid, var errors) = target.ValidateParameters();
             Assert.False(isValid);
         }
 
@@ -58,7 +58,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty;
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (bool isValid, var errors) = target.ValidateArguments();
+            (bool isValid, var errors) = target.ValidateParameters();
             Assert.False(isValid);
         }
 
@@ -69,7 +69,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty;
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (bool isValid, var errors) = target.ValidateArguments();
+            (bool isValid, var errors) = target.ValidateParameters();
             Assert.False(isValid);
         }
 
