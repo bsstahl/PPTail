@@ -27,10 +27,13 @@ namespace PPTail.Templates.Yaml
         {
             // Uses the FileSystem provider under the covers
             var templateProvider = new PPTail.Templates.FileSystem.ReadRepository(_serviceProvider, _templatePath);
+            var yamlTemplates = templateProvider.GetAllTemplates();
 
-            // TODO: Modify parsed YAML
+            // Modify parsed YAML
+            var templates = yamlTemplates
+                .Select(t => t.ToHtmlContent());
 
-            return templateProvider.GetAllTemplates();
+            return templates;
         }
     }
 }
