@@ -37,6 +37,8 @@ namespace PPTail.Templates.Yaml.Test
         public static void ExecuteTemplateContentTest(this String templateFilename, Enumerations.TemplateType templateType)
         {
             string expected = string.Empty.GetRandom();
+            string yamlFile = $"---\r\n\r\n---\r\n{expected}";
+
             string templatePath = string.Empty.GetRandom();
             string expectedPath = System.IO.Path.Combine(templatePath, templateFilename);
 
@@ -46,7 +48,7 @@ namespace PPTail.Templates.Yaml.Test
                 .Returns(string.Empty.GetRandom());
             mockFileService
                 .Setup(f => f.ReadAllText(expectedPath))
-                .Returns(expected);
+                .Returns(yamlFile);
 
             var serviceProvider = new ServiceCollection()
                 .AddFileService(mockFileService)
