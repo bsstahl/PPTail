@@ -8,8 +8,6 @@ namespace PPTail.Templates.FileSystem
 {
     public class ReadRepository : Interfaces.ITemplateRepository
     {
-        private readonly IServiceProvider _serviceProvider;
-
         public ReadRepository(IServiceProvider serviceProvider)
         {
             throw new NotImplementedException();
