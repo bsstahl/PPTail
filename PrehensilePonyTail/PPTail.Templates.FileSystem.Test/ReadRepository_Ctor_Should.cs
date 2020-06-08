@@ -13,5 +13,11 @@ namespace PPTail.Templates.FileSystem.Test
                 .BuildServiceProvider();
             var target = new ReadRepository(serviceProvider);
         }
+
+        [Fact]
+        public void ThrowArgumentNullExceptionIfServiceProviderNotProvided()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ = new ReadRepository(null));
+        }
     }
 }

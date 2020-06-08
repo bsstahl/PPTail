@@ -8,9 +8,14 @@ namespace PPTail.Templates.FileSystem
 {
     public class ReadRepository : Interfaces.ITemplateRepository
     {
+        private readonly IServiceProvider _serviceProvider;
+
         public ReadRepository(IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            if (serviceProvider is null)
+                throw new ArgumentNullException(nameof(serviceProvider));
+
+            _serviceProvider = serviceProvider;
         }
 
         public IEnumerable<Template> GetAllTemplates()
