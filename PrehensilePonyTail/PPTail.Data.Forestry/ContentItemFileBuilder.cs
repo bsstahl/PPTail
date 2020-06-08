@@ -2,6 +2,7 @@
 using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -71,8 +72,8 @@ namespace PPTail.Data.Forestry
                 .ConditionalAppendLine(!_removeAuthor, "author", _author.Sanitize())
                 .ConditionalAppendLine(!_removeTitle, "title", _title.Sanitize())
                 .ConditionalAppendLine(!_removeDescription, "description", _description.Sanitize())
-                .ConditionalAppendLine(!_removeIsPublished, "ispublished", _isPublished.ToString().ToLower())
-                .ConditionalAppendLine(!_removeShowInList, "showinlist", _showInList.ToString().ToLower())
+                .ConditionalAppendLine(!_removeIsPublished, "ispublished", _isPublished.ToString().ToLower(CultureInfo.CurrentCulture))
+                .ConditionalAppendLine(!_removeShowInList, "showinlist", _showInList.ToString().ToLower(CultureInfo.CurrentCulture))
                 .ConditionalAppendLine(!_removePublicationDate, "publicationdate", _publicationDate.ToString(_publicationDateSerializationFormat))
                 .ConditionalAppendLine(!_removeLastModificationDate, "lastmodificationdate", _lastModificationDate.ToString(_lastModificationDateSerializationFormat))
                 .ConditionalAppendLine(!_removeSlug, "slug", _slug)
@@ -255,7 +256,7 @@ namespace PPTail.Data.Forestry
         public ContentItemFileBuilder CategoryIds(IEnumerable<Guid> value, IEnumerable<Category> categories)
         {
             var categoryNames = new List<String>();
-            foreach (var categoryId in value)
+            foreach (var categoryId in value ?? new List<Guid>())
             {
                 var category = categories.SingleOrDefault(c => c.Id == categoryId);
                 if (category.IsNotNull())

@@ -17,7 +17,7 @@ namespace PPTail.Data.Forestry
     {
         public static String Sanitize(this string value)
         {
-            return value
+            return value?
                 .Replace(" : ", " -- ")
                 .Replace(" :", " -- ")
                 .Replace(": ", " -- ")
@@ -43,6 +43,9 @@ namespace PPTail.Data.Forestry
 
         public static StringBuilder ConditionalAppendLine(this StringBuilder builder, bool addLine, String name, String value)
         {
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
+
             if (addLine)
                 _ = string.IsNullOrEmpty(name)
                     ? builder.AppendLine(value)
@@ -53,12 +56,15 @@ namespace PPTail.Data.Forestry
 
         public static StringBuilder ConditionalAppendList(this StringBuilder builder, bool addList, String name, IEnumerable<String> values)
         {
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
+
             if (addList)
             {
                 if (values.IsNotNull() && values.Any())
                 {
                     builder.AppendLine($"{name}:");
-                    foreach (var value in values)
+                    foreach (var value in values ?? Array.Empty<String>())
                         builder.AppendLine($"- {value}");
                 }
                 else
@@ -69,12 +75,15 @@ namespace PPTail.Data.Forestry
 
         public static StringBuilder ConditionalAppendSiteVariables(this StringBuilder builder, bool addList, String collectionName, String fieldNameKey, String fieldValueKey, IEnumerable<Entities.SiteVariable> values)
         {
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
+
             if (addList)
             {
                 if (values.IsNotNull() && values.Any())
                 {
                     builder.AppendLine($"{collectionName}:");
-                    foreach (var value in values)
+                    foreach (var value in values ?? new List<Entities.SiteVariable>())
                     {
                         builder.AppendLine($"{fieldNameKey}: {value.Name}");
                         builder.AppendLine($"{fieldValueKey}: \"{value.Value}\"");
@@ -97,6 +106,9 @@ namespace PPTail.Data.Forestry
 
         public static Entities.SiteSettings ParseSettings(this string value)
         {
+            if (String.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value));
+
             var (frontMatter, content) = value.ParseForestryYaml();
             var yamlDeserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)
@@ -118,6 +130,9 @@ namespace PPTail.Data.Forestry
 
         public static Entities.ContentItem ParseContentItem(this string value, IEnumerable<Category> categories, Markdig.MarkdownPipeline markdownPipeline)
         {
+            if (String.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value));
+
             var (frontMatter, content) = value.ParseForestryYaml();
             var yamlDeserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)
@@ -133,6 +148,9 @@ namespace PPTail.Data.Forestry
 
         public static Entities.Widget ParseWidget(this string value, Markdig.MarkdownPipeline markdownPipeline)
         {
+            if (String.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value));
+
             var (frontMatter, content) = value.ParseForestryYaml();
             var yamlDeserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)
@@ -152,6 +170,9 @@ namespace PPTail.Data.Forestry
 
         public static IEnumerable<Entities.Category> ParseCategories(this string value)
         {
+            if (String.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value));
+
             var (frontMatter, content) = value.ParseForestryYaml();
             var yamlDeserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)

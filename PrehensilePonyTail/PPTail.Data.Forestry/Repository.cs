@@ -112,7 +112,7 @@ namespace PPTail.Data.Forestry
 
             var results = new List<Entities.ContentItem>();
             var files = directory.EnumerateFiles(path);
-            foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".md")))
+            foreach (var file in files.Where(f => f.ToUpperInvariant().EndsWith(".MD", StringComparison.InvariantCulture)))
             {
                 var contentText = fileSystem.ReadAllText(file);
                 var categories = this.GetCategories();

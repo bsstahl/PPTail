@@ -45,14 +45,20 @@ namespace PPTail.Data.Forestry
 
         public void SaveAllPages(IEnumerable<Entities.ContentItem> pages)
         {
+            if (pages is null)
+                throw new ArgumentNullException(nameof(pages));
+
             string path = System.IO.Path.Combine(_rootFilePath, PAGES_RELATIVE_PATH);
-            SaveContentItems(pages, path);
+            this.SaveContentItems(pages, path);
         }
 
         public void SaveAllPosts(IEnumerable<Entities.ContentItem> posts)
         {
+            if (posts is null)
+                throw new ArgumentNullException(nameof(posts));
+
             string path = System.IO.Path.Combine(_rootFilePath, POSTS_RELATIVE_PATH);
-            SaveContentItems(posts, path);
+            this.SaveContentItems(posts, path);
         }
 
 

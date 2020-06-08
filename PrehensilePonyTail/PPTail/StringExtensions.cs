@@ -17,11 +17,13 @@ namespace PPTail
 
         public static (String sourceConnection, String targetConnection, String templateConnection, String[] switches) ParseArguments(this string[] allArgs)
         {
-            var (args, switches) = SeparateArgumentsAndSwitches(allArgs);
-            if ((args is null) || (switches is null))
-                return (null, null, null, null);
-            else
-                return (args[0], args[1], args[2], switches);
+            (String, String, String, String[]) result = (null, null, null, null);
+            if (allArgs.IsNotNull())
+            {
+                var (args, switches) = SeparateArgumentsAndSwitches(allArgs);
+                result = (args[0], args[1], args[2], switches);
+            }
+            return result;
         }
 
 
@@ -61,7 +63,7 @@ namespace PPTail
             bool result = true;
 
             if (switches.IsNotNull())
-                foreach (var item in switches)
+                foreach (var item in switches ?? Array.Empty<String>())
                 {
                     switch (item)
                     {
