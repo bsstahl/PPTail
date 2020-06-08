@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Exceptions;
 using System;
+using TestHelperExtensions;
 using Xunit;
 
 namespace PPTail.Templates.FileSystem.Test
@@ -10,14 +12,25 @@ namespace PPTail.Templates.FileSystem.Test
         public void SucceedIfAllDependenciesSupplied()
         {
             var serviceProvider = new ServiceCollection()
+                .AddDirectoryService()
                 .BuildServiceProvider();
-            var target = new ReadRepository(serviceProvider);
+            var target = new ReadRepository(serviceProvider, String.Empty.GetRandom());
         }
 
         [Fact]
         public void ThrowArgumentNullExceptionIfServiceProviderNotProvided()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = new ReadRepository(null));
+            Assert.Throws<ArgumentNullException>(() => _ = new ReadRepository(null, String.Empty.GetRandom()));
         }
+
+        [Fact]
+        public void ThrowADependencyNotFoundExceptionIfTheDirectoryServiceDependencyNotProvided()
+        {
+            string templatePath = string.Empty.GetRandom();
+            var serviceProvider = new ServiceCollection()
+                .BuildServiceProvider();
+            Assert.Throws<DependencyNotFoundException>(() => new ReadRepository(serviceProvider, templatePath));
+        }
+
     }
 }

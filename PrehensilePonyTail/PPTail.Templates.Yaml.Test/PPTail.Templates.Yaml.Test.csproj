@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+    <ProjectReference Include="..\PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj" />
     <ProjectReference Include="..\PPTail.Templates.Yaml\PPTail.Templates.Yaml.csproj" />
   </ItemGroup>
 

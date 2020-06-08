@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+    <ProjectReference Include="..\PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj" />
   </ItemGroup>
 
 </Project>

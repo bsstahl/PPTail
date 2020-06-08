@@ -1,5 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Entities;
+using PPTail.Exceptions;
 using System;
+using TestHelperExtensions;
 using Xunit;
 
 namespace PPTail.Templates.Yaml.Test
@@ -9,15 +12,20 @@ namespace PPTail.Templates.Yaml.Test
         [Fact]
         public void SucceedIfAllDependenciesSupplied()
         {
+            string templatePath = string.Empty.GetRandom();
             var serviceProvider = new ServiceCollection()
+                .AddDirectoryService()
                 .BuildServiceProvider();
-            var target = new ReadRepository(serviceProvider);
+            var target = new ReadRepository(serviceProvider, templatePath);
         }
 
         [Fact]
         public void ThrowArgumentNullExceptionIfServiceProviderNotProvided()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = new ReadRepository(null));
+            string templatePath = string.Empty.GetRandom();
+            IServiceProvider serviceProvider = null;
+            Assert.Throws<ArgumentNullException>(() => _ = new ReadRepository(serviceProvider, templatePath));
         }
+
     }
 }
