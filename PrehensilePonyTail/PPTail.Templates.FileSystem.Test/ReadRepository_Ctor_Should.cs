@@ -12,7 +12,7 @@ namespace PPTail.Templates.FileSystem.Test
         public void SucceedIfAllDependenciesSupplied()
         {
             var serviceProvider = new ServiceCollection()
-                .AddDirectoryService()
+                .AddFileService()
                 .BuildServiceProvider();
             var target = new ReadRepository(serviceProvider, String.Empty.GetRandom());
         }
@@ -24,7 +24,7 @@ namespace PPTail.Templates.FileSystem.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheDirectoryServiceDependencyNotProvided()
+        public void ThrowADependencyNotFoundExceptionIfTheFileServiceDependencyNotProvided()
         {
             string templatePath = string.Empty.GetRandom();
             var serviceProvider = new ServiceCollection()

@@ -10,23 +10,22 @@ namespace PPTail.Templates.Yaml.Test
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDirectoryService(this IServiceCollection container)
+        public static IServiceCollection AddFileService(this IServiceCollection container)
         {
-            string folderPath = string.Empty.GetRandom();
-            var fileList = Array.Empty<String>();
-            return container.AddDirectoryService(folderPath, fileList);
+            String fileContent = String.Empty.GetRandom();
+            return container.AddFileService(fileContent);
         }
 
-        public static IServiceCollection AddDirectoryService(this IServiceCollection container, string folderPath, IEnumerable<String> fileList)
+        public static IServiceCollection AddFileService(this IServiceCollection container, string fileContent)
         {
-            var mockDirectory = new Mock<IDirectory>();
-            mockDirectory.Setup(d => d.EnumerateFiles(folderPath)).Returns(fileList);
-            return container.AddDirectoryService(mockDirectory);
+            var mockFileService = new Mock<IFile>();
+            mockFileService.Setup(f => f.ReadAllText(It.IsAny<String>())).Returns(fileContent);
+            return container.AddFileService(mockFileService);
         }
 
-        public static IServiceCollection AddDirectoryService(this IServiceCollection container, Mock<IDirectory> mockDirectory)
+        public static IServiceCollection AddFileService(this IServiceCollection container, Mock<IFile> mockFileService)
         {
-            return container.AddSingleton<IDirectory>(mockDirectory.Object);
+            return container.AddSingleton<IFile>(mockFileService.Object);
         }
     }
 }

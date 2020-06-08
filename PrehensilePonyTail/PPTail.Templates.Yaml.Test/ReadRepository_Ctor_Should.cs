@@ -14,7 +14,7 @@ namespace PPTail.Templates.Yaml.Test
         {
             string templatePath = string.Empty.GetRandom();
             var serviceProvider = new ServiceCollection()
-                .AddDirectoryService()
+                .AddFileService()
                 .BuildServiceProvider();
             var target = new ReadRepository(serviceProvider, templatePath);
         }
