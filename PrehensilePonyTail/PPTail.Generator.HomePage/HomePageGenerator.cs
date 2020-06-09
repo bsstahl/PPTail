@@ -39,7 +39,7 @@ namespace PPTail.Generator.HomePage
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
             var settings = _serviceProvider.GetService<ISettings>();
 
-            var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
+            var contentRepo = _serviceProvider.GetContentRepository();
             var siteSettings = contentRepo.GetSiteSettings(); 
 
             return templateProcessor.Process(homepageTemplate, itemTemplate, sidebarContent, navigationContent, posts, "Home", ".", settings.ItemSeparator, false, siteSettings.PostsPerPage);

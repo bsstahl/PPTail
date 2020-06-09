@@ -25,10 +25,13 @@ namespace PPTail.Extensions
             return service;
         }
 
-        public static IContentRepository GetContentRepository(this IServiceProvider serviceProvider, String connectionString)
+        public static IContentRepository GetContentRepository(this IServiceProvider serviceProvider)
         {
-            String instanceName = connectionString.GetConnectionStringValue("Provider");
-            return serviceProvider.GetNamedService<IContentRepository>(instanceName);
+            // At one time there were multiple IContentRepositories in the container
+            // That no longer happens but that is why this method exists
+            // It can be removed if everywhere that calls it is restored
+            // to the line below.
+            return serviceProvider.GetService<IContentRepository>();
         }
 
         public static IEnumerable<Entities.Template> GetTemplates(this IServiceProvider serviceProvider)

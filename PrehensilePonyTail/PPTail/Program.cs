@@ -34,7 +34,9 @@ namespace PPTail
 
                 if (switches.Contains(Constants.VALIDATEONLY_SWITCH))
                 {
-                    Console.WriteLine("Site generated successfully.");
+                    var contentRepo = serviceProvider.GetService<IContentRepository>();
+                    var siteSettings = contentRepo.GetSiteSettings();
+                    Console.WriteLine($"{siteSettings.Title} generated successfully.");
                     Console.WriteLine($"\tPost Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage).ToString()}");
                     Console.WriteLine($"\tContent Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage).ToString()}");
                 }

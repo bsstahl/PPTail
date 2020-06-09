@@ -28,7 +28,7 @@ namespace PPTail.Generator.Navigation
         {
             const string childMenuName = "Community";
 
-            var contentRepo = _serviceProvider.GetService<IContentRepository>();
+            var contentRepo = _serviceProvider.GetContentRepository();
             var linkProvider = _serviceProvider.GetService<ILinkProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();

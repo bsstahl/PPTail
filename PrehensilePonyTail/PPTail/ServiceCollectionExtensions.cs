@@ -6,6 +6,7 @@ using PPTail.Entities;
 using PPTail.Extensions;
 using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 
 namespace PPTail
 {
@@ -26,18 +27,29 @@ namespace PPTail
             return container;
         }
 
-        internal static IServiceCollection AddSourceRepository(this IServiceCollection container, ISettings setting)
+        internal static IServiceCollection AddSourceRepository(this IServiceCollection container, ISettings settings)
         {
-            // TODO: Only add the one specified in settings
+            var provider = settings.SourceConnection.GetConnectionStringValue("Provider");
+            var path = settings.SourceConnection.GetConnectionStringValue("FilePath");
 
-            return container
-                .AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>()
-                .AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>()
-                .AddSingleton<IContentRepository, PPTail.Data.NativeJson.Repository>()
-                .AddSingleton<IContentRepository, PPTail.Data.WordpressFiles.Repository>()
-                .AddSingleton<IContentRepository, PPTail.Data.PhotoBlog.Repository>()
-                .AddSingleton<IContentRepository, PPTail.Data.MediaBlog.Repository>()
-                .AddSingleton<IContentRepository, PPTail.Data.Forestry.Repository>();
+            if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.FILESYSTEM.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>();
+            else if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.EF.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>();
+            else if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.NATIVEJSON.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.NativeJson.Repository>();
+            else if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.WORDPRESSFILES.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.WordpressFiles.Repository>();
+            else if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.PHOTOBLOG.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.PhotoBlog.Repository>();
+            else if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.MEDIABLOG.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.MediaBlog.Repository>();
+            else if (provider.ToUpperInvariant().Equals("PPTAIL.DATA.FORESTRY.REPOSITORY"))
+                container.AddSingleton<IContentRepository, PPTail.Data.Forestry.Repository>();
+            else
+                throw new ArgumentException($"Unknown source provider '{provider}'", nameof(settings));
+
+            return container;
         }
 
         internal static IServiceCollection AddServices(this IServiceCollection container)

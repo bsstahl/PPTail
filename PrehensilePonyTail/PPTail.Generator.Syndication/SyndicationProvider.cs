@@ -34,14 +34,14 @@ namespace PPTail.Generator.Syndication
             var syndicationTemplate = _templates.Find(Enumerations.TemplateType.Syndication);
             var syndicationItemTemplate = _templates.Find(Enumerations.TemplateType.SyndicationItem);
 
-            // var siteSettings = _serviceProvider.GetService<SiteSettings>();
-            var settings = _serviceProvider.GetService<ISettings>();
-            var contentRepo = _serviceProvider.GetContentRepository(settings.SourceConnection);
+            var contentRepo = _serviceProvider.GetContentRepository();
             var siteSettings = contentRepo.GetSiteSettings();
 
             // HACK: Get the fully qualified link to the site from Settings
             // It should be Settings and not SiteSettings because it will be different
             // depending on the execution context
+
+            // var settings = _serviceProvider.GetService<ISettings>();
             var pathToRoot = "https://www.cognitiveinheritance.com/";
 
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();

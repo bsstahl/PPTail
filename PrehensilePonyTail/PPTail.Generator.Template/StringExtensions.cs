@@ -20,8 +20,8 @@ namespace PPTail.Generator.Template
             serviceProvider.ValidateService<ILinkProvider>();
             serviceProvider.ValidateService<IContentEncoder>();
 
-            var contentRepo = serviceProvider.GetService<IContentRepository>();
             var settings = serviceProvider.GetService<ISettings>();
+            var contentRepo = serviceProvider.GetContentRepository();
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
 
@@ -101,8 +101,7 @@ namespace PPTail.Generator.Template
             serviceProvider.ValidateService<ISettings>();
             serviceProvider.ValidateService<IContentRepository>();
 
-            var settings = serviceProvider.GetService<ISettings>();
-            var contentRepo = serviceProvider.GetContentRepository(settings.SourceConnection);
+            var contentRepo = serviceProvider.GetContentRepository();
             var siteSettings = contentRepo.GetSiteSettings();
 
             return template
