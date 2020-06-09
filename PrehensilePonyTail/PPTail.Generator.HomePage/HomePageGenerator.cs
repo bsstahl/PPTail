@@ -26,7 +26,7 @@ namespace PPTail.Generator.HomePage
             _serviceProvider.ValidateService<ITemplateProcessor>();
             _serviceProvider.ValidateService<ISettings>(); // TODO: Add code coverage
 
-            _templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = _serviceProvider.GetTemplates();
             _templates.Validate(TemplateType.HomePage);
             _templates.Validate(TemplateType.Item);
 

@@ -24,7 +24,8 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -46,7 +47,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor
@@ -69,7 +70,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -90,7 +91,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -111,7 +112,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -131,7 +132,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -151,7 +152,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -171,7 +172,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -192,7 +193,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -213,7 +214,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -237,7 +238,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
@@ -259,7 +260,7 @@ namespace PPTail.Generator.HomePage.Test
             String navigationContent = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            container.ReplaceTemplateRepo(templates);
 
             var contentRepo = new Mock<IContentRepository>();
             var siteSettings = (null as SiteSettings).Create();

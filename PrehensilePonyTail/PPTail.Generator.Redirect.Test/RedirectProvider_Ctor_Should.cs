@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PPTail.Entities;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
 using System;
@@ -35,8 +36,8 @@ namespace PPTail.Generator.Redirect.Test
         [Fact]
         public void ThrowATemplateNotFoundExceptionIfTheRedirectTemplateIsNotProvided()
         {
-            var container = new ServiceCollection();
-            Assert.Throws<TemplateNotFoundException>(() => new RedirectProvider(container.BuildServiceProvider()));
+            var templates = new List<Template>();
+            Assert.Throws<TemplateNotFoundException>(() => (null as IRedirectProvider).Create(templates));
         }
 
     }

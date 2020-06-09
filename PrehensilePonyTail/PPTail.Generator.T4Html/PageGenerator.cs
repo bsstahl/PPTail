@@ -30,10 +30,7 @@ namespace PPTail.Generator.T4Html
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<INavigationProvider>();
 
-            // _settings = _serviceProvider.GetService<ISettings>();
-            // _navProvider = _serviceProvider.GetService<INavigationProvider>();
-
-            _templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = _serviceProvider.GetTemplates();
         }
 
         public String GenerateStylesheet()

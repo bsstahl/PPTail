@@ -26,9 +26,6 @@ namespace PPTail.Generator.Archive.Test
 
             var container = (null as IServiceCollection).Create();
 
-            //var siteSettings = (null as SiteSettings).Create();
-            //container.ReplaceDependency<SiteSettings>(siteSettings);
-
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -78,9 +75,6 @@ namespace PPTail.Generator.Archive.Test
 
             var container = (null as IServiceCollection).Create();
 
-            //var siteSettings = (null as SiteSettings).Create();
-            //container.ReplaceDependency<SiteSettings>(siteSettings);
-
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -88,7 +82,10 @@ namespace PPTail.Generator.Archive.Test
             var target = (null as BasicProvider).Create(serviceProvider);
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container
+                .BuildServiceProvider()
+                .GetTemplates();
+
             var searchTemplate = templates.Find(Enumerations.TemplateType.Archive);
 
             templateProcessor
@@ -107,9 +104,6 @@ namespace PPTail.Generator.Archive.Test
 
             var container = (null as IServiceCollection).Create();
 
-            //var siteSettings = (null as SiteSettings).Create();
-            //container.ReplaceDependency<SiteSettings>(siteSettings);
-
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
@@ -117,7 +111,7 @@ namespace PPTail.Generator.Archive.Test
             var target = (null as BasicProvider).Create(serviceProvider);
             var actual = target.GenerateArchive(posts, pages, navContent, sidebarContent, pathToRoot);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var itemTemplate = templates.Find(Enumerations.TemplateType.ArchiveItem);
 
             templateProcessor

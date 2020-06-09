@@ -56,7 +56,7 @@ namespace PPTail.Generator.ContentPage.Test
             var target = (null as IContentItemPageGenerator).Create(container);
             var actual = target.Generate(sidebarContent, navigationContent, contentItem, templateType, pathToRoot, xmlEncodeContent);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var template = templates.Find(templateType);
             templateProcessor
                 .Verify(t => t.ProcessContentItemTemplate(template, It.IsAny<ContentItem>(), It.IsAny<String>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);

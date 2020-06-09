@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Exceptions;
 using PPTail.Interfaces;
@@ -53,7 +54,11 @@ namespace PPTail.Generator.Archive.Test
 
             var templates = (null as IEnumerable<Template>).Create();
             var activeTemplates = templates.Where(t => t.TemplateType != Enumerations.TemplateType.Archive);
-            container.ReplaceDependency<IEnumerable<Template>>(activeTemplates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(activeTemplates);
+            container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
 
             Assert.Throws<TemplateNotFoundException>(() => new Archive.BasicProvider(container.BuildServiceProvider()));
         }
@@ -65,7 +70,11 @@ namespace PPTail.Generator.Archive.Test
 
             var templates = (null as IEnumerable<Template>).Create();
             var activeTemplates = templates.Where(t => t.TemplateType != Enumerations.TemplateType.ArchiveItem);
-            container.ReplaceDependency<IEnumerable<Template>>(activeTemplates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(activeTemplates);
+            container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
 
             Assert.Throws<TemplateNotFoundException>(() => new Archive.BasicProvider(container.BuildServiceProvider()));
         }
@@ -77,7 +86,11 @@ namespace PPTail.Generator.Archive.Test
 
             var templates = (null as IEnumerable<Template>).Create();
             var activeTemplates = templates.Where(t => t.TemplateType != Enumerations.TemplateType.Archive);
-            container.ReplaceDependency<IEnumerable<Template>>(activeTemplates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(activeTemplates);
+            container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
 
             Enumerations.TemplateType actual = Enumerations.TemplateType.Bootstrap;
             try
@@ -99,7 +112,11 @@ namespace PPTail.Generator.Archive.Test
 
             var templates = (null as IEnumerable<Template>).Create();
             var activeTemplates = templates.Where(t => t.TemplateType != Enumerations.TemplateType.ArchiveItem);
-            container.ReplaceDependency<IEnumerable<Template>>(activeTemplates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(activeTemplates);
+            container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
 
             Enumerations.TemplateType actual = Enumerations.TemplateType.Bootstrap;
             try

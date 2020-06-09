@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using TestHelperExtensions;
 using Moq;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace PPTail.Generator.Syndication.Test
 {
@@ -36,8 +37,9 @@ namespace PPTail.Generator.Syndication.Test
             var syndicationTemplate = new Template() { Content = _defaultSyndicationTemplateContent, TemplateType = Enumerations.TemplateType.Syndication };
             var syndicationItemTemplate = new Template() { Content = _defaultSyndicationItemTemplateContent, TemplateType = Enumerations.TemplateType.SyndicationItem };
             var templates = new List<Template>() { syndicationTemplate, syndicationItemTemplate };
-
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates()).Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             return container;
         }
@@ -64,6 +66,13 @@ namespace PPTail.Generator.Syndication.Test
             container.RemoveDependency<T>();
             container.AddSingleton<T>(serviceInstance);
             return container;
+        }
+
+        public static IServiceCollection ReplaceTemplateRepo(this IServiceCollection container, IEnumerable<Template> templates)
+        {
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates()).Returns(templates);
+            return container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
         }
 
         public static ContentItem Create(this ContentItem ignore)

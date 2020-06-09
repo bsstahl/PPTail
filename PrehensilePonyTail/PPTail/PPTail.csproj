@@ -36,6 +36,8 @@
     <ProjectReference Include="..\PPTail.Io\PPTail.Io.csproj" />
     <ProjectReference Include="..\PPTail.Output.FileSystem\PPTail.Output.FileSystem.csproj" />
     <ProjectReference Include="..\PPTail.SiteGenerator\PPTail.SiteGenerator.csproj" />
+    <ProjectReference Include="..\PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj" />
+    <ProjectReference Include="..\PPTail.Templates.Yaml\PPTail.Templates.Yaml.csproj" />
   </ItemGroup>
 
   <ItemGroup>

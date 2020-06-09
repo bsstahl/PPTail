@@ -25,18 +25,15 @@ namespace PPTail.Generator.ContentPage.Test
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>((null as IEnumerable<Template>).CreateBlankTemplates());
             container.AddSingleton<ISettings>((null as ISettings).CreateDefault());
             container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
 
-            //container.AddSingleton<SiteSettings>(new SiteSettings()
-            //{
-            //    Title = string.Empty.GetRandom(),
-            //    Description = string.Empty.GetRandom(),
-            //    PostsPerPage = 10.GetRandom(5),
-            //    PostsPerFeed = 20.GetRandom(10)
-            //});
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             return container;
         }

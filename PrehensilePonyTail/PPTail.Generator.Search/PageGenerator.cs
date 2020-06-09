@@ -29,11 +29,7 @@ namespace PPTail.Generator.Search
             _serviceProvider.ValidateService<ITemplateProcessor>();
             _serviceProvider.ValidateService<ISettings>(); // TODO: Add code coverage
 
-            // Guard code for a null result for the 
-            // IEnumerable<Category> or IEnumerable<Template> variables
-            // is not required because the Service Provider will return an empty
-            // array if the collections have not been added to the container
-            _templates = serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = serviceProvider.GetTemplates();
             _searchTemplate = _templates.Find(Enumerations.TemplateType.SearchPage);
             _itemTemplate = _templates.Find(Enumerations.TemplateType.Item);
         }

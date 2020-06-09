@@ -25,11 +25,12 @@ namespace PPTail.Generator.Archive.Test
             var settings = (null as ISettings).CreateDefault();
             container.AddSingleton<ISettings>(settings);
 
-            // var siteSettings = (null as SiteSettings).Create();
-            // container.AddSingleton<SiteSettings>(siteSettings);
-
             var templates = (null as IEnumerable<Template>).Create();
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo
+                .Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             var templateProcessor = (null as ITemplateProcessor).Create();
             container.AddSingleton<ITemplateProcessor>(templateProcessor);

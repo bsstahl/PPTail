@@ -82,7 +82,11 @@ namespace PPTail.Generator.T4Html.Test
             Func<String, String> valueFunction = p => p;
             _ = contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
 
-            _ = container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+
+            _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
             _ = container.ReplaceDependency<ISettings>(settings);
             _ = container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
@@ -112,7 +116,11 @@ namespace PPTail.Generator.T4Html.Test
             Func<string, string> valueFunction = p => p;
             contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
 
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+
+            _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
             container.ReplaceDependency<ISettings>(settings);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
@@ -148,7 +156,11 @@ namespace PPTail.Generator.T4Html.Test
             Func<string, string> valueFunction = p => p;
             contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
 
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+
+            _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
             container.ReplaceDependency<ISettings>(settings);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 

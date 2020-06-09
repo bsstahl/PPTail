@@ -72,7 +72,7 @@ namespace PPTail.Generator.Contact.Test
             var target = (null as IContactProvider).Create(container);
             var actual = target.GenerateContactPage(navigationContent, sidebarContent, pathToRoot);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var template = templates.Find(Enumerations.TemplateType.ContactPage);
 
             templateProcessor

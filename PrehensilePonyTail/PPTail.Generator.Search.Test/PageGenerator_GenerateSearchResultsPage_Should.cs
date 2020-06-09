@@ -80,7 +80,7 @@ namespace PPTail.Generator.Search.Test
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var searchTemplate = templates.Find(Enumerations.TemplateType.SearchPage);
 
             templateProcessor
@@ -104,7 +104,7 @@ namespace PPTail.Generator.Search.Test
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var itemTemplate = templates.Find(Enumerations.TemplateType.Item);
 
             templateProcessor

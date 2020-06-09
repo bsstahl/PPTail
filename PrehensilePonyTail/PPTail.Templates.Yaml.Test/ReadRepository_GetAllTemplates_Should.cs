@@ -14,7 +14,6 @@ namespace PPTail.Templates.Yaml.Test
     {
         [Theory]
         [InlineData("Style.template.css")]
-        [InlineData("bootstrap.min.css")]
         [InlineData("HomePage.template.html")]
         [InlineData("ContentPage.template.html")]
         [InlineData("SearchPage.template.html")]
@@ -33,7 +32,6 @@ namespace PPTail.Templates.Yaml.Test
 
         [Theory]
         [InlineData("Style.template.css", TemplateType.Style)]
-        [InlineData("bootstrap.min.css", TemplateType.Bootstrap)]
         [InlineData("HomePage.template.html", TemplateType.HomePage)]
         [InlineData("ContentPage.template.html", TemplateType.ContentPage)]
         [InlineData("SearchPage.template.html", TemplateType.SearchPage)]

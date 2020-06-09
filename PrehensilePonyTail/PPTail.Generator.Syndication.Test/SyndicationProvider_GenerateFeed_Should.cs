@@ -66,7 +66,7 @@ namespace PPTail.Generator.Syndication.Test
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var searchTemplate = templates.Find(Enumerations.TemplateType.Syndication);
 
             templateProcessor
@@ -85,7 +85,7 @@ namespace PPTail.Generator.Syndication.Test
             var target = (null as ISyndicationProvider).Create(container);
             var actual = target.GenerateFeed(posts);
 
-            var templates = container.BuildServiceProvider().GetService<IEnumerable<Template>>();
+            var templates = container.BuildServiceProvider().GetTemplates();
             var itemTemplate = templates.Find(Enumerations.TemplateType.SyndicationItem);
 
             templateProcessor

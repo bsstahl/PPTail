@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using System;
@@ -10,7 +11,7 @@ namespace PPTail.Generator.Redirect.Test
 {
     public static class Extensions
     {
-        public static IRedirectProvider Create(this IRedirectProvider ignore, String redirectTemplateText)
+        internal static IRedirectProvider Create(this IRedirectProvider ignore, String redirectTemplateText)
         {
             var redirectTemplate = new Template()
             {
@@ -27,10 +28,14 @@ namespace PPTail.Generator.Redirect.Test
             return ignore.Create(templates);
         }
 
-        private static IRedirectProvider Create(this IRedirectProvider ignore, List<Template> templates)
+        internal static IRedirectProvider Create(this IRedirectProvider ignore, List<Template> templates)
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton<IEnumerable<Template>>(templates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates()).Returns(templates);
+            serviceCollection.AddSingleton<ITemplateRepository>(templateRepo.Object);
+
             return ignore.Create(serviceCollection);
         }
 

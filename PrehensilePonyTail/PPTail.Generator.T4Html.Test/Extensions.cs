@@ -80,7 +80,11 @@ namespace PPTail.Generator.T4Html.Test
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var testTemplates = templates.Where(t => t.TemplateType != templateTypeToBeMissing);
-            container.AddSingleton<IEnumerable<Template>>(testTemplates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(testTemplates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             var linkProvider = Mock.Of<ILinkProvider>();
             container.AddSingleton<ILinkProvider>(linkProvider);
@@ -111,7 +115,11 @@ namespace PPTail.Generator.T4Html.Test
         {
             var container = new ServiceCollection();
 
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);

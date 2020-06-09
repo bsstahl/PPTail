@@ -16,9 +16,6 @@ namespace PPTail.Generator.Contact.Test
         {
             var container = new ServiceCollection();
 
-            //var siteSettings = (null as SiteSettings).Create();
-            //container.AddSingleton<SiteSettings>(siteSettings);
-
             var settings = (null as Settings).Create();
             container.AddSingleton<ISettings>(settings);
 
@@ -26,7 +23,10 @@ namespace PPTail.Generator.Contact.Test
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
 
             var templates = (null as IEnumerable<Template>).Create();
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             return container;
         }

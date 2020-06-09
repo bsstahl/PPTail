@@ -20,23 +20,6 @@ namespace PPTail.Generator.Contact.Test
             Assert.Throws<ArgumentNullException>(() => new TemplateProvider(null));
         }
 
-        //[Fact]
-        //public void ThrowDependencyNotFoundExceptionIfSiteSettingsAreNotProvided()
-        //{
-        //    String navigationContent = string.Empty.GetRandom();
-        //    String sidebarContent = string.Empty.GetRandom();
-        //    String pathToRoot = string.Empty.GetRandom();
-
-        //    var template = (null as Template).Create();
-        //    var templates = new List<Template>() { template };
-
-        //    var container = new ServiceCollection();
-        //    container.AddSingleton<IEnumerable<Template>>(templates);
-        //    container.AddSingleton<ISettings>(Mock.Of<ISettings>());
-
-        //    Assert.Throws<DependencyNotFoundException>(() => new TemplateProvider(container.BuildServiceProvider()));
-        //}
-
         [Fact]
         public void ThrowWithProperInterfaceTypeNameIfSiteSettingsAreNotProvided()
         {
@@ -47,8 +30,12 @@ namespace PPTail.Generator.Contact.Test
             var template = (null as Template).Create();
             var templates = new List<Template>() { template };
 
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+
             var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
             container.AddSingleton<ISettings>(Mock.Of<ISettings>());
 
             String expected = typeof(SiteSettings).Name;
@@ -117,7 +104,11 @@ namespace PPTail.Generator.Contact.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<IEnumerable<Template>>(templates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             Assert.Throws<TemplateNotFoundException>(() => new TemplateProvider(container.BuildServiceProvider()));
         }

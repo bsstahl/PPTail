@@ -30,5 +30,11 @@ namespace PPTail.Extensions
             String instanceName = connectionString.GetConnectionStringValue("Provider");
             return serviceProvider.GetNamedService<IContentRepository>(instanceName);
         }
+
+        public static IEnumerable<Entities.Template> GetTemplates(this IServiceProvider serviceProvider)
+        {
+            var templateRepo = serviceProvider.GetService<ITemplateRepository>();
+            return templateRepo.GetAllTemplates();
+        }
     }
 }

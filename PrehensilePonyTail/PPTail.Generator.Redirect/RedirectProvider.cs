@@ -11,8 +11,8 @@ namespace PPTail.Generator.Redirect
 {
     public class RedirectProvider : IRedirectProvider
     {
-        IServiceProvider _serviceProvider;
-        IEnumerable<Template> _templates;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IEnumerable<Template> _templates;
 
         public RedirectProvider(IServiceProvider serviceProvider)
         {
@@ -20,10 +20,7 @@ namespace PPTail.Generator.Redirect
             if (serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
-            // Guard code for a null _templates variable is not required
-            // because the Service Provider will return an empty array
-            // if the templates collection has not been added to the container
-            _templates = serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = serviceProvider.GetTemplates();
             _templates.Validate(Enumerations.TemplateType.Redirect);
         }
 

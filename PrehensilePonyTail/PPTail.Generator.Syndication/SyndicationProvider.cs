@@ -24,7 +24,7 @@ namespace PPTail.Generator.Syndication
             _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
 
-            _templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = _serviceProvider.GetTemplates();
             _templates.Validate(Enumerations.TemplateType.Syndication);
             _templates.Validate(Enumerations.TemplateType.SyndicationItem);
         }

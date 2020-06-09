@@ -29,7 +29,7 @@ namespace PPTail.Templates.FileSystem
             var fileProvider = _serviceProvider.GetService<IFile>();
             return new TemplateCollectionBuilder(fileProvider, _templatePath)
                 .AddTemplate(TemplateType.Style, "Style.template.css")
-                .AddTemplate(TemplateType.Bootstrap, "bootstrap.min.css")
+                // .AddTemplate(TemplateType.Bootstrap, "bootstrap.min.css")
                 .AddTemplate(TemplateType.HomePage, "HomePage.template.html")
                 .AddTemplate(TemplateType.SearchPage, "SearchPage.template.html")
                 .AddTemplate(TemplateType.ContentPage, "ContentPage.template.html")

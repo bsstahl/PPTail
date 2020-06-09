@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using PPTail.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail
 {
@@ -20,26 +19,32 @@ namespace PPTail
             if (argsAreValid)
             {
                 var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
-
                 var settings = (null as ISettings).Create(sourceConnection, targetConnection, templateConnection);
-                var templateFullPath = System.IO.Path.GetFullPath(templateConnection);
-                var templates = (null as IEnumerable<Template>).Create(templateFullPath);
-
-                var container = (null as IServiceCollection).Create(settings, templates);
-                var serviceProvider = container.BuildServiceProvider();
+                
+                var serviceProvider = new ServiceCollection()
+                    .AddSingleton<ISettings>(settings)  // TODO: Replace with an ISettingsProvider
+                    .AddSourceRepository(settings) // TODO: Remove from container
+                    .AddTemplateRepository(settings)
+                    .AddServices()
+                    .BuildServiceProvider();
 
                 // Generate the website pages
                 var siteBuilder = serviceProvider.GetService<ISiteBuilder>();
                 var sitePages = siteBuilder.Build();
 
-                // Store the resulting output
-                var outputRepoInstanceName = settings.TargetConnection.GetConnectionStringValue(_connectionStringProviderKey);
-                var outputRepo = serviceProvider.GetNamedService<IOutputRepository>(outputRepoInstanceName);
-
                 if (switches.Contains(Constants.VALIDATEONLY_SWITCH))
-                    Console.WriteLine($"Site output skipped due to '{Constants.VALIDATEONLY_SWITCH}' switch setting.");
+                {
+                    Console.WriteLine("Site generated successfully.");
+                    Console.WriteLine($"\tPost Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage).ToString()}");
+                    Console.WriteLine($"\tContent Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage).ToString()}");
+                }
                 else
+                {
+                    // Store the resulting output
+                    var outputRepoInstanceName = settings.TargetConnection.GetConnectionStringValue(_connectionStringProviderKey);
+                    var outputRepo = serviceProvider.GetNamedService<IOutputRepository>(outputRepoInstanceName);
                     outputRepo.Save(sitePages);
+                }
             }
             else
             {

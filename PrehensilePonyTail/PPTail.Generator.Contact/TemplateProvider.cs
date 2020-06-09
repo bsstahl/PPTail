@@ -26,10 +26,7 @@ namespace PPTail.Generator.Contact
 
             _settings = _serviceProvider.GetService<ISettings>();
 
-            // Guard code for a null _templates variable is not required
-            // because the Service Provider will return an empty array
-            // if the templates collection has not been added to the container
-            _templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = _serviceProvider.GetTemplates();
             _templates.Validate(Enumerations.TemplateType.ContactPage);
         }
 

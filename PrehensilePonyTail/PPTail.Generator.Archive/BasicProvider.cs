@@ -12,8 +12,8 @@ namespace PPTail.Generator.Archive
 {
     public class BasicProvider : IArchiveProvider
     {
-        private IServiceProvider _serviceProvider;
-        private IEnumerable<Template> _templates;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IEnumerable<Template> _templates;
 
         public BasicProvider(IServiceProvider serviceProvider)
         {
@@ -22,9 +22,8 @@ namespace PPTail.Generator.Archive
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider.ValidateService<ITemplateProcessor>();
-            // _serviceProvider.ValidateService<IContentRepository>();
 
-            _templates = serviceProvider.GetService<IEnumerable<Template>>();
+            _templates = serviceProvider.GetTemplates();
             _templates.Validate(TemplateType.Archive);
             _templates.Validate(TemplateType.ArchiveItem);
         }

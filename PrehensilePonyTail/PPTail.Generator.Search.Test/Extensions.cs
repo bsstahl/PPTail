@@ -67,6 +67,7 @@ namespace PPTail.Generator.Search.Test
             var container = new ServiceCollection();
 
             var siteSettings = new SiteSettings() { PostsPerPage = 10.GetRandom(3), PostsPerFeed = 10.GetRandom(3), Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom() };
+            
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.AddSingleton<IContentRepository>(contentRepo.Object);
@@ -76,8 +77,10 @@ namespace PPTail.Generator.Search.Test
             else
                 container.AddSingleton<ISettings>(settings);
 
+            var templateRepo = new Mock<ITemplateRepository>();
             if (templates != null)
-                container.AddSingleton<IEnumerable<Template>>(templates);
+                templateRepo.Setup(r => r.GetAllTemplates()).Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             if (categories != null)
                 contentRepo.Setup(r => r.GetCategories()).Returns(categories);

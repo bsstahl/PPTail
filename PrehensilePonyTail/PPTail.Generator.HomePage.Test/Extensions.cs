@@ -10,6 +10,7 @@ using PPTail.Enumerations;
 using Xunit;
 using PPTail.Exceptions;
 using Moq;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace PPTail.Generator.HomePage.Test
 {
@@ -32,17 +33,11 @@ namespace PPTail.Generator.HomePage.Test
             var templateProcessor = (null as ITemplateProcessor).Create();
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
 
-            //var nav = new FakeNavProvider();
-            //container.AddSingleton<INavigationProvider>(nav);
-
-            //var linkProvider = Mock.Of<ILinkProvider>();
-            //container.AddSingleton<ILinkProvider>(linkProvider);
-
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            container.AddSingleton<IEnumerable<Template>>(templates);
-
-            //var categories = (null as IEnumerable<Category>).Create();
-            //container.AddSingleton<IEnumerable<Category>>(categories);
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             return container;
         }
@@ -78,7 +73,11 @@ namespace PPTail.Generator.HomePage.Test
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var testTemplates = templates.Where(t => t.TemplateType != templateTypeToBeMissing);
-            container.ReplaceDependency<IEnumerable<Template>>(testTemplates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(testTemplates);
+            container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
 
             return ignore.Create(container);
         }
@@ -91,7 +90,12 @@ namespace PPTail.Generator.HomePage.Test
         public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
             var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
+
             container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
@@ -296,6 +300,13 @@ namespace PPTail.Generator.HomePage.Test
             container.RemoveDependency<T>();
             container.AddSingleton<T>(serviceInstance);
             return container;
+        }
+
+        public static IServiceCollection ReplaceTemplateRepo(this IServiceCollection container, IEnumerable<Template> templates)
+        {
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates()).Returns(templates);
+            return container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
         }
     }
 }

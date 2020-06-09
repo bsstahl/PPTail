@@ -23,7 +23,7 @@ namespace PPTail.Generator.ContentPage
 
         public String Generate(String sidebarContent, String navContent, ContentItem pageData, TemplateType templateType, String pathToRoot, Boolean xmlEncodeContent)
         {
-            var templates = _serviceProvider.GetService<IEnumerable<Template>>();
+            var templates = _serviceProvider.GetTemplates();
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
 
             var template = templates.Find(templateType);

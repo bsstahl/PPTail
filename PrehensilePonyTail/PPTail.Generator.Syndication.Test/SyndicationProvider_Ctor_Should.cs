@@ -102,9 +102,11 @@ namespace PPTail.Generator.Syndication.Test
         {
             IServiceCollection container = (null as IServiceCollection).Create();
 
-            var templates = new List<Template>();
-            templates.Add(new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.SyndicationItem });
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templates = new List<Template>
+            {
+                new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.SyndicationItem }
+            };
+            container.ReplaceTemplateRepo(templates);
 
             Assert.Throws<TemplateNotFoundException>(() => (null as ISyndicationProvider).Create(container));
         }
@@ -114,9 +116,11 @@ namespace PPTail.Generator.Syndication.Test
         {
             IServiceCollection container = (null as IServiceCollection).Create();
 
-            var templates = new List<Template>();
-            templates.Add(new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.SyndicationItem });
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templates = new List<Template>
+            {
+                new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.SyndicationItem }
+            };
+            container.ReplaceTemplateRepo(templates);
 
             TemplateType actual = TemplateType.Archive; // Anything but Syndication
             try
@@ -136,9 +140,11 @@ namespace PPTail.Generator.Syndication.Test
         {
             IServiceCollection container = (null as IServiceCollection).Create();
 
-            var templates = new List<Template>();
-            templates.Add(new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.Syndication });
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templates = new List<Template>
+            {
+                new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.Syndication }
+            };
+            container.ReplaceTemplateRepo(templates);
 
             Assert.Throws<TemplateNotFoundException>(() => (null as ISyndicationProvider).Create(container));
         }
@@ -148,9 +154,11 @@ namespace PPTail.Generator.Syndication.Test
         {
             IServiceCollection container = (null as IServiceCollection).Create();
 
-            var templates = new List<Template>();
-            templates.Add(new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.Syndication });
-            container.ReplaceDependency<IEnumerable<Template>>(templates);
+            var templates = new List<Template>
+            {
+                new Template() { Content = string.Empty.GetRandom(), TemplateType = TemplateType.Syndication }
+            };
+            container.ReplaceTemplateRepo(templates);
 
             TemplateType actual = TemplateType.Archive; // Anything but Syndication
             try
