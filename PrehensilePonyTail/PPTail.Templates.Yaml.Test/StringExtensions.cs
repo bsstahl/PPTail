@@ -12,7 +12,7 @@ namespace PPTail.Templates.Yaml.Test
 {
     public static class StringExtensions
     {
-        public static void ExecuteTemplateRetrievalTest(this String templateFilename)
+        internal static void ExecuteTemplateRetrievalTest(this String templateFilename)
         {
             string templatePath = string.Empty.GetRandom();
             string expected = System.IO.Path.Combine(templatePath, templateFilename);
@@ -34,11 +34,15 @@ namespace PPTail.Templates.Yaml.Test
             mockFileService.Verify();
         }
 
-        public static void ExecuteTemplateContentTest(this String templateFilename, Enumerations.TemplateType templateType)
+        internal static void ExecuteTemplateContentTest(this String templateFilename, Enumerations.TemplateType templateType)
         {
             string expected = string.Empty.GetRandom();
             string yamlFile = $"---\r\n\r\n---\r\n{expected}";
+            templateFilename.ExecuteTemplateContentTest(templateType, expected, yamlFile);
+        }
 
+        internal static void ExecuteTemplateContentTest(this String templateFilename, Enumerations.TemplateType templateType, String expected, String yamlFile)
+        {
             string templatePath = string.Empty.GetRandom();
             string expectedPath = System.IO.Path.Combine(templatePath, templateFilename);
 
@@ -59,7 +63,6 @@ namespace PPTail.Templates.Yaml.Test
 
             Assert.Equal(expected, actual.Single(t => t.TemplateType == templateType).Content);
         }
-
 
     }
 }

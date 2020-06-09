@@ -48,5 +48,45 @@ namespace PPTail.Templates.FileSystem.Test
             templateFilename.ExecuteTemplateContentTest(templateType);
         }
 
+        [Fact]
+        public void RetrieveEachTemplateExactlyOnceRegardlessOfHowManyTimesRequested()
+        {
+            string templatePath = string.Empty.GetRandom();
+
+            var mockFileService = new Mock<IFile>();
+            mockFileService.ConfigureTemplate(templatePath, "Style.template.css");
+            mockFileService.ConfigureTemplate(templatePath, "HomePage.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "ContentPage.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "SearchPage.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "PostPage.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "Redirect.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "Archive.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "ArchiveItem.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "Syndication.template.xml");
+            mockFileService.ConfigureTemplate(templatePath, "SyndicationItem.template.xml");
+            mockFileService.ConfigureTemplate(templatePath, "ContactPage.template.html");
+            mockFileService.ConfigureTemplate(templatePath, "ContentItem.template.html");
+
+            var serviceProvider = new ServiceCollection()
+                .AddFileService(mockFileService)
+                .BuildServiceProvider();
+
+            var target = new FileSystem.ReadRepository(serviceProvider, templatePath);
+            var actual = target.GetAllTemplates();
+            actual = target.GetAllTemplates();
+
+            mockFileService.VerifyOnce(templatePath, "Style.template.css");
+            mockFileService.VerifyOnce(templatePath, "HomePage.template.html");
+            mockFileService.VerifyOnce(templatePath, "ContentPage.template.html");
+            mockFileService.VerifyOnce(templatePath, "SearchPage.template.html");
+            mockFileService.VerifyOnce(templatePath, "PostPage.template.html");
+            mockFileService.VerifyOnce(templatePath, "Redirect.template.html");
+            mockFileService.VerifyOnce(templatePath, "Archive.template.html");
+            mockFileService.VerifyOnce(templatePath, "ArchiveItem.template.html");
+            mockFileService.VerifyOnce(templatePath, "Syndication.template.xml");
+            mockFileService.VerifyOnce(templatePath, "SyndicationItem.template.xml");
+            mockFileService.VerifyOnce(templatePath, "ContactPage.template.html");
+            mockFileService.VerifyOnce(templatePath, "ContentItem.template.html");
+        }
     }
 }
