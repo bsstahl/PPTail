@@ -75,6 +75,27 @@ namespace PPTail.Data.FileSystem.Test
         }
 
         [Fact]
+        public void ReadsTheFileFromTheFileSystemOnlyOnceEvenIfCalledMultipleTimes()
+        {
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
+            String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "settings.xml");
+
+            String xml = new SettingsFileBuilder().UseRandomValues().Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem
+                .Setup(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)))
+                .Returns(xml);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
+            var actual = target.GetSiteSettings();
+            actual = target.GetSiteSettings();
+
+            fileSystem
+                .Verify(f => f.ReadAllText(It.Is<string>(p => p == expectedPath)), Times.Once);
+        }
+
+        [Fact]
         public void ReturnTheProperValueForTitle()
         {
             String expected = string.Empty.GetRandom();

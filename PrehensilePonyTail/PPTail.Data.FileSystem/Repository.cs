@@ -25,6 +25,8 @@ namespace PPTail.Data.FileSystem
         private readonly String _rootDataPath;
         private readonly String _rootSitePath;
 
+        SiteSettings _siteSettings = null;
+
         public Repository(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -41,25 +43,25 @@ namespace PPTail.Data.FileSystem
 
         public SiteSettings GetSiteSettings()
         {
-            // TODO: Implement caching here since this method may be called
-            // several times but the settings will not change in the interim
+            if (_siteSettings is null)
+            {
+                var fileSystem = _serviceProvider.GetService<IFile>();
+                String settingsPath = System.IO.Path.Combine(_rootDataPath, _settingsFilename);
+                _siteSettings = fileSystem.ReadAllText(settingsPath).ParseSettings();
+                if (_siteSettings is null)
+                    throw new Exceptions.SettingNotFoundException(typeof(SiteSettings).Name);
 
-            var fileSystem = _serviceProvider.GetService<IFile>();
-            String settingsPath = System.IO.Path.Combine(_rootDataPath, _settingsFilename);
-            var result = fileSystem.ReadAllText(settingsPath).ParseSettings();
-            if (result == null)
-                throw new Exceptions.SettingNotFoundException(typeof(SiteSettings).Name);
+                if (string.IsNullOrWhiteSpace(_siteSettings.Title))
+                    throw new Exceptions.SettingNotFoundException(nameof(_siteSettings.Title));
 
-            if (string.IsNullOrWhiteSpace(result.Title))
-                throw new Exceptions.SettingNotFoundException(nameof(result.Title));
+                if (_siteSettings.PostsPerPage == 0)
+                    _siteSettings.PostsPerPage = _defaultPostsPerPage;
 
-            if (result.PostsPerPage == 0)
-                result.PostsPerPage = _defaultPostsPerPage;
+                if (_siteSettings.PostsPerFeed == 0)
+                    _siteSettings.PostsPerFeed = _defaultPostsPerFeed;
+            }
 
-            if (result.PostsPerFeed == 0)
-                result.PostsPerFeed = _defaultPostsPerFeed;
-
-            return result;
+            return _siteSettings;
         }
 
         public IEnumerable<ContentItem> GetAllPages()
