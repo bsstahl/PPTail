@@ -3,6 +3,7 @@ using PPTail.Entities;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,8 +46,8 @@ namespace PPTail
             };
 
             _ = settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
-            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString());
-            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, createDasBlogPostsCompatibilityFile.ToString());
+            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString(CultureInfo.InvariantCulture));
+            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, createDasBlogPostsCompatibilityFile.ToString(CultureInfo.InvariantCulture));
 
             return settings;
         }

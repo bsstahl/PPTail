@@ -37,8 +37,8 @@ namespace PPTail
                     var contentRepo = serviceProvider.GetService<IContentRepository>();
                     var siteSettings = contentRepo.GetSiteSettings();
                     Console.WriteLine($"{siteSettings.Title} generated successfully.");
-                    Console.WriteLine($"\tPost Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage).ToString()}");
-                    Console.WriteLine($"\tContent Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage).ToString()}");
+                    Console.WriteLine($"\tPost Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage)}");
+                    Console.WriteLine($"\tContent Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage)}");
                 }
                 else
                 {

@@ -122,7 +122,7 @@ namespace PPTail.SiteGenerator
                 Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, rootLevelSidebarContent, "./")
             });
 
-            // TODO: Create RSS Feed
+            // Create RSS Feed
             var syndicationContent = syndicationProvider.GenerateFeed(posts);
             result.Add(new SiteFile()
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PPTail.Builders;
 using PPTail.Entities;
 using PPTail.Enumerations;
 using PPTail.Exceptions;
@@ -18,7 +19,6 @@ namespace PPTail.Generator.T4Html.Test
         [Fact]
         public void NotThrowAnExceptionIfAllDependenciesAreProvided()
         {
-            // TODO: Fix test error
             var target = (null as IPageGenerator).Create();
         }
 
@@ -43,9 +43,9 @@ namespace PPTail.Generator.T4Html.Test
         public void ThrowADependencyNotFoundExceptionIfTheTemplatesAreNotProvided()
         {
             var container = new ServiceCollection();
-
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
+            var settings = new SettingsBuilder()
+                .DateTimeFormatSpecifier(_defaultDateTimeSpecifier)
+                .Build();
             container.AddSingleton<ISettings>(settings);
 
             Assert.Throws<DependencyNotFoundException>(() => new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider()));
@@ -55,9 +55,9 @@ namespace PPTail.Generator.T4Html.Test
         public void ThrowADependencyNotFoundExceptionIfTheNavigationProviderIsNotProvided()
         {
             var container = new ServiceCollection();
-
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = _defaultDateTimeSpecifier;
+            var settings = new SettingsBuilder()
+                .DateTimeFormatSpecifier(_defaultDateTimeSpecifier)
+                .Build();
             container.AddSingleton<ISettings>(settings);
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
