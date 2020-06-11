@@ -6,6 +6,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class WidgetZoneBuilder: WidgetZone
     {
         internal WidgetZone Build()

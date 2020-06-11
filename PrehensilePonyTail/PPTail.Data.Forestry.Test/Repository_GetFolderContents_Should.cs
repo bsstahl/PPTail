@@ -11,6 +11,7 @@ using PPTail.Entities;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetFolderContents_Should
     {
 

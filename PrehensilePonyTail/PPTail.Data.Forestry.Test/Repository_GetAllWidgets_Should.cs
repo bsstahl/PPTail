@@ -15,6 +15,7 @@ using System.Runtime.CompilerServices;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllWidgets_Should
     {
         const String _rootPath = "c:\\";

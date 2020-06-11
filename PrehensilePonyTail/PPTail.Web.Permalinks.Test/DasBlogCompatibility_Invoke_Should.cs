@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Web.Permalinks.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class DasBlogCompatibility_Invoke_Should
     {
         const String _dasBlogPostsFile = "post.aspx";

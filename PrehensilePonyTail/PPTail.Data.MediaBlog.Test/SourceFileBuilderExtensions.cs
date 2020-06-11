@@ -8,6 +8,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class SourceFileBuilderExtensions
     {
         public static SourceFileBuilder UseRandomFileName(this SourceFileBuilder builder)

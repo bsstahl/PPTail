@@ -9,6 +9,7 @@ using Xunit;
 
 namespace PPTail.Data.Ef.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPages_Should
     {
         [Fact]

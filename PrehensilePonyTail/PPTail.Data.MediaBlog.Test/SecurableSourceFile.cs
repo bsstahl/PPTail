@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SecurableSourceFile: SourceFile
     {
         public SecurableSourceFile(SourceFile sourceFile)

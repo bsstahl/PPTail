@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PPTail.Generator.Redirect.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class RedirectProvider_Ctor_Should
     {
         [Fact]

@@ -7,6 +7,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SettingsFileBuilder: Entities.SiteSettings
     {
         const String _defaultTitle = "My Blog";

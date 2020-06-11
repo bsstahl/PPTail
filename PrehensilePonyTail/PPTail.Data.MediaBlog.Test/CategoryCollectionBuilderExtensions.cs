@@ -5,6 +5,7 @@ using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class CategoryCollectionBuilderExtensions
     {
         public static CategoryCollectionBuilder AddRandomCategories(this CategoryCollectionBuilder builder, Int32 count)

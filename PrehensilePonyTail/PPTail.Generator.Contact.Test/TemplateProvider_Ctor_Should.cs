@@ -12,6 +12,7 @@ using PPTail.Entities;
 
 namespace PPTail.Generator.Contact.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TemplateProvider_Ctor_Should
     {
         [Fact]

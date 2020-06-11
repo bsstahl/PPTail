@@ -142,11 +142,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTReport", "PPTReport\PPTR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Templates.Yaml", "PPTail.Templates.Yaml\PPTail.Templates.Yaml.csproj", "{B4EE9718-7A8D-47CC-941B-6D6A43FF88FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Templates.FileSystem", "PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj", "{46D0E0B6-FF02-4B05-98F8-2E079E3B3300}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Templates.FileSystem", "PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj", "{46D0E0B6-FF02-4B05-98F8-2E079E3B3300}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Templates.FileSystem.Test", "PPTail.Templates.FileSystem.Test\PPTail.Templates.FileSystem.Test.csproj", "{265B468B-AEE1-4AE1-84B1-A7F3A4F7499C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Templates.FileSystem.Test", "PPTail.Templates.FileSystem.Test\PPTail.Templates.FileSystem.Test.csproj", "{265B468B-AEE1-4AE1-84B1-A7F3A4F7499C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Templates.Yaml.Test", "PPTail.Templates.Yaml.Test\PPTail.Templates.Yaml.Test.csproj", "{0ED36A21-7DD6-4DA0-9953-CE361C2E0818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Templates.Yaml.Test", "PPTail.Templates.Yaml.Test\PPTail.Templates.Yaml.Test.csproj", "{0ED36A21-7DD6-4DA0-9953-CE361C2E0818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

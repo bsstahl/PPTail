@@ -12,6 +12,7 @@ using Xunit;
 
 namespace PPTail.Generator.Archive.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class BasicProvider_Ctor_Should
     {
         [Fact]

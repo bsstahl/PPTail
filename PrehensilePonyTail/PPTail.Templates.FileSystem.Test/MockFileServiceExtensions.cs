@@ -7,6 +7,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Templates.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class MockFileServiceExtensions
     {
         public static void ConfigureTemplate(this Mock<IFile> mockFileService, string templatePath, string templateFilename)

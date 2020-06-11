@@ -9,6 +9,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class FileSystemBuilder
     {
         private readonly List<(string FileName, string Content)> _contentItemFiles = new List<(string, string)>();

@@ -10,6 +10,7 @@ using Moq;
 
 namespace PPTail.Generator.Contact.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IServiceCollection Create(this IServiceCollection ignore)

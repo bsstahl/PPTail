@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PPTail.Generator.HomePage.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class HomePageGenerator_Ctor_Should
     {
         const String _defaultDateTimeSpecifier = "MM/dd/yyyy";

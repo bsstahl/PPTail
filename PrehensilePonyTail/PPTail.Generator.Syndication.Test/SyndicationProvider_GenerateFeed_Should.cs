@@ -14,6 +14,7 @@ using PPTail.Extensions;
 
 namespace PPTail.Generator.Syndication.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SyndicationProvider_GenerateFeed_Should
     {
         [Fact]

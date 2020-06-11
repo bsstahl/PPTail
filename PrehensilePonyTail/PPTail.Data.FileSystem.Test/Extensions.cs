@@ -12,6 +12,7 @@ using PPTail.Enumerations;
 
 namespace PPTail.Data.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         const String _sourceDataPathSettingName = "sourceDataPath";

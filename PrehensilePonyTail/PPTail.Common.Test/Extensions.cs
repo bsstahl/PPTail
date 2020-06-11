@@ -4,12 +4,14 @@ using PPTail.Entities;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using TestHelperExtensions;
 
 namespace PPTail.Common.Test
 {
+    [ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IServiceCollection Create(this IServiceCollection ignore)

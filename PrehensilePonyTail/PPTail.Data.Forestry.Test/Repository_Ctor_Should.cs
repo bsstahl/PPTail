@@ -9,6 +9,7 @@ using PPTail.Exceptions;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_Ctor_Should
     {
         [Fact]

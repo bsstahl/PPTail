@@ -12,6 +12,7 @@ using PPTail.Exceptions;
 
 namespace PPTail.Generator.Template.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TemplateProcessor_ProcessNonContentItemTemplate_Should
     {
 

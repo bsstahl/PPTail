@@ -8,6 +8,7 @@ using PPTail.Extensions;
 
 namespace PPTail.Common.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class StringExtensions_GetConnectionStringValue_Should
     {
 

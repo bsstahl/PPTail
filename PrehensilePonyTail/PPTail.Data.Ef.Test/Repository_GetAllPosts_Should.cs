@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PPTail.Data.Ef.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPosts_Should
     {
         [Fact]

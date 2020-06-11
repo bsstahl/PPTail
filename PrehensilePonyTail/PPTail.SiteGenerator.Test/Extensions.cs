@@ -11,6 +11,7 @@ using PPTail.Enumerations;
 
 namespace PPTail.SiteGenerator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
 

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class MockMediaFile
     {
         public Guid Id { get; set; }

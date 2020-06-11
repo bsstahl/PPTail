@@ -12,6 +12,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class MockFileServiceBuilder
     {
         const String _widgetFilePath = "Widgets.json";

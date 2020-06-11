@@ -13,6 +13,7 @@ using System.Diagnostics;
 
 namespace PPTail.SiteGenerator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Builder_Build_Should
     {
         const String _additionalFilePathsSettingName = "additionalFilePaths";

@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace PPTail.Generator.HomePage.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         const String _defaultDateTimeFormatSpecifier = "MM/dd/yy H:mm:ss zzz";

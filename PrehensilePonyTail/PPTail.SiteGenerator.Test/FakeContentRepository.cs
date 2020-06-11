@@ -6,6 +6,7 @@ using System.Text;
 
 namespace PPTail.SiteGenerator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class FakeContentRepository : IContentRepository
     {
         public IEnumerable<ContentItem> GetAllPages()

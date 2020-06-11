@@ -12,6 +12,7 @@ using Xunit;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetCategories_Should
     {
         const string _rootPath = "c:\\";

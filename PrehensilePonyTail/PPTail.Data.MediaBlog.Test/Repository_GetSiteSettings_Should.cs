@@ -13,6 +13,7 @@ using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetSiteSettings_Should
     {
         const Int32 _defaultPostsPerPage = 3;

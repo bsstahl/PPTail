@@ -6,6 +6,7 @@ using System.Text;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class SettingsBuilderExtensions
     {
         //public static SettingsBuilder UseRandomValues(this SettingsBuilder builder)

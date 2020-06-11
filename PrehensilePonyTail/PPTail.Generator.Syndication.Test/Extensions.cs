@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace PPTail.Generator.Syndication.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         const String _defaultSyndicationTemplateContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss><channel>{Content}</channel></rss>";

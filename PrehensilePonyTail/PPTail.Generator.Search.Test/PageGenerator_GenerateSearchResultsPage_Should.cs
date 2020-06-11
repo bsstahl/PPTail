@@ -13,6 +13,7 @@ using PPTail.Extensions;
 
 namespace PPTail.Generator.Search.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PageGenerator_GenerateSearchResultsPage_Should
     {
         [Fact]

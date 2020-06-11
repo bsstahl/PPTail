@@ -6,6 +6,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class MockMediaFileCollectionBuilder
     {
         readonly List<(Guid Id, String Contents)> _posts = new List<(Guid Id, String Contents)>();

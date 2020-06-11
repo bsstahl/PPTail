@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PPTail.Generator.Encoder.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IServiceCollection Create(this IServiceCollection ignore)

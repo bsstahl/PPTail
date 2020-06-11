@@ -10,6 +10,7 @@ using Xunit;
 
 namespace PPTail.Data.Ef.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static ContentItem Create(this ContentItem ignore)

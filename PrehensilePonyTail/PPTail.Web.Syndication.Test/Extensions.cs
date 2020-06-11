@@ -11,6 +11,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Web.Syndication.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
 

@@ -9,6 +9,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.Links.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IServiceCollection Create(this IServiceCollection ignore)

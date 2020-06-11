@@ -10,6 +10,7 @@ using Moq;
 
 namespace PPTail.Common.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SettingsExtensions_GetExtendedSetting_Should
     {
         [Fact]

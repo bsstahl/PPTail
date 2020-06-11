@@ -13,6 +13,7 @@ using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPages_Should
     {
         const String _connectionStringFilepathKey = "FilePath";

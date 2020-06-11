@@ -10,6 +10,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class MockDirectoryServiceBuilder
     {
         readonly List<string> _postFiles = new List<string>();

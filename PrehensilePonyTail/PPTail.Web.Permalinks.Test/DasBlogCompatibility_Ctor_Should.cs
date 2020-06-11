@@ -10,6 +10,7 @@ using Xunit;
 
 namespace PPTail.Web.Permalinks.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class DasBlogCompatibility_Ctor_Should
     {
         [Fact]

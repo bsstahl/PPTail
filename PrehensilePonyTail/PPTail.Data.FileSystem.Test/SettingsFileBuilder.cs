@@ -7,6 +7,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SettingsFileBuilder: SiteSettings
     {
         const String _siteSettingsXmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><name>{0}</name><description>{1}</description><postsperpage>{2}</postsperpage><postsperfeed>{3}</postsperfeed><theme>{4}</theme></settings>";

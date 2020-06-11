@@ -11,6 +11,7 @@ using PPTail.Exceptions;
 
 namespace PPTail.Generator.Encoder.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ContentEncoder_Ctor_Should
     {
         public ContentEncoder_Ctor_Should()

@@ -11,6 +11,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.Search.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static ISearchProvider Create(this ISearchProvider ignore)

@@ -9,6 +9,7 @@ using Xunit;
 
 namespace PPTail.Web.Syndication.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ApplicationBuilderExtensions_UseDasBlogPermalinks_Should
     {
         [Fact]

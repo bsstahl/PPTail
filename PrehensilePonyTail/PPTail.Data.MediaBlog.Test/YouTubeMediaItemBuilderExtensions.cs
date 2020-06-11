@@ -5,6 +5,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class YouTubeMediaItemBuilderExtensions
     {
         public static YouTubeMediaItemBuilder UseRandom(this YouTubeMediaItemBuilder builder)

@@ -12,6 +12,7 @@ using PPTail.Interfaces;
 
 namespace PPTail.Generator.Template.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TemplateProcessor_Ctor_Should
     {
         [Fact]

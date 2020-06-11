@@ -6,6 +6,7 @@ using PPTail.Entities;
 
 namespace PPTail.Generator.HomePage.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class FakeNavProvider : Interfaces.INavigationProvider
     {
         public String CreateNavigation(IEnumerable<ContentItem> pages, String homeUrl, String outputFileExtension)

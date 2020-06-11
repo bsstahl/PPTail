@@ -13,6 +13,7 @@ using System.IO;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetFolderContents_Should
     {
 

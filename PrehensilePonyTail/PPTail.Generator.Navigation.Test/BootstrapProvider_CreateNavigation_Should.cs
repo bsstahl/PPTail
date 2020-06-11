@@ -12,6 +12,7 @@ using PPTail.Interfaces;
 
 namespace PPTail.Generator.Navigation.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class BootstrapProvider_CreateNavigation_Should
     {
         [Fact]

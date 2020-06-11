@@ -13,6 +13,7 @@ using PPTail.Extensions;
 
 namespace PPTail.Generator.Contact.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TemplateProvider_GenerateContactPage_Should
     {
         [Fact]

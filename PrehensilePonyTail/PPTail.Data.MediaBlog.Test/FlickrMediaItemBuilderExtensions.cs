@@ -7,6 +7,7 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public static class FlickrMediaItemBuilderExtensions
     {
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static FlickrMediaItemBuilder UseRandom(this FlickrMediaItemBuilder builder)
         {
             return builder

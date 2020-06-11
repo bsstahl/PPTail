@@ -9,6 +9,7 @@ using Xunit;
 
 namespace PPTail.Web.Permalinks.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ApplicationBuilderExtensions_UseDasBlogPermalinks_Should
     {
         [Fact]

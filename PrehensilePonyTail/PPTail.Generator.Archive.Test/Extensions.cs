@@ -10,6 +10,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.Archive.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IArchiveProvider Create(this IArchiveProvider ignore)

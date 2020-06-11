@@ -12,6 +12,7 @@ using PPTail.Interfaces;
 
 namespace PPTail.Generator.T4Html.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PageGenerator_GenerateSidebarContent_Should
     {
         [Fact]

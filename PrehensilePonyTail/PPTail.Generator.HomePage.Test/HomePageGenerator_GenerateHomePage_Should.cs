@@ -13,6 +13,7 @@ using Xunit;
 
 namespace PPTail.Generator.HomePage.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class HomePageGenerator_GenerateHomePage_Should
     {
         [Fact]

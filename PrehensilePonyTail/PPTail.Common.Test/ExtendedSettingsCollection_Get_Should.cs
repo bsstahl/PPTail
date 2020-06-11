@@ -7,6 +7,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Common.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ExtendedSettingsCollection_Get_Should
     {
         [Fact]

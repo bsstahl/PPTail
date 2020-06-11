@@ -14,6 +14,7 @@ using PPTail.Exceptions;
 
 namespace PPTail.SiteGenerator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Builder_Ctor_Should
     {
         [Fact]

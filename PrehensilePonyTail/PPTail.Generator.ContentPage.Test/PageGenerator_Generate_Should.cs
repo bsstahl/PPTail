@@ -14,6 +14,7 @@ using PPTail.Extensions;
 
 namespace PPTail.Generator.ContentPage.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PageGenerator_Generate_Should
     {
         [Fact]

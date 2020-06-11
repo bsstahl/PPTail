@@ -15,6 +15,7 @@ using PPTail.Enumerations;
 
 namespace PPTail.Generator.Syndication.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SyndicationProvider_Ctor_Should
     {
         [Fact]

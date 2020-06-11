@@ -8,6 +8,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Templates.Yaml.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddFileService(this IServiceCollection container)

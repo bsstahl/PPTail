@@ -11,6 +11,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Web.PostLocator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";

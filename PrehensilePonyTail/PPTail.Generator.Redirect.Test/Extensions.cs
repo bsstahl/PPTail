@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PPTail.Generator.Redirect.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         internal static IRedirectProvider Create(this IRedirectProvider ignore, String redirectTemplateText)

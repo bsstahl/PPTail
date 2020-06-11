@@ -10,6 +10,7 @@ using Xunit;
 
 namespace PPTail.Web.PostLocator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class CachingProvider_Ctor_Should
     {
         [Fact]

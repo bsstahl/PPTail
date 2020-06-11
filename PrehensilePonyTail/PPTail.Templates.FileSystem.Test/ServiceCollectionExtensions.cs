@@ -9,6 +9,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Templates.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddFileService(this IServiceCollection container)

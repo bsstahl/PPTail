@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Generator.TagCloudStyler.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class DeviationStyler_GetStyles_Should
     {
         [Fact]

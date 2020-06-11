@@ -12,6 +12,7 @@ using Xunit;
 
 namespace PPTail.Generator.Links.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class LinkProvider_GetUrl_Should
     {
         [Fact]

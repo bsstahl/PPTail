@@ -8,6 +8,7 @@ using PPTail.Builders;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class ContentRepositoryBuilder
     {
         readonly IServiceCollection _container;

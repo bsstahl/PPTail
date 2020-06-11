@@ -12,6 +12,7 @@ using PPTail.Entities;
 
 namespace PPTail.Data.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPosts_Should
     {
         const String _dataFolder = "App_Data";

@@ -7,6 +7,7 @@ using Xunit;
 
 namespace PPTail.Templates.Yaml.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ReadRepository_Ctor_Should
     {
         [Fact]

@@ -9,6 +9,7 @@ using PPTail.Interfaces;
 
 namespace PPTail.Generator.Encoder.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ContentEncoder_XMLEncode_Should
     {
         [Theory]

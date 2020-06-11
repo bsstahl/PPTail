@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         const String _sourceDataPathSettingName = "sourceDataPath";

@@ -11,6 +11,7 @@ using PPTail.Entities;
 
 namespace PPTail.Output.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_Save_Should
     {
         [Fact]

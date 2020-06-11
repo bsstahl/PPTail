@@ -8,6 +8,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.Navigation.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
 

@@ -6,6 +6,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.TagCloudStyler.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IEnumerable<string> GetTagList(this IEnumerable<string> ignore)

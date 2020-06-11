@@ -12,6 +12,7 @@ using PPTail.Entities;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPages_Should
     {
         const String _connectionStringFilepathKey = "FilePath";

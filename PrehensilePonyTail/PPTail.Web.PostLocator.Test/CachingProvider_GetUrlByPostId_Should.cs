@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PPTail.Web.PostLocator.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class CachingProvider_GetUrlByPostId_Should
     {
         [Theory]

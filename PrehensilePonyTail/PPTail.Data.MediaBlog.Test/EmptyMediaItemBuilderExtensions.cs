@@ -7,6 +7,7 @@ namespace PPTail.Data.MediaBlog.Test
 {
     public static class EmptyMediaItemBuilderExtensions
     {
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static EmptyMediaItemBuilder UseRandom(this EmptyMediaItemBuilder builder)
         {
             return builder

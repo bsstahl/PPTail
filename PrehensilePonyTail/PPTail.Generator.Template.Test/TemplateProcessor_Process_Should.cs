@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyModel;
 
 namespace PPTail.Generator.Template.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TemplateProcessor_Process_Should
     {
         [Fact]

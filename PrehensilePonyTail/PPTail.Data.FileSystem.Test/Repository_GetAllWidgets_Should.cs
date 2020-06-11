@@ -14,6 +14,7 @@ using PPTail.Enumerations;
 
 namespace PPTail.Data.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllWidgets_Should
     {
         [Fact]

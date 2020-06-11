@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Generator.Search.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PageGenerator_Ctor_Should
     {
         [Fact]

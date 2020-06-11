@@ -8,6 +8,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.Navigation.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class BasicProvider_CreateNavigation_Should
     {
         [Fact]

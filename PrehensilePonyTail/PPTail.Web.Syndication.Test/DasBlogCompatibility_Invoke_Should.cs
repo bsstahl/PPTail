@@ -9,6 +9,7 @@ using Xunit;
 
 namespace PPTail.Web.Syndication.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class DasBlogCompatibility_Invoke_Should
     {
         const String _dasBlogSyndicationFile = "syndication.axd";

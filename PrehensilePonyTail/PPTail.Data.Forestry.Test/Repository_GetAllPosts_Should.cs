@@ -13,6 +13,7 @@ using Xunit.Sdk;
 
 namespace PPTail.Data.Forestry.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPosts_Should
     {
         const String _postsFolder = "Posts";

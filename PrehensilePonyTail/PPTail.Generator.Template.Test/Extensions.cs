@@ -10,6 +10,7 @@ using PPTail.Entities;
 
 namespace PPTail.Generator.Template.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IServiceCollection Create(this IServiceCollection ignore)

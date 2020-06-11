@@ -8,6 +8,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class StringExtensions_ValidateArguments_Should
     {
         [Fact]

@@ -12,6 +12,7 @@ using Xunit;
 
 namespace PPTail.Generator.T4Html.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PageGenerator_GenerateStylesheet_Should
     {
         [Fact]

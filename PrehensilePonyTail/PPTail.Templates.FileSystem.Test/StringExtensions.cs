@@ -10,6 +10,7 @@ using Xunit;
 
 namespace PPTail.Templates.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class StringExtensions
     {
         internal static void ExecuteTemplateRetrievalTest(this String templateFilename)

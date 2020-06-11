@@ -10,6 +10,7 @@ using System.Text;
 
 namespace PPTail.Generator.Navigation.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddContentRepository(this IServiceCollection container)

@@ -13,6 +13,7 @@ using Moq;
 
 namespace PPTail.Generator.T4Html.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         const String _contentPageTemplatePath = @"..\..\..\..\ContentPage.template.html";

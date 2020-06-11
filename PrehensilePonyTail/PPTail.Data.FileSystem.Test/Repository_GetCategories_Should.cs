@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PPTail.Data.FileSystem.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetCategories_Should
     {
         const String _dataFolder = "App_Data";

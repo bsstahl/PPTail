@@ -6,6 +6,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Data.MediaBlog.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class CategoryBuilderExtensions
     {
         public static CategoryBuilder UseRandom(this CategoryBuilder builder)

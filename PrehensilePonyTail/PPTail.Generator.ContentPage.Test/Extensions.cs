@@ -10,6 +10,7 @@ using TestHelperExtensions;
 
 namespace PPTail.Generator.ContentPage.Test
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static IContentItemPageGenerator Create(this IContentItemPageGenerator ignore, IServiceCollection container)
