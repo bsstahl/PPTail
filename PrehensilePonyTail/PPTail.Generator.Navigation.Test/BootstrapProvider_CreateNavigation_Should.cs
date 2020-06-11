@@ -6,18 +6,29 @@ using System.Threading.Tasks;
 using Xunit;
 using TestHelperExtensions;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Builders;
+using Moq;
+using PPTail.Interfaces;
 
 namespace PPTail.Generator.Navigation.Test
 {
     public class BootstrapProvider_CreateNavigation_Should
     {
         [Fact]
-        public void IncludeAHomePageMenuItem()
+        public void IncludeAHomePageMenuItemIfDisplayTitleInNavbarIsFalse()
         {
+            var siteSettings = new SiteSettingsBuilder()
+                .DisplayTitleInNavbar(false)
+                .Build();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+
             IServiceProvider serviceProvider = (new ServiceCollection())
-                .AddContentRepository()
+                .AddContentRepository(contentRepo)
                 .AddLinkProvider()
                 .BuildServiceProvider();
+
             var target = (null as BootstrapProvider).Create(serviceProvider);
 
             var pages = (null as IEnumerable<ContentItem>).Create();
@@ -27,6 +38,34 @@ namespace PPTail.Generator.Navigation.Test
             var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
             Assert.Contains("home", actual.ToLower());
         }
+
+        [Fact]
+        public void IncludeATitleMenuItemIfDisplayTitleInNavbarIsTrue()
+        {
+            string title = string.Empty.GetRandom();
+            var siteSettings = new SiteSettingsBuilder()
+                .DisplayTitleInNavbar(true)
+                .Title(title)
+                .Build();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+
+            IServiceProvider serviceProvider = (new ServiceCollection())
+                .AddContentRepository(contentRepo)
+                .AddLinkProvider()
+                .BuildServiceProvider();
+
+            var target = (null as BootstrapProvider).Create(serviceProvider);
+
+            var pages = (null as IEnumerable<ContentItem>).Create();
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
+
+            var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
+            Assert.Contains(title, actual.ToLower());
+        }
+
 
         [Fact]
         public void IncludeAnArchiveMenuItem()

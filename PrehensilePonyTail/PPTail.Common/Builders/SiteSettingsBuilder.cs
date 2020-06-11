@@ -36,15 +36,33 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SiteSettingsBuilder Theme(String theme)
+        public new SiteSettingsBuilder Theme(String value)
         {
-            base.Theme = theme;
+            base.Theme = value;
             return this;
         }
 
-        public new SiteSettingsBuilder Copyright(String copyright)
+        public new SiteSettingsBuilder Copyright(String value)
         {
-            base.Copyright = copyright;
+            base.Copyright = value;
+            return this;
+        }
+
+        public new SiteSettingsBuilder ContactEmail(String value)
+        {
+            base.Copyright = value;
+            return this;
+        }
+
+        public new SiteSettingsBuilder UseAdditionalPagesDropdown(bool value)
+        {
+            base.UseAdditionalPagesDropdown = value;
+            return this;
+        }
+
+        public new SiteSettingsBuilder DisplayTitleInNavbar(bool value)
+        {
+            base.DisplayTitleInNavbar = value;
             return this;
         }
 

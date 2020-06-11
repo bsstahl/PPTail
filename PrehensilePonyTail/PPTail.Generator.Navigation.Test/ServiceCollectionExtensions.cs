@@ -14,18 +14,13 @@ namespace PPTail.Generator.Navigation.Test
     {
         public static IServiceCollection AddContentRepository(this IServiceCollection container)
         {
-            return container.AddContentRepository(new Mock<IContentRepository>());
+            var mockContentRepo = new Mock<IContentRepository>();
+            mockContentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettingsBuilder().Build());
+            return container.AddContentRepository(mockContentRepo);
         }
 
         public static IServiceCollection AddContentRepository(this IServiceCollection container, Mock<IContentRepository> mockContentRepo)
         {
-            var siteSettings = new SiteSettingsBuilder().Build();
-            return container.AddContentRepository(mockContentRepo, siteSettings);
-        }
-
-        public static IServiceCollection AddContentRepository(this IServiceCollection container, Mock<IContentRepository> mockContentRepo, SiteSettings siteSettings)
-        {
-            mockContentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             return container.AddSingleton<IContentRepository>(mockContentRepo.Object);
         }
 

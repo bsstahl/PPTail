@@ -14,6 +14,9 @@ namespace PPTail.Entities
         public String Theme { get; set; } = string.Empty;
         public String Copyright { get; set; }
         public String ContactEmail { get; set; }
+        public bool UseAdditionalPagesDropdown { get; set; } = true;
+        public String AdditionalPagesDropdownLabel { get; set; } = "Community";
+        public bool DisplayTitleInNavbar { get; set; } = true;
         public IEnumerable<SiteVariable> Variables { get; set; } = new List<SiteVariable>();
     }
 }
