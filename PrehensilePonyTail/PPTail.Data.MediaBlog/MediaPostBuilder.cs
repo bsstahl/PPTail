@@ -75,8 +75,8 @@ namespace PPTail.Data.MediaBlog
 
         public MediaPostBuilder AddFlickrImage(FlickrMediaItem flickrImage)
         {
-            this.MediaItem = JObject.FromObject(flickrImage);
-            this.MediaType = "FlickrImage";
+            base.MediaItem = JObject.FromObject(flickrImage);
+            base.MediaType = "FlickrImage";
             return this;
         }
 
@@ -87,8 +87,8 @@ namespace PPTail.Data.MediaBlog
 
         public MediaPostBuilder AddYouTubeVideo(YouTubeMediaItem video)
         {
-            this.MediaItem = JObject.FromObject(video);
-            this.MediaType = "YouTubeVideo";
+            base.MediaItem = JObject.FromObject(video);
+            base.MediaType = "YouTubeVideo";
             return this;
         }
 
@@ -99,8 +99,20 @@ namespace PPTail.Data.MediaBlog
 
         public MediaPostBuilder AddEmptyPost(EmptyMediaItem item)
         {
-            this.MediaItem = JObject.FromObject(item);
-            this.MediaType = "None";
+            base.MediaItem = JObject.FromObject(item);
+            base.MediaType = "None";
+            return this;
+        }
+
+        public new MediaPostBuilder MediaItem(JObject value)
+        {
+            base.MediaItem = value;
+            return this;
+        }
+
+        public new MediaPostBuilder MediaType(string value)
+        {
+            base.MediaType = value;
             return this;
         }
     }

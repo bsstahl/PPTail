@@ -23,72 +23,69 @@ namespace PPTail.Data.MediaBlog
 
         internal static MediaPost Create(String json)
         {
-            var post = Newtonsoft.Json.Linq.JObject.Parse(json);
-            var posted = post["Posted"];
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<MediaPost>(json);
 
-            var mediaItem = post["MediaItem"]?.Value<JObject>();
-            var result = new MediaPost()
-            {
-                Author = post["Author"]?.Value<string>(),
-                Description = post["Description"]?.Value<string>(),
-                MediaType = post["MediaType"]?.Value<string>(),
-                MediaItem = mediaItem,
-                Posted = (posted == null) ? DateTime.MinValue : posted.Value<DateTime>(),
-                Tags = post["Tags"]?.Select(t => t.Value<string>()),
-                Title = post["Title"]?.Value<string>()
-            };
-            result.Media = result.CreateMediaItem();
+            var post = Newtonsoft.Json.Linq.JObject.Parse(json);
+            result.MediaItem = post[nameof(MediaPost.MediaItem)].Value<JObject>();
+            result.Media = MediaPost.CreateMediaItem(result.MediaType, result.MediaItem);
 
             return result;
         }
 
-        private MediaItem CreateMediaItem()
+        private static MediaItem CreateMediaItem(string mediaType, JObject mediaItem)
         {
-            MediaItem result = null;
-            String mediaTypeName = this.MediaType ?? "None";
+            const string unknownMediaTypeMessage = "Unknown media type";
 
-            switch (mediaTypeName.ToLower())
+            MediaItem result = new EmptyMediaItem(string.Empty, 0, 0, DateTime.MinValue);
+            if (mediaItem.IsNotNull())
             {
-                case "flickrimage":
-                    result = new FlickrMediaItem(this.MediaItem);
-                    break;
+                String mediaTypeName = mediaType ?? "None";
 
-                case "youtubevideo":
-                    result = new YouTubeMediaItem(this.MediaItem);
-                    break;
+                switch (mediaTypeName.ToUpperInvariant())
+                {
+                    case "FLICKRIMAGE":
+                        result = new FlickrMediaItem(mediaItem);
+                        break;
 
-                case "none":
-                    result = new EmptyMediaItem(this.MediaItem);
-                    break;
+                    case "YOUTUBEVIDEO":
+                        result = new YouTubeMediaItem(mediaItem);
+                        break;
 
-                default:
-                    throw new InvalidOperationException("Unknown media type");
+                    case "NONE":
+                        result = new EmptyMediaItem(mediaItem);
+                        break;
+
+                    default:
+                        throw new InvalidOperationException(unknownMediaTypeMessage);
+                }
             }
 
             return result;
         }
 
-        public Entities.ContentItem AsContentItem()
-        {
-            return this.AsContentItem(Guid.NewGuid());
-        }
-
         public Entities.ContentItem AsContentItem(Guid Id)
         {
+            // Hack: Why the default category?
+
+            var byLine = string.IsNullOrWhiteSpace(this.Author) ? string.Empty : $"by {this.Author}";
+            var content = this.Media.CreateContent();
+            var lastModificationDate = this.Media.CreateDate;
+            var slug = this.Title?.CreateSlug();
+
             return new Entities.ContentItem()
             {
                 Author = this.Author,
-                ByLine = string.IsNullOrWhiteSpace(this.Author) ? string.Empty : $"by {this.Author}",
+                ByLine = byLine,
                 CategoryIds = new Guid[] { Guid.Parse("663D2D20-6B79-47B1-AFAD-615F15E226A7") },
-                Content = this.Media?.CreateContent(),
+                Content = content,
                 Description = this.Description,
                 Id = Id,
                 IsPublished = true,
-                LastModificationDate = this.Media?.CreateDate ?? DateTime.MinValue,
+                LastModificationDate = lastModificationDate,
                 MenuOrder = 0,
                 PublicationDate = this.Posted,
                 ShowInList = true,
-                Slug = this.Title?.CreateSlug(),
+                Slug = slug,
                 Tags = this.Tags,
                 Title = this.Title
             };

@@ -399,6 +399,51 @@ namespace PPTail.Data.MediaBlog.Test
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
+        [Fact]
+        public void ReturnAnEmptyContentPropertyIfTheMediaItemNodeIsNull()
+        {
+            String fieldValueDelegate(ContentItem c) => c.Content;
+
+            String expectedValue = String.Empty;
+            String expected = expectedValue.ToString();
+            String json = new MediaPostBuilder()
+                .UseRandomFlickrPost()
+                .MediaItem(null)
+                .Build();
+
+            ExecutePropertyTest(expected, fieldValueDelegate, json);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyContentPropertyIfTheMediaTypeNodeIsNull()
+        {
+            String fieldValueDelegate(ContentItem c) => c.Content;
+
+            String expectedValue = String.Empty;
+            String expected = expectedValue.ToString();
+            String json = new MediaPostBuilder()
+                .UseRandomFlickrPost()
+                .MediaType(null)
+                .Build();
+
+            ExecutePropertyTest(expected, fieldValueDelegate, json);
+        }
+
+        [Fact]
+        public void ThrowAnInvalidOperationExceptionIfTheMediaTypeIsInvalid()
+        {
+            String fieldValueDelegate(ContentItem c) => c.Content;
+
+            String expectedValue = String.Empty;
+            String expected = expectedValue.ToString();
+            String json = new MediaPostBuilder()
+                .UseRandomFlickrPost()
+                .MediaType(String.Empty.GetRandom())
+                .Build();
+
+            Assert.Throws<InvalidOperationException>(() => ExecutePropertyTest(expected, fieldValueDelegate, json));
+        }
+
         private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String json)
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
