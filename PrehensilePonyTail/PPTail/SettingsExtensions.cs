@@ -18,7 +18,7 @@ namespace PPTail
         const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String templateConnection)
+        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection)
         {
             var outputFileExtension = "html";
             var dateFormatSpecifier = "yyyy-MM-dd";
@@ -29,10 +29,10 @@ namespace PPTail
             var createDasBlogSyndicationCompatibilityFile = true;
             var createDasBlogPostsCompatibilityFile = true;
 
-            return (null as ISettings).Create(sourceConnection, targetConnection, templateConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
+            return (null as ISettings).Create(sourceConnection, targetConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
         }
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String templateConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
+        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
         {
             var settings = new Settings()
             {
@@ -41,8 +41,7 @@ namespace PPTail
                 ItemSeparator = itemSeparator,
                 OutputFileExtension = outputFileExtension, 
                 SourceConnection  = sourceConnection,
-                TargetConnection = targetConnection,
-                TemplateConnection = templateConnection
+                TargetConnection = targetConnection
             };
 
             _ = settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);

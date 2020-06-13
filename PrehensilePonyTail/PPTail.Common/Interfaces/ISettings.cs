@@ -12,7 +12,7 @@ namespace PPTail.Interfaces
 
         String SourceConnection { get; set; }
         String TargetConnection { get; set; }
-        String TemplateConnection { get; set; }
+        // String TemplateConnection { get; set; }
 
         ExtendedSettingsCollection ExtendedSettings { get; }
     }

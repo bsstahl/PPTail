@@ -10,6 +10,8 @@ namespace PPTail
     public static class Program
     {
         private const String _connectionStringProviderKey = "Provider";
+        private const String _connectionStringFilePathKey = "FilePath";
+
         private const String _invalidArgumentsText = "Invalid Arguments:";
 
         public static void Main(String[] args)
@@ -19,12 +21,15 @@ namespace PPTail
             if (argsAreValid)
             {
                 var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
-                var settings = (null as ISettings).Create(sourceConnection, targetConnection, templateConnection);
-                
+                var settings = (null as ISettings).Create(sourceConnection, targetConnection);
+
+                string templateProvider = templateConnection.GetConnectionStringValue(_connectionStringProviderKey);
+                string templatePath = templateConnection.GetConnectionStringValue(_connectionStringFilePathKey);
+
                 var serviceProvider = new ServiceCollection()
-                    .AddSingleton<ISettings>(settings)  // TODO: Replace with an ISettingsProvider
+                    .AddSingleton<ISettings>(settings)  // TODO: Eliminate ISettings
                     .AddSourceRepository(settings) // TODO: Remove from container
-                    .AddTemplateRepository(settings)
+                    .AddTemplateRepository(templateProvider, templatePath)
                     .AddServices()
                     .BuildServiceProvider();
 

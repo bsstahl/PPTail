@@ -16,7 +16,7 @@ namespace PPTail.Entities
 
         public String SourceConnection { get; set; }
         public String TargetConnection { get; set; }
-        public String TemplateConnection { get; set; }
+        // public String TemplateConnection { get; set; }
 
         public ExtendedSettingsCollection ExtendedSettings { get; private set; }
 

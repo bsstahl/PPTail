@@ -7,22 +7,23 @@ using PPTail.Extensions;
 using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
+using System.Globalization;
 
 namespace PPTail
 {
     public static class ServiceCollectionExtensions
     {
-        internal static IServiceCollection AddTemplateRepository(this IServiceCollection container, ISettings settings)
+        internal static IServiceCollection AddTemplateRepository(this IServiceCollection container, string templateProvider, string templatePath)
         {
-            var templateProvider = settings.TemplateConnection.GetConnectionStringValue("Provider");
-            var templatePath = settings.TemplateConnection.GetConnectionStringValue("FilePath");
+            const string _yamlReadRepoName = "PPTAIL.TEMPLATES.YAML.READREPOSITORY";
+            const string _fileReadRepoName = "PPTAIL.TEMPLATES.FILESYSTEM.READREPOSITORY";
 
-            if (templateProvider.ToUpperInvariant().Equals("PPTAIL.TEMPLATES.FILESYSTEM.READREPOSITORY"))
+            if (templateProvider.ToUpperInvariant() == _fileReadRepoName)
                 container.AddSingleton<ITemplateRepository>(c => new Templates.FileSystem.ReadRepository(c, templatePath));
-            else if (templateProvider.ToUpperInvariant().Equals("PPTAIL.TEMPLATES.YAML.READREPOSITORY"))
+            else if (templateProvider.ToUpperInvariant() == _yamlReadRepoName)
                 container.AddSingleton<ITemplateRepository>(c => new Templates.Yaml.ReadRepository(c, templatePath));
             else
-                throw new ArgumentException($"Invalid Template provider type '{templateProvider}'.", nameof(settings));
+                throw new ArgumentException($"Invalid Template provider type '{templateProvider}'.", nameof(templateProvider));
 
             return container;
         }

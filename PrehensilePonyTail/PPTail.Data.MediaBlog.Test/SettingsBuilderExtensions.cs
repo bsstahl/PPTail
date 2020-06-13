@@ -17,8 +17,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .ItemSeparator("<hr/>")
                 .OutputFileExtension("html")
                 .SourceConnection("SourceConnection")
-                .TargetConnection("TargetConnection")
-                .TemplateConnection("TemplateConnection");
+                .TargetConnection("TargetConnection");
         }
     }
 }
