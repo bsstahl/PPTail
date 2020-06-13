@@ -997,6 +997,58 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
+        public void ReturnTheFavIconFileIfOneExistsInTheRootFolder()
+        {
+            String relativePath = ".";
+            String fileName = "favicon.ico";
+
+            var favIconFile = new SourceFile() 
+            { 
+                FileName = fileName,
+                Contents = Array.Empty<byte>(),
+                RelativePath = relativePath
+            };
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetFolderContents(It.Is<string>(s => s == relativePath)))
+                .Returns(new[] { favIconFile });
+
+            var container = (null as IServiceCollection)
+                .Create();
+
+            container
+                .ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(fileName)));
+        }
+
+        [Fact]
+        public void NotReturnAFavIconFileIfNoneExistsInTheRootFolder()
+        {
+            String relativePath = ".";
+            String fileName = "favicon.ico";
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetFolderContents(It.Is<string>(s => s == relativePath)))
+                .Returns(Array.Empty<SourceFile>());
+
+            var container = (null as IServiceCollection)
+                .Create();
+
+            container
+                .ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.DoesNotContain(actual, p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(fileName));
+        }
+
+
+        [Fact]
         public void ReturnTheOutputOfTheSyndicationProviderAsTheContentOfTheSyndicationFile()
         {
             String syndicationFileExtension = "xml";
