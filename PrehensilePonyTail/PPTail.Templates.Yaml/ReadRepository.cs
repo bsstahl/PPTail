@@ -11,22 +11,29 @@ namespace PPTail.Templates.Yaml
 {
     public class ReadRepository : Interfaces.ITemplateRepository
     {
+        const string _connectionStringFilePathKey = "FilePath";
+
         private readonly IServiceProvider _serviceProvider;
         private readonly String _templatePath;
 
-        public ReadRepository(IServiceProvider serviceProvider, String templatePath)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization effort")]
+        public ReadRepository(IServiceProvider serviceProvider, String templateConnection)
         {
             if (serviceProvider is null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _templatePath = templatePath;
+
+            _templatePath = templateConnection.GetConnectionStringValue(_connectionStringFilePathKey);
+            if (String.IsNullOrWhiteSpace(_templatePath))
+                throw new ArgumentException("FilePath not supplied in Template Connection String", nameof(templateConnection));
         }
 
         public IEnumerable<Template> GetAllTemplates()
         {
             // Uses the FileSystem provider under the covers
-            var templateProvider = new PPTail.Templates.FileSystem.ReadRepository(_serviceProvider, _templatePath);
+            string connectionString = $"Provider=PPTail.Templates.FileSystem.ReadRepository;FilePath={_templatePath}";
+            var templateProvider = new PPTail.Templates.FileSystem.ReadRepository(_serviceProvider, connectionString);
             var yamlTemplates = templateProvider.GetAllTemplates();
 
             // Modify parsed YAML

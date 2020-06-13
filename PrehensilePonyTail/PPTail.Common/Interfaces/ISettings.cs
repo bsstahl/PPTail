@@ -11,8 +11,6 @@ namespace PPTail.Interfaces
         String OutputFileExtension { get; set; }
 
         String SourceConnection { get; set; }
-        String TargetConnection { get; set; }
-        // String TemplateConnection { get; set; }
 
         ExtendedSettingsCollection ExtendedSettings { get; }
     }

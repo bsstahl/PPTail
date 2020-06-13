@@ -13,6 +13,8 @@ namespace PPTail.Templates.FileSystem.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ReadRepository_GetAllTemplates_Should
     {
+        const string _connectionFormat = "Provider=PPTail.Templates.FileSystem.ReadRepository;FilePath={0}";
+
         [Theory]
         [InlineData("Style.template.css")]
         [InlineData("HomePage.template.html")]
@@ -53,6 +55,7 @@ namespace PPTail.Templates.FileSystem.Test
         public void RetrieveEachTemplateExactlyOnceRegardlessOfHowManyTimesRequested()
         {
             string templatePath = string.Empty.GetRandom();
+            string connection = string.Format(_connectionFormat, templatePath);
 
             var mockFileService = new Mock<IFile>();
             mockFileService.ConfigureTemplate(templatePath, "Style.template.css");
@@ -72,7 +75,7 @@ namespace PPTail.Templates.FileSystem.Test
                 .AddFileService(mockFileService)
                 .BuildServiceProvider();
 
-            var target = new FileSystem.ReadRepository(serviceProvider, templatePath);
+            var target = new FileSystem.ReadRepository(serviceProvider, connection);
             var actual = target.GetAllTemplates();
             actual = target.GetAllTemplates();
 

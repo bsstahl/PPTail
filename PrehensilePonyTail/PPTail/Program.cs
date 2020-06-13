@@ -9,11 +9,10 @@ namespace PPTail
 {
     public static class Program
     {
-        private const String _connectionStringProviderKey = "Provider";
-        private const String _connectionStringFilePathKey = "FilePath";
-
+        // private const String _connectionStringProviderKey = "Provider";
         private const String _invalidArgumentsText = "Invalid Arguments:";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed when globalization is done")]
         public static void Main(String[] args)
         {
             (var argsAreValid, var argumentErrors) = args.ValidateParameters();
@@ -21,15 +20,13 @@ namespace PPTail
             if (argsAreValid)
             {
                 var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
-                var settings = (null as ISettings).Create(sourceConnection, targetConnection);
-
-                string templateProvider = templateConnection.GetConnectionStringValue(_connectionStringProviderKey);
-                string templatePath = templateConnection.GetConnectionStringValue(_connectionStringFilePathKey);
+                var settings = (null as ISettings).Create(sourceConnection);
 
                 var serviceProvider = new ServiceCollection()
                     .AddSingleton<ISettings>(settings)  // TODO: Eliminate ISettings
-                    .AddSourceRepository(settings) // TODO: Remove from container
-                    .AddTemplateRepository(templateProvider, templatePath)
+                    .AddSourceRepository(settings)
+                    .AddTargetRepository(targetConnection)
+                    .AddTemplateRepository(templateConnection)
                     .AddServices()
                     .BuildServiceProvider();
 
@@ -48,8 +45,7 @@ namespace PPTail
                 else
                 {
                     // Store the resulting output
-                    var outputRepoInstanceName = settings.TargetConnection.GetConnectionStringValue(_connectionStringProviderKey);
-                    var outputRepo = serviceProvider.GetNamedService<IOutputRepository>(outputRepoInstanceName);
+                    var outputRepo = serviceProvider.GetService<IOutputRepository>();
                     outputRepo.Save(sitePages);
                 }
             }

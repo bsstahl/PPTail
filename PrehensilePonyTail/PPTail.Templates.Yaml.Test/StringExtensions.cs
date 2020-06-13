@@ -13,6 +13,8 @@ namespace PPTail.Templates.Yaml.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class StringExtensions
     {
+        const string _connectionFormat = "Provider=PPTail.Templates.Yaml.ReadRepository;FilePath={0}";
+
         internal static void ExecuteTemplateRetrievalTest(this String templateFilename)
         {
             string templatePath = string.Empty.GetRandom();
@@ -29,7 +31,8 @@ namespace PPTail.Templates.Yaml.Test
                 .AddFileService(mockFileService)
                 .BuildServiceProvider();
 
-            var target = new Yaml.ReadRepository(serviceProvider, templatePath);
+            string connection = String.Format(_connectionFormat, templatePath);
+            var target = new Yaml.ReadRepository(serviceProvider, connection);
             var actual = target.GetAllTemplates();
 
             mockFileService.Verify();
@@ -59,7 +62,8 @@ namespace PPTail.Templates.Yaml.Test
                 .AddFileService(mockFileService)
                 .BuildServiceProvider();
 
-            var target = new Yaml.ReadRepository(serviceProvider, templatePath);
+            string connection = String.Format(_connectionFormat, templatePath);
+            var target = new Yaml.ReadRepository(serviceProvider, connection);
             var actual = target.GetAllTemplates();
 
             Assert.Equal(expected, actual.Single(t => t.TemplateType == templateType).Content);

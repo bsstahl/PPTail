@@ -42,18 +42,6 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SettingsBuilder TargetConnection(String TargetConnection)
-        {
-            base.TargetConnection = TargetConnection;
-            return this;
-        }
-
-        //public new SettingsBuilder TemplateConnection(String templateConnection)
-        //{
-        //    base.TemplateConnection = templateConnection;
-        //    return this;
-        //}
-
         public SettingsBuilder AddExtendedSetting(String name, String value)
         {
             this.ExtendedSettings.Add(new Tuple<string, string>(name, value));

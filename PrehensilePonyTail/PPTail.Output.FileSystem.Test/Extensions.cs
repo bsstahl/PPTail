@@ -14,30 +14,35 @@ namespace PPTail.Output.FileSystem.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
+        const string _defaultConnectionString = "Provider=PPTail.Output.FileSystem.Repository;FilePath=c:\\";
 
         public static Repository Create(this IOutputRepository ignore)
         {
-            return ignore.Create(Mock.Of<IFile>(), Mock.Of<Settings>());
+            return ignore.Create(_defaultConnectionString);
         }
 
-        public static Repository Create(this IOutputRepository ignore, IFile file, Settings settings)
+        public static Repository Create(this IOutputRepository ignore, String targetConnection)
         {
-            return ignore.Create(file, Mock.Of<IDirectory>(), settings);
+            return ignore.Create(Mock.Of<IFile>(), targetConnection);
         }
 
-        public static Repository Create(this IOutputRepository ignore, IFile file, IDirectory directory, Settings settings)
+        public static Repository Create(this IOutputRepository ignore, IFile file, String targetConnection)
+        {
+            return ignore.Create(file, Mock.Of<IDirectory>(), targetConnection);
+        }
+
+        public static Repository Create(this IOutputRepository ignore, IFile file, IDirectory directory, string targetConnection)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(file);
             container.AddSingleton<IDirectory>(directory);
-            container.AddSingleton<ISettings>(settings);
-            return ignore.Create(container);
+            return ignore.Create(container, targetConnection);
         }
 
-        public static Repository Create(this IOutputRepository ignore, IServiceCollection container)
+        public static Repository Create(this IOutputRepository ignore, IServiceCollection container, String targetConnection)
         {
             var serviceProvider = container.BuildServiceProvider();
-            return new PPTail.Output.FileSystem.Repository(serviceProvider);
+            return new PPTail.Output.FileSystem.Repository(serviceProvider, targetConnection);
         }
 
         public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore)
@@ -98,32 +103,6 @@ namespace PPTail.Output.FileSystem.Test
                 SourceTemplateType = sourceTemplateType,
                 IsBase64Encoded = isEncoded
             };
-        }
-
-
-        public static Settings Create(this ISettings ignore)
-        {
-            return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html", $"\\{string.Empty.GetRandom()}");
-        }
-
-        public static Settings Create(this ISettings ignore, String outputPath)
-        {
-            return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html", outputPath);
-        }
-
-        public static Settings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String outputPath)
-        {
-            var result = new Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension,
-                TargetConnection = $"Provider=Test;FilePath={outputPath}"
-            };
-
-            result.ExtendedSettings.Add(new Tuple<string, string>("outputPath", outputPath));
-            return result;
         }
 
     }

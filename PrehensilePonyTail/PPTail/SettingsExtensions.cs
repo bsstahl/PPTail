@@ -18,7 +18,7 @@ namespace PPTail
         const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection)
+        public static ISettings Create(this ISettings ignore, String sourceConnection)
         {
             var outputFileExtension = "html";
             var dateFormatSpecifier = "yyyy-MM-dd";
@@ -29,10 +29,10 @@ namespace PPTail
             var createDasBlogSyndicationCompatibilityFile = true;
             var createDasBlogPostsCompatibilityFile = true;
 
-            return (null as ISettings).Create(sourceConnection, targetConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
+            return (null as ISettings).Create(sourceConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
         }
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection, String targetConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
+        public static ISettings Create(this ISettings ignore, String sourceConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
         {
             var settings = new Settings()
             {
@@ -40,8 +40,7 @@ namespace PPTail
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
                 OutputFileExtension = outputFileExtension, 
-                SourceConnection  = sourceConnection,
-                TargetConnection = targetConnection
+                SourceConnection  = sourceConnection
             };
 
             _ = settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);

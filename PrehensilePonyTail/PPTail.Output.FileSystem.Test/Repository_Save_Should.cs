@@ -14,16 +14,21 @@ namespace PPTail.Output.FileSystem.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_Save_Should
     {
+        const string _connectionStringFormat = "Provider={0};FilePath={1}";
+        const string _defaultProviderName = "PPTail.Output.FileSystem.Repository";
+
         [Fact]
         public void CallWriteAllTextOnTheFileSystemOnceForEachFile()
         {
             Int32 expected = 25.GetRandom(10);
 
-            var settings = (null as Settings).Create();
             var file = new Mock<IFile>();
             var files = (null as IEnumerable<SiteFile>).Create(expected);
 
-            var target = (null as IOutputRepository).Create(file.Object, settings);
+            string outputPath = string.Empty.GetRandom();
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
+
+            var target = (null as IOutputRepository).Create(file.Object, connectionString);
             target.Save(files);
 
             file.Verify(f => f.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(files.Count()));
@@ -32,7 +37,6 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void SkipAFileThatRequiresAuthorizationToWrite()
         {
-            var settings = (null as Settings).Create();
             var fileSystem = new Mock<IFile>();
             var file = (null as SiteFile).Create(true);
             var files = new List<SiteFile>() { file };
@@ -40,7 +44,10 @@ namespace PPTail.Output.FileSystem.Test
             fileSystem.Setup(f => f.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()))
                 .Throws(new System.UnauthorizedAccessException());
 
-            var target = (null as IOutputRepository).Create(fileSystem.Object, settings);
+            string outputPath = string.Empty.GetRandom();
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
+
+            var target = (null as IOutputRepository).Create(fileSystem.Object, connectionString);
             target.Save(files);
         }
 
@@ -48,10 +55,10 @@ namespace PPTail.Output.FileSystem.Test
         public void PassTheCorrectPathsToTheWriteMethod()
         {
             var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
-            var settings = (null as Settings).Create(outputPath);
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
 
             var file = new Mock<IFile>();
-            var target = (null as IOutputRepository).Create(file.Object, settings);
+            var target = (null as IOutputRepository).Create(file.Object, connectionString);
 
             var files = (null as IEnumerable<SiteFile>).Create();
             target.Save(files);
@@ -66,10 +73,12 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void PassTheCorrectDataToTheFileSystem()
         {
-            var settings = (null as Settings).Create();
-
             var file = new Mock<IFile>();
-            var target = (null as IOutputRepository).Create(file.Object, settings);
+
+            string outputPath = string.Empty.GetRandom();
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
+
+            var target = (null as IOutputRepository).Create(file.Object, connectionString);
 
             var files = (null as IEnumerable<SiteFile>).Create();
             target.Save(files);
@@ -81,10 +90,12 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void PassTheDecodedDataToTheFileSystemIfTheFileIsEncoded()
         {
-            var settings = (null as Settings).Create();
-
             var file = new Mock<IFile>();
-            var target = (null as IOutputRepository).Create(file.Object, settings);
+
+            string outputPath = string.Empty.GetRandom();
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
+
+            var target = (null as IOutputRepository).Create(file.Object, connectionString);
 
             var files = (null as IEnumerable<SiteFile>).Create(10.GetRandom(3), true);
             target.Save(files);
@@ -100,12 +111,12 @@ namespace PPTail.Output.FileSystem.Test
         public void CreateTheDirectoryIfItDoesntExist()
         {
             var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
-            var settings = (null as Settings).Create(outputPath);
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
 
             var file = Mock.Of<IFile>();
             var directory = new Mock<IDirectory>();
 
-            var target = (null as IOutputRepository).Create(file, directory.Object, settings);
+            var target = (null as IOutputRepository).Create(file, directory.Object, connectionString);
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
@@ -122,12 +133,12 @@ namespace PPTail.Output.FileSystem.Test
         public void NotCreateTheDirectoryIfItAlreadyExists()
         {
             var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
-            var settings = (null as Settings).Create(outputPath);
+            var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
 
             var file = Mock.Of<IFile>();
             var directory = new Mock<IDirectory>();
 
-            var target = (null as IOutputRepository).Create(file, directory.Object, settings);
+            var target = (null as IOutputRepository).Create(file, directory.Object, connectionString);
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();

@@ -16,31 +16,35 @@ namespace PPTail.Output.FileSystem
         readonly IServiceProvider _serviceProvider;
         readonly IFile _file;
         readonly IDirectory _directory;
-        readonly ISettings _settings;
 
-        public Repository(IServiceProvider serviceProvider)
+        readonly String _outputPath;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization effort")]
+        public Repository(IServiceProvider serviceProvider, String targetConnection)
         {
             _serviceProvider = serviceProvider;
             if (_serviceProvider == null)
-                throw new ArgumentNullException(nameof(IServiceProvider));
+                throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider.ValidateService<IFile>();
             _serviceProvider.ValidateService<IDirectory>();
-            _serviceProvider.ValidateService<ISettings>();
 
             _file = serviceProvider.GetService<IFile>();
             _directory = serviceProvider.GetService<IDirectory>();
-            _settings = serviceProvider.GetService<ISettings>();
-            _settings.Validate(s => s.TargetConnection, nameof(_settings.TargetConnection));
+
+            if (string.IsNullOrWhiteSpace(targetConnection))
+                throw new ArgumentNullException(targetConnection);
+
+            _outputPath = targetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            if (String.IsNullOrWhiteSpace(_outputPath))
+                throw new ArgumentException($"No FilePath supplied in Target Connection", nameof(targetConnection));
         }
 
         public void Save(IEnumerable<SiteFile> files)
         {
-            String outputPath = _settings.TargetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
-
             foreach (var sitePage in files)
             {
-                String fullPath = System.IO.Path.Combine(outputPath, sitePage.RelativeFilePath);
+                String fullPath = System.IO.Path.Combine(_outputPath, sitePage.RelativeFilePath);
                 String folderPath = System.IO.Path.GetDirectoryName(fullPath);
 
                 if (!_directory.Exists(folderPath))
@@ -61,7 +65,7 @@ namespace PPTail.Output.FileSystem
                     _file.WriteAllText(fullPath, sitePage.Content);
             }
 
-            Console.WriteLine($"Site written to {System.IO.Path.GetFullPath(outputPath)}");
+            Console.WriteLine($"Site written to {System.IO.Path.GetFullPath(_outputPath)}");
         }
     }
 }

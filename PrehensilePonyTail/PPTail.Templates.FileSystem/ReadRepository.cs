@@ -10,20 +10,26 @@ namespace PPTail.Templates.FileSystem
 {
     public class ReadRepository : Interfaces.ITemplateRepository
     {
+        const string _connectionStringFilePathKey = "FilePath";
+
         private readonly IServiceProvider _serviceProvider;
         private readonly String _templatePath;
 
         private IEnumerable<Template>? _templates = null;
 
-        public ReadRepository(IServiceProvider serviceProvider, string templatePath)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be corrected in Globalization project")]
+        public ReadRepository(IServiceProvider serviceProvider, string templateConnection)
         {
             if (serviceProvider is null)
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _templatePath = templatePath;
+            _templatePath = templateConnection.GetConnectionStringValue(_connectionStringFilePathKey);
 
             _serviceProvider.ValidateService<IFile>();
+
+            if (string.IsNullOrWhiteSpace(_templatePath))
+                throw new ArgumentException("FilePath not provided in Template Connection String", nameof(templateConnection));
         }
 
         public IEnumerable<Template> GetAllTemplates()
