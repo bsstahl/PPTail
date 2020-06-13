@@ -11,7 +11,6 @@ namespace PPTail.Generator.Navigation.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
-
         public static BasicProvider Create(this BasicProvider ignore, IServiceProvider serviceProvider)
         {
             return new BasicProvider(serviceProvider);

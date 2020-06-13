@@ -180,6 +180,64 @@ namespace PPTail.Generator.Navigation.Test
         }
 
         [Fact]
+        public void IncludeTheNavDropdownIfUseAdditionalPagesDropdownIsTrue()
+        {
+            var dropdownMenuLabel = string.Empty.GetRandom();
+            var siteSettings = new SiteSettings()
+            {
+                UseAdditionalPagesDropdown = true,
+                AdditionalPagesDropdownLabel = dropdownMenuLabel
+            };
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo
+                .Setup(r => r.GetSiteSettings())
+                .Returns(siteSettings);
+
+            IServiceProvider serviceProvider = (new ServiceCollection())
+                .AddContentRepository(contentRepo)
+                .AddLinkProvider()
+                .BuildServiceProvider();
+            var target = (null as BootstrapProvider).Create(serviceProvider);
+
+            var pages = (null as IEnumerable<ContentItem>).Create();
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
+
+            var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
+            Assert.Contains(dropdownMenuLabel, actual);
+        }
+
+        [Fact]
+        public void NotIncludeTheNavDropdownIfUseAdditionalPagesDropdownIsFalse()
+        {
+            var dropdownMenuLabel = string.Empty.GetRandom();
+            var siteSettings = new SiteSettings()
+            {
+                UseAdditionalPagesDropdown = false,
+                AdditionalPagesDropdownLabel = dropdownMenuLabel
+            };
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo
+                .Setup(r => r.GetSiteSettings())
+                .Returns(siteSettings);
+
+            IServiceProvider serviceProvider = (new ServiceCollection())
+                .AddContentRepository(contentRepo)
+                .AddLinkProvider()
+                .BuildServiceProvider();
+            var target = (null as BootstrapProvider).Create(serviceProvider);
+
+            var pages = (null as IEnumerable<ContentItem>).Create();
+            String outputFileExtension = "html";
+            String pathToRoot = string.Empty;
+
+            var actual = target.CreateNavigation(pages, pathToRoot, outputFileExtension);
+            Assert.DoesNotContain(dropdownMenuLabel, actual);
+        }
+
+        [Fact]
         public void IncludeALinkToTheContactPage()
         {
             IServiceProvider serviceProvider = (new ServiceCollection())
