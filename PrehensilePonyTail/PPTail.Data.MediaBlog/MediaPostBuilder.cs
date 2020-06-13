@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,10 +57,10 @@ namespace PPTail.Data.MediaBlog
         {
             var newTags = new List<string>();
 
-            if (base.Tags != null && base.Tags.Any())
+            if (base.Tags.IsNotNull() && base.Tags.Any())
                 newTags.AddRange(base.Tags);
 
-            if (tags != null && tags.Any())
+            if (tags.IsNotNull() && tags.Any())
                 newTags.AddRange(tags);
 
             if (newTags.Any())

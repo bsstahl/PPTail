@@ -244,16 +244,6 @@ namespace PPTail.Data.MediaBlog.Test
             ExecutePropertyTest(expected, fieldValueDelegate, json);
         }
 
-        // TODO: Determine if this actually requires an empty String or if a null String is ok
-        //[Fact]
-        //public void ReturnAnEmptyStringInTheByLineFieldIfAuthorFieldIsEmpty()
-        //{
-        //    String expected = string.Empty;
-        //    String json = "{}";
-        //    String fieldValueDelegate(ContentItem c) => c.ByLine;
-        //    ExecutePropertyTest(expected, fieldValueDelegate, json);
-        //}
-
         private static void ExecutePropertyTest(String fieldName, Func<ContentItem, string> fieldValueDelegate)
         {
             String expected = string.Empty.GetRandom();

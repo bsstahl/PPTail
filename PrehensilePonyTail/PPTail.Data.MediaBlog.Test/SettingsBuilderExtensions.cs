@@ -9,18 +9,6 @@ namespace PPTail.Data.MediaBlog.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class SettingsBuilderExtensions
     {
-        //public static SettingsBuilder UseRandomValues(this SettingsBuilder builder)
-        //{
-        //    return builder
-        //        .DateFormatSpecifier("")
-        //        .DateTimeFormatSpecifier("")
-        //        .ItemSeparator("")
-        //        .OutputFileExtension("")
-        //        .SourceConnection("")
-        //        .TargetConnection("")
-        //        .TemplateConnection("");
-        //}
-
         public static SettingsBuilder UseGenericValues(this SettingsBuilder builder)
         {
             return builder

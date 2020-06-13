@@ -65,8 +65,6 @@ namespace PPTail.Data.MediaBlog
 
         public Entities.ContentItem AsContentItem(Guid Id)
         {
-            // Hack: Why the default category?
-
             var byLine = string.IsNullOrWhiteSpace(this.Author) ? string.Empty : $"by {this.Author}";
             var content = this.Media.CreateContent();
             var lastModificationDate = this.Media.CreateDate;
@@ -76,7 +74,7 @@ namespace PPTail.Data.MediaBlog
             {
                 Author = this.Author,
                 ByLine = byLine,
-                CategoryIds = new Guid[] { Guid.Parse("663D2D20-6B79-47B1-AFAD-615F15E226A7") },
+                CategoryIds = Array.Empty<Guid>(), // Removed default category 2020-06-12
                 Content = content,
                 Description = this.Description,
                 Id = Id,

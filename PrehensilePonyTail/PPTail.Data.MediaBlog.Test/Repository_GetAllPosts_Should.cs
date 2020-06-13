@@ -222,6 +222,162 @@ namespace PPTail.Data.MediaBlog.Test
         }
 
         [Fact]
+        public void ReturnTheCorrectTagsFromAMultiTagPost()
+        {
+            var expectedCount = 30.GetRandom(3);
+            var tags = new List<string>();
+            for (Int32 i = 0; i < expectedCount; i++)
+            {
+                tags.Add(string.Empty.GetRandom());
+            }
+            String expected = tags.AsHash();
+
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            var settings = new SettingsBuilder()
+                .SourceConnection(
+                    new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build())
+                .Build();
+
+            var postJson = new MediaPostBuilder()
+                .UseRandomFlickrPost()
+                .ClearTags()
+                .AddTags(tags)
+                .Build();
+
+            var postFiles = new MockMediaFileCollectionBuilder()
+                .AddPost(postJson)
+                .Build(rootPath);
+
+            var directoryProvider = new MockDirectoryServiceBuilder()
+                .AddPostFiles(postFiles.Select(f => f.GetFilename()))
+                .Build(rootPath);
+
+            var fileSystem = new MockFileServiceBuilder()
+                .AddPosts(postFiles)
+                .Build();
+
+            var target = new ContentRepositoryBuilder()
+                .AddSettingsService(settings)
+                .AddFileService(fileSystem.Object)
+                .AddDirectoryService(directoryProvider.Object)
+                .Build();
+
+            var pages = target.GetAllPosts();
+            var actual = pages.Single().Tags.AsHash();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectNumberOfTagsEvenIfAddedAtDifferentTimes()
+        {
+            var expected1 = 30.GetRandom(3);
+            var expected2 = 30.GetRandom(3);
+            var expected = expected1 + expected2;
+
+            var tags1 = new List<string>();
+            for (Int32 i = 0; i < expected1; i++)
+            {
+                tags1.Add(string.Empty.GetRandom());
+            }
+
+            var tags2 = new List<string>();
+            for (Int32 i = 0; i < expected2; i++)
+            {
+                tags2.Add(string.Empty.GetRandom());
+            }
+
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            var settings = new SettingsBuilder()
+                .SourceConnection(
+                    new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build())
+                .Build();
+
+            var postJson = new MediaPostBuilder()
+                .UseRandomFlickrPost()
+                .ClearTags()
+                .AddTags(tags1)
+                .AddTags(tags2)
+                .Build();
+
+            var postFiles = new MockMediaFileCollectionBuilder()
+                .AddPost(postJson)
+                .Build(rootPath);
+
+            var directoryProvider = new MockDirectoryServiceBuilder()
+                .AddPostFiles(postFiles.Select(f => f.GetFilename()))
+                .Build(rootPath);
+
+            var fileSystem = new MockFileServiceBuilder()
+                .AddPosts(postFiles)
+                .Build();
+
+            var target = new ContentRepositoryBuilder()
+                .AddSettingsService(settings)
+                .AddFileService(fileSystem.Object)
+                .AddDirectoryService(directoryProvider.Object)
+                .Build();
+
+            var pages = target.GetAllPosts();
+            var actual = pages.Single().Tags.Count();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectNumberOfTagsEvenIfANullTagCollectionAddedLater()
+        {
+            var expected = 30.GetRandom(3);
+            var tags = new List<string>();
+            for (Int32 i = 0; i < expected; i++)
+            {
+                tags.Add(string.Empty.GetRandom());
+            }
+
+            String rootPath = $"c:\\{string.Empty.GetRandom()}";
+            var settings = new SettingsBuilder()
+                .SourceConnection(
+                    new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build())
+                .Build();
+
+            var postJson = new MediaPostBuilder()
+                .UseRandomFlickrPost()
+                .ClearTags()
+                .AddTags(tags)
+                .AddTags(null)
+                .Build();
+
+            var postFiles = new MockMediaFileCollectionBuilder()
+                .AddPost(postJson)
+                .Build(rootPath);
+
+            var directoryProvider = new MockDirectoryServiceBuilder()
+                .AddPostFiles(postFiles.Select(f => f.GetFilename()))
+                .Build(rootPath);
+
+            var fileSystem = new MockFileServiceBuilder()
+                .AddPosts(postFiles)
+                .Build();
+
+            var target = new ContentRepositoryBuilder()
+                .AddSettingsService(settings)
+                .AddFileService(fileSystem.Object)
+                .AddDirectoryService(directoryProvider.Object)
+                .Build();
+
+            var pages = target.GetAllPosts();
+            var actual = pages.Single().Tags.Count();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void ReturnTheProperValueInTheAuthorField()
         {
             String expected = string.Empty.GetRandom();
@@ -276,7 +432,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             String json = new MediaPostBuilder()
-                .AddFlickrImage(post)
+                .AddFlickrImage(post.Title, post.DisplayWidth, post.DisplayHeight, post.CreateDate, post.FlickrListUrl, post.ImageUrl)
                 .Build();
 
             String expected = $"<a data-flickr-embed=\"true\" href=\"{post.FlickrListUrl}\" title=\"{post.Title}\"><img class=\"img-responsive\" src=\"{post.ImageUrl}\" alt=\"{post.Title}\"></a>";
@@ -293,7 +449,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             String json = new MediaPostBuilder()
-                .AddYouTubeVideo(video)
+                .AddYouTubeVideo(video.Title, video.DisplayWidth, video.DisplayHeight, video.CreateDate, video.VideoUrl)
                 .Build();
 
             String expected = $"<img class=\"img-responsive\"  title=\"{video.Title}\" src=\"{video.VideoUrl}\" alt=\"{video.Title}\" />";

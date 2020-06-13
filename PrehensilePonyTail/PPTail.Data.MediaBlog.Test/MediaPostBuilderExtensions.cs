@@ -65,7 +65,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             return builder
-                .AddEmptyPost(emptyPost)
+                .AddEmptyPost(emptyPost.Title, emptyPost.DisplayWidth, emptyPost.DisplayHeight, emptyPost.CreateDate)
                 .Author(string.Empty.GetRandom())
                 .Description(string.Empty.GetRandom())
                 .Posted(DateTime.Now.AddYears(30).GetRandom(DateTime.Now.AddYears(-10)))
