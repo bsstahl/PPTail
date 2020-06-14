@@ -65,18 +65,18 @@ namespace PPTail.SiteGenerator.Test
                 Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), 
                 pageGenerator, Mock.Of<IHomePageGenerator>(), 
                 Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), 
-                Mock.Of<ISyndicationProvider>(), Mock.Of<ISettings>(), 
-                new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
+                Mock.Of<ISyndicationProvider>(), new List<Category>(), 
+                Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
         }
 
         public static IServiceCollection Create(this IServiceCollection container, IContentRepository contentRepo)
         {
             return container.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
                 Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
-                Mock.Of<ISettings>(), new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
+                new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection _1, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, ISettings settings, IEnumerable<Category> categories, IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen)
+        public static IServiceCollection Create(this IServiceCollection _1, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, IEnumerable<Category> categories, IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen)
         {
             IServiceCollection container = new ServiceCollection();
             container.AddSingleton<IPageGenerator>(pageGen);
@@ -92,7 +92,6 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IContentItemPageGenerator>(contentItemPageGen);
 
             container.AddSingleton<IContentRepository>(contentRepo);
-            container.AddSingleton<ISettings>(settings);
 
             return container;
         }
@@ -191,21 +190,6 @@ namespace PPTail.SiteGenerator.Test
                 Description = description,
                 PostsPerPage = postsPerPage
             };
-        }
-
-        public static ISettings Create(this ISettings settings)
-        {
-            return settings.Create(null);
-        }
-
-        public static ISettings Create(this ISettings _1, IEnumerable<Tuple<string, string>> extendedSettings)
-        {
-            var result = new Settings();
-
-            if (extendedSettings != null && extendedSettings.Any())
-                result.ExtendedSettings.AddRange(extendedSettings);
-
-            return result;
         }
 
         public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> sourceFiles)

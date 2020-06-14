@@ -37,7 +37,6 @@ namespace PPTail.Generator.Contact.Test
 
             var container = new ServiceCollection();
             container.AddSingleton<ITemplateRepository>(templateRepo.Object);
-            container.AddSingleton<ISettings>(Mock.Of<ISettings>());
 
             String expected = typeof(SiteSettings).Name;
             try

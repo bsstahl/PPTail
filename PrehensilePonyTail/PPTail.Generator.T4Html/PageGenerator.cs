@@ -32,12 +32,11 @@ namespace PPTail.Generator.T4Html
 
         public String GenerateSidebarContent(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, String pathToRoot)
         {
-            var settings = _serviceProvider.GetService<ISettings>();
-
+            var siteSettings = _serviceProvider.GetSiteSettings();
             var results = "<div class=\"widgetzone\">";
             foreach (var widget in widgets.OrderBy(w => w.OrderIndex))
             {
-                results += widget.Render(_serviceProvider, settings, posts, pathToRoot);
+                results += widget.Render(_serviceProvider, siteSettings, posts, pathToRoot);
             }
 
             results += "</div>";

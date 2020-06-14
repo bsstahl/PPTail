@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using PPTail.Entities;
 using PPTail.Interfaces;
 
 namespace PPTail.Extensions
@@ -20,6 +21,12 @@ namespace PPTail.Extensions
         {
             var templateRepo = serviceProvider.GetService<ITemplateRepository>();
             return templateRepo.GetAllTemplates();
+        }
+
+        public static SiteSettings GetSiteSettings(this IServiceProvider serviceProvider)
+        {
+            var contentRepo = serviceProvider.GetService<IContentRepository>();
+            return contentRepo.GetSiteSettings();
         }
     }
 }

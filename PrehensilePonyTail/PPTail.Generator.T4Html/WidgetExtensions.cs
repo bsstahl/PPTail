@@ -11,7 +11,7 @@ namespace PPTail.Generator.T4Html
 {
     public static class WidgetExtensions
     {
-        public static String Render(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, String pathToRoot)
+        public static String Render(this Widget widget, IServiceProvider serviceProvider, SiteSettings siteSettings, IEnumerable<ContentItem> posts, String pathToRoot)
         {
             String results = $"<div class=\"widget {widget.WidgetType.ToString().ToLowerInvariant().Replace("_", "")}\">";
 
@@ -23,10 +23,10 @@ namespace PPTail.Generator.T4Html
             }
 
             if (widget.WidgetType == Enumerations.WidgetType.Tag_cloud)
-                results += widget.RenderTagCloudWidget(serviceProvider, settings, posts, pathToRoot);
+                results += widget.RenderTagCloudWidget(serviceProvider, siteSettings, posts, pathToRoot);
 
             if (widget.WidgetType == Enumerations.WidgetType.TagList)
-                results += widget.RenderTagListWidget(serviceProvider, settings, posts, pathToRoot);
+                results += widget.RenderTagListWidget(serviceProvider, siteSettings, posts, pathToRoot);
 
             results += "</div>";
             return results;
@@ -44,7 +44,7 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static String RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, String pathToRoot)
+        private static String RenderTagCloudWidget(this Widget widget, IServiceProvider serviceProvider, SiteSettings siteSettings, IEnumerable<ContentItem> posts, String pathToRoot)
         {
             String results = string.Empty;
 
@@ -74,7 +74,7 @@ namespace PPTail.Generator.T4Html
             return results;
         }
 
-        private static String RenderTagListWidget(this Widget widget, IServiceProvider serviceProvider, ISettings settings, IEnumerable<ContentItem> posts, String pathToRoot)
+        private static String RenderTagListWidget(this Widget widget, IServiceProvider serviceProvider, SiteSettings siteSettings, IEnumerable<ContentItem> posts, String pathToRoot)
         {
             const String style = "medium";
             const Int32 topTagCountRows = 20;

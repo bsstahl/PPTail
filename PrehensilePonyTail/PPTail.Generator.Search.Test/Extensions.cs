@@ -17,27 +17,27 @@ namespace PPTail.Generator.Search.Test
         public static ISearchProvider Create(this ISearchProvider ignore)
         {
             return ignore.Create(Mock.Of<IEnumerable<Template>>(),
-                Mock.Of<Settings>(), null, Mock.Of<ILinkProvider>());
+                null, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), null, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, null, Mock.Of<ILinkProvider>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, IEnumerable<Category> categories)
         {
-            return ignore.Create(templates, Mock.Of<Settings>(), categories, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, categories, Mock.Of<ILinkProvider>());
         }
 
-        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, SiteSettings siteSettings)
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, SiteSettings siteSettings)
         {
-            return ignore.Create(templates, settings, null, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, null, Mock.Of<ILinkProvider>());
         }
 
-        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories, ILinkProvider linkProvider)
+        public static ISearchProvider Create(this ISearchProvider ignore, IEnumerable<Template> templates, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
-            var container = (null as IServiceCollection).Create(templates, settings, categories, linkProvider, Mock.Of<ITemplateProcessor>());
+            var container = (null as IServiceCollection).Create(templates, categories, linkProvider, Mock.Of<ITemplateProcessor>());
             return new PageGenerator(container.BuildServiceProvider());
         }
 
@@ -49,8 +49,8 @@ namespace PPTail.Generator.Search.Test
         public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Category> categories)
         {
             return ignore.Create((null as IEnumerable<Template>).Create(),
-                null, categories,
-                Mock.Of<ILinkProvider>(), Mock.Of<ITemplateProcessor>());
+                categories, Mock.Of<ILinkProvider>(), 
+                Mock.Of<ITemplateProcessor>());
         }
 
         public static ISearchProvider Create(this ISearchProvider ignore, IServiceCollection container)
@@ -63,7 +63,7 @@ namespace PPTail.Generator.Search.Test
             return new PageGenerator(serviceProvider);
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories, ILinkProvider linkProvider, ITemplateProcessor templateProcessor)
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, IEnumerable<Category> categories, ILinkProvider linkProvider, ITemplateProcessor templateProcessor)
         {
             var container = new ServiceCollection();
 

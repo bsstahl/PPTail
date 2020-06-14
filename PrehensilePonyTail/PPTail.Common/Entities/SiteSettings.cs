@@ -21,6 +21,7 @@ namespace PPTail.Entities
         public String DateFormatSpecifier { get; set; } = "yyyy-MM-dd";
         public String ItemSeparator { get; set; } = "<hr/>";
         public String OutputFileExtension { get; set; } = "html";
+        public IEnumerable<String> AdditionalFilePaths { get; set; } = new[] { "Images", "Pics", "Files" };
         public IEnumerable<SiteVariable> Variables { get; set; } = new List<SiteVariable>();
     }
 }

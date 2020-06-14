@@ -20,10 +20,8 @@ namespace PPTail
             if (argsAreValid)
             {
                 var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
-                var settings = (null as ISettings).Create();
 
                 var serviceProvider = new ServiceCollection()
-                    .AddSingleton<ISettings>(settings)  // TODO: Eliminate ISettings
                     .AddSourceRepository(sourceConnection)
                     .AddTargetRepository(targetConnection)
                     .AddTemplateRepository(templateConnection)

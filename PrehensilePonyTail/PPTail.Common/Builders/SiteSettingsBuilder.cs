@@ -1,6 +1,8 @@
 ﻿using PPTail.Entities;
+using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PPTail.Builders
@@ -64,6 +66,25 @@ namespace PPTail.Builders
         {
             base.DisplayTitleInNavbar = value;
             return this;
+        }
+
+        public new SiteSettingsBuilder AdditionalFilePaths(IEnumerable<String> value)
+        {
+            base.AdditionalFilePaths = value;
+            return this;
+        }
+
+        public SiteSettingsBuilder AddAdditionalFilePaths(IEnumerable<String> value)
+        {
+            var additionalPathsResult = new List<String>();
+
+            if (base.AdditionalFilePaths.IsNotNull() && base.AdditionalFilePaths.Any())
+                additionalPathsResult.AddRange(base.AdditionalFilePaths);
+
+            if (value.IsNotNull() && value.Any())
+                additionalPathsResult.AddRange(value);
+
+            return this.AdditionalFilePaths(additionalPathsResult);
         }
 
     }

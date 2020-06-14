@@ -12,12 +12,6 @@ namespace PPTail.SiteGenerator
 {
     public class Builder : ISiteBuilder
     {
-        const String _additionalFilePathsSettingName = "additionalFilePaths";
-        const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
-
-        const String _providerKey = "Provider";
-
         private readonly IServiceProvider _serviceProvider;
 
         public Builder(IServiceProvider serviceProvider)
@@ -50,7 +44,6 @@ namespace PPTail.SiteGenerator
             var pageGen = this.ServiceProvider.GetService<IPageGenerator>();
             var contentItemPageGen = this.ServiceProvider.GetService<IContentItemPageGenerator>();
             var homePageGen = this.ServiceProvider.GetService<IHomePageGenerator>();
-            var settings = this.ServiceProvider.GetService<ISettings>();
             var navProvider = this.ServiceProvider.GetService<INavigationProvider>();
             var archiveProvider = this.ServiceProvider.GetService<IArchiveProvider>();
             var contactProvider = this.ServiceProvider.GetService<IContactProvider>();
@@ -127,16 +120,6 @@ namespace PPTail.SiteGenerator
                 Content = syndicationContent
             });
 
-            String createCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName);
-            bool.TryParse(createCompatibilityFileValue, out var createCompatibilityFile);
-            if (createCompatibilityFile)
-                result.Add(new SiteFile()
-                {
-                    RelativeFilePath = "./syndication.axd",
-                    SourceTemplateType = Enumerations.TemplateType.Syndication,
-                    Content = syndicationContent
-                });
-
             foreach (var post in posts)
             {
                 // Add all published content pages to the results
@@ -196,8 +179,8 @@ namespace PPTail.SiteGenerator
             var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
             var usedCategories = categories.Where(c => categoryIds.Contains(c.Id));
 
-            IEnumerable<string> usedCategoryNames = usedCategories.Any() 
-                ? usedCategories.Select(c => c.Name.ToLower()) 
+            IEnumerable<string> usedCategoryNames = usedCategories.Any()
+                ? usedCategories.Select(c => c.Name.ToLower())
                 : new List<String>();
 
             var searchNames = new List<string>();
@@ -234,7 +217,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add files from Theme if there are any
-            if (!string.IsNullOrWhiteSpace(siteSettings?.Theme))
+            if (!string.IsNullOrWhiteSpace(siteSettings.Theme))
             {
                 String path = $".\\themes\\{siteSettings.Theme}";
                 var additionalFiles = contentRepo.GetFolderContents(path);
@@ -251,11 +234,9 @@ namespace PPTail.SiteGenerator
             }
 
             // Add additional raw files
-            String relativePathString = settings.GetExtendedSetting(_additionalFilePathsSettingName);
-            if (!string.IsNullOrEmpty(relativePathString))
+            if (siteSettings.AdditionalFilePaths.IsNotNull() && siteSettings.AdditionalFilePaths.Any())
             {
-                var additionalFilePaths = relativePathString.Split(',');
-                var additionalFiles = contentRepo.GetFoldersContents(additionalFilePaths);
+                var additionalFiles = contentRepo.GetFoldersContents(siteSettings.AdditionalFilePaths);
                 foreach (var rawFile in additionalFiles)
                 {
                     result.Add(new SiteFile()
@@ -266,26 +247,6 @@ namespace PPTail.SiteGenerator
                         IsBase64Encoded = true
                     });
                 }
-            }
-
-            // Create DasBlog Compatibility Data File for Posts.aspx
-            String createPostsCompatibilityFileValue = settings.GetExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName);
-            bool.TryParse(createPostsCompatibilityFileValue, out var createPostsCompatibilityFile);
-
-            if (createPostsCompatibilityFile)
-            {
-                String postTemplate = "<post id=\"{0}\" url=\"Posts\\{1}.html\"/>";
-                var postDataResults = new List<string>();
-                foreach (var post in posts)
-                    postDataResults.Add(string.Format(postTemplate, post.Id.ToString(), post.Slug));
-
-                result.Add(new SiteFile()
-                {
-                    RelativeFilePath = System.IO.Path.Combine("app_data", "posts.xml"),
-                    SourceTemplateType = Enumerations.TemplateType.Raw,
-                    Content = $"<?xml version=\"1.0\" encoding=\"utf-8\"?><posts>{string.Join("", postDataResults)}</posts>",
-                    IsBase64Encoded = false
-                });
             }
 
             return result;

@@ -55,7 +55,6 @@ namespace PPTail.Data.Forestry.Test
         {
             string sourceConnection = null;
 
-            var settings = new Settings();
             var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();
@@ -69,7 +68,6 @@ namespace PPTail.Data.Forestry.Test
         {
             string sourceConnection = "Provider=this";
 
-            var settings = new Settings();
             var fileSystem = Mock.Of<IFile>();
 
             var container = new ServiceCollection();

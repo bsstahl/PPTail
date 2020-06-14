@@ -10,16 +10,13 @@ using PPTail.Extensions;
 using TestHelperExtensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using PPTail.Builders;
 
 namespace PPTail.SiteGenerator.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Builder_Build_Should
     {
-        const String _additionalFilePathsSettingName = "additionalFilePaths";
-        const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
-
         [Fact]
         public void NotFailIfNoSiteSettingsArePresent()
         {
@@ -456,17 +453,16 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateOneRawSiteFileForEachSourceFile()
         {
+            var additionalPaths = new string[] { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
+            var siteSettings = new SiteSettingsBuilder()
+                .AddAdditionalFilePaths(additionalPaths)
+                .Build();
+
             var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
 
             var container = (null as IServiceCollection).Create(contentRepo.Object);
 
-            var settings = new Settings();
-            String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
-            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
-            container.ReplaceDependency<ISettings>(settings);
-
-            var additionalPaths = additionalPathSettingsValue.Split(',');
             Int32 expected = 0;
             foreach (var additionalPath in additionalPaths)
             {
@@ -487,16 +483,15 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
+            var additionalPaths = new string[] { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
+            var siteSettings = new SiteSettingsBuilder()
+                .AddAdditionalFilePaths(additionalPaths)
+                .Build();
+
             var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = new Settings();
-            String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
-            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
-            container.ReplaceDependency<ISettings>(settings);
-
-            var additionalPaths = additionalPathSettingsValue.Split(',');
             var sourceFiles = new List<SourceFile>();
             foreach (var additionalPath in additionalPaths)
             {
@@ -521,16 +516,15 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
+            var additionalPaths = new string[] { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
+            var siteSettings = new SiteSettingsBuilder()
+                .AddAdditionalFilePaths(additionalPaths)
+                .Build();
+
             var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = new Settings();
-            String additionalPathSettingsValue = $"{string.Empty.GetRandom()},{string.Empty.GetRandom()},{string.Empty.GetRandom()}";
-            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalPathSettingsValue);
-            container.ReplaceDependency<ISettings>(settings);
-
-            var additionalPaths = additionalPathSettingsValue.Split(',');
             Int32 expected = 0;
             foreach (var additionalPath in additionalPaths)
             {
@@ -562,9 +556,14 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            var settings = new Settings();
-            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, string.Empty);
-            container.ReplaceDependency<ISettings>(settings);
+            var additionalPaths = Array.Empty<String>();
+            var siteSettings = new SiteSettingsBuilder()
+                .AddAdditionalFilePaths(additionalPaths)
+                .Build();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -577,9 +576,14 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            var settings = new Settings();
-            settings.ExtendedSettings.Set(_additionalFilePathsSettingName, null);
-            container.ReplaceDependency<ISettings>(settings);
+            var additionalPaths = Array.Empty<String>();
+            var siteSettings = new SiteSettingsBuilder()
+                .AdditionalFilePaths(null)
+                .Build();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -826,12 +830,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            // TODO: Add to Site Settings
-            String filenameExtension = string.Empty.GetRandom();
-
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
@@ -848,9 +846,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -869,9 +864,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
@@ -967,9 +959,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
             var syndicationProvider = new Mock<ISyndicationProvider>();
             container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
 
@@ -991,9 +980,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
             container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
@@ -1010,8 +996,8 @@ namespace PPTail.SiteGenerator.Test
             String relativePath = ".";
             String fileName = "favicon.ico";
 
-            var favIconFile = new SourceFile() 
-            { 
+            var favIconFile = new SourceFile()
+            {
                 FileName = fileName,
                 Contents = Array.Empty<byte>(),
                 RelativePath = relativePath
@@ -1072,9 +1058,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(syndicationContent);
             container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
@@ -1098,9 +1081,6 @@ namespace PPTail.SiteGenerator.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
             var syndicationProvider = new Mock<ISyndicationProvider>();
             syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
             container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
@@ -1109,127 +1089,6 @@ namespace PPTail.SiteGenerator.Test
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
-        }
-
-        [Fact]
-        public void NotGenerateADasBlogCompatibilitySyndicationFileIfTheExtendedSettingSaysNotTo()
-        {
-            String syndicationFileName = "syndication.axd";
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            settings.AddExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
-            container.ReplaceDependency<ISettings>(settings);
-
-            var syndicationProvider = new Mock<ISyndicationProvider>();
-            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
-            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-
-            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
-        }
-
-        [Fact]
-        public void GenerateADasBlogCompatibilitySyndicationFileIfTheExtendedSettingExists()
-        {
-            String syndicationFileName = "syndication.axd";
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            settings.AddExtendedSetting(_createDasBlogSyndicationCompatibilityFileSettingName, true.ToString());
-            container.ReplaceDependency<ISettings>(settings);
-
-            var syndicationProvider = new Mock<ISyndicationProvider>();
-            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
-            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-
-            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Syndication && p.RelativeFilePath.EndsWith(syndicationFileName)));
-        }
-
-        [Fact]
-        public void NotGenerateADasBlogPostsCompatibilityFileIfNoExtendedSettingExists()
-        {
-            String postsFileName = "posts.xml";
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
-            var syndicationProvider = new Mock<ISyndicationProvider>();
-            syndicationProvider.Setup(s => s.GenerateFeed(It.IsAny<IEnumerable<ContentItem>>())).Returns(string.Empty.GetRandom());
-            container.ReplaceDependency<ISyndicationProvider>(syndicationProvider.Object);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-
-            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
-        }
-
-        [Fact]
-        public void NotGenerateADasBlogPostsCompatibilityFileIfTheExtendedSettingSaysNotTo()
-        {
-            String postsFileName = "posts.xml";
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            settings.AddExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
-            container.ReplaceDependency<ISettings>(settings);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-
-            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
-        }
-
-        [Fact]
-        public void GenerateADasBlogPostsCompatibilityFileIfTheExtendedSettingExists()
-        {
-            String postsFileName = "posts.xml";
-            var container = (null as IServiceCollection).Create();
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-            var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).Create();
-            settings.AddExtendedSetting(_createDasBlogPostsCompatibilityFileSettingName, true.ToString());
-            container.ReplaceDependency<ISettings>(settings);
-
-            var target = (null as Builder).Create(container);
-            var actual = target.Build();
-
-            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.EndsWith(postsFileName)));
         }
 
         [Fact]
@@ -1238,6 +1097,29 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             String theme = string.Empty;
+            SiteSettings siteSettings = new SiteSettings()
+            {
+                Title = string.Empty.GetRandom(),
+                Description = string.Empty.GetRandom(),
+                Theme = theme
+            };
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            contentRepo.Verify(r => r.GetFolderContents(It.Is<string>(s => s.StartsWith(".\\themes\\"))), Times.Never);
+        }
+
+        [Fact]
+        public void NotLookForThemeItemsIfThemeIsNullInSiteSettings()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            String theme = null;
             SiteSettings siteSettings = new SiteSettings()
             {
                 Title = string.Empty.GetRandom(),

@@ -21,11 +21,9 @@ namespace PPTail.Common.Test
             var siteSettings = (null as SiteSettings).Create();
             var contentRepo = (null as IContentRepository).Create(siteSettings);
 
-            var settings = new Settings();
             var categories = (null as IEnumerable<Category>).Create();
             var linkProvider = Mock.Of<ILinkProvider>();
 
-            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IEnumerable<Category>>(categories);
             container.AddSingleton<ILinkProvider>(linkProvider);
 
