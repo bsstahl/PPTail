@@ -21,7 +21,6 @@ namespace PPTail.Generator.Syndication
 
             _serviceProvider = serviceProvider;
             _serviceProvider.ValidateService<IContentRepository>();
-            _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
 
             _templates = _serviceProvider.GetTemplates();
@@ -34,7 +33,7 @@ namespace PPTail.Generator.Syndication
             var syndicationTemplate = _templates.Find(Enumerations.TemplateType.Syndication);
             var syndicationItemTemplate = _templates.Find(Enumerations.TemplateType.SyndicationItem);
 
-            var contentRepo = _serviceProvider.GetContentRepository();
+            var contentRepo = _serviceProvider.GetService<IContentRepository>();
             var siteSettings = contentRepo.GetSiteSettings();
 
             // HACK: Get the fully qualified link to the site from Settings

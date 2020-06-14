@@ -309,14 +309,11 @@ namespace PPTail.Generator.Search.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as ISearchProvider).Create(container);
             var actual = target.GenerateSearchResultsPage(tag, posts, navigationContent, sidebarContent, pathToRoot);
 
             templateProcessor
-                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), settings.ItemSeparator, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
+                .Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), siteSettings.ItemSeparator, It.IsAny<bool>(), It.IsAny<int>()), Times.Once);
         }
 
     }

@@ -18,29 +18,19 @@ namespace PPTail
         const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
 
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection)
+        public static ISettings Create(this ISettings ignore)
         {
-            var outputFileExtension = "html";
-            var dateFormatSpecifier = "yyyy-MM-dd";
-            var dateTimeFormatSpecifier = "yyyy-MM-dd H:mm UTC";
-            var itemSeparator = "<hr/>";
             var additionalFilePaths = "Images,Pics,Files";
 
             var createDasBlogSyndicationCompatibilityFile = true;
             var createDasBlogPostsCompatibilityFile = true;
 
-            return (null as ISettings).Create(sourceConnection, dateFormatSpecifier, dateTimeFormatSpecifier, itemSeparator, outputFileExtension, additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
+            return (null as ISettings).Create(additionalFilePaths, createDasBlogSyndicationCompatibilityFile, createDasBlogPostsCompatibilityFile);
         }
 
-        public static ISettings Create(this ISettings ignore, String sourceConnection, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
+        public static ISettings Create(this ISettings ignore, String additionalFilePaths, Boolean createDasBlogSyndicationCompatibilityFile, Boolean createDasBlogPostsCompatibilityFile)
         {
-            var settings = new Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension
-            };
+            var settings = new Settings();
 
             _ = settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);
             _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, createDasBlogSyndicationCompatibilityFile.ToString(CultureInfo.InvariantCulture));

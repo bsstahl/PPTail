@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PPTail.Entities;
 using PPTail.Enumerations;
 using PPTail.Exceptions;
@@ -49,12 +50,19 @@ namespace PPTail.Generator.Links.Test
             String fileName = string.Empty.GetRandom();
             String relativePath = string.Empty.GetRandom();
             String pathToRoot = ".";
+            String fileExtension = string.Empty.GetRandom();
 
-            ISettings settings = (null as ISettings).Create();
-            String fileExtension = settings.OutputFileExtension;
+            SiteSettings siteSettings = new SiteSettings()
+            {
+                OutputFileExtension = fileExtension
+            };
 
-            var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<ISettings>(settings);
+            var container = new ServiceCollection();
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo
+                .Setup(r => r.GetSiteSettings())
+                .Returns(siteSettings);
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
 
             var target = (null as ILinkProvider).Create(container);
             var actual = target.GetUrl(pathToRoot, relativePath, fileName);

@@ -14,17 +14,11 @@ namespace PPTail.Generator.Contact
         readonly IServiceProvider _serviceProvider;
         readonly IEnumerable<Template> _templates;
 
-        readonly ISettings _settings;
-
         public TemplateProvider(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             if (_serviceProvider == null)
-                throw new ArgumentNullException("IServiceProvider");
-
-            _serviceProvider.ValidateService<ISettings>();
-
-            _settings = _serviceProvider.GetService<ISettings>();
+                throw new ArgumentNullException(nameof(serviceProvider));
 
             _templates = _serviceProvider.GetTemplates();
             _templates.Validate(Enumerations.TemplateType.ContactPage);

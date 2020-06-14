@@ -57,7 +57,11 @@ namespace PPTail.SiteGenerator.Test
 
         public static IServiceCollection Create(this IServiceCollection container, IPageGenerator pageGenerator)
         {
-            return container.Create(Mock.Of<IContentRepository>(), Mock.Of<IArchiveProvider>(), 
+            var contentRepo = new Mock<IContentRepository>();
+            var siteSettings = new SiteSettings();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+
+            return container.Create(contentRepo.Object, Mock.Of<IArchiveProvider>(), 
                 Mock.Of<IContactProvider>(), Mock.Of<ISearchProvider>(), 
                 pageGenerator, Mock.Of<IHomePageGenerator>(), 
                 Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), 
@@ -191,23 +195,12 @@ namespace PPTail.SiteGenerator.Test
 
         public static ISettings Create(this ISettings settings)
         {
-            return settings.Create(string.Empty.GetRandom(3));
+            return settings.Create(null);
         }
 
-        public static ISettings Create(this ISettings settings, String outputFileExtension)
+        public static ISettings Create(this ISettings _1, IEnumerable<Tuple<string, string>> extendedSettings)
         {
-            return settings.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
-        }
-
-        public static ISettings Create(this ISettings _1, String dateFormatSpecifier, String dateTimeFormatSpecifier, String outputFileExtension, String itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
-        {
-            var result = new Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                OutputFileExtension = outputFileExtension,
-                ItemSeparator = itemSeparator
-            };
+            var result = new Settings();
 
             if (extendedSettings != null && extendedSettings.Any())
                 result.ExtendedSettings.AddRange(extendedSettings);

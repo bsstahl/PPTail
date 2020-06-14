@@ -21,13 +21,10 @@ namespace PPTail.Generator.Search
         {
             _serviceProvider = serviceProvider;
             if (serviceProvider == null)
-            {
-                throw new ArgumentNullException("IServiceProvider");
-            }
+                throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider.ValidateService<IContentRepository>();
             _serviceProvider.ValidateService<ITemplateProcessor>();
-            _serviceProvider.ValidateService<ISettings>(); // TODO: Add code coverage
 
             _templates = serviceProvider.GetTemplates();
             _searchTemplate = _templates.Find(Enumerations.TemplateType.SearchPage);
@@ -37,16 +34,15 @@ namespace PPTail.Generator.Search
         public String GenerateSearchResultsPage(String tag, IEnumerable<ContentItem> contentItems, String navigationContent, String sidebarContent, String pathToRoot)
         {
             var templateProcessor = _serviceProvider.GetService<ITemplateProcessor>();
-            var settings = _serviceProvider.GetService<ISettings>();
 
-            var contentRepo = _serviceProvider.GetContentRepository();
+            var contentRepo = _serviceProvider.GetService<IContentRepository>();
             var siteSettings = contentRepo.GetSiteSettings();
             var categories = contentRepo.GetCategories();
 
-            var category = categories.SingleOrDefault(c => c.Name.ToLower() == tag.ToLower());
+            var category = categories.SingleOrDefault(c => c.Name.ToUpperInvariant() == tag.ToUpperInvariant());
             var categoryId = (category == null) ? Guid.Empty : category.Id;
             var posts = contentItems.Where(i => (i.Tags.IsNotNull() && i.Tags.Contains(tag)) || i.CategoryIds.Contains(categoryId));
-            return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, settings.ItemSeparator, false, 0);
+            return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, siteSettings.ItemSeparator, false, 0);
         }
 
     }

@@ -10,7 +10,7 @@ namespace PPTail.Generator.Links
 {
     public class LinkProvider: Interfaces.ILinkProvider
     {
-        IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public LinkProvider(IServiceProvider serviceProvider)
         {
@@ -18,7 +18,6 @@ namespace PPTail.Generator.Links
                 throw new ArgumentNullException(nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
-            _serviceProvider.ValidateService<ISettings>();
         }
 
         public String GetUrl(String pathToRoot, String relativePath, String fileName, String fileExtension)
@@ -31,8 +30,10 @@ namespace PPTail.Generator.Links
 
         public String GetUrl(String pathToRoot, String relativePath, String fileName)
         {
-            var settings = _serviceProvider.GetService<ISettings>();
-            return this.GetUrl(pathToRoot, relativePath, fileName, settings.OutputFileExtension);
+            _serviceProvider.ValidateService<IContentRepository>();
+            var contentRepo = _serviceProvider.GetService<IContentRepository>();
+            var siteSettings = contentRepo.GetSiteSettings();
+            return this.GetUrl(pathToRoot, relativePath, fileName, siteSettings.OutputFileExtension);
         }
 
     }

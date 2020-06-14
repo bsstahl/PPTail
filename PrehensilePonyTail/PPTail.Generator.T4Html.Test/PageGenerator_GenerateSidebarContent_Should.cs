@@ -23,7 +23,6 @@ namespace PPTail.Generator.T4Html.Test
             var widgets = new List<Widget>() { widget };
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor.Setup(p => p.ProcessNonContentItemTemplate(
@@ -34,7 +33,7 @@ namespace PPTail.Generator.T4Html.Test
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings, templateProcessor.Object);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, templateProcessor.Object);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
 
             templateProcessor.Verify(p => p.ProcessNonContentItemTemplate(
@@ -51,7 +50,6 @@ namespace PPTail.Generator.T4Html.Test
             var widgets = new List<Widget>() { widget };
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             templateProcessor.Setup(p => p.ProcessNonContentItemTemplate(
@@ -62,7 +60,7 @@ namespace PPTail.Generator.T4Html.Test
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings, templateProcessor.Object);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, templateProcessor.Object);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
 
             Assert.Contains(expected, actual);
@@ -77,7 +75,6 @@ namespace PPTail.Generator.T4Html.Test
             var container = (null as IServiceCollection).Create();
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
             var contentEncoder = new Mock<IContentEncoder>();
             Func<String, String> valueFunction = p => p;
@@ -88,7 +85,6 @@ namespace PPTail.Generator.T4Html.Test
                 .Returns(templates);
 
             _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
-            _ = container.ReplaceDependency<ISettings>(settings);
             _ = container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
@@ -111,7 +107,6 @@ namespace PPTail.Generator.T4Html.Test
             var container = (null as IServiceCollection).Create();
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
             var contentEncoder = new Mock<IContentEncoder>();
             Func<string, string> valueFunction = p => p;
@@ -122,7 +117,6 @@ namespace PPTail.Generator.T4Html.Test
                 .Returns(templates);
 
             _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
-            container.ReplaceDependency<ISettings>(settings);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             var posts = (null as IEnumerable<ContentItem>).Create(1);
@@ -150,7 +144,6 @@ namespace PPTail.Generator.T4Html.Test
             var container = (null as IServiceCollection).Create();
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
             var posts = (null as IEnumerable<ContentItem>).Create(2);
 
             var contentEncoder = new Mock<IContentEncoder>();
@@ -162,7 +155,6 @@ namespace PPTail.Generator.T4Html.Test
                 .Returns(templates);
 
             _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
-            container.ReplaceDependency<ISettings>(settings);
             container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
 
             String tag1 = posts.First().Tags.Single();
@@ -245,13 +237,11 @@ namespace PPTail.Generator.T4Html.Test
             var widgets = new List<Widget>() { widget };
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
-            // var siteSettings = (null as SiteSettings).Create();
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
             var expected = widget.Title;
 
@@ -267,13 +257,12 @@ namespace PPTail.Generator.T4Html.Test
             var widgets = new List<Widget>() { widget };
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as Settings).CreateDefault("yyyy-MM-dd");
 
             // var siteSettings = (null as SiteSettings).Create();
             var posts = new List<ContentItem>();
             var pages = new List<ContentItem>();
 
-            var pageGen = (null as Interfaces.IPageGenerator).Create(templates, settings);
+            var pageGen = (null as Interfaces.IPageGenerator).Create(templates);
             var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
             var expected = widget.Title;
 

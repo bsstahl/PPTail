@@ -16,16 +16,15 @@ namespace PPTail.Generator.Template
         internal static String ReplaceContentItemVariables(this String template, IServiceProvider serviceProvider, ContentItem item, String pathToRoot, Boolean xmlEncodeContent)
         {
             serviceProvider.ValidateService<IContentRepository>();
-            serviceProvider.ValidateService<ISettings>();
             serviceProvider.ValidateService<ILinkProvider>();
             serviceProvider.ValidateService<IContentEncoder>();
 
-            var settings = serviceProvider.GetService<ISettings>();
-            var contentRepo = serviceProvider.GetContentRepository();
+            var contentRepo = serviceProvider.GetService<IContentRepository>();
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
 
             var categories = contentRepo.GetCategories();
+            var siteSettings = contentRepo.GetSiteSettings();
 
             var content = item.Content
                 .ReplacePathToRootVariables(pathToRoot)
@@ -33,11 +32,11 @@ namespace PPTail.Generator.Template
                 .ReplacePageLinkVariables(serviceProvider, pathToRoot);
 
             var description = item.Description;
-            var pubDate = item.PublicationDate.ToUniversalTime().ToString(settings.DateFormatSpecifier);
-            var pubDateTime = item.PublicationDate.ToUniversalTime().ToString(settings.DateTimeFormatSpecifier);
+            var pubDate = item.PublicationDate.ToUniversalTime().ToString(siteSettings.DateFormatSpecifier);
+            var pubDateTime = item.PublicationDate.ToUniversalTime().ToString(siteSettings.DateTimeFormatSpecifier);
             var pubDateTimeRFC = item.PublicationDate.ToUniversalTime().ToString("R"); // Wed, 02 Oct 2002 13:00:00 GMT
-            var lastModDate = item.LastModificationDate.ToUniversalTime().IsMinDate() ? String.Empty : item.LastModificationDate.ToString(settings.DateFormatSpecifier);
-            var lastModDateTime = item.LastModificationDate.ToUniversalTime().IsMinDate() ? String.Empty : item.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+            var lastModDate = item.LastModificationDate.ToUniversalTime().IsMinDate() ? String.Empty : item.LastModificationDate.ToString(siteSettings.DateFormatSpecifier);
+            var lastModDateTime = item.LastModificationDate.ToUniversalTime().IsMinDate() ? String.Empty : item.LastModificationDate.ToString(siteSettings.DateTimeFormatSpecifier);
 
             if (xmlEncodeContent)
             {
@@ -66,7 +65,7 @@ namespace PPTail.Generator.Template
                 .Replace("{Permalink}", permaLink)
                 .Replace("{PermalinkUrl}", permaLinkUrl)
                 .Replace("{Tags}", item.Tags.TagLinkList(serviceProvider, pathToRoot, "small"))
-                .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, settings, pathToRoot, "small"));
+                .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, siteSettings, pathToRoot, "small"));
         }
 
         internal static String ReplaceNonContentItemSpecificVariables(this String template, IServiceProvider serviceProvider, String sidebarContent, String navContent, String content, String pathToRoot)
@@ -98,10 +97,9 @@ namespace PPTail.Generator.Template
         {
             // Replace variables with values defined in the site settings file
 
-            serviceProvider.ValidateService<ISettings>();
             serviceProvider.ValidateService<IContentRepository>();
 
-            var contentRepo = serviceProvider.GetContentRepository();
+            var contentRepo = serviceProvider.GetService<IContentRepository>();
             var siteSettings = contentRepo.GetSiteSettings();
 
             return template

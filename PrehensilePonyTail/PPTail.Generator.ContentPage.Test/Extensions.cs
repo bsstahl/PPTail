@@ -26,7 +26,6 @@ namespace PPTail.Generator.ContentPage.Test
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>((null as ISettings).CreateDefault());
             container.AddSingleton<ITemplateProcessor>(Mock.Of<ITemplateProcessor>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
 
@@ -37,24 +36,6 @@ namespace PPTail.Generator.ContentPage.Test
             container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
             return container;
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore)
-        {
-            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
-        {
-            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
-        {
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
-            settings.OutputFileExtension = outputFileExtension;
-            return settings;
         }
 
         public static ContentItem Create(this ContentItem ignore)

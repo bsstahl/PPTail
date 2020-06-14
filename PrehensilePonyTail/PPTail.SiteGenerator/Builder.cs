@@ -31,7 +31,6 @@ namespace PPTail.SiteGenerator
             _serviceProvider.ValidateService<IPageGenerator>();
             _serviceProvider.ValidateService<IContentItemPageGenerator>();
             _serviceProvider.ValidateService<IHomePageGenerator>();
-            _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<INavigationProvider>();
             _serviceProvider.ValidateService<IArchiveProvider>();
             _serviceProvider.ValidateService<IContactProvider>();
@@ -61,7 +60,7 @@ namespace PPTail.SiteGenerator
             var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
             var contentRepo = this.ServiceProvider.GetService<IContentRepository>();
 
-            var siteSettings = contentRepo.GetSiteSettings();
+            var siteSettings = contentRepo.GetSiteSettings() ?? new SiteSettings();
             var posts = contentRepo.GetAllPosts();
             var pages = contentRepo.GetAllPages();
             var widgets = contentRepo.GetAllWidgets();
@@ -72,8 +71,8 @@ namespace PPTail.SiteGenerator
             var childLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "../");
 
             // Create navbars
-            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", settings.OutputFileExtension);
-            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", settings.OutputFileExtension);
+            var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", siteSettings.OutputFileExtension);
+            var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", siteSettings.OutputFileExtension);
 
             // Create bootstrap file
             var bootstrapFile = new SiteFile()
@@ -147,7 +146,7 @@ namespace PPTail.SiteGenerator
                         post.Slug = contentEncoder.UrlEncode(post.Title);
 
                     // Add the post page
-                    String postFileName = $"{post.Slug}.{settings.OutputFileExtension}";
+                    String postFileName = $"{post.Slug}.{siteSettings.OutputFileExtension}";
                     String postFilePath = System.IO.Path.Combine("Posts", postFileName);
                     var postPageTemplateType = Enumerations.TemplateType.PostPage;
                     result.Add(new SiteFile()
@@ -158,7 +157,7 @@ namespace PPTail.SiteGenerator
                     });
 
                     // Add the permalink page
-                    String permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{settings.OutputFileExtension}";
+                    String permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{siteSettings.OutputFileExtension}";
                     String permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
                     String redirectFilePath = $"../Posts/{postFileName}"; // System.IO.Path.Combine("..", postFilePath);
                     result.Add(new SiteFile()
@@ -181,7 +180,7 @@ namespace PPTail.SiteGenerator
                     var contentPageTemplateType = Enumerations.TemplateType.ContentPage;
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Pages/{page.Slug}.{settings.OutputFileExtension}",
+                        RelativeFilePath = $"Pages/{page.Slug}.{siteSettings.OutputFileExtension}",
                         SourceTemplateType = contentPageTemplateType,
                         Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, page, contentPageTemplateType, "..", false)
                     });
@@ -214,7 +213,7 @@ namespace PPTail.SiteGenerator
                 result.Add(new SiteFile()
                 {
                     Content = searchProvider.GenerateSearchResultsPage(name, posts, childLevelNavigationContent, childLevelSidebarContent, "../"),
-                    RelativeFilePath = $"Search/{contentEncoder.UrlEncode(name)}.{settings.OutputFileExtension}",
+                    RelativeFilePath = $"Search/{contentEncoder.UrlEncode(name)}.{siteSettings.OutputFileExtension}",
                     SourceTemplateType = Enumerations.TemplateType.SearchPage,
                     IsBase64Encoded = false
                 });

@@ -26,7 +26,7 @@ namespace PPTail.Generator.Navigation
 
         public String CreateNavigation(IEnumerable<ContentItem> pages, String relativePathToRootFolder, String outputFileExtension)
         {
-            var contentRepo = _serviceProvider.GetContentRepository();
+            var contentRepo = _serviceProvider.GetService<IContentRepository>();
             var linkProvider = _serviceProvider.GetService<ILinkProvider>();
 
             var siteSettings = contentRepo.GetSiteSettings();

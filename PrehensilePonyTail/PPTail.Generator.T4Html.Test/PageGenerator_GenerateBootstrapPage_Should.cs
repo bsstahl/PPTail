@@ -20,13 +20,11 @@ namespace PPTail.Generator.T4Html.Test
         {
             var allTemplates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var templates = allTemplates.Where(t => t.TemplateType != Enumerations.TemplateType.Bootstrap);
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
 
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(templates);
-            container.AddSingleton<ISettings>(settings);
 
-            var target = (null as IPageGenerator).Create(templates, settings);
+            var target = (null as IPageGenerator).Create(templates);
             var actual = target.GenerateBootstrapPage();
 
             Assert.Equal(string.Empty, actual);
@@ -39,13 +37,10 @@ namespace PPTail.Generator.T4Html.Test
             var thisTemplate = allTemplates.Single(t => t.TemplateType == Enumerations.TemplateType.Bootstrap);
             thisTemplate.Content = string.Empty.GetRandom();
 
-            var settings = (null as Settings).CreateDefault("MM/dd/yyyy");
-
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Template>>(allTemplates);
-            container.AddSingleton<ISettings>(settings);
 
-            var target = (null as IPageGenerator).Create(allTemplates, settings);
+            var target = (null as IPageGenerator).Create(allTemplates);
             var actual = target.GenerateBootstrapPage();
 
             Assert.Equal(thisTemplate.Content, actual);

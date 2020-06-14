@@ -62,18 +62,6 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void ThrowADependencyNotFoundExceptionIfTheSettingsAreNotSupplied()
-        {
-            ShouldThrowDependencyNotFoundExceptionIfDependencyIsRemoved<ISettings>();
-        }
-
-        [Fact]
-        public void ShouldReturnTheCorrectDependencyNameIfTheSettingsNotSupplied()
-        {
-            ShouldReturnTheCorrectDependencyNameIfDependencyIsRemoved<ISettings>();
-        }
-
-        [Fact]
         public void ThrowADependencyNotFoundExceptionIfTheNavProviderIsNotSupplied()
         {
             ShouldThrowDependencyNotFoundExceptionIfDependencyIsRemoved<INavigationProvider>();

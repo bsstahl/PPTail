@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 using Moq;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,72 +9,12 @@ using PPTail.Exceptions;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using PPTail.Extensions;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.DependencyModel;
 
 namespace PPTail.Generator.Template.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TemplateProcessor_Process_Should
     {
-        [Fact]
-        public void ThrowDependencyNotFoundExceptionIfSettingsAreNotProvided()
-        {
-            var templates = (null as IEnumerable<Entities.Template>).Create();
-            var pageTemplate = templates.Find(Enumerations.TemplateType.HomePage); // Could be any
-            var itemTemplate = templates.Find(Enumerations.TemplateType.Item); // Could be any
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-
-            String sidebarContent = string.Empty.GetRandom();
-            String navContent = string.Empty.GetRandom();
-            String pageTitle = string.Empty.GetRandom();
-            String pathToRoot = string.Empty.GetRandom();
-            bool xmlEncodeContent = true.GetRandom();
-            Int32 maxPostCount = 25.GetRandom(3);
-
-            var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<ISettings>();
-
-            var target = (null as ITemplateProcessor).Create(container);
-            Assert.Throws<DependencyNotFoundException>(() => target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount));
-        }
-
-        [Fact]
-        public void ThrowWithProperInterfaceTypeNameIfSettingsAreNotProvided()
-        {
-            var templates = (null as IEnumerable<Entities.Template>).Create();
-            var pageTemplate = templates.Find(Enumerations.TemplateType.HomePage); // Could be any
-            var itemTemplate = templates.Find(Enumerations.TemplateType.Item); // Could be any
-
-            var posts = (null as IEnumerable<ContentItem>).Create();
-
-            String sidebarContent = string.Empty.GetRandom();
-            String navContent = string.Empty.GetRandom();
-            String pageTitle = string.Empty.GetRandom();
-            String pathToRoot = string.Empty.GetRandom();
-            bool xmlEncodeContent = true.GetRandom();
-            Int32 maxPostCount = 25.GetRandom(3);
-
-            var container = (null as IServiceCollection).Create();
-            container.RemoveDependency<ISettings>();
-
-            var target = (null as ITemplateProcessor).Create(container);
-
-            String expected = typeof(ISettings).Name;
-            String actual = string.Empty;
-            try
-            {
-                target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
-            }
-            catch (DependencyNotFoundException ex)
-            {
-                actual = ex.InterfaceTypeName;
-            }
-
-            Assert.Equal(expected, actual);
-        }
-
         [Fact]
         public void ThrowDependencyNotFoundExceptionIfTheLinkProviderIsNotProvided()
         {
@@ -156,18 +95,18 @@ namespace PPTail.Generator.Template.Test
             var container = (null as IServiceCollection).Create();
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
-            var contentRepo = (null as IContentRepository).Create();
+            var siteSettings = new SiteSettings()
+            {
+                ItemSeparator = string.Empty.GetRandom()
+            };
+            var contentRepo = (null as IContentRepository).Create(siteSettings);
             container.ReplaceDependency<IContentRepository>(contentRepo);
 
-            var settings = (null as ISettings).Create(contentRepo);
-            settings.ItemSeparator = string.Empty.GetRandom();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as ITemplateProcessor).Create(container);
-            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, settings.ItemSeparator, xmlEncodeContent, maxPostCount);
+            var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, siteSettings.ItemSeparator, xmlEncodeContent, maxPostCount);
 
             var expectedSeparatorCount = System.Math.Min(maxPostCount, publishedPosts.Count()) - 1;
-            var actualSeparatorCount = System.Text.RegularExpressions.Regex.Matches(actual, settings.ItemSeparator).Count;
+            var actualSeparatorCount = System.Text.RegularExpressions.Regex.Matches(actual, siteSettings.ItemSeparator).Count;
             Assert.Equal(expectedSeparatorCount, actualSeparatorCount);
         }
 
@@ -423,17 +362,21 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            var container = (null as IServiceCollection).Create();
-            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+            var mockContentRepo = new Mock<IContentRepository>();
+            var siteSettings = new SiteSettings()
+            {
+                DateFormatSpecifier = "yyyymmddHmm"
+            };
 
-            var settings = (null as ISettings).Create();
+            var container = (null as IServiceCollection).Create(mockContentRepo, siteSettings);
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
             var actual = target.Process(pageTemplate, itemTemplate, sidebarContent, navContent, posts, pageTitle, pathToRoot, ";", xmlEncodeContent, maxPostCount);
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                String expected = post.PublicationDate.ToString(settings.DateFormatSpecifier);
+                String expected = post.PublicationDate.ToString(siteSettings.DateFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -446,7 +389,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -457,7 +399,13 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            var container = (null as IServiceCollection).Create();
+            var mockContentRepo = new Mock<IContentRepository>();
+            var siteSettings = new SiteSettings()
+            {
+                DateFormatSpecifier = "yyyymmddHmm"
+            };
+
+            var container = (null as IServiceCollection).Create(mockContentRepo, siteSettings);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
@@ -465,7 +413,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                String expected = post.PublicationDate.ToString(settings.DateTimeFormatSpecifier);
+                String expected = post.PublicationDate.ToString(siteSettings.DateTimeFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -478,7 +426,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -489,7 +436,13 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            var container = (null as IServiceCollection).Create();
+            var mockContentRepo = new Mock<IContentRepository>();
+            var siteSettings = new SiteSettings()
+            {
+                DateFormatSpecifier = "yyyymmddHmm"
+            };
+
+            var container = (null as IServiceCollection).Create(mockContentRepo, siteSettings);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
@@ -497,7 +450,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                String expected = post.LastModificationDate.ToString(settings.DateFormatSpecifier);
+                String expected = post.LastModificationDate.ToString(siteSettings.DateFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -510,7 +463,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -521,7 +473,13 @@ namespace PPTail.Generator.Template.Test
 
             var posts = (null as IEnumerable<ContentItem>).Create();
 
-            var container = (null as IServiceCollection).Create();
+            var mockContentRepo = new Mock<IContentRepository>();
+            var siteSettings = new SiteSettings()
+            {
+                DateFormatSpecifier = "yyyymmddHmm"
+            };
+
+            var container = (null as IServiceCollection).Create(mockContentRepo, siteSettings);
             container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
 
             var target = (null as ITemplateProcessor).Create(container);
@@ -529,7 +487,7 @@ namespace PPTail.Generator.Template.Test
 
             foreach (var post in posts.Where(p => p.IsPublished))
             {
-                String expected = post.LastModificationDate.ToString(settings.DateTimeFormatSpecifier);
+                String expected = post.LastModificationDate.ToString(siteSettings.DateTimeFormatSpecifier);
                 Assert.Contains(expected, actual);
             }
         }
@@ -542,7 +500,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -575,7 +532,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -612,7 +568,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -645,7 +600,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             IEnumerable<ContentItem> posts = new List<ContentItem>();
             while (!posts.Any(p => p.IsPublished))
@@ -687,7 +641,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -724,7 +677,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -770,7 +722,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -813,7 +764,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -857,7 +807,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -923,7 +872,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -983,7 +931,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();
@@ -1045,7 +992,6 @@ namespace PPTail.Generator.Template.Test
             var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
             var itemTemplate = new Entities.Template() { Content = itemTemplateContent, TemplateType = Enumerations.TemplateType.Item };
             var templates = new List<Entities.Template>() { pageTemplate, itemTemplate };
-            var settings = (null as ISettings).Create();
 
             String sidebarContent = string.Empty.GetRandom();
             String navContent = string.Empty.GetRandom();

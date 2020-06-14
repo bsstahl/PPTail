@@ -37,82 +37,60 @@ namespace PPTail.Generator.T4Html.Test
 
         public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String stylePageTemplate, INavigationProvider navProvider)
         {
-            return ignore.Create(contentPageTemplate, postPageTemplate, stylePageTemplate, _defaultDateTimeFormatSpecifier, navProvider);
-        }
-
-        public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String stylePageTemplate, String dateTimeFormatSpecifier)
-        {
-            return ignore.Create(contentPageTemplate, postPageTemplate, stylePageTemplate, dateTimeFormatSpecifier, new FakeNavProvider());
-        }
-
-        public static IPageGenerator Create(this IPageGenerator ignore, String contentPageTemplate, String postPageTemplate, String stylePageTemplate, String dateTimeFormatSpecifier, INavigationProvider navProvider)
-        {
             var contentTemplate = new Template() { Content = contentPageTemplate, TemplateType = Enumerations.TemplateType.ContentPage };
             var postTemplate = new Template() { Content = postPageTemplate, TemplateType = Enumerations.TemplateType.PostPage };
             var styleTemplate = new Template() { Content = stylePageTemplate, TemplateType = Enumerations.TemplateType.Style };
 
             var templates = new List<Template>() { contentTemplate, postTemplate, styleTemplate };
 
-            var settings = (null as Settings).CreateDefault(dateTimeFormatSpecifier);
-
-            return ignore.Create(templates, settings, navProvider);
+            return ignore.Create(templates, navProvider);
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates)
         {
-            return ignore.Create(templates, settings, new FakeNavProvider());
+            return ignore.Create(templates, new FakeNavProvider());
         }
 
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, ITemplateProcessor templateProcessor)
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ITemplateProcessor templateProcessor)
         {
-            var serviceCollection = (null as IServiceCollection).Create(templates, settings, new FakeNavProvider(), templateProcessor);
+            var serviceCollection = (null as IServiceCollection).Create(templates, new FakeNavProvider(), templateProcessor);
             return ignore.Create(serviceCollection);
+        }
+
+        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, INavigationProvider navProvider)
+        {
+            var container = (null as IServiceCollection).Create(templates, navProvider);
+            return ignore.Create(container);
         }
 
         public static IPageGenerator Create(this IPageGenerator ignore, TemplateType templateTypeToBeMissing)
         {
-            var container = new ServiceCollection();
-
-            var settings = (null as ISettings).CreateDefault();
-            container.AddSingleton<ISettings>(settings);
-
-            var nav = new FakeNavProvider();
-            container.AddSingleton<INavigationProvider>(nav);
+            var navProvider = new FakeNavProvider();
 
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
             var testTemplates = templates.Where(t => t.TemplateType != templateTypeToBeMissing);
 
-            var templateRepo = new Mock<ITemplateRepository>();
-            templateRepo.Setup(r => r.GetAllTemplates())
-                .Returns(testTemplates);
-            container.AddSingleton<ITemplateRepository>(templateRepo.Object);
+            var templateProcessor = Mock.Of<ITemplateProcessor>();
 
-            var linkProvider = Mock.Of<ILinkProvider>();
-            container.AddSingleton<ILinkProvider>(linkProvider);
+            var container = (null as IServiceCollection)
+                .Create(testTemplates, navProvider, templateProcessor);
 
-            return ignore.Create(container);
-        }
-
-        public static IPageGenerator Create(this IPageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
-        {
-            var container = (null as IServiceCollection).Create(templates, settings, navProvider);
             return ignore.Create(container);
         }
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
             var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
-            var settings = (null as ISettings).CreateDefault();
             var navProvider = Mock.Of<INavigationProvider>();
-            return ignore.Create(templates, settings, navProvider);
+            return ignore.Create(templates, navProvider);
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider)
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, INavigationProvider navProvider)
         {
-            return ignore.Create(templates, settings, navProvider, Mock.Of<ITemplateProcessor>());
+            return ignore.Create(templates, navProvider, Mock.Of<ITemplateProcessor>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, ITemplateProcessor templateProcessor)
+        public static IServiceCollection Create(this IServiceCollection ignore, IEnumerable<Template> templates, INavigationProvider navProvider, ITemplateProcessor templateProcessor)
         {
             var container = new ServiceCollection();
 
@@ -120,13 +98,21 @@ namespace PPTail.Generator.T4Html.Test
             templateRepo.Setup(r => r.GetAllTemplates())
                 .Returns(templates);
 
+            var siteSettings = new SiteSettings();
+
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings())
+                .Returns(siteSettings);
+
             container.AddSingleton<ITemplateRepository>(templateRepo.Object);
-            container.AddSingleton<ISettings>(settings);
-            container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
+            container.AddSingleton<IContentRepository>(contentRepo.Object);
+
             container.AddSingleton<INavigationProvider>(navProvider);
-            container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
+
+            container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
+            container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
 
             return container;
         }
@@ -134,24 +120,6 @@ namespace PPTail.Generator.T4Html.Test
         public static IPageGenerator Create(this IPageGenerator ignore, IServiceCollection container)
         {
             return new PPTail.Generator.T4Html.PageGenerator(container.BuildServiceProvider());
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore)
-        {
-            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
-        {
-            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
-        {
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
-            settings.OutputFileExtension = outputFileExtension;
-            return settings;
         }
 
         public static ContentItem Create(this ContentItem ignore)

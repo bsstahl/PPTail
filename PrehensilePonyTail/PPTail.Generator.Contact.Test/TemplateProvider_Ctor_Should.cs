@@ -51,48 +51,6 @@ namespace PPTail.Generator.Contact.Test
         }
 
         [Fact]
-        public void ThrowDependencyNotFoundExceptionIfSettingsAreNotProvided()
-        {
-            String navigationContent = string.Empty.GetRandom();
-            String sidebarContent = string.Empty.GetRandom();
-            String pathToRoot = string.Empty.GetRandom();
-
-            var template = (null as Template).Create();
-            var templates = new List<Template>() { template };
-
-            var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
-            // container.AddSingleton<SiteSettings>(Mock.Of<SiteSettings>());
-
-            Assert.Throws<DependencyNotFoundException>(() => new TemplateProvider(container.BuildServiceProvider()));
-        }
-
-        [Fact]
-        public void ThrowWithProperInterfaceTypeNameIfSettingsAreNotProvided()
-        {
-            String navigationContent = string.Empty.GetRandom();
-            String sidebarContent = string.Empty.GetRandom();
-            String pathToRoot = string.Empty.GetRandom();
-
-            var template = (null as Template).Create();
-            var templates = new List<Template>() { template };
-
-            var container = new ServiceCollection();
-            container.AddSingleton<IEnumerable<Template>>(templates);
-            // container.AddSingleton<SiteSettings>(Mock.Of<SiteSettings>());
-
-            String expected = typeof(ISettings).Name;
-            try
-            {
-                var target = new TemplateProvider(container.BuildServiceProvider());
-            }
-            catch (DependencyNotFoundException ex)
-            {
-                Assert.Equal(expected, ex.InterfaceTypeName);
-            }
-        }
-
-        [Fact]
         public void ThrowTemplateNotFoundExceptionIfContactPageTemplateNotProvided()
         {
             String navigationContent = string.Empty.GetRandom();
@@ -101,10 +59,8 @@ namespace PPTail.Generator.Contact.Test
 
             var templates = new List<Template>();
             var siteSettings = (null as SiteSettings).Create();
-            var settings = (null as ISettings).Create();
 
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>(settings);
 
             var templateRepo = new Mock<ITemplateRepository>();
             templateRepo.Setup(r => r.GetAllTemplates())

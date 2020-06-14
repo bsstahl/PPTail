@@ -10,7 +10,7 @@ namespace PPTail.Generator.Template
 {
     public static class CategoryExtensions
     {
-        internal static String CategoryLinkList(this IEnumerable<Category> categories, IServiceProvider serviceProvider, IEnumerable<Guid> selectedCategoryIds, ISettings settings, String pathToRoot, String cssClass)
+        internal static String CategoryLinkList(this IEnumerable<Category> categories, IServiceProvider serviceProvider, IEnumerable<Guid> selectedCategoryIds, SiteSettings siteSettings, String pathToRoot, String cssClass)
         {
             var results = string.Empty;
             if (selectedCategoryIds.IsNotNull() && selectedCategoryIds.Any())

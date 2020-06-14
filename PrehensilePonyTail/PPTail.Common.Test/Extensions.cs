@@ -21,7 +21,7 @@ namespace PPTail.Common.Test
             var siteSettings = (null as SiteSettings).Create();
             var contentRepo = (null as IContentRepository).Create(siteSettings);
 
-            var settings = (null as ISettings).Create(contentRepo);
+            var settings = new Settings();
             var categories = (null as IEnumerable<Category>).Create();
             var linkProvider = Mock.Of<ILinkProvider>();
 
@@ -30,17 +30,6 @@ namespace PPTail.Common.Test
             container.AddSingleton<ILinkProvider>(linkProvider);
 
             return container;
-        }
-
-        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
-        {
-            return new Settings()
-            {
-                DateFormatSpecifier = "MM/dd/yyyy",
-                DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
-                ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom()
-            };
         }
 
         public static IContentRepository Create(this IContentRepository ignore)

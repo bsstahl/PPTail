@@ -21,25 +21,29 @@ namespace PPTail.Generator.Template.Test
 
         public static IServiceCollection Create(this IServiceCollection ignore, Mock<IContentRepository> mockContentRepo)
         {
+            var siteSettings = (null as SiteSettings).Create();
+            return ignore.Create(mockContentRepo, siteSettings);
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, Mock<IContentRepository> mockContentRepo, SiteSettings siteSettings)
+        {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Entities.Template>>((null as IEnumerable<Entities.Template>).Create());
             container.AddSingleton<IEnumerable<Category>>(new List<Category>());
 
-            var siteSettings = (null as SiteSettings).Create();
             mockContentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.AddSingleton<IContentRepository>(mockContentRepo.Object);
 
-            container.AddSingleton<ISettings>((null as ISettings).Create(mockContentRepo.Object));
             container.AddSingleton<ILinkProvider>(Mock.Of<ILinkProvider>());
             container.AddSingleton<IContentEncoder>(Mock.Of<IContentEncoder>());
 
             return container;
         }
 
-        public static IContentRepository Create(this IContentRepository ignore)
-        {
-            return ignore.Create(new SiteSettings());
-        }
+        //public static IContentRepository Create(this IContentRepository ignore)
+        //{
+        //    return ignore.Create(new SiteSettings());
+        //}
 
         public static IContentRepository Create(this IContentRepository ignore, SiteSettings siteSettings)
         {
@@ -56,29 +60,6 @@ namespace PPTail.Generator.Template.Test
         public static ITemplateProcessor Create(this ITemplateProcessor ignore, IServiceProvider serviceProvider)
         {
             return new TemplateProcessor(serviceProvider);
-        }
-
-        public static ISettings Create(this ISettings ignore)
-        {
-            return ignore.Create((null as IContentRepository).Create());
-        }
-
-        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
-        {
-            return ignore.Create("MM/dd/yyyy", "MM/dd/yyyy hh:mm", string.Empty.GetRandom(), string.Empty.GetRandom(3), contentRepo);
-        }
-
-        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier,
-            String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension,
-            IContentRepository contentRepo)
-        {
-            return new Entities.Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension
-            };
         }
 
         public static IEnumerable<Entities.Template> Create(this IEnumerable<Entities.Template> ignore)

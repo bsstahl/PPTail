@@ -17,9 +17,6 @@ namespace PPTail.Generator.Contact.Test
         {
             var container = new ServiceCollection();
 
-            var settings = (null as Settings).Create();
-            container.AddSingleton<ISettings>(settings);
-
             var templateProcessor = (null as ITemplateProcessor).Create();
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
 
@@ -85,22 +82,6 @@ namespace PPTail.Generator.Contact.Test
                 Description = description,
                 PostsPerPage = postsPerPage,
                 Title = title
-            };
-        }
-
-        public static ISettings Create(this ISettings ignore)
-        {
-            return ignore.Create("yyyyMMdd", "yyyyMMdd hh:mm", "<hr/>", "html");
-        }
-
-        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String itemSeparator, String outputFileExtension)
-        {
-            return new Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension
             };
         }
 

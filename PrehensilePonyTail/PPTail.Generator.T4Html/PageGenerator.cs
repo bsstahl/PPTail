@@ -14,35 +14,24 @@ namespace PPTail.Generator.T4Html
     public class PageGenerator : Interfaces.IPageGenerator
     {
         private readonly IServiceProvider _serviceProvider;
-        // private readonly INavigationProvider _navProvider;
-        // private readonly ISettings _settings;
         private readonly IEnumerable<Template> _templates;
 
         public PageGenerator(IServiceProvider serviceProvider)
         {
-            // Note: Validation that required templates have been supplied
-            // is being done in the methods where they are required
-
-            // TODO: Move the service validation into the methods where they are required
-
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-
-            _serviceProvider.ValidateService<ISettings>();
-            _serviceProvider.ValidateService<INavigationProvider>();
-
+            _serviceProvider.ValidateService<IContentRepository>();
             _templates = _serviceProvider.GetTemplates();
         }
 
         public String GenerateStylesheet()
         {
-            //TODO: Process template against additional data (such as Settings and SiteSettings)
+            //TODO: Process template against additional data (such as SiteSettings)
             var template = _templates.Find(Enumerations.TemplateType.Style);
             return template.Content;
         }
 
         public String GenerateSidebarContent(IEnumerable<ContentItem> posts, IEnumerable<ContentItem> pages, IEnumerable<Widget> widgets, String pathToRoot)
         {
-            _serviceProvider.ValidateService<ISettings>();
             var settings = _serviceProvider.GetService<ISettings>();
 
             var results = "<div class=\"widgetzone\">";

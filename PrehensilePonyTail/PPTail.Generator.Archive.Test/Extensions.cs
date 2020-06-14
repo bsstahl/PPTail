@@ -23,9 +23,6 @@ namespace PPTail.Generator.Archive.Test
         {
             var container = new ServiceCollection();
 
-            var settings = (null as ISettings).CreateDefault();
-            container.AddSingleton<ISettings>(settings);
-
             var templates = (null as IEnumerable<Template>).Create();
             var templateRepo = new Mock<ITemplateRepository>();
             templateRepo
@@ -35,7 +32,6 @@ namespace PPTail.Generator.Archive.Test
 
             var templateProcessor = (null as ITemplateProcessor).Create();
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
-
 
             return container;
         }
@@ -67,30 +63,14 @@ namespace PPTail.Generator.Archive.Test
             return new BasicProvider(serviceProvider);
         }
 
-        public static ISettings CreateDefault(this ISettings ignore)
-        {
-            return ignore.CreateDefault("MM/dd/yyyy hh:mm");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
-        {
-            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
-        {
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
-            settings.OutputFileExtension = outputFileExtension;
-            return settings;
-        }
-
         public static SiteSettings Create(this SiteSettings ignore)
         {
-            var result = new SiteSettings();
-            result.Description = string.Empty.GetRandom();
-            result.PostsPerPage = 10.GetRandom(2);
-            result.Title = string.Empty.GetRandom();
+            var result = new SiteSettings
+            {
+                Description = string.Empty.GetRandom(),
+                PostsPerPage = 10.GetRandom(2),
+                Title = string.Empty.GetRandom()
+            };
             return result;
         }
 

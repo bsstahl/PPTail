@@ -21,15 +21,17 @@ namespace PPTail.Generator.HomePage.Test
 
         public static IServiceCollection Create(this IServiceCollection ignore)
         {
+            var siteSettings = (null as SiteSettings).Create();
+            return ignore.Create(siteSettings);
+        }
+
+        public static IServiceCollection Create(this IServiceCollection ignore, SiteSettings siteSettings)
+        {
             var container = new ServiceCollection();
 
             var contentRepo = new Mock<IContentRepository>();
-            var siteSettings = (null as SiteSettings).Create();
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.AddSingleton<IContentRepository>(contentRepo.Object);
-
-            var settings = (null as ISettings).CreateDefault();
-            container.AddSingleton<ISettings>(settings);
 
             var templateProcessor = (null as ITemplateProcessor).Create();
             container.AddSingleton<ITemplateProcessor>(templateProcessor);
@@ -53,19 +55,17 @@ namespace PPTail.Generator.HomePage.Test
             var templates = new List<Template>() { homepageTemplate, itemTemplate };
 
             var contentRepo = Mock.Of<IContentRepository>();
-            var settings = (null as ISettings).CreateDefault();
-
-            return ignore.Create(templates, settings);
+            return ignore.Create(templates);
         }
 
-        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings)
+        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates)
         {
-            return ignore.Create(templates, settings, new FakeNavProvider(), new List<Category>());
+            return ignore.Create(templates, new FakeNavProvider(), new List<Category>());
         }
 
-        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, IEnumerable<Category> categories)
+        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, IEnumerable<Category> categories)
         {
-            return ignore.Create(templates, settings, new FakeNavProvider(), categories);
+            return ignore.Create(templates, new FakeNavProvider(), categories);
         }
 
         public static IHomePageGenerator Create(this IHomePageGenerator ignore, TemplateType templateTypeToBeMissing)
@@ -83,12 +83,12 @@ namespace PPTail.Generator.HomePage.Test
             return ignore.Create(container);
         }
 
-        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories)
+        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, INavigationProvider navProvider, IEnumerable<Category> categories)
         {
-            return ignore.Create(templates, settings, navProvider, categories, Mock.Of<ILinkProvider>());
+            return ignore.Create(templates, navProvider, categories, Mock.Of<ILinkProvider>());
         }
 
-        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, ISettings settings, INavigationProvider navProvider, IEnumerable<Category> categories, ILinkProvider linkProvider)
+        public static IHomePageGenerator Create(this IHomePageGenerator ignore, IEnumerable<Template> templates, INavigationProvider navProvider, IEnumerable<Category> categories, ILinkProvider linkProvider)
         {
             var container = new ServiceCollection();
 
@@ -97,7 +97,6 @@ namespace PPTail.Generator.HomePage.Test
                 .Returns(templates);
             container.AddSingleton<ITemplateRepository>(templateRepo.Object);
 
-            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<ITagCloudStyler>(c => new Generator.TagCloudStyler.DeviationStyler(c));
             container.AddSingleton<INavigationProvider>(navProvider);
             container.AddSingleton<IEnumerable<Category>>(categories);
@@ -110,25 +109,6 @@ namespace PPTail.Generator.HomePage.Test
         public static IHomePageGenerator Create(this IHomePageGenerator ignore, IServiceCollection container)
         {
             return new PPTail.Generator.HomePage.HomePageGenerator(container.BuildServiceProvider());
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore)
-        {
-            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
-        {
-            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
-        }
-
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
-        {
-            return new Settings
-            {
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                OutputFileExtension = outputFileExtension
-            };
         }
 
         public static ContentItem Create(this ContentItem ignore)

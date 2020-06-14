@@ -26,9 +26,6 @@ namespace PPTail.Generator.Syndication.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.AddSingleton<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create(contentRepo.Object);
-            container.AddSingleton<ISettings>(settings);
-
             var linkProvider = Mock.Of<ILinkProvider>();
             container.AddSingleton<ILinkProvider>(linkProvider);
 
@@ -139,32 +136,6 @@ namespace PPTail.Generator.Syndication.Test
                 PostsPerPage = postsPerPage,
                 PostsPerFeed = postsPerFeed
             };
-        }
-
-        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
-        {
-            return ignore.Create(string.Empty.GetRandom(3), contentRepo);
-        }
-
-        public static ISettings Create(this ISettings ignore, String outputFileExtension, IContentRepository contentRepo)
-        {
-            return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null, contentRepo);
-        }
-
-        public static ISettings Create(this ISettings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String outputFileExtension, String itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings, IContentRepository contentRepo)
-        {
-            var result = new Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                OutputFileExtension = outputFileExtension,
-                ItemSeparator = itemSeparator
-            };
-
-            if (extendedSettings != null && extendedSettings.Any())
-                result.ExtendedSettings.AddRange(extendedSettings);
-
-            return result;
         }
 
     }

@@ -17,6 +17,10 @@ namespace PPTail.Entities
         public bool UseAdditionalPagesDropdown { get; set; } = true;
         public String AdditionalPagesDropdownLabel { get; set; } = "Community";
         public bool DisplayTitleInNavbar { get; set; } = true;
+        public String DateTimeFormatSpecifier { get; set; } = "yyyy-MM-dd H:mm UTC";
+        public String DateFormatSpecifier { get; set; } = "yyyy-MM-dd";
+        public String ItemSeparator { get; set; } = "<hr/>";
+        public String OutputFileExtension { get; set; } = "html";
         public IEnumerable<SiteVariable> Variables { get; set; } = new List<SiteVariable>();
     }
 }

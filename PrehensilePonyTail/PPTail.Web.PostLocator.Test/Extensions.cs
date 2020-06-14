@@ -27,27 +27,9 @@ namespace PPTail.Web.PostLocator.Test
                 .Returns(xml);
             container.AddSingleton<IFile>(file.Object);
 
-            container.AddSingleton<ISettings>((null as ISettings).Create(true));
-
             container.AddSingleton<IHostingEnvironment>(Mock.Of<IHostingEnvironment>());
 
             return container;
-        }
-
-        public static ISettings Create(this ISettings ignore, bool createDasBlogPostsCompatibilityFile)
-        {
-            var settings = new Settings()
-            {
-                DateFormatSpecifier = "yyyy-MM-dd",
-                DateTimeFormatSpecifier = "yyyy-MM-dd hh:mm",
-                ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom(3)
-            };
-
-            settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
-            settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, createDasBlogPostsCompatibilityFile.ToString());
-
-            return settings;
         }
 
         public static IServiceCollection RemoveDependency<T>(this IServiceCollection container) where T : class

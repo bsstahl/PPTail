@@ -214,20 +214,21 @@ namespace PPTail.Generator.HomePage.Test
             String sidebarContent = string.Empty.GetRandom();
             String navigationContent = string.Empty.GetRandom();
 
-            var container = (null as IServiceCollection).Create();
+            var siteSettings = new SiteSettings()
+            {
+                ItemSeparator = string.Empty.GetRandom()
+            };
+
+            var container = (null as IServiceCollection).Create(siteSettings);
             container.ReplaceTemplateRepo(templates);
 
             var templateProcessor = new Mock<ITemplateProcessor>();
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
-            var contentRepo = Mock.Of<IContentRepository>();
-            var settings = (null as ISettings).CreateDefault();
-            container.ReplaceDependency<ISettings>(settings);
-
             var target = (null as IHomePageGenerator).Create(container);
             target.GenerateHomepage(sidebarContent, navigationContent, posts);
 
-            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), settings.ItemSeparator, It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
+            templateProcessor.Verify(t => t.Process(It.IsAny<Template>(), It.IsAny<Template>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnumerable<ContentItem>>(), It.IsAny<string>(), It.IsAny<string>(), siteSettings.ItemSeparator, It.IsAny<Boolean>(), It.IsAny<Int32>()), Times.Once);
         }
 
         [Fact]

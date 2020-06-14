@@ -67,16 +67,17 @@ namespace PPTail.Generator.Search.Test
         {
             var container = new ServiceCollection();
 
-            var siteSettings = new SiteSettings() { PostsPerPage = 10.GetRandom(3), PostsPerFeed = 10.GetRandom(3), Title = string.Empty.GetRandom(), Description = string.Empty.GetRandom() };
+            var siteSettings = new SiteSettings() 
+            { 
+                PostsPerPage = 10.GetRandom(3), 
+                PostsPerFeed = 10.GetRandom(3), 
+                Title = string.Empty.GetRandom(), 
+                Description = string.Empty.GetRandom() 
+            };
             
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.AddSingleton<IContentRepository>(contentRepo.Object);
-
-            if (settings is null)
-                container.AddSingleton<ISettings>((null as ISettings).Create());
-            else
-                container.AddSingleton<ISettings>(settings);
 
             var templateRepo = new Mock<ITemplateRepository>();
             if (templates != null)
@@ -93,17 +94,6 @@ namespace PPTail.Generator.Search.Test
                 container.AddSingleton<ITemplateProcessor>(templateProcessor);
 
             return container;
-        }
-
-        public static ISettings Create(this ISettings ignore)
-        {
-            return new Settings()
-            {
-                DateFormatSpecifier = "MM/dd/yyyy",
-                DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
-                ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom()
-            };
         }
 
         public static IEnumerable<Template> Create(this IEnumerable<Template> ignore)
@@ -174,32 +164,6 @@ namespace PPTail.Generator.Search.Test
                 Title = string.Empty.GetRandom(),
                 ByLine = $"by {author}"
             };
-        }
-
-        public static Settings Create(this Settings ignore)
-        {
-            return ignore.Create(string.Empty.GetRandom(3));
-        }
-
-        public static Settings Create(this Settings ignore, String outputFileExtension)
-        {
-            return ignore.Create("yyyyMMdd", "yyyyMMdd hhmm", outputFileExtension, $"*********{string.Empty.GetRandom()}*********", null);
-        }
-
-        public static Settings Create(this Settings ignore, String dateFormatSpecifier, String dateTimeFormatSpecifier, String outputFileExtension, String itemSeparator, IEnumerable<Tuple<string, string>> extendedSettings)
-        {
-            var result = new Settings()
-            {
-                DateFormatSpecifier = dateFormatSpecifier,
-                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
-                OutputFileExtension = outputFileExtension,
-                ItemSeparator = itemSeparator
-            };
-
-            if (extendedSettings != null && extendedSettings.Any())
-                result.ExtendedSettings.AddRange(extendedSettings);
-
-            return result;
         }
 
         public static Category Create(this Category ignore)

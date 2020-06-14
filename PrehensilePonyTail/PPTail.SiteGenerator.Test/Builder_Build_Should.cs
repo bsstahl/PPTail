@@ -40,6 +40,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
@@ -53,6 +54,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
@@ -66,6 +68,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var contentItem = (null as ContentItem).Create();
@@ -81,6 +84,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var contentItem = (null as ContentItem).Create();
@@ -96,13 +100,18 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentItem = (null as ContentItem).Create();
+
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => new List<ContentItem>() { contentItem });
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             String extension = string.Empty.GetRandom(3);
-            var settings = (null as Settings).Create(extension);
-            container.ReplaceDependency<ISettings>(settings);
+            var siteSettings = new SiteSettings()
+            {
+                OutputFileExtension = extension
+            };
+
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
 
             var target = (null as Builder).Create(container);
             var actualPages = target.Build();
@@ -118,13 +127,18 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentItem = (null as ContentItem).Create();
+
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => new List<ContentItem>() { contentItem });
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             String extension = string.Empty.GetRandom(4);
-            var settings = (null as ISettings).Create(extension);
-            container.ReplaceDependency<ISettings>(settings);
+            var siteSettings = new SiteSettings()
+            {
+                OutputFileExtension = extension
+            };
+
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
             var actualPages = target.Build();
@@ -145,6 +159,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = false;
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
@@ -163,6 +178,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var expected = contentItems.Count(ci => ci.IsPublished);
@@ -183,6 +199,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true;
             contentRepo.Setup(c => c.GetAllPages()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var unpublishedItem = contentItems.GetRandom();
@@ -205,6 +222,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = false;
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
@@ -223,6 +241,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true.GetRandom();
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var expected = contentItems.Count(ci => ci.IsPublished);
@@ -243,6 +262,7 @@ namespace PPTail.SiteGenerator.Test
             foreach (var item in contentItems)
                 item.IsPublished = true;
             contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var unpublishedItem = contentItems.GetRandom();
@@ -292,6 +312,7 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
+            contentRepo.Setup(c => c.GetSiteSettings()).Returns(new SiteSettings());
 
             var container = (null as IServiceCollection).Create(contentRepo.Object);
 
@@ -319,6 +340,7 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
+            contentRepo.Setup(c => c.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             foreach (var item in contentItems)
@@ -348,6 +370,7 @@ namespace PPTail.SiteGenerator.Test
             post.Slug = string.Empty;
             post.IsPublished = true;
             contentRepo.Setup(c => c.GetAllPosts()).Returns(contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var contentEncoder = new Mock<IContentEncoder>();
@@ -373,6 +396,7 @@ namespace PPTail.SiteGenerator.Test
             page.Slug = string.Empty;
             page.IsPublished = true;
             contentRepo.Setup(c => c.GetAllPages()).Returns(contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var contentEncoder = new Mock<IContentEncoder>();
@@ -433,6 +457,8 @@ namespace PPTail.SiteGenerator.Test
         public void CreateOneRawSiteFileForEachSourceFile()
         {
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
+
             var container = (null as IServiceCollection).Create(contentRepo.Object);
 
             var settings = new Settings();
@@ -462,6 +488,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
@@ -495,6 +522,7 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create();
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = new Settings();
@@ -568,6 +596,7 @@ namespace PPTail.SiteGenerator.Test
             var tags = posts.SelectMany(p => p.Tags).Distinct();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -594,6 +623,7 @@ namespace PPTail.SiteGenerator.Test
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             contentRepo.Setup(r => r.GetCategories()).Returns(categories);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
 
             var searchProvider = new Mock<ISearchProvider>();
             container.ReplaceDependency<ISearchProvider>(searchProvider.Object);
@@ -624,6 +654,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = new List<ContentItem>() { post1, post2 };
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -646,6 +677,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -667,6 +699,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -694,6 +727,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -725,6 +759,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -746,6 +781,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var searchProvider = new Mock<ISearchProvider>();
@@ -787,10 +823,13 @@ namespace PPTail.SiteGenerator.Test
             var posts = new List<ContentItem>() { post1, post2 };
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
+            // TODO: Add to Site Settings
             String filenameExtension = string.Empty.GetRandom();
-            var settings = (null as ISettings).Create(filenameExtension);
+
+            var settings = (null as ISettings).Create();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
@@ -807,10 +846,10 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            String filenameExtension = string.Empty.GetRandom();
-            var settings = (null as ISettings).Create(filenameExtension);
+            var settings = (null as ISettings).Create();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
@@ -828,10 +867,10 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            String filenameExtension = string.Empty.GetRandom();
-            var settings = (null as ISettings).Create(filenameExtension);
+            var settings = (null as ISettings).Create();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as Builder).Create(container);
@@ -844,17 +883,21 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void PassTheUrlToTheCorrectPageForEachPostToTheRedirectProvider()
         {
-            String filenameExtension = string.Empty.GetRandom();
-
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
+
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
-            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create(filenameExtension);
-            container.ReplaceDependency<ISettings>(settings);
+            String filenameExtension = string.Empty.GetRandom();
+            var siteSettings = new SiteSettings()
+            {
+                OutputFileExtension = filenameExtension
+            };
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var redirectProvider = new Mock<IRedirectProvider>();
             foreach (var post in posts)
@@ -877,17 +920,23 @@ namespace PPTail.SiteGenerator.Test
         public void PassTheUrlToTheCorrectPathForEachPostToTheRedirectProvider()
         {
             String folderName = "Posts";
-            String filenameExtension = string.Empty.GetRandom();
 
             var container = (null as IServiceCollection).Create();
 
             var posts = (null as IEnumerable<ContentItem>).Create();
+
             var contentRepo = new Mock<IContentRepository>();
+
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create(filenameExtension);
-            container.ReplaceDependency<ISettings>(settings);
+            String filenameExtension = string.Empty.GetRandom();
+            var siteSettings = new SiteSettings()
+            {
+                OutputFileExtension = filenameExtension
+            };
+
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
 
             var redirectProvider = new Mock<IRedirectProvider>();
             foreach (var post in posts)
@@ -915,6 +964,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -938,6 +988,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -967,6 +1018,7 @@ namespace PPTail.SiteGenerator.Test
             };
 
             var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             contentRepo.Setup(r => r.GetFolderContents(It.Is<string>(s => s == relativePath)))
                 .Returns(new[] { favIconFile });
 
@@ -991,6 +1043,7 @@ namespace PPTail.SiteGenerator.Test
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetFolderContents(It.Is<string>(s => s == relativePath)))
                 .Returns(Array.Empty<SourceFile>());
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
 
             var container = (null as IServiceCollection)
                 .Create();
@@ -1016,6 +1069,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -1041,6 +1095,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -1065,6 +1120,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -1090,6 +1146,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -1115,6 +1172,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -1139,6 +1197,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
@@ -1160,6 +1219,7 @@ namespace PPTail.SiteGenerator.Test
             var posts = (null as IEnumerable<ContentItem>).Create();
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetAllPosts()).Returns(posts);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var settings = (null as ISettings).Create();
