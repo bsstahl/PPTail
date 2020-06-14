@@ -29,11 +29,5 @@ namespace PPTail.Builders
             return this;
         }
 
-        public CategoryCollectionBuilder AddCategories(IEnumerable<Category> categories)
-        {
-            _categories.AddRange(categories);
-            return this;
-        }
-
     }
 }

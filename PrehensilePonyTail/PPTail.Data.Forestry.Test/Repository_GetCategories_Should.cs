@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using PPTail.Builders;
 using PPTail.Entities;
 using PPTail.Interfaces;
 using System;
@@ -22,7 +23,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void ReturnAllCategories()
         {
-            var categories = (null as IEnumerable<Category>).Create();
+            var categories = new CategoryCollectionBuilder()
+                .AddRandomCategories()
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -36,7 +39,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void ReturnTheProperIdForEachCategory()
         {
-            var categories = (null as IEnumerable<Category>).Create();
+            var categories = new CategoryCollectionBuilder()
+                .AddRandomCategories()
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -53,7 +58,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void ReturnTheProperNameForEachCategory()
         {
-            var categories = (null as IEnumerable<Category>).Create();
+            var categories = new CategoryCollectionBuilder()
+                .AddRandomCategories()
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -71,7 +78,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void ReturnTheProperDescriptionForEachCategory()
         {
-            var categories = (null as IEnumerable<Category>).Create();
+            var categories = new CategoryCollectionBuilder()
+                .AddRandomCategories()
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -89,9 +98,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void SkipACategoryIfItHasAnEmptyIdValue()
         {
-            var categories = (null as IEnumerable<Category>).Create(1);
-            var category = categories.Single();
-            category.Id = Guid.Empty;
+            var categories = new CategoryCollectionBuilder()
+                .AddCategory(Guid.Empty, string.Empty.GetRandom(), "Category with empty id")
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -105,9 +114,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void SkipACategoryIfItHasNoNameValue()
         {
-            var categories = (null as IEnumerable<Category>).Create(1);
-            var category = categories.Single();
-            category.Name = string.Empty;
+            var categories = new CategoryCollectionBuilder()
+                .AddCategory(Guid.NewGuid(), string.Empty, "Category with empty name")
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -122,9 +131,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void SkipACategoryIfItHasWhitespaceForTheNameValue()
         {
-            var categories = (null as IEnumerable<Category>).Create(1);
-            var category = categories.Single();
-            category.Name = "  \t ";
+            var categories = new CategoryCollectionBuilder()
+                .AddCategory(Guid.NewGuid(), "  \t ", "Category with just whitespace in the name")
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);
@@ -138,9 +147,9 @@ namespace PPTail.Data.Forestry.Test
         [Fact]
         public void LoadACategoryAnywayEvenIfItHasNoDescriptionAttribute()
         {
-            var categories = (null as IEnumerable<Category>).Create(1);
-            var category = categories.Single();
-            category.Description = string.Empty;
+            var categories = new CategoryCollectionBuilder()
+                .AddCategory(Guid.NewGuid(), String.Empty.GetRandom(), string.Empty)
+                .Build();
 
             var fileSystem = new Mock<IFile>();
             fileSystem.ConfigureCategories(categories, _rootPath);

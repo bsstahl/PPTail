@@ -19,9 +19,6 @@ namespace PPTail.Data.Forestry.Test
         const Int32 _defaultPostsPerFeed = 5;
         const String _dataFolder = "Data";
 
-        const string _sampleFileWithSiteVariables = "---\r\npostsperpage: 9\r\npostsperfeed: 10\r\ntheme: ThemeName\r\ntitle: Site Title\r\ndescription: Long form site description\r\ncopyright: \"&copy; 2020 by Joe Cool\"\r\nextendedsettings: []\r\ncontactemail: TestEmail@MyDomain.com\r\nsitevariables:\r\n- variablename: TwitterLink\r\n  variablevalue: <a href=\"https://twitter.com/mytwitter\">@mytwitter</a>\r\n\r\n---\r\n";
-        const string _sampleFileWithoutSiteVariables = "---\r\npostsperpage: 9\r\npostsperfeed: 10\r\ntheme: ThemeName\r\ntitle: Site Title\r\ndescription: Long form site description\r\ncopyright: \"&copy; 2020 by Joe Cool\"\r\nextendedsettings: []\r\ncontactemail: TestEmail@MyDomain.com\r\n\r\n---\r\n";
-
         [Fact]
         public void ThrowSettingNotFoundExceptionIfSettingsCannotBeLoaded()
         {
@@ -76,34 +73,6 @@ namespace PPTail.Data.Forestry.Test
             var actual = target.GetSiteSettings();
 
             fileSystem.VerifyAll();
-        }
-
-        [Fact]
-        public void SuccessfullyReadAKnownGoodFileWithSiteVariables()
-        {
-            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            String filePath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
-
-            var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(_sampleFileWithSiteVariables);
-
-            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
-            var actual = target.GetSiteSettings();
-        }
-
-        [Fact]
-        public void SuccessfullyReadAKnownGoodFileWithoutSiteVariables()
-        {
-            String rootPath = $"c:\\{string.Empty.GetRandom()}\\";
-            String filePath = System.IO.Path.Combine(rootPath, _dataFolder, "SiteSettings.md");
-
-            var fileSystem = new Mock<IFile>();
-            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                .Returns(_sampleFileWithoutSiteVariables);
-
-            var target = (null as IContentRepository).Create(fileSystem.Object, rootPath);
-            var actual = target.GetSiteSettings();
         }
 
         [Fact]
@@ -459,6 +428,394 @@ namespace PPTail.Data.Forestry.Test
 
             Assert.Equal(expectedVariable.Name, actualVariable.Name);
             Assert.Equal(expectedVariable.Value, actualVariable.Value);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForContactEmail()
+        {
+            String expected = string.Empty.GetRandomEmailAddress();
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .ContactEmail(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.ContactEmail);
+        }
+
+        [Fact]
+        public void ReturnNullForContactEmailIfNoneSpecified()
+        {
+            string expected = null;
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveContactEmail()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.ContactEmail);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForAdditionalPagesDropdownLabel()
+        {
+            String expected = string.Empty.GetRandom();
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .AdditionalPagesDropdownLabel(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.AdditionalPagesDropdownLabel);
+        }
+
+        [Fact]
+        public void ReturnNullForAdditionalPagesDropdownLabelIfNoneSpecified()
+        {
+            string expected = null;
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveAdditionalPagesDropdownLabel()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.AdditionalPagesDropdownLabel);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForDateTimeFormatSpecifier()
+        {
+            String expected = $"yyyyMMddTHmm {string.Empty.GetRandom(3)}";
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .DateTimeFormatSpecifier(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.DateTimeFormatSpecifier);
+        }
+
+        [Fact]
+        public void ReturnDefaultValueForDateTimeFormatSpecifierIfNoneSpecified()
+        {
+            string expected = "yyyy-MM-dd H:mm UTC";
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveDateTimeFormatSpecifier()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.DateTimeFormatSpecifier);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForDateFormatSpecifier()
+        {
+            String expected = $"yyyyMMdd {string.Empty.GetRandom(3)}";
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .DateFormatSpecifier(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.DateFormatSpecifier);
+        }
+
+        [Fact]
+        public void ReturnDefaultValueForDateFormatSpecifierIfNoneSpecified()
+        {
+            string expected = "yyyy-MM-dd";
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveDateFormatSpecifier()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.DateFormatSpecifier);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForItemSeparator()
+        {
+            String expected = string.Empty.GetRandom();
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .ItemSeparator(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.ItemSeparator);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyValueForItemSeparatorIfNoneSpecified()
+        {
+            string expected = String.Empty;
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveItemSeparator()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.ItemSeparator);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueForOutputFileExtension()
+        {
+            String expected = string.Empty.GetRandom();
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .OutputFileExtension(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.OutputFileExtension);
+        }
+
+        [Fact]
+        public void ReturnTheDefaultValueForOutputFileExtensionIfNoneSpecified()
+        {
+            string expected = "html";
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveOutputFileExtension()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.OutputFileExtension);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReturnTheProperValueForUseAdditionalPagesDropdown(bool expected)
+        {
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .UseAdditionalPagesDropdown(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.UseAdditionalPagesDropdown);
+        }
+
+        [Fact]
+        public void ReturnTheDefaultValueForUseAdditionalPagesDropdownIfNoneSpecified()
+        {
+            var expected = false;
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveUseAdditionalPagesDropdown()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.UseAdditionalPagesDropdown);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReturnTheProperValueForDisplayTitleInNavbar(bool expected)
+        {
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .DisplayTitleInNavbar(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.DisplayTitleInNavbar);
+        }
+
+        [Fact]
+        public void ReturnTheDefaultValueForDisplayTitleInNavbarIfNoneSpecified()
+        {
+            var expected = false;
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveDisplayTitleInNavbar()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected, actual.DisplayTitleInNavbar);
+        }
+
+        [Fact]
+        public void ReturnTheCorrectNumberOfAdditionalFilePaths()
+        {
+            int expectedCount = 10.GetRandom(3);
+            var expected = new List<String>();
+            for (int i = 0; i < expectedCount; i++)
+                expected.Add(string.Empty.GetRandom());
+
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .AdditionalFilePaths(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expectedCount, actual.AdditionalFilePaths.Count());
+        }
+
+        [Fact]
+        public void ReturnTheCorrectAdditionalFilePaths()
+        {
+            int expectedCount = 10.GetRandom(3);
+            var expected = new List<String>();
+            for (int i = 0; i < expectedCount; i++)
+                expected.Add(string.Empty.GetRandom());
+
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .AdditionalFilePaths(expected)
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.Equal(expected.AsHash(), actual.AdditionalFilePaths.AsHash());
+        }
+
+        [Fact]
+        public void ReturnAListIfNoAdditionalFilePathsProvided()
+        {
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveAdditionalFilePaths()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.NotNull(actual.AdditionalFilePaths);
+        }
+
+        [Fact]
+        public void ReturnAnEmptyListIfNoAdditionalFilePathsProvided()
+        {
+            var settingsFileData = new SettingsFileBuilder()
+                .UseRandomValues()
+                .RemoveAdditionalFilePaths()
+                .Build();
+
+            var fileSystem = new Mock<IFile>();
+            fileSystem.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                .Returns(settingsFileData);
+
+            var target = (null as IContentRepository).Create(fileSystem.Object, "c:\\");
+            var actual = target.GetSiteSettings();
+
+            Assert.False(actual.AdditionalFilePaths.Any());
         }
     }
 }

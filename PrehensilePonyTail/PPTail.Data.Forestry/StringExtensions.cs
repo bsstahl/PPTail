@@ -120,9 +120,9 @@ namespace PPTail.Data.Forestry
                 results = yamlDeserializer
                     .Deserialize<SiteSettings>(frontMatter);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new SettingNotFoundException(nameof(SiteSettings));
+                throw new SettingNotFoundException(nameof(SiteSettings), ex);
             }
 
             return results.AsEntity();

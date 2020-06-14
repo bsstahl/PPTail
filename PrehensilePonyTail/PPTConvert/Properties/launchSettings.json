@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "PPTConvert": {
-      "commandName": "Project",
-      "commandLineArgs": "\"Provider=PPTail.Data.WordpressFiles.Repository;Filepath=..\\..\\..\\..\\..\\..\\SourceData\" \"Provider=PPTail.Data.NativeJson.RepositoryWriter;FilePath=..\\..\\..\\..\\..\\..\\SourceData\\PPTail.json\" "
-    }
-  }
-}

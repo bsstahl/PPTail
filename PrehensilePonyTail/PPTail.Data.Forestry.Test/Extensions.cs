@@ -51,11 +51,6 @@ namespace PPTail.Data.Forestry.Test
             return new Repository(container.BuildServiceProvider(), sourceConnection);
         }
 
-        //public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
-        //{
-        //    return new Repository(serviceProvider);
-        //}
-
         public static IEnumerable<Widget> Create(this IEnumerable<Widget> ignore)
         {
             return ignore.Create(25.GetRandom(10));
@@ -234,11 +229,6 @@ namespace PPTail.Data.Forestry.Test
             return results;
         }
 
-        //public static String Serialize(this WidgetType widgetType)
-        //{
-        //    return widgetType.ToString().Replace("_", " ");
-        //}
-
         public static String Serialize(this IEnumerable<Category> categories)
         {
             var sb = new StringBuilder();
@@ -278,63 +268,6 @@ namespace PPTail.Data.Forestry.Test
                 FileName = $"{string.Empty.GetRandom()}.{string.Empty.GetRandom(3)}",
                 RelativePath = relativePath
             };
-        }
-
-        public static Category Create(this Category ignore)
-        {
-            var id = Guid.NewGuid();
-            String name = $"nameof_{id.ToString()}";
-            return ignore.Create(id, name);
-        }
-
-        public static Category Create(this Category ignore, Guid id, String name)
-        {
-            String description = $"descriptionof_{id.ToString()}";
-            return ignore.Create(id, name, description);
-        }
-
-        public static Category Create(this Category ignore, Guid id, String name, String description)
-        {
-            return new Category()
-            {
-                Id = id,
-                Name = name,
-                Description = description
-            };
-        }
-
-        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore)
-        {
-            return ignore.Create(10.GetRandom(5));
-        }
-
-        public static IEnumerable<Category> Create(this IEnumerable<Category> ignore, Int32 count)
-        {
-            var result = new List<Category>();
-            for (Int32 i = 0; i < count; i++)
-                result.Add((null as Category).Create());
-            return result;
-        }
-
-        public static IEnumerable<Guid> GetRandomCategoryIds(this IEnumerable<Category> categories)
-        {
-            // Returns 1 or 2 category IDs from the collection of categories
-            var result = new List<Guid>();
-            Category cat1 = categories.GetRandom();
-            Category cat2 = null;
-
-            result.Add(cat1.Id);
-            if (true.GetRandom())
-            {
-                do
-                {
-                    cat2 = categories.GetRandom();
-                } while (cat1.Id == cat2.Id);
-
-                result.Add(cat2.Id);
-            }
-
-            return result;
         }
 
         internal static String AsHash<T>(this IEnumerable<T> values)
