@@ -39,8 +39,7 @@ namespace PPTail.Common.Test
                 DateFormatSpecifier = "MM/dd/yyyy",
                 DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
                 ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom(),
-                SourceConnection = contentRepo.GetSourceConnection()
+                OutputFileExtension = string.Empty.GetRandom()
             };
         }
 

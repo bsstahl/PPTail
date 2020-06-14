@@ -18,14 +18,9 @@ namespace PPTail.Data.WordpressFiles
             _dataFilePath = dataFilePath;
         }
 
-        public Repository(IServiceProvider serviceProvider)
+        public Repository(IServiceProvider serviceProvider, String connectionString)
         {
-            serviceProvider.ValidateService<ISettings>();
-
-            var settings = serviceProvider.GetService<ISettings>();
-            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
-
-            _dataFilePath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            _dataFilePath = connectionString.GetConnectionStringValue(_connectionStringFilepathKey);
         }
 
         #region LazyLoad/Cache properties

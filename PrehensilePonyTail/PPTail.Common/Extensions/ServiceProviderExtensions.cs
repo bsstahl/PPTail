@@ -16,14 +16,14 @@ namespace PPTail.Extensions
                 throw new Exceptions.DependencyNotFoundException(typeof(T).Name);
         }
 
-        public static T GetNamedService<T>(this IServiceProvider serviceProvider, String instanceName) where T: class
-        {
-            var services = serviceProvider.GetServices<T>();
-            var service = services.SingleOrDefault(s => s.GetType().FullName.ToLower() == instanceName.ToLower());
-            if (service is null)
-                throw new Exceptions.DependencyNotFoundException(typeof(T).Name, instanceName);
-            return service;
-        }
+        //public static T GetNamedService<T>(this IServiceProvider serviceProvider, String instanceName) where T: class
+        //{
+        //    var services = serviceProvider.GetServices<T>();
+        //    var service = services.SingleOrDefault(s => s.GetType().FullName.ToLower() == instanceName.ToLower());
+        //    if (service is null)
+        //        throw new Exceptions.DependencyNotFoundException(typeof(T).Name, instanceName);
+        //    return service;
+        //}
 
         public static IContentRepository GetContentRepository(this IServiceProvider serviceProvider)
         {

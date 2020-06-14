@@ -24,12 +24,9 @@ namespace PPTail.Data.MediaBlog.Test
             Int32 postCount = 3;
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postFiles = new MockMediaFileCollectionBuilder()
                 .AddRandomPosts(postCount)
@@ -44,10 +41,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var posts = target.GetAllPosts();
 
@@ -58,12 +54,9 @@ namespace PPTail.Data.MediaBlog.Test
         public void IgnoreFilesWithoutJsonExtension()
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postFiles = new MockMediaFileCollectionBuilder()
                 .AddRandomPosts(7)
@@ -85,10 +78,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var posts = target.GetAllPosts();
 
@@ -99,12 +91,9 @@ namespace PPTail.Data.MediaBlog.Test
         public void RequestFilesFromThePostsFolder()
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postFiles = new MockMediaFileCollectionBuilder()
                 .AddRandomPosts(1)
@@ -119,10 +108,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var posts = target.GetAllPosts();
 
@@ -136,12 +124,9 @@ namespace PPTail.Data.MediaBlog.Test
             String expected = string.Empty.GetRandom();
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postJson = new MediaPostBuilder()
                 .UseRandomFlickrPost()
@@ -162,10 +147,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.Single();
@@ -184,12 +168,9 @@ namespace PPTail.Data.MediaBlog.Test
             }
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postJson = new MediaPostBuilder()
                 .UseRandomFlickrPost()
@@ -210,10 +191,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.Count();
@@ -233,12 +213,9 @@ namespace PPTail.Data.MediaBlog.Test
             String expected = tags.AsHash();
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postJson = new MediaPostBuilder()
                 .UseRandomFlickrPost()
@@ -259,10 +236,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.AsHash();
@@ -290,12 +266,9 @@ namespace PPTail.Data.MediaBlog.Test
             }
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postJson = new MediaPostBuilder()
                 .UseRandomFlickrPost()
@@ -317,10 +290,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.Count();
@@ -339,12 +311,9 @@ namespace PPTail.Data.MediaBlog.Test
             }
 
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postJson = new MediaPostBuilder()
                 .UseRandomFlickrPost()
@@ -366,10 +335,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var pages = target.GetAllPosts();
             var actual = pages.Single().Tags.Count();
@@ -603,12 +571,9 @@ namespace PPTail.Data.MediaBlog.Test
         private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String json)
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
-            var settings = new SettingsBuilder()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
+            var connectionString = new ConnectionStringBuilder("this")
                     .AddFilePath(rootPath)
-                    .Build())
-                .Build();
+                    .Build();
 
             var postFiles = new MockMediaFileCollectionBuilder()
                 .AddPost(json)
@@ -623,10 +588,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .AddDirectoryService(directoryProvider.Object)
-                .Build();
+                .Build(connectionString);
 
             var pages = target.GetAllPosts();
             var actual = pages.ToArray()[0];

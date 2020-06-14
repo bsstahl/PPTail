@@ -27,17 +27,20 @@ namespace PPTail.Data.FileSystem
 
         SiteSettings _siteSettings = null;
 
-        public Repository(IServiceProvider serviceProvider)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization project")]
+        public Repository(IServiceProvider serviceProvider, String connectionString)
         {
             _serviceProvider = serviceProvider;
 
-            _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<IFile>();
 
-            var settings = _serviceProvider.GetService<ISettings>();
-            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentNullException(nameof(connectionString));
 
-            _rootSitePath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            _rootSitePath = connectionString.GetConnectionStringValue(_connectionStringFilepathKey);
+            if (String.IsNullOrWhiteSpace(_rootSitePath))
+                throw new ArgumentException($"{_connectionStringFilepathKey} not found in Connection String", nameof(connectionString));
+
             _rootDataPath = System.IO.Path.Combine(_rootSitePath, "App_Data");
         }
 

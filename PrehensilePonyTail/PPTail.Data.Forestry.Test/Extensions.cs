@@ -44,19 +44,17 @@ namespace PPTail.Data.Forestry.Test
             var container = new ServiceCollection();
 
             String sourceConnection = $"Provider=Test;{_connectionStringFilepathKey}={sourcePath}";
-            var settings = new Settings() { SourceConnection = sourceConnection };
-            container.AddSingleton<ISettings>(settings);
 
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directoryProvider);
 
-            return ignore.Create(container.BuildServiceProvider());
+            return new Repository(container.BuildServiceProvider(), sourceConnection);
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
-        {
-            return new Repository(serviceProvider);
-        }
+        //public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
+        //{
+        //    return new Repository(serviceProvider);
+        //}
 
         public static IEnumerable<Widget> Create(this IEnumerable<Widget> ignore)
         {

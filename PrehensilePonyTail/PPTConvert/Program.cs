@@ -25,13 +25,6 @@ namespace PPTConvert
                 // Add all possible source repositories to the container
                 String inputFilePath = sourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
-                // Add settings needed by some input repositories
-                var settings = new Settings()
-                {
-                    SourceConnection = sourceConnection
-                };
-                _ = container.AddSingleton<ISettings>(settings);
-
                 // Add file system abstractions
                 _ = container.AddSingleton<IFile>(c => new PPTail.Io.File());
                 _ = container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
@@ -52,8 +45,8 @@ namespace PPTConvert
 
                 var serviceProvider = container.BuildServiceProvider();
 
-                var readRepo = serviceProvider.GetNamedService<IContentRepository>(readRepoName);
-                var writeRepo = serviceProvider.GetNamedService<IContentRepositoryWriter>(writeRepoName);
+                var readRepo = serviceProvider.GetService<IContentRepository>();
+                var writeRepo = serviceProvider.GetService<IContentRepositoryWriter>();
 
                 writeRepo.SaveAllPages(readRepo.GetAllPages());
                 writeRepo.SaveAllPosts(readRepo.GetAllPosts());

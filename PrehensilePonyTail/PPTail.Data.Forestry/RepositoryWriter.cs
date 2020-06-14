@@ -3,11 +3,7 @@ using PPTail.Extensions;
 using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Data.Forestry
 {
@@ -19,14 +15,11 @@ namespace PPTail.Data.Forestry
         private readonly IServiceProvider _serviceProvider;
 
         private readonly string _rootFilePath;
-        private readonly string _contentRepositoryName;
 
         public RepositoryWriter(IServiceProvider serviceProvider, string rootFilePath, string contentRepositoryName)
         {
             _serviceProvider = serviceProvider;
-
             _rootFilePath = rootFilePath;
-            _contentRepositoryName = contentRepositoryName;
         }
 
         private IEnumerable<Category> _categories;
@@ -36,7 +29,7 @@ namespace PPTail.Data.Forestry
             {
                 if (_categories is null)
                 {
-                    var readRepo = _serviceProvider.GetNamedService<IContentRepository>(_contentRepositoryName);
+                    var readRepo = _serviceProvider.GetService<IContentRepository>();
                     _categories = readRepo.GetCategories();
                 }
                 return _categories;

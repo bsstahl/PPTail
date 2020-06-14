@@ -11,26 +11,18 @@ namespace PPTail.Data.PhotoBlog
 {
     public class Repository : PPTail.Interfaces.IContentRepository
     {
-        private const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        private const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
         private const String _connectionStringFilepathKey = "FilePath";
 
         private readonly String _rootPath;
         private readonly IServiceProvider _serviceProvider;
 
-        public Repository(IServiceProvider serviceProvider)
+        public Repository(IServiceProvider serviceProvider, String connectionString)
         {
             _serviceProvider = serviceProvider;
-
-            _serviceProvider.ValidateService<ISettings>();
+            
             _serviceProvider.ValidateService<IFile>();
 
-            var settings = _serviceProvider.GetService<ISettings>();
-            _rootPath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
-
-            // HACK: Updating settings shouldn't be done here, it probably should be done from the command line
-            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
-            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
+            _rootPath = connectionString.GetConnectionStringValue(_connectionStringFilepathKey);
         }
 
         public IEnumerable<ContentItem> GetAllPages()

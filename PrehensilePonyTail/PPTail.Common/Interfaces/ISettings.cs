@@ -10,8 +10,6 @@ namespace PPTail.Interfaces
         String ItemSeparator { get; set; }
         String OutputFileExtension { get; set; }
 
-        String SourceConnection { get; set; }
-
         ExtendedSettingsCollection ExtendedSettings { get; }
     }
 }

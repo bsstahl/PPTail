@@ -309,7 +309,7 @@ namespace PPTail.Generator.Search.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).Create(contentRepo.Object);
+            var settings = (null as ISettings).Create();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as ISearchProvider).Create(container);

@@ -28,7 +28,7 @@ namespace PPTail.Generator.HomePage.Test
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             container.AddSingleton<IContentRepository>(contentRepo.Object);
 
-            var settings = (null as ISettings).CreateDefault(contentRepo.Object);
+            var settings = (null as ISettings).CreateDefault();
             container.AddSingleton<ISettings>(settings);
 
             var templateProcessor = (null as ITemplateProcessor).Create();
@@ -53,7 +53,7 @@ namespace PPTail.Generator.HomePage.Test
             var templates = new List<Template>() { homepageTemplate, itemTemplate };
 
             var contentRepo = Mock.Of<IContentRepository>();
-            var settings = (null as ISettings).CreateDefault(contentRepo);
+            var settings = (null as ISettings).CreateDefault();
 
             return ignore.Create(templates, settings);
         }
@@ -112,23 +112,23 @@ namespace PPTail.Generator.HomePage.Test
             return new PPTail.Generator.HomePage.HomePageGenerator(container.BuildServiceProvider());
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, IContentRepository contentRepo)
+        public static ISettings CreateDefault(this ISettings ignore)
         {
-            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html", contentRepo);
+            return ignore.CreateDefault("yyyy-MM-dd hh:mm", "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, IContentRepository contentRepo)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier)
         {
-            return ignore.CreateDefault(dateTimeFormatSpecifier, "html", contentRepo);
+            return ignore.CreateDefault(dateTimeFormatSpecifier, "html");
         }
 
-        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension, IContentRepository contentRepo)
+        public static ISettings CreateDefault(this ISettings ignore, String dateTimeFormatSpecifier, String outputFileExtension)
         {
-            var settings = new Settings();
-            settings.DateTimeFormatSpecifier = dateTimeFormatSpecifier;
-            settings.OutputFileExtension = outputFileExtension;
-            settings.SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\";
-            return settings;
+            return new Settings
+            {
+                DateTimeFormatSpecifier = dateTimeFormatSpecifier,
+                OutputFileExtension = outputFileExtension
+            };
         }
 
         public static ContentItem Create(this ContentItem ignore)

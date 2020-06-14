@@ -25,13 +25,9 @@ namespace PPTail.Data.MediaBlog.Test
             String relativePath = string.Empty.GetRandom();
             String folderPath = Path.Combine(rootPath, relativePath);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -46,10 +42,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 
@@ -64,13 +59,9 @@ namespace PPTail.Data.MediaBlog.Test
             String relativePath = string.Empty.GetRandom();
             String folderPath = Path.Combine(rootPath, relativePath);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -85,10 +76,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 
@@ -103,13 +93,9 @@ namespace PPTail.Data.MediaBlog.Test
             String relativePath = string.Empty.GetRandom();
             String folderPath = Path.Combine(rootPath, relativePath);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -124,10 +110,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 
@@ -146,13 +131,9 @@ namespace PPTail.Data.MediaBlog.Test
             String relativePath = string.Empty.GetRandom();
             String folderPath = Path.Combine(rootPath, relativePath);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -167,10 +148,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 
@@ -185,13 +165,9 @@ namespace PPTail.Data.MediaBlog.Test
             String relativePath = string.Empty.GetRandom();
             String folderPath = Path.Combine(rootPath, relativePath);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -206,10 +182,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 
@@ -225,13 +200,9 @@ namespace PPTail.Data.MediaBlog.Test
             String relativePath = string.Empty.GetRandom();
             String folderPath = Path.Combine(rootPath, relativePath);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -246,10 +217,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 
@@ -268,13 +238,9 @@ namespace PPTail.Data.MediaBlog.Test
             String fakeFolder = String.Empty.GetRandom();
             String fakePath = Path.Combine(rootPath, fakeFolder);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -293,10 +259,9 @@ namespace PPTail.Data.MediaBlog.Test
                 .Throws(new System.IO.DirectoryNotFoundException());
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(fakePath);
 
@@ -314,13 +279,9 @@ namespace PPTail.Data.MediaBlog.Test
             String fakeFolder = String.Empty.GetRandom();
             String fakePath = Path.Combine(rootPath, fakeFolder);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .SourceConnection(
-                    new ConnectionStringBuilder("this")
-                        .AddFilePath(rootPath)
-                        .Build())
-                .Build();
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var files = new SourceFileCollectionBuilder()
                 .AddRandomFiles(count, relativePath)
@@ -343,10 +304,9 @@ namespace PPTail.Data.MediaBlog.Test
             var fileService = fileServiceBuilder.Build();
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileService.Object)
                 .AddDirectoryService(directoryService.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetFolderContents(relativePath);
 

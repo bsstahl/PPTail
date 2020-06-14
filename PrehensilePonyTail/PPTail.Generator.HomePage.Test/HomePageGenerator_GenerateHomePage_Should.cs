@@ -221,7 +221,7 @@ namespace PPTail.Generator.HomePage.Test
             container.ReplaceDependency<ITemplateProcessor>(templateProcessor.Object);
 
             var contentRepo = Mock.Of<IContentRepository>();
-            var settings = (null as ISettings).CreateDefault(contentRepo);
+            var settings = (null as ISettings).CreateDefault();
             container.ReplaceDependency<ISettings>(settings);
 
             var target = (null as IHomePageGenerator).Create(container);

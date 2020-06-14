@@ -25,13 +25,6 @@ namespace PPTReport
 
                 String inputFilePath = sourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
-                // Add settings needed by some input repositories
-                var settings = new Settings()
-                {
-                    SourceConnection = sourceConnection
-                };
-                _ = container.AddSingleton<ISettings>(settings);
-
                 // Add file system abstractions
                 _ = container.AddSingleton<IFile>(c => new PPTail.Io.File());
                 _ = container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
@@ -44,8 +37,7 @@ namespace PPTReport
 
                 var serviceProvider = container.BuildServiceProvider();
 
-                String readRepoName = sourceConnection.GetConnectionStringValue(_connectionStringProviderKey);
-                var readRepo = serviceProvider.GetNamedService<IContentRepository>(readRepoName);
+                var readRepo = serviceProvider.GetService<IContentRepository>();
 
                 var posts = readRepo.GetAllPosts();
                 var pages = readRepo.GetAllPages();

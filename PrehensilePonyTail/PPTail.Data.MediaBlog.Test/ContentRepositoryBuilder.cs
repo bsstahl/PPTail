@@ -13,7 +13,6 @@ namespace PPTail.Data.MediaBlog.Test
     {
         readonly IServiceCollection _container;
 
-        ISettings _settingsService = null;
         IFile _fileService = null;
         IDirectory _directoryService = null;
 
@@ -25,18 +24,15 @@ namespace PPTail.Data.MediaBlog.Test
             _container = container;
         }
 
-        internal IContentRepository Build()
+        internal IContentRepository Build(string connectionString)
         {
-            if (_settingsService != null)
-                _container.AddSingleton<ISettings>(c => _settingsService);
-
             if (_directoryService != null)
                 _container.AddSingleton<IDirectory>(c => _directoryService);
 
             if (_fileService != null)
                 _container.AddSingleton<IFile>(c => _fileService);
 
-            return new PPTail.Data.MediaBlog.Repository(_container.BuildServiceProvider());
+            return new Repository(_container.BuildServiceProvider(), connectionString);
         }
 
         internal ContentRepositoryBuilder UseGenericDirectory()
@@ -55,17 +51,6 @@ namespace PPTail.Data.MediaBlog.Test
         {
             _fileService = fileService;
             return this;
-        }
-
-        internal ContentRepositoryBuilder AddSettingsService(ISettings settings)
-        {
-            _settingsService = settings;
-            return this;
-        }
-
-        internal ContentRepositoryBuilder UseGenericSettings()
-        {
-            return this.AddSettingsService(new SettingsBuilder().UseGenericValues().Build());
         }
 
     }

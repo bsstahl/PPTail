@@ -74,7 +74,7 @@ namespace PPTail.Generator.Search.Test
             container.AddSingleton<IContentRepository>(contentRepo.Object);
 
             if (settings is null)
-                container.AddSingleton<ISettings>((null as ISettings).Create(contentRepo.Object));
+                container.AddSingleton<ISettings>((null as ISettings).Create());
             else
                 container.AddSingleton<ISettings>(settings);
 
@@ -95,15 +95,14 @@ namespace PPTail.Generator.Search.Test
             return container;
         }
 
-        public static ISettings Create(this ISettings ignore, IContentRepository contentRepo)
+        public static ISettings Create(this ISettings ignore)
         {
             return new Settings()
             {
                 DateFormatSpecifier = "MM/dd/yyyy",
                 DateTimeFormatSpecifier = "MM/dd/yyyy hh:mm",
                 ItemSeparator = string.Empty.GetRandom(),
-                OutputFileExtension = string.Empty.GetRandom(),
-                SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\"
+                OutputFileExtension = string.Empty.GetRandom()
             };
         }
 

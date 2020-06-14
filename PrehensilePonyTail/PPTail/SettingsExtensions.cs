@@ -39,8 +39,7 @@ namespace PPTail
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension, 
-                SourceConnection  = sourceConnection
+                OutputFileExtension = outputFileExtension
             };
 
             _ = settings.ExtendedSettings.Set(_additionalFilePathsSettingName, additionalFilePaths);

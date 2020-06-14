@@ -14,34 +14,26 @@ namespace PPTail.Data.MediaBlog
         const Int32 _defaultPostsPerPage = 3;
         const Int32 _defaultPostsPerFeed = 5;
 
-        const String _createDasBlogSyndicationCompatibilityFileSettingName = "createDasBlogSyndicationCompatibilityFile";
-        const String _createDasBlogPostsCompatibilityFileSettingName = "createDasBlogPostsCompatibilityFile";
-
         const String _connectionStringFilepathKey = "FilePath";
 
         private readonly String _rootPath;
         private readonly IServiceProvider _serviceProvider;
 
-        public Repository(IServiceProvider serviceProvider)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization project")]
+        public Repository(IServiceProvider serviceProvider, string connectionString)
         {
             _serviceProvider = serviceProvider;
 
-            _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<IFile>();
             _serviceProvider.ValidateService<IDirectory>();
 
-            var settings = _serviceProvider.GetService<ISettings>();
+            if (String.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentNullException(nameof(connectionString));
 
-            if (String.IsNullOrWhiteSpace(settings.SourceConnection))
-            {
-                throw new Exceptions.SettingNotFoundException(nameof(settings.SourceConnection));
-            }
+            _rootPath = connectionString.GetConnectionStringValue(_connectionStringFilepathKey);
 
-            _rootPath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
-
-            // HACK: Updating settings shouldn't be done here, it probably should be done from the command line
-            _ = settings.ExtendedSettings.Set(_createDasBlogSyndicationCompatibilityFileSettingName, false.ToString());
-            _ = settings.ExtendedSettings.Set(_createDasBlogPostsCompatibilityFileSettingName, false.ToString());
+            if (String.IsNullOrWhiteSpace(_rootPath))
+                throw new ArgumentException($"{_connectionStringFilepathKey} not found in Connection String", nameof(connectionString));
         }
 
         public IEnumerable<ContentItem> GetAllPages()
@@ -53,7 +45,7 @@ namespace PPTail.Data.MediaBlog
             var pagePath = System.IO.Path.Combine(_rootPath, "pages");
             var files = directory.EnumerateFiles(pagePath);
 
-            foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
+            foreach (var file in files.Where(f => f.ToUpperInvariant().EndsWith(".JSON", StringComparison.InvariantCulture)))
             {
                 var contentJson = fileSystem.ReadAllText(file);
                 var id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));
@@ -73,7 +65,7 @@ namespace PPTail.Data.MediaBlog
             if (directory.Exists(postPath))
             {
                 var files = directory.EnumerateFiles(postPath);
-                foreach (var file in files.Where(f => f.ToLowerInvariant().EndsWith(".json")))
+                foreach (var file in files.Where(f => f.ToUpperInvariant().EndsWith(".JSON", StringComparison.InvariantCulture)))
                 {
                     var json = fileSystem.ReadAllText(file);
                     var id = Guid.Parse(System.IO.Path.GetFileNameWithoutExtension(file));

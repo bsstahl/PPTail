@@ -36,12 +36,6 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SettingsBuilder SourceConnection(String sourceConnection)
-        {
-            base.SourceConnection = sourceConnection;
-            return this;
-        }
-
         public SettingsBuilder AddExtendedSetting(String name, String value)
         {
             this.ExtendedSettings.Add(new Tuple<string, string>(name, value));

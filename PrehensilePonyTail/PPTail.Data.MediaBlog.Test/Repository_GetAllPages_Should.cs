@@ -16,6 +16,7 @@ namespace PPTail.Data.MediaBlog.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPages_Should
     {
+        const String _defaultConnection = "Provider=this;FilePath=c:\\";
         const String _connectionStringFilepathKey = "FilePath";
 
         [Fact]
@@ -38,10 +39,10 @@ namespace PPTail.Data.MediaBlog.Test
                     .Returns("{}");
 
             var target = new ContentRepositoryBuilder()
-                .UseGenericSettings()
                 .AddDirectoryService(directoryProvider.Object)
                 .AddFileService(fileSystem.Object)
-                .Build();
+                .Build(_defaultConnection);
+
             var pages = target.GetAllPages();
 
             Assert.Equal(files.Count(), pages.Count());
@@ -72,10 +73,10 @@ namespace PPTail.Data.MediaBlog.Test
                     .Returns("{}");
 
             var target = new ContentRepositoryBuilder()
-                .UseGenericSettings()
                 .AddDirectoryService(directoryProvider.Object)
                 .AddFileService(fileSystem.Object)
-                .Build();
+                .Build(_defaultConnection);
+
             var pages = target.GetAllPages();
 
             Assert.Equal(3, pages.Count());
@@ -92,10 +93,6 @@ namespace PPTail.Data.MediaBlog.Test
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
             String expectedPath = System.IO.Path.Combine(rootPath, "pages");
 
-            var settings = new SettingsBuilder()
-                .SourceConnection($"Provider=this;{_connectionStringFilepathKey}={rootPath}")
-                .Build();
-
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
 
@@ -107,10 +104,10 @@ namespace PPTail.Data.MediaBlog.Test
                     .Returns("{}");
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddDirectoryService(directoryProvider.Object)
                 .AddFileService(fileSystem.Object)
-                .Build();
+                .Build($"Provider=this;{_connectionStringFilepathKey}={rootPath}");
+
             var pages = target.GetAllPages();
 
             fileSystem.VerifyAll();
@@ -269,10 +266,9 @@ namespace PPTail.Data.MediaBlog.Test
                     .Returns(json);
 
             var target = new ContentRepositoryBuilder()
-                .UseGenericSettings()
                 .AddDirectoryService(directoryProvider.Object)
                 .AddFileService(fileSystem.Object)
-                .Build();
+                .Build(_defaultConnection);
 
             var pages = target.GetAllPages();
             var actual = pages.ToArray()[0];

@@ -54,18 +54,19 @@ namespace PPTail.Data.Forestry
             }
         }
 
-
-        public Repository(IServiceProvider serviceProvider)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization project")]
+        public Repository(IServiceProvider serviceProvider, string sourceConnection)
         {
             _serviceProvider = serviceProvider;
-
-            _serviceProvider.ValidateService<ISettings>();
             _serviceProvider.ValidateService<IFile>();
 
-            var settings = _serviceProvider.GetService<ISettings>();
-            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
+            if (String.IsNullOrWhiteSpace(sourceConnection))
+                throw new ArgumentNullException(nameof(sourceConnection));
 
-            _rootSitePath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            _rootSitePath = sourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            if (String.IsNullOrWhiteSpace(_rootSitePath))
+                throw new ArgumentException($"{_connectionStringFilepathKey} not found in Connection String", nameof(sourceConnection));
+
             _rootDataPath = System.IO.Path.Combine(_rootSitePath, _dataRelativePath);
             _rootPagesPath = System.IO.Path.Combine(_rootSitePath, _pagesRelativePath);
             _rootPostsPath = System.IO.Path.Combine(_rootSitePath, _postsRelativePath);

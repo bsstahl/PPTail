@@ -24,15 +24,19 @@ namespace PPTail.Data.MediaBlog.Test
         {
             String invalidJson = "<xml/>";
 
+            string rootPath = $"c:\\{String.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
+
             var fileService = new MockFileServiceBuilder()
                 .AddSiteSettingsFile(invalidJson)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .UseGenericSettings()
                 .UseGenericDirectory()
                 .AddFileService(fileService.Object)
-                .Build();
+                .Build(connectionString);
 
             Assert.Throws<SettingNotFoundException>(() => target.GetSiteSettings());
         }
@@ -43,15 +47,19 @@ namespace PPTail.Data.MediaBlog.Test
             String expected = typeof(SiteSettings).Name;
             String invalidJson = "<xml/>";
 
+            string rootPath = $"c:\\{String.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
+
             var fileService = new MockFileServiceBuilder()
                 .AddSiteSettingsFile(invalidJson)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .UseGenericSettings()
                 .UseGenericDirectory()
                 .AddFileService(fileService.Object)
-                .Build();
+                .Build(connectionString);
 
             try
             {
@@ -66,8 +74,12 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReadsTheProperFileFromTheFileSystem()
         {
-            String rootPath = string.Empty;
+            String rootPath = "c:\\";
             String expectedPath = System.IO.Path.Combine(rootPath, "SiteSettings.json");
+
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             String json = new SiteSettingsFileBuilder()
                 .UseRandomValues()
@@ -75,13 +87,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddSiteSettingsFile(json)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
                 .UseGenericDirectory()
-                .UseGenericSettings()
                 .AddFileService(fileSystem.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetSiteSettings();
 
@@ -172,15 +183,19 @@ namespace PPTail.Data.MediaBlog.Test
 
         private static void ExecutePropertyTest(SiteSettings siteSettings, String expected, Func<SiteSettings, String> fieldValueDelegate)
         {
+            string rootPath = $"c:\\{String.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
+
             var fileSystem = new MockFileServiceBuilder()
                 .AddSiteSettings(siteSettings)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
                 .UseGenericDirectory()
-                .UseGenericSettings()
                 .AddFileService(fileSystem.Object)
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetSiteSettings();
             Assert.Equal(expected, fieldValueDelegate(actual));

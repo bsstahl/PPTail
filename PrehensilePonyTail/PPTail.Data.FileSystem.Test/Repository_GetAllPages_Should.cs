@@ -84,7 +84,7 @@ namespace PPTail.Data.FileSystem.Test
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
             String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder, "pages");
 
-            var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
+            var sourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}";
 
             var fileSystem = new Mock<IFile>();
             var directoryProvider = new Mock<IDirectory>();
@@ -99,9 +99,8 @@ namespace PPTail.Data.FileSystem.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystem.Object);
             container.AddSingleton<IDirectory>(directoryProvider.Object);
-            container.AddSingleton<ISettings>(settings);
 
-            var target = (null as IContentRepository).Create(container.BuildServiceProvider());
+            var target = (null as IContentRepository).Create(container.BuildServiceProvider(), sourceConnection);
             var pages = target.GetAllPages();
 
             fileSystem.VerifyAll();

@@ -77,8 +77,7 @@ namespace PPTail.Generator.Template.Test
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 ItemSeparator = itemSeparator,
-                OutputFileExtension = outputFileExtension,
-                SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\"
+                OutputFileExtension = outputFileExtension
             };
         }
 

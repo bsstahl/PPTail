@@ -20,19 +20,19 @@ namespace PPTail.Data.MediaBlog.Test
         {
             Int32 categoryCount = 20.GetRandom(5);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddRandomCategories(categoryCount)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetCategories();
 
@@ -42,9 +42,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperIdForEachCategory()
         {
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var categories = new CategoryCollectionBuilder()
                 .AddRandomCategories(20.GetRandom(5))
@@ -52,13 +53,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddCategories(categories)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetCategories();
 
@@ -69,9 +69,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperNameForEachCategory()
         {
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var categories = new CategoryCollectionBuilder()
                 .AddRandomCategories(20.GetRandom(5))
@@ -79,13 +80,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddCategories(categories)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetCategories();
 
@@ -99,9 +99,10 @@ namespace PPTail.Data.MediaBlog.Test
         [Fact]
         public void ReturnTheProperDescriptionForEachCategory()
         {
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var categories = new CategoryCollectionBuilder()
                 .AddRandomCategories(20.GetRandom(5))
@@ -109,13 +110,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddCategories(categories)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetCategories();
 

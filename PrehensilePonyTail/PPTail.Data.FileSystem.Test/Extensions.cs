@@ -35,20 +35,16 @@ namespace PPTail.Data.FileSystem.Test
         public static IContentRepository Create(this IContentRepository ignore, IFile fileSystem, IDirectory directoryProvider, String sourcePath)
         {
             var container = new ServiceCollection();
-
-            String sourceConnection = $"Provider=Test;{_connectionStringFilepathKey}={sourcePath}";
-            var settings = new Settings() { SourceConnection = sourceConnection };
-            container.AddSingleton<ISettings>(settings);
-
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directoryProvider);
 
-            return ignore.Create(container.BuildServiceProvider());
+            String sourceConnection = $"Provider=Test;{_connectionStringFilepathKey}={sourcePath}";
+            return ignore.Create(container.BuildServiceProvider(), sourceConnection);
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider)
+        public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider, string connectionString)
         {
-            return new Repository(serviceProvider);
+            return new Repository(serviceProvider, connectionString);
         }
 
         public static XElement ConditionalAddNode(this XElement node, bool addNode, String name, String value)

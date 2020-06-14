@@ -15,8 +15,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .DateFormatSpecifier("yyyy-MM-dd")
                 .DateTimeFormatSpecifier("yyyy-MM-dd H:mm UTC")
                 .ItemSeparator("<hr/>")
-                .OutputFileExtension("html")
-                .SourceConnection("SourceConnection");
+                .OutputFileExtension("html");
         }
     }
 }

@@ -88,7 +88,6 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IContentItemPageGenerator>(contentItemPageGen);
 
             container.AddSingleton<IContentRepository>(contentRepo);
-            settings.SourceConnection = contentRepo.GetSourceConnection();
             container.AddSingleton<ISettings>(settings);
 
             return container;

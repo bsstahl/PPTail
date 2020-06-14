@@ -13,78 +13,37 @@ namespace PPTail.Data.MediaBlog.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_Ctor_Should
     {
-        [Fact]
-        public void NotThrowAnExceptionIfAllDependenciesAreSupplied() 
-        {
-            var settings = new SettingsBuilder()
-                .SourceConnection(string.Empty.GetRandom())
-                .Build();
+        const string _defaultConnection = "Provider=this;FilePath=c:\\";
 
+        [Fact]
+        public void NotThrowAnExceptionIfAllDependenciesAreSupplied()
+        {
             var fileSystem = Mock.Of<IFile>();
             var directory = Mock.Of<IDirectory>();
 
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directory);
 
             var serviceProvider = container.BuildServiceProvider();
-            var target = new Repository(serviceProvider);
-        }
-
-        [Fact]
-        public void ThrowADependencyNotFoundExceptionIfSettingsAreNotProvided()
-        {
-            var fileSystem = Mock.Of<IFile>();
-
-            var container = new ServiceCollection();
-            container.AddSingleton<IFile>(fileSystem);
-
-            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
-        }
-
-        [Fact]
-        public void ThrowWithProperInterfaceTypeNameIfSettingsAreNotProvided()
-        {
-            var fileSystem = Mock.Of<IFile>();
-
-            var container = new ServiceCollection();
-            container.AddSingleton<IFile>(fileSystem);
-
-            String expected = typeof(ISettings).Name;
-            try
-            {
-                var target = new Repository(container.BuildServiceProvider());
-            }
-            catch (DependencyNotFoundException ex)
-            {
-                Assert.Equal(expected, ex.InterfaceTypeName);
-            }
+            var target = new Repository(serviceProvider, _defaultConnection);
         }
 
         [Fact]
         public void ThrowADependencyNotFoundExceptionIfAFileSystemIsNotProvided()
         {
-            var settings = new Settings() { SourceConnection = string.Empty.GetRandom() };
-
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>(settings);
-
-            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider()));
+            Assert.Throws<Exceptions.DependencyNotFoundException>(() => new Repository(container.BuildServiceProvider(), _defaultConnection));
         }
 
         [Fact]
         public void ThrowWithProperInterfaceTypeNameIfFileSystemIsNotProvided()
         {
-            var settings = new Settings() { SourceConnection = string.Empty.GetRandom() };
-
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>(settings);
-
             String expected = typeof(IFile).Name;
             try
             {
-                var target = new Repository(container.BuildServiceProvider());
+                var target = new Repository(container.BuildServiceProvider(), _defaultConnection);
             }
             catch (DependencyNotFoundException ex)
             {
@@ -93,41 +52,33 @@ namespace PPTail.Data.MediaBlog.Test
         }
 
         [Fact]
-        public void ThrowASettingNotFoundExceptionIfTheSourceConnectionIsNotSpecified()
+        public void ThrowAnArgumentNullExceptionIfTheSourceConnectionIsNotSpecified()
         {
-            var settings = new Settings();
+            string connection = null;
+
             var fileSystem = Mock.Of<IFile>();
             var directory = Mock.Of<IDirectory>();
 
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directory);
 
-            Assert.Throws<Exceptions.SettingNotFoundException>(() => new Repository(container.BuildServiceProvider()));
+            Assert.Throws<ArgumentNullException>(() => new Repository(container.BuildServiceProvider(), connection));
         }
 
         [Fact]
-        public void ThrowWithProperSettingNameIfTheSourceConnectionIsNotSpecified()
+        public void ThrowAnArgumentExceptionIfTheFilePathIsNotSpecifiedInTheSourceConnection()
         {
-            var settings = new Settings();
+            string connection = "Provider=this";
+
             var fileSystem = Mock.Of<IFile>();
             var directory = Mock.Of<IDirectory>();
 
             var container = new ServiceCollection();
-            container.AddSingleton<ISettings>(settings);
             container.AddSingleton<IFile>(fileSystem);
             container.AddSingleton<IDirectory>(directory);
 
-            String expected = nameof(settings.SourceConnection);
-            try
-            {
-                var target = new Repository(container.BuildServiceProvider());
-            }
-            catch (SettingNotFoundException ex)
-            {
-                Assert.Equal(expected, ex.SettingName);
-            }
+            Assert.Throws<ArgumentException>(() => new Repository(container.BuildServiceProvider(), connection));
         }
     }
 }

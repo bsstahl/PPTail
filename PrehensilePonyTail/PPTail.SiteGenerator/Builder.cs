@@ -59,10 +59,7 @@ namespace PPTail.SiteGenerator
             var redirectProvider = this.ServiceProvider.GetService<IRedirectProvider>();
             var syndicationProvider = this.ServiceProvider.GetService<ISyndicationProvider>();
             var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
-
-            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
-            var sourceProviderName = settings.SourceConnection.GetConnectionStringValue(_providerKey);
-            var contentRepo = this.ServiceProvider.GetNamedService<IContentRepository>(sourceProviderName);
+            var contentRepo = this.ServiceProvider.GetService<IContentRepository>();
 
             var siteSettings = contentRepo.GetSiteSettings();
             var posts = contentRepo.GetAllPosts();

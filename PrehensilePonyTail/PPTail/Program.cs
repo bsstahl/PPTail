@@ -24,7 +24,7 @@ namespace PPTail
 
                 var serviceProvider = new ServiceCollection()
                     .AddSingleton<ISettings>(settings)  // TODO: Eliminate ISettings
-                    .AddSourceRepository(settings)
+                    .AddSourceRepository(sourceConnection)
                     .AddTargetRepository(targetConnection)
                     .AddTemplateRepository(templateConnection)
                     .AddServices()

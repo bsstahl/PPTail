@@ -75,7 +75,7 @@ namespace PPTail.Data.Forestry.Test
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
             String expectedPath = System.IO.Path.Combine(rootPath, _postsFolder);
 
-            var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
+            var sourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}";
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(f => f.EnumerateFiles(expectedPath))
@@ -85,9 +85,8 @@ namespace PPTail.Data.Forestry.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystemBuilder.Build());
             container.AddSingleton<IDirectory>(directoryProvider.Object);
-            container.AddSingleton<ISettings>(settings);
 
-            var target = (null as IContentRepository).Create(container.BuildServiceProvider());
+            var target = new Repository(container.BuildServiceProvider(), sourceConnection);
             var posts = target.GetAllPosts();
 
             directoryProvider.VerifyAll();

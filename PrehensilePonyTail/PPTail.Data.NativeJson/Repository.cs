@@ -28,14 +28,9 @@ namespace PPTail.Data.NativeJson
             }
         }
 
-        public Repository(IServiceProvider serviceProvider)
+        public Repository(IServiceProvider serviceProvider, String connectionString)
         {
-            serviceProvider.ValidateService<ISettings>();
-
-            var settings = serviceProvider.GetService<ISettings>();
-            settings.Validate(s => s.SourceConnection, nameof(settings.SourceConnection));
-
-            _filePath = settings.SourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
+            _filePath = connectionString.GetConnectionStringValue(_connectionStringFilepathKey);
         }
 
         public IEnumerable<ContentItem> GetAllPages()

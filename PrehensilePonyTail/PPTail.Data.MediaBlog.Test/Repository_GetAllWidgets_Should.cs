@@ -23,9 +23,10 @@ namespace PPTail.Data.MediaBlog.Test
         {
             Int32 widgetCount = 20.GetRandom(6);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var widgets = new WidgetFileBuilder()
                 .AddTextBoxWidgets(widgetCount)
@@ -35,13 +36,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetAllWidgets();
 
@@ -53,9 +53,10 @@ namespace PPTail.Data.MediaBlog.Test
         {
             Int32 widgetCount = 20.GetRandom(6);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"c:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var widgets = new WidgetFileBuilder()
                 .AddTagCloudWidgets(widgetCount)
@@ -65,13 +66,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetAllWidgets();
 
@@ -83,9 +83,10 @@ namespace PPTail.Data.MediaBlog.Test
         {
             Int32 widgetCount = 20.GetRandom(6);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var widgets = new WidgetFileBuilder()
                 .AddTagListWidgets(widgetCount)
@@ -95,13 +96,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetAllWidgets();
 
@@ -113,9 +113,10 @@ namespace PPTail.Data.MediaBlog.Test
         {
             Int32 widgetCount = 20.GetRandom(6);
 
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var widgets = new WidgetFileBuilder()
                 .AddRandomWidgets(widgetCount)
@@ -125,13 +126,12 @@ namespace PPTail.Data.MediaBlog.Test
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidgets(widgets)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actual = target.GetAllWidgets();
 
@@ -180,19 +180,19 @@ namespace PPTail.Data.MediaBlog.Test
 
         private static void ExecutePropertyTest(WidgetZone widget, String expected, Func<Widget, string> fieldValueDelegate)
         {
-            var settings = new SettingsBuilder()
-                .UseGenericValues()
-                .Build();
+            string rootPath = $"C:\\{string.Empty.GetRandom()}";
+            var connectionString = new ConnectionStringBuilder("this")
+                    .AddFilePath(rootPath)
+                    .Build();
 
             var fileSystem = new MockFileServiceBuilder()
                 .AddWidget(widget)
-                .Build();
+                .Build(rootPath);
 
             var target = new ContentRepositoryBuilder()
-                .AddSettingsService(settings)
                 .AddFileService(fileSystem.Object)
                 .UseGenericDirectory()
-                .Build();
+                .Build(connectionString);
 
             var actualWidgets = target.GetAllWidgets();
             var actual = actualWidgets.Single();

@@ -27,7 +27,7 @@ namespace PPTail.Data.MediaBlog.Test
         String _settingsFile = string.Empty;
         SiteSettings _siteSettings = null;
 
-        internal Mock<IFile> Build()
+        internal Mock<IFile> Build(string rootFilePath = "")
         {
             var fileSystem = new Mock<IFile>();
 
@@ -53,11 +53,13 @@ namespace PPTail.Data.MediaBlog.Test
             }
 
             var widgetContent = JsonConvert.SerializeObject(_widgets);
-            fileSystem.Setup(f => f.ReadAllText(_widgetFilePath))
+            string fullWidgetPath = System.IO.Path.Combine(rootFilePath, _widgetFilePath);
+            fileSystem.Setup(f => f.ReadAllText(fullWidgetPath))
                 .Returns(widgetContent).Verifiable();
 
             var categoryContent = JsonConvert.SerializeObject(_categories);
-            fileSystem.Setup(f => f.ReadAllText(_categoryFilePath))
+            string fullCategoryPath = System.IO.Path.Combine(rootFilePath, _categoryFilePath);
+            fileSystem.Setup(f => f.ReadAllText(fullCategoryPath))
                 .Returns(categoryContent).Verifiable();
 
             // If a SiteSettings object has been provided it
@@ -69,7 +71,8 @@ namespace PPTail.Data.MediaBlog.Test
 
             if (!string.IsNullOrEmpty(_settingsFile))
             {
-                fileSystem.Setup(f => f.ReadAllText(_settingsFilePath))
+                string fullSettingsPath = System.IO.Path.Combine(rootFilePath, _settingsFilePath);
+                fileSystem.Setup(f => f.ReadAllText(fullSettingsPath))
                     .Returns(_settingsFile)
                     .Verifiable();
             }

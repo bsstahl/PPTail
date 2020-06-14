@@ -158,8 +158,7 @@ namespace PPTail.Generator.Syndication.Test
                 DateFormatSpecifier = dateFormatSpecifier,
                 DateTimeFormatSpecifier = dateTimeFormatSpecifier,
                 OutputFileExtension = outputFileExtension,
-                ItemSeparator = itemSeparator,
-                SourceConnection = $"Provider={contentRepo.GetType().FullName};FilePath=c:\\"
+                ItemSeparator = itemSeparator
             };
 
             if (extendedSettings != null && extendedSettings.Any())

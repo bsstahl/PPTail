@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PPTail.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 using TestHelperExtensions;
 using Moq;
-using System.Linq.Expressions;
 using PPTail.Entities;
 
 namespace PPTail.Data.Forestry.Test
@@ -74,7 +71,7 @@ namespace PPTail.Data.Forestry.Test
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
             String expectedPath = System.IO.Path.Combine(rootPath, _dataFolder);
 
-            var settings = new Settings() { SourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}" };
+            var sourceConnection = $"Provider=this;{_connectionStringFilepathKey}={rootPath}";
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(f => f.EnumerateFiles(expectedPath))
@@ -84,9 +81,8 @@ namespace PPTail.Data.Forestry.Test
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystemBuilder.Build());
             container.AddSingleton<IDirectory>(directoryProvider.Object);
-            container.AddSingleton<ISettings>(settings);
 
-            var target = (null as IContentRepository).Create(container.BuildServiceProvider());
+            var target = new Repository(container.BuildServiceProvider(), sourceConnection);
             var pages = target.GetAllPages();
 
             directoryProvider.VerifyAll();
