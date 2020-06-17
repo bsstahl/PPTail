@@ -65,6 +65,8 @@ namespace PPTail
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.PhotoBlog.Repository(c, sourceConnection));
             else if (provider.ToUpperInvariant() == "PPTAIL.DATA.MEDIABLOG.REPOSITORY")
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.MediaBlog.Repository(c, sourceConnection));
+            else if (provider.ToUpperInvariant() == "PPTAIL.DATA.MEDIABLOG.YAMLREPOSITORY")
+                container.AddSingleton<IContentRepository>(c => new PPTail.Data.MediaBlog.YamlRepository(c, sourceConnection));
             else if (provider.ToUpperInvariant() == "PPTAIL.DATA.FORESTRY.REPOSITORY")
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.Forestry.Repository(c, sourceConnection));
             else

@@ -22,38 +22,30 @@ namespace PPTConvert
 
                 var container = new ServiceCollection();
 
-                // Add all possible source repositories to the container
                 String inputFilePath = sourceConnection.GetConnectionStringValue(_connectionStringFilepathKey);
 
                 // Add file system abstractions
                 _ = container.AddSingleton<IFile>(c => new PPTail.Io.File());
                 _ = container.AddSingleton<IDirectory>(c => new PPTail.Io.Directory());
 
-
-                // Provide additional dependencies for the FileSystem Repository to work
-                container.AddSingleton<IContentRepository, PPTail.Data.FileSystem.Repository>();
-                container.AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>();
-                container.AddSingleton<IContentRepository>(c => new PPTail.Data.WordpressFiles.Repository(inputFilePath));
-
-                String readRepoName = sourceConnection.GetConnectionStringValue(_connectionStringProviderKey);
-                String writeRepoName = targetConnection.GetConnectionStringValue(_connectionStringProviderKey);
-
-                // Add all possible target repositories to the container
-                String outputFilePath = targetConnection.GetConnectionStringValue(_connectionStringFilepathKey);
-                container.AddSingleton<IContentRepositoryWriter>(c => new PPTail.Data.NativeJson.RepositoryWriter(outputFilePath));
-                container.AddSingleton<IContentRepositoryWriter>(c => new PPTail.Data.Forestry.RepositoryWriter(c, outputFilePath, readRepoName));
-
-                var serviceProvider = container.BuildServiceProvider();
-
-                var readRepo = serviceProvider.GetService<IContentRepository>();
-                var writeRepo = serviceProvider.GetService<IContentRepositoryWriter>();
-
-                writeRepo.SaveAllPages(readRepo.GetAllPages());
-                writeRepo.SaveAllPosts(readRepo.GetAllPosts());
-                //writeRepo.SaveAllWidgets(readRepo.GetAllWidgets());
-                //writeRepo.SaveCategories(readRepo.GetCategories());
-                //writeRepo.SaveSiteSettings(readRepo.GetSiteSettings());
+                var readRepo = sourceConnection.GetSourceRepository(container.BuildServiceProvider());
                 
+                container.AddSingleton<IContentRepository>(readRepo);
+                
+                var writeRepo = targetConnection.GetTargetRepository(container.BuildServiceProvider());
+
+                var pages = readRepo.GetAllPages();
+                var posts = readRepo.GetAllPosts();
+                var widgets = readRepo.GetAllWidgets();
+                var categories = readRepo.GetCategories();
+                var siteSettings = readRepo.GetSiteSettings();
+
+                // writeRepo.SaveAllPages(pages);
+                // writeRepo.SaveAllPosts(posts);
+                writeRepo.SaveAllWidgets(widgets);
+                writeRepo.SaveCategories(categories);
+                writeRepo.SaveSiteSettings(siteSettings);
+
                 // TODO: writeRepo.SaveFolderContents(folder, readRepo.GetFolderContents(folder))
             }
             else

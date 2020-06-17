@@ -65,6 +65,10 @@ namespace PPTail.Data.Forestry
         private void SaveContentItems(IEnumerable<Entities.ContentItem> contentItems, String relativePath)
         {
             string fullPath = System.IO.Path.GetFullPath(relativePath);
+
+            if (!System.IO.Directory.Exists(fullPath))
+                System.IO.Directory.CreateDirectory(fullPath);
+
             foreach (var item in contentItems)
             {
                 item.Slug = String.IsNullOrWhiteSpace(item.Slug) ? item.Title.CreateSlug() : item.Slug;

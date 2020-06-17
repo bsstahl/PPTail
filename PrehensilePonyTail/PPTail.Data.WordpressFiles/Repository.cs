@@ -156,31 +156,34 @@ namespace PPTail.Data.WordpressFiles
             var result = new List<ContentItem>();
 
             var fullPath = System.IO.Path.Combine(_dataFilePath, "pages.json");
-            var pagesJson = System.IO.File.ReadAllText(fullPath);
-            var pages = Newtonsoft.Json.JsonConvert.DeserializeObject<Page[]>(pagesJson);
-
-            foreach (var page in pages)
+            if (System.IO.File.Exists(fullPath))
             {
-                String authorName = this.Users.Single(a => a.Key == page.author).Value;
-                result.Add(new ContentItem()
-                {
-                    Author = authorName,
-                    ByLine = $"by {authorName}",
-                    CategoryIds = new List<System.Guid>(),
-                    Content = page.content.rendered,
-                    Description = page.excerpt.rendered,
-                    Id = System.Guid.NewGuid(),
-                    IsPublished = (page.status.ToLower() == "publish"),
-                    PublicationDate = page.date,
-                    LastModificationDate = page.modified,
-                    MenuOrder = page.menu_order,
-                    ShowInList = (page.menu_order > 0),
-                    Tags = new List<string>(),
-                    Title = page.title.rendered,
-                    Slug = page.slug
-                });
-            }
 
+                var pagesJson = System.IO.File.ReadAllText(fullPath);
+                var pages = Newtonsoft.Json.JsonConvert.DeserializeObject<Page[]>(pagesJson);
+
+                foreach (var page in pages)
+                {
+                    String authorName = this.Users.Single(a => a.Key == page.author).Value;
+                    result.Add(new ContentItem()
+                    {
+                        Author = authorName,
+                        ByLine = $"by {authorName}",
+                        CategoryIds = new List<System.Guid>(),
+                        Content = page.content.rendered,
+                        Description = page.excerpt.rendered,
+                        Id = System.Guid.NewGuid(),
+                        IsPublished = (page.status.ToLower() == "publish"),
+                        PublicationDate = page.date,
+                        LastModificationDate = page.modified,
+                        MenuOrder = page.menu_order,
+                        ShowInList = (page.menu_order > 0),
+                        Tags = new List<string>(),
+                        Title = page.title.rendered,
+                        Slug = page.slug
+                    });
+                }
+            }
 
             _pages = result;
         }
@@ -190,29 +193,33 @@ namespace PPTail.Data.WordpressFiles
             var result = new List<ContentItem>();
 
             var fullPath = System.IO.Path.Combine(_dataFilePath, "posts.json");
-            var postsJson = System.IO.File.ReadAllText(fullPath);
-            var posts = Newtonsoft.Json.JsonConvert.DeserializeObject<Post[]>(postsJson);
 
-            foreach (var post in posts)
+            if (System.IO.File.Exists(fullPath))
             {
-                String authorName = this.Users.Single(a => a.Key == post.author).Value;
-                result.Add(new ContentItem()
+                var postsJson = System.IO.File.ReadAllText(fullPath);
+                var posts = Newtonsoft.Json.JsonConvert.DeserializeObject<Post[]>(postsJson);
+
+                foreach (var post in posts)
                 {
-                    Author = authorName,
-                    ByLine = $"by {authorName}",
-                    CategoryIds = this.Categories.Where(c => post.categories.Contains(c.Key)).Select(c => c.Value.Id),
-                    Content = post.content.rendered,
-                    Description = post.excerpt.rendered,
-                    Id = System.Guid.NewGuid(),
-                    IsPublished = (post.status.ToLower() == "publish"),
-                    PublicationDate = post.date,
-                    LastModificationDate = post.modified,
-                    MenuOrder = 0,
-                    ShowInList = false,
-                    Tags = this.Tags.Where(t => post.tags.Contains(t.Key)).Select(t => t.Value),
-                    Title = post.title.rendered,
-                    Slug = post.slug
-                });
+                    String authorName = this.Users.Single(a => a.Key == post.author).Value;
+                    result.Add(new ContentItem()
+                    {
+                        Author = authorName,
+                        ByLine = $"by {authorName}",
+                        CategoryIds = this.Categories.Where(c => post.categories.Contains(c.Key)).Select(c => c.Value.Id),
+                        Content = post.content.rendered,
+                        Description = post.excerpt.rendered,
+                        Id = System.Guid.NewGuid(),
+                        IsPublished = (post.status.ToLower() == "publish"),
+                        PublicationDate = post.date,
+                        LastModificationDate = post.modified,
+                        MenuOrder = 0,
+                        ShowInList = false,
+                        Tags = this.Tags.Where(t => post.tags.Contains(t.Key)).Select(t => t.Value),
+                        Title = post.title.rendered,
+                        Slug = post.slug
+                    });
+                }
             }
 
             _posts = result;
@@ -223,19 +230,23 @@ namespace PPTail.Data.WordpressFiles
             var result = new List<KeyValuePair<int, Entities.Category>>();
 
             var fullPath = System.IO.Path.Combine(_dataFilePath, "categories.json");
-            var categoriesJson = System.IO.File.ReadAllText(fullPath);
-            var categories = Newtonsoft.Json.JsonConvert.DeserializeObject<Category[]>(categoriesJson);
 
-            foreach (var category in categories)
+            if (System.IO.File.Exists(fullPath))
             {
-                result.Add(new KeyValuePair<int, Entities.Category>(
-                    category.id,
-                    new Entities.Category()
-                    {
-                        Description = category.description,
-                        Id = System.Guid.NewGuid(),
-                        Name = category.name
-                    }));
+                var categoriesJson = System.IO.File.ReadAllText(fullPath);
+                var categories = Newtonsoft.Json.JsonConvert.DeserializeObject<Category[]>(categoriesJson);
+
+                foreach (var category in categories)
+                {
+                    result.Add(new KeyValuePair<int, Entities.Category>(
+                        category.id,
+                        new Entities.Category()
+                        {
+                            Description = category.description,
+                            Id = System.Guid.NewGuid(),
+                            Name = category.name
+                        }));
+                }
             }
 
             _categories = result;

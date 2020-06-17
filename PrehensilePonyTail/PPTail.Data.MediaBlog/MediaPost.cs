@@ -19,7 +19,7 @@ namespace PPTail.Data.MediaBlog
         public String MediaType { get; set; }
         public JObject MediaItem { get; internal set; }
 
-        public MediaItem Media { get; private set; }
+        public MediaItem Media { get; internal set; }
 
         internal static MediaPost Create(String json)
         {
@@ -76,7 +76,7 @@ namespace PPTail.Data.MediaBlog
                 ByLine = byLine,
                 CategoryIds = Array.Empty<Guid>(), // Removed default category 2020-06-12
                 Content = content,
-                Description = this.Description,
+                Description = this.Description ?? string.Empty,
                 Id = Id,
                 IsPublished = true,
                 LastModificationDate = lastModificationDate,

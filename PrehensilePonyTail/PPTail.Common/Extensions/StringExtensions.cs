@@ -8,6 +8,12 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
+        public static Boolean AsBoolean(this String value)
+        {
+            _ = bool.TryParse(value, out var result);
+            return result;
+        }
+
         public static String ReadAllTextFromFile(this String path)
         {
             String result = string.Empty;
