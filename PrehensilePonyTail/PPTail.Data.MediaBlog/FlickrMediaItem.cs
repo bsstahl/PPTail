@@ -24,6 +24,7 @@ namespace PPTail.Data.MediaBlog
         public String FlickrListUrl { get; set; }
         public String ImageUrl { get; set; }
 
+        public override String MediaTypeName => "Photo";
         public override String CreateContent() => $"<a data-flickr-embed=\"true\" href=\"{this.FlickrListUrl}\" title=\"{this.Title}\"><img class=\"img-responsive\" src=\"{this.ImageUrl}\" alt=\"{this.Title}\"></a>";
 
     }

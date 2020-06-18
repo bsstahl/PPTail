@@ -14,6 +14,7 @@ namespace PPTail.Data.MediaBlog
         public String Description { get; set; }
         public String Title { get; set; }
         public DateTime Posted { get; set; }
+        public Boolean IsPublished { get; set; }
         public IEnumerable<string> Tags { get; set; }
 
         public String MediaType { get; set; }
@@ -65,7 +66,7 @@ namespace PPTail.Data.MediaBlog
 
         public Entities.ContentItem AsContentItem(Guid Id)
         {
-            var byLine = string.IsNullOrWhiteSpace(this.Author) ? string.Empty : $"by {this.Author}";
+            var byLine = string.IsNullOrWhiteSpace(this.Author) ? string.Empty : $"{this.Media.MediaTypeName} by {this.Author}";
             var content = this.Media.CreateContent();
             var lastModificationDate = this.Media.CreateDate;
             var slug = this.Title?.CreateSlug();
@@ -78,7 +79,7 @@ namespace PPTail.Data.MediaBlog
                 Content = content,
                 Description = this.Description ?? string.Empty,
                 Id = Id,
-                IsPublished = true,
+                IsPublished = this.IsPublished,
                 LastModificationDate = lastModificationDate,
                 MenuOrder = 0,
                 PublicationDate = this.Posted,

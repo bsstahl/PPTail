@@ -15,6 +15,8 @@ namespace PPTail.Data.MediaBlog
             :base(title, displayWidth, displayHeight, createDate)
         { }
 
+        public override String MediaTypeName => "Media";
+
         public override String CreateContent() => string.Empty;
     }
 }

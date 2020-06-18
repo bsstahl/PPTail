@@ -12,6 +12,7 @@ namespace PPTail.Data.MediaBlog
         public String ItemTitle { get; set; }
         public DateTimeOffset CreateDate { get; set; }
         public String ItemUrl { get; set; }
+        public Boolean IsPublished { get; set; }
         public IEnumerable<ExtendedProperty> ExtendedProperties { get; set; }
     }
 

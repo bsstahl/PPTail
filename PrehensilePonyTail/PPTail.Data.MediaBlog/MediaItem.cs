@@ -25,5 +25,6 @@ namespace PPTail.Data.MediaBlog
         public DateTime CreateDate { get; set; }
 
         public abstract String CreateContent();
+        public abstract String MediaTypeName { get; }
     }
 }

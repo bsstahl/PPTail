@@ -16,6 +16,7 @@ namespace PPTail.Data.MediaBlog
         public String Title { get; set; }
         public DateTime Posted { get; set; }
         public IEnumerable<string> Tags { get; set; }
+        public Boolean IsPublished { get; set; } = true;
 
         public String MediaType { get; set; }
         public YamlMediaItem MediaItem { get; set; }
@@ -40,7 +41,8 @@ namespace PPTail.Data.MediaBlog
                 MediaType = yamlMediaPost.MediaType,
                 Posted = yamlMediaPost.Posted,
                 Tags = yamlMediaPost.Tags,
-                Title = yamlMediaPost.Title
+                Title = yamlMediaPost.Title,
+                IsPublished = yamlMediaPost.IsPublished
             };
 
             return (mediaPost, id);
