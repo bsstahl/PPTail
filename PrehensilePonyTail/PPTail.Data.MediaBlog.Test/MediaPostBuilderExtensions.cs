@@ -26,6 +26,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddFlickrImage(flickrImage)
                 .Author(string.Empty.GetRandom())
                 .Description(string.Empty.GetRandom())
+                .IsPublished(true.GetRandom())
                 .Posted(DateTime.Now.AddYears(30).GetRandom(DateTime.Now.AddYears(-10)))
                 .AddTags(tags)
                 .Title(string.Empty.GetRandom());
@@ -47,6 +48,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddYouTubeVideo(youTubeVideo)
                 .Author(string.Empty.GetRandom())
                 .Description(string.Empty.GetRandom())
+                .IsPublished(true.GetRandom())
                 .Posted(DateTime.Now.AddYears(30).GetRandom(DateTime.Now.AddYears(-10)))
                 .AddTags(tags)
                 .Title(string.Empty.GetRandom());
@@ -68,6 +70,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddEmptyPost(emptyPost.Title, emptyPost.DisplayWidth, emptyPost.DisplayHeight, emptyPost.CreateDate)
                 .Author(string.Empty.GetRandom())
                 .Description(string.Empty.GetRandom())
+                .IsPublished(true.GetRandom())
                 .Posted(DateTime.Now.AddYears(30).GetRandom(DateTime.Now.AddYears(-10)))
                 .AddTags(tags)
                 .Title(string.Empty.GetRandom());

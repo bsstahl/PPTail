@@ -410,7 +410,7 @@ namespace PPTail.Data.MediaBlog.Test
         }
 
         [Fact]
-        public void ReturnTheProperValueInTheContentFieldForAYouTubePost()
+        public void ReturnTheProperVideoUrlInTheContentFieldForAYouTubePost()
         {
             var video = new YouTubeMediaItemBuilder()
                 .UseRandom()
@@ -420,23 +420,112 @@ namespace PPTail.Data.MediaBlog.Test
                 .AddYouTubeVideo(video.Title, video.DisplayWidth, video.DisplayHeight, video.CreateDate, video.VideoUrl)
                 .Build();
 
-            String expected = $"<img class=\"img-responsive\"  title=\"{video.Title}\" src=\"{video.VideoUrl}\" alt=\"{video.Title}\" />";
-            String fieldValueDelegate(ContentItem c) => c.Content;
-            ExecutePropertyTest(expected, fieldValueDelegate, json);
+            String expected = video.VideoUrl;
+
+            var actual = ExecutePropertyTest(json);
+
+            Assert.Contains(expected, actual.Content);
         }
 
         [Fact]
-        public void ReturnTrueThatThePostIsPublished()
+        public void ReturnTheProperWidthInTheContentFieldForAYouTubePostIfAValueIsSupplied()
         {
-            // Currently, all posts in the repo are considered 
-            // published since they can just be removed from 
-            // the repo if they are not. Thus, all must return
-            // a ContentItem that has IsPublished = True
+            var video = new YouTubeMediaItemBuilder()
+                .UseRandom()
+                .Build();
 
+            String json = new MediaPostBuilder()
+                .AddYouTubeVideo(video.Title, video.DisplayWidth, video.DisplayHeight, video.CreateDate, video.VideoUrl)
+                .Build();
+
+            String expected = $"width=\"{video.DisplayWidth}\"";
+
+            var actual = ExecutePropertyTest(json);
+
+            Assert.True(video.DisplayWidth > 0, "Test is not valid if DisplayWidth is Zero or less");
+            Assert.Contains(expected, actual.Content);
+        }
+
+        [Fact]
+        public void ReturnAnAutoWidthInTheContentFieldForAYouTubePostIfAValueIsZero()
+        {
+            var video = new YouTubeMediaItemBuilder()
+                .UseRandom()
+                .DisplayWidth(0)
+                .Build();
+
+            String json = new MediaPostBuilder()
+                .AddYouTubeVideo(video.Title, video.DisplayWidth, video.DisplayHeight, video.CreateDate, video.VideoUrl)
+                .Build();
+
+            String expected = $"width=\"auto\"";
+
+            var actual = ExecutePropertyTest(json);
+
+            Assert.Contains(expected, actual.Content);
+        }
+
+        [Fact]
+        public void ReturnTheProperHeightInTheContentFieldForAYouTubePostIfAValueIsSupplied()
+        {
+            var video = new YouTubeMediaItemBuilder()
+                .UseRandom()
+                .Build();
+
+            String json = new MediaPostBuilder()
+                .AddYouTubeVideo(video.Title, video.DisplayWidth, video.DisplayHeight, video.CreateDate, video.VideoUrl)
+                .Build();
+
+            String expected = $"height=\"{video.DisplayHeight}\"";
+
+            var actual = ExecutePropertyTest(json);
+
+            Assert.True(video.DisplayHeight > 0, "Test is not valid if DisplayHeight is Zero or less");
+            Assert.Contains(expected, actual.Content);
+        }
+
+        [Fact]
+        public void ReturnAnAutoHeightInTheContentFieldForAYouTubePostIfAValueIsZero()
+        {
+            var video = new YouTubeMediaItemBuilder()
+                .UseRandom()
+                .DisplayHeight(0)
+                .Build();
+
+            String json = new MediaPostBuilder()
+                .AddYouTubeVideo(video.Title, video.DisplayWidth, video.DisplayHeight, video.CreateDate, video.VideoUrl)
+                .Build();
+
+            String expected = $"height=\"auto\"";
+
+            var actual = ExecutePropertyTest(json);
+
+            Assert.Contains(expected, actual.Content);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReturnTheProperValueForIsPublishedForAFlickrPost(Boolean expectedValue)
+        {
             String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
-            bool expectedValue = true;
             String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
+                .IsPublished(expectedValue)
+                .Build();
+            String expected = expectedValue.ToString();
+            ExecutePropertyTest(expected, fieldValueDelegate, json);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReturnTheProperValueForIsPublishedForAYouTubePost(Boolean expectedValue)
+        {
+            String fieldValueDelegate(ContentItem c) => c.IsPublished.ToString();
+            String json = new MediaPostBuilder()
+                .UseRandomYouTubePost()
+                .IsPublished(expectedValue)
                 .Build();
             String expected = expectedValue.ToString();
             ExecutePropertyTest(expected, fieldValueDelegate, json);
@@ -499,12 +588,25 @@ namespace PPTail.Data.MediaBlog.Test
         }
 
         [Fact]
-        public void ReturnTheProperValueInTheByLineField()
+        public void ReturnTheProperValueInTheByLineFieldForAPhotoPost()
         {
             String author = string.Empty.GetRandom();
-            String expected = $"by {author}";
+            String expected = $"Photo by {author}";
             String json = new MediaPostBuilder()
                 .UseRandomFlickrPost()
+                .Author(author)
+                .Build();
+            String fieldValueDelegate(ContentItem c) => c.ByLine;
+            ExecutePropertyTest(expected, fieldValueDelegate, json);
+        }
+
+        [Fact]
+        public void ReturnTheProperValueInTheByLineFieldForAVideoPost()
+        {
+            String author = string.Empty.GetRandom();
+            String expected = $"Video by {author}";
+            String json = new MediaPostBuilder()
+                .UseRandomYouTubePost()
                 .Author(author)
                 .Build();
             String fieldValueDelegate(ContentItem c) => c.ByLine;
@@ -568,7 +670,13 @@ namespace PPTail.Data.MediaBlog.Test
             Assert.Throws<InvalidOperationException>(() => ExecutePropertyTest(expected, fieldValueDelegate, json));
         }
 
-        private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String json)
+        private static void ExecutePropertyTest(String expected, Func<ContentItem, string> fieldValueDelegate, String postFileContent)
+        {
+            var actual = ExecutePropertyTest(postFileContent);
+            Assert.Equal(expected, fieldValueDelegate(actual));
+        }
+
+        private static ContentItem ExecutePropertyTest(String postFileContent)
         {
             String rootPath = $"c:\\{string.Empty.GetRandom()}";
             var connectionString = new ConnectionStringBuilder("this")
@@ -576,7 +684,7 @@ namespace PPTail.Data.MediaBlog.Test
                     .Build();
 
             var postFiles = new MockMediaFileCollectionBuilder()
-                .AddPost(json)
+                .AddPost(postFileContent)
                 .Build(rootPath);
 
             var directoryProvider = new MockDirectoryServiceBuilder()
@@ -593,9 +701,7 @@ namespace PPTail.Data.MediaBlog.Test
                 .Build(connectionString);
 
             var pages = target.GetAllPosts();
-            var actual = pages.ToArray()[0];
-
-            Assert.Equal(expected, fieldValueDelegate(actual));
+            return pages.ToArray()[0];
         }
     }
 }

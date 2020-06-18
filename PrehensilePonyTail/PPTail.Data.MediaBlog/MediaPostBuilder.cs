@@ -42,6 +42,12 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
+        public new MediaPostBuilder IsPublished(Boolean value)
+        {
+            base.IsPublished = value;
+            return this;
+        }
+
         public MediaPostBuilder ClearTags()
         {
             base.Tags = null;
