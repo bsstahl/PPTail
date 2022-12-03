@@ -46,6 +46,7 @@ namespace PPTail.Data.Forestry
                 if (_markdownPipeline is null)
                 {
                     _markdownPipeline = new MarkdownPipelineBuilder()
+                        //  Enabling AdvancedExtensions in Markdig breaks my page reference system
                         // .UseAdvancedExtensions()
                         .UseSyntaxHighlighting()
                         .Build();
