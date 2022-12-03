@@ -22,7 +22,13 @@ namespace PPTail.Io
 
         public void WriteAllText(String path, String data)
         {
-            System.IO.File.WriteAllText(path, data);
+            var value = data ?? String.Empty;
+            using (var writer = new System.IO.StreamWriter(path))
+            {
+                writer.NewLine = "\n";
+                writer.Write(value.Replace("\r\n", "\n"));
+                writer.Flush();
+            }
         }
 
         public void WriteAllBytes(String path, byte[] data)
