@@ -13,6 +13,7 @@ namespace PPTail.Entities
         public String Description { get; set; }
         public String Content { get; set; }
         public bool IsPublished { get; set; }
+        public bool BuildIfNotPublished { get; set; }
         public bool ShowInList { get; set; }
         public DateTime PublicationDate { get; set; }
         public DateTime LastModificationDate { get; set; }

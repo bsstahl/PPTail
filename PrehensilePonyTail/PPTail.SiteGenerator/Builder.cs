@@ -123,13 +123,13 @@ namespace PPTail.SiteGenerator
             foreach (var post in posts)
             {
                 // Add all published content pages to the results
-                if (post.IsPublished)
-                {
-                    if (string.IsNullOrWhiteSpace(post.Slug))
-                        post.Slug = contentEncoder.UrlEncode(post.Title);
+                if (string.IsNullOrWhiteSpace(post.Slug))
+                    post.Slug = contentEncoder.UrlEncode(post.Title);
+                String postFileName = $"{post.Slug}.{siteSettings.OutputFileExtension}";
 
+                if (post.IsPublished || post.BuildIfNotPublished)
+                {
                     // Add the post page
-                    String postFileName = $"{post.Slug}.{siteSettings.OutputFileExtension}";
                     String postFilePath = System.IO.Path.Combine("Posts", postFileName);
                     var postPageTemplateType = Enumerations.TemplateType.PostPage;
                     result.Add(new SiteFile()
@@ -138,7 +138,10 @@ namespace PPTail.SiteGenerator
                         SourceTemplateType = postPageTemplateType,
                         Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, post, postPageTemplateType, "..", false)
                     });
+                }
 
+                if (post.IsPublished)
+                {
                     // Add the permalink page
                     String permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{siteSettings.OutputFileExtension}";
                     String permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
@@ -171,10 +174,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add Search Pages
-            var tags = posts
-                .Where(p => p.Tags.IsNotNull())
-                .SelectMany(p => p.Tags)
-                .Distinct();
+            var tags = posts.GetAllTags().Distinct();
 
             var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
             var usedCategories = categories.Where(c => categoryIds.Contains(c.Id));

@@ -147,7 +147,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void DontCreateAnyPageFilesIfAllPagesAreUnpublished()
+        public void NotCreateAnyPageFilesIfAllPagesAreUnpublished()
         {
             var container = (null as IServiceCollection).Create();
 
@@ -187,7 +187,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void DoNotCreateOutputForAnUnpublishedPage()
+        public void NotCreateOutputForAnUnpublishedPage()
         {
             var container = (null as IServiceCollection).Create();
 
@@ -210,7 +210,7 @@ namespace PPTail.SiteGenerator.Test
 
 
         [Fact]
-        public void DontCreateAnyPostFilesIfAllPostsAreUnpublished()
+        public void NotCreateAnyPostFilesIfAllPostsAreUnpublished()
         {
             var container = (null as IServiceCollection).Create();
 
@@ -250,7 +250,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void DoNotCreateOutputForAnUnpublishedPost()
+        public void NotCreateOutputForAnUnpublishedPostIfBuildIfNotPublishedIsFalse()
         {
             var container = (null as IServiceCollection).Create();
 
@@ -264,11 +264,35 @@ namespace PPTail.SiteGenerator.Test
 
             var unpublishedItem = contentItems.GetRandom();
             unpublishedItem.IsPublished = false;
+            unpublishedItem.BuildIfNotPublished = false;
 
             var target = (null as Builder).Create(container);
             var actual = target.Build();
 
             Assert.Equal(0, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
+        }
+
+        [Fact]
+        public void CreateOutputForAnUnpublishedPostIfBuildIfNotPublishedIsTrue()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var contentRepo = new Mock<IContentRepository>();
+            var contentItems = (null as IEnumerable<ContentItem>).Create(50.GetRandom(25));
+            foreach (var item in contentItems)
+                item.IsPublished = true;
+            contentRepo.Setup(c => c.GetAllPosts()).Returns(() => contentItems);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(new SiteSettings());
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var unpublishedItem = contentItems.GetRandom();
+            unpublishedItem.IsPublished = false;
+            unpublishedItem.BuildIfNotPublished = true;
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(ci => ci.RelativeFilePath.Contains(unpublishedItem.Slug)));
         }
 
         [Fact]
@@ -1138,7 +1162,7 @@ namespace PPTail.SiteGenerator.Test
         }
 
         [Fact]
-        public void GetsTheContentsOfTheThemeFolderExactlyOnce()
+        public void GetTheContentsOfTheThemeFolderExactlyOnce()
         {
             String theme = string.Empty.GetRandom();
             Int32 expectedItemCount = 25.GetRandom(10);

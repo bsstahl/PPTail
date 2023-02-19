@@ -14,6 +14,7 @@ namespace PPTail.Data.Forestry
         public String Description { get; set; }
         public String Content { get; set; }
         public bool IsPublished { get; set; }
+        public bool BuildIfNotPublished { get; set; }
         public bool ShowInList { get; set; }
         public DateTime PublicationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
@@ -35,6 +36,7 @@ namespace PPTail.Data.Forestry
                 Content = this.Content,
                 Description = this.Description ?? string.Empty,
                 IsPublished = this.IsPublished,
+                BuildIfNotPublished = this.BuildIfNotPublished,
                 LastModificationDate = this.LastModificationDate,
                 MenuOrder = this.MenuOrder,
                 PublicationDate = this.PublicationDate,

@@ -150,6 +150,7 @@ namespace PPTail.SiteGenerator.Test
                 Content = string.Empty.GetRandom(),
                 Description = string.Empty.GetRandom(),
                 IsPublished = true,
+                BuildIfNotPublished = false,
                 LastModificationDate = DateTime.UtcNow.AddDays(-10.GetRandom()),
                 PublicationDate = DateTime.UtcNow.AddDays(-20.GetRandom(10)),
                 Slug = string.Empty.GetRandom(),

@@ -171,6 +171,47 @@ namespace PPTail.Generator.T4Html.Test
         }
 
         [Fact]
+        public void NotRenderTagsForAnUnpublishedPost()
+        {
+            var widget = Enumerations.WidgetType.Tag_cloud.CreateWidget();
+            var widgets = new List<Widget>() { widget };
+
+            var container = (null as IServiceCollection).Create();
+
+            var templates = (null as IEnumerable<Template>).CreateBlankTemplates();
+            var posts = (null as IEnumerable<ContentItem>).Create(3);
+
+            var contentEncoder = new Mock<IContentEncoder>();
+            Func<string, string> valueFunction = p => p;
+            contentEncoder.Setup(c => c.UrlEncode(It.IsAny<string>())).Returns(valueFunction);
+
+            var templateRepo = new Mock<ITemplateRepository>();
+            templateRepo.Setup(r => r.GetAllTemplates())
+                .Returns(templates);
+
+            _ = container.ReplaceDependency<ITemplateRepository>(templateRepo.Object);
+            container.ReplaceDependency<IContentEncoder>(contentEncoder.Object);
+
+            var postArray = posts.ToArray();
+            String tag1 = postArray[0].Tags.Single();
+            String tag2 = postArray[2].Tags.Single();
+            String unrenderedTag = postArray[1].Tags.Single();
+            System.Diagnostics.Debug.Assert(tag1 != tag2);
+            System.Diagnostics.Debug.Assert(tag1 != unrenderedTag);
+            System.Diagnostics.Debug.Assert(tag2 != unrenderedTag);
+            postArray[1].IsPublished = false;
+
+            var pages = new List<ContentItem>();
+
+            var pageGen = (null as Interfaces.IPageGenerator).Create(container);
+            var actual = pageGen.GenerateSidebarContent(posts, pages, widgets, ".");
+
+            Assert.DoesNotContain(unrenderedTag, actual);
+            Assert.Contains(tag1, actual);
+            Assert.Contains(tag2, actual);
+        }
+
+        [Fact]
         public void CallTheLinkProviderOncePerTag()
         {
             String pathToRoot = ".";

@@ -16,6 +16,7 @@ namespace PPTail.Data.Forestry
         private String _description;
         private String _content;
         private bool _isPublished;
+        private bool _buildIfNotPublished;
         private bool _showInList;
         private DateTime _publicationDate;
         private DateTime _lastModificationDate;
@@ -35,6 +36,7 @@ namespace PPTail.Data.Forestry
         private bool _removeTitle = false;
         private bool _removeDescription = false;
         private bool _removeIsPublished = false;
+        private bool _removeBuildIfNotPublished = false;
         private bool _removeShowInList = false;
         private bool _removePublicationDate = false;
         private bool _removeLastModificationDate = false;
@@ -53,6 +55,7 @@ namespace PPTail.Data.Forestry
             this.Description(item.Description);
             this.Content(item.Content);
             this.IsPublished(item.IsPublished);
+            this.BuildIfNotPublished(item.BuildIfNotPublished);
             this.ShowInList(item.ShowInList);
             this.PublicationDate(item.PublicationDate);
             this.LastModificationDate(item.LastModificationDate);
@@ -73,6 +76,7 @@ namespace PPTail.Data.Forestry
                 .ConditionalAppendLine(!_removeTitle, "title", _title.Sanitize())
                 .ConditionalAppendLine(!_removeDescription, "description", _description.Sanitize())
                 .ConditionalAppendLine(!_removeIsPublished, "ispublished", _isPublished.ToString().ToLower(CultureInfo.CurrentCulture))
+                .ConditionalAppendLine(!_removeBuildIfNotPublished, "buildifnotpublished", _buildIfNotPublished.ToString().ToLower(CultureInfo.CurrentCulture))
                 .ConditionalAppendLine(!_removeShowInList, "showinlist", _showInList.ToString().ToLower(CultureInfo.CurrentCulture))
                 .ConditionalAppendLine(!_removePublicationDate, "publicationdate", _publicationDate.ToString(_publicationDateSerializationFormat))
                 .ConditionalAppendLine(!_removeLastModificationDate, "lastmodificationdate", _lastModificationDate.ToString(_lastModificationDateSerializationFormat))
@@ -165,6 +169,19 @@ namespace PPTail.Data.Forestry
         public ContentItemFileBuilder RemoveIsPublished()
         {
             _removeIsPublished = true;
+            return this;
+        }
+
+        public ContentItemFileBuilder BuildIfNotPublished(Boolean value)
+        {
+            _buildIfNotPublished = value;
+            _removeBuildIfNotPublished = false;
+            return this;
+        }
+
+        public ContentItemFileBuilder RemoveBuildIfNotPublished()
+        {
+            _removeBuildIfNotPublished = true;
             return this;
         }
 

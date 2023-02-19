@@ -11,7 +11,7 @@ namespace PPTail.Extensions
         public static IEnumerable<string> GetAllTags(this IEnumerable<ContentItem> contentItems)
         {
             return contentItems
-                .Where(p => p.Tags.IsNotNull())
+                .Where(p => p.IsPublished && p.Tags.IsNotNull())
                 .SelectMany(p => p.Tags)
                 .Where(t => !string.IsNullOrWhiteSpace(t));
         }

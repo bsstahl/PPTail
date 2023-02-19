@@ -250,6 +250,42 @@ namespace PPTail.Data.Forestry.Test
         }
 
         [Fact]
+        public void ReturnTrueIfThePostIsMarkedBuildIfNotPublished()
+        {
+            Boolean fieldValueDelegate(ContentItem c) => c.BuildIfNotPublished;
+            Boolean expected = true;
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .BuildIfNotPublished(expected)
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
+        public void ReturnFalseIfThePostIsNotMarkedBuildIfNotPublished()
+        {
+            Boolean fieldValueDelegate(ContentItem c) => c.BuildIfNotPublished;
+            Boolean expected = false;
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .BuildIfNotPublished(expected)
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
+        public void ReturnFalseIfTheBuildIfNotPublishedFieldIsMissing()
+        {
+            Boolean fieldValueDelegate(ContentItem c) => c.BuildIfNotPublished;
+            Boolean expected = false;
+            var fileContent = new ContentItemFileBuilder()
+                .UseRandomValues()
+                .RemoveBuildIfNotPublished()
+                .Build();
+            fileContent.ExecutePostPropertyTest(expected, fieldValueDelegate);
+        }
+
+        [Fact]
         public void ReturnTheProperValueInThePublicationDateField()
         {
             DateTime fieldValueDelegate(ContentItem c) => c.PublicationDate.ToSecondPrecision();
