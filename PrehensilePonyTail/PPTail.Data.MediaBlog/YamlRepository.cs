@@ -65,7 +65,8 @@ namespace PPTail.Data.MediaBlog
             var directory = _serviceProvider.GetService<IDirectory>();
 
             var results = new List<ContentItem>();
-            var pagePath = System.IO.Path.Combine(_rootPath, "Pages");
+            var relativePagePath = System.IO.Path.Combine(_rootPath, "Pages");
+            var pagePath = System.IO.Path.GetFullPath(relativePagePath);
             var files = directory.EnumerateFiles(pagePath);
 
             var categories = this.GetCategories();
