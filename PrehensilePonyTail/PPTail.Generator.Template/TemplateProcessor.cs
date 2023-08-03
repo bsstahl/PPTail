@@ -6,6 +6,7 @@ using PPTail.Interfaces;
 using PPTail.Entities;
 using PPTail.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace PPTail.Generator.Template
 {
@@ -13,7 +14,9 @@ namespace PPTail.Generator.Template
     {
         readonly IServiceProvider _serviceProvider;
 
-        public TemplateProcessor(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        public TemplateProcessor(IServiceProvider serviceProvider) 
+            => _serviceProvider = serviceProvider 
+                ?? throw new ArgumentNullException(nameof(serviceProvider));
 
         public String Process(Entities.Template pageTemplate, Entities.Template itemTemplate, String sidebarContent, String navContent, IEnumerable<ContentItem> posts, String pageTitle, String pathToRoot, String itemSeparator, Boolean xmlEncodeContent, Int32 maxPostCount)
         {
@@ -21,16 +24,28 @@ namespace PPTail.Generator.Template
             // there are multiple possible values that might be used to
             // define the value: PostsPerPage, PostsPerFeed & 0 (unlimited)
 
+            var logger = _serviceProvider.GetService<ILogger<TemplateProcessor>>();
+
             var recentPosts = posts.OrderByDescending(p => p.PublicationDate).Where(pub => pub.IsPublished);
             if (maxPostCount > 0)
             {
                 recentPosts = recentPosts.Take(maxPostCount);
             }
 
+            if (logger.IsNotNull())
+                logger.LogInformation("Processing {PostCount} posts", recentPosts.Count());
+
             var contentItems = new List<String>();
             foreach (var post in recentPosts)
             {
-                contentItems.Add(this.ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent));
+                if (logger.IsNotNull())
+                    logger.LogInformation("Processing Template for Post: {PostId}:{Title}", post.Id, post.Title);
+
+                var contentItem = this.ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent);
+                if (logger.IsNotNull())
+                    logger.LogInformation("Template Results for {PostId}: '{ContentItem}'", post.Id, contentItem);
+
+                contentItems.Add(contentItem);
             }
 
             var pageContent = String.Join(itemSeparator, contentItems);

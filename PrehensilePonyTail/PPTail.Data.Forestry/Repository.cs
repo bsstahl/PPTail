@@ -9,6 +9,7 @@ using PPTail.Interfaces;
 using PPTail.Extensions;
 using Markdig;
 using Markdig.SyntaxHighlighting;
+using Microsoft.Extensions.Logging;
 
 namespace PPTail.Data.Forestry
 {
@@ -195,12 +196,16 @@ namespace PPTail.Data.Forestry
             if (_categories is null)
             {
                 var fileSystem = _serviceProvider.GetService<IFile>();
+                var logger = _serviceProvider.GetService<ILogger<Repository>>();
 
                 string path = System.IO.Path.Combine(_rootDataPath, _categoriesFilename);
                 _categories = fileSystem
                     .ReadAllText(path)
                     .ParseCategories()
                     .Where(c => c.Id != Guid.Empty && !String.IsNullOrWhiteSpace(c.Name));
+
+                if (logger.IsNotNull())
+                    logger.LogInformation($"Loaded {_categories.Count()} categories from '{path}'");
             }
 
             return _categories;

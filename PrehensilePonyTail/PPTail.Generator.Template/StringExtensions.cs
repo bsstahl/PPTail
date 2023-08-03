@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PPTail.Entities;
 using PPTail.Extensions;
 using PPTail.Interfaces;
@@ -22,6 +23,7 @@ namespace PPTail.Generator.Template
             var contentRepo = serviceProvider.GetService<IContentRepository>();
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
             var contentEncoder = serviceProvider.GetService<IContentEncoder>();
+            var logger = serviceProvider.GetService<ILogger<TemplateProcessor>>();
 
             var categories = contentRepo.GetCategories();
             var siteSettings = contentRepo.GetSiteSettings();
@@ -51,7 +53,7 @@ namespace PPTail.Generator.Template
             var permaLinkUrl = linkProvider.GetUrl(pathToRoot, "Permalinks", item.Id.ToString());
             var permaLink = $"<a href=\"{permaLinkUrl}\" rel=\"bookmark\">Permalink</a>";
 
-            return template.Replace("{Title}", item.Title)
+            var result = template.Replace("{Title}", item.Title)
                 .Replace("{Content}", content)
                 .Replace("{Author}", item.Author)
                 .Replace("{Description}", description)
@@ -66,6 +68,10 @@ namespace PPTail.Generator.Template
                 .Replace("{PermalinkUrl}", permaLinkUrl)
                 .Replace("{Tags}", item.Tags.TagLinkList(serviceProvider, pathToRoot, "small"))
                 .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, siteSettings, pathToRoot, "small"));
+
+            if (logger.IsNotNull()) logger.LogInformation("Template processing results for ItemId={ItemId}: {TemplateResult}", item.Id, result);
+
+            return result;
         }
 
         internal static String ReplaceNonContentItemSpecificVariables(this String template, IServiceProvider serviceProvider, String sidebarContent, String navContent, String content, String pathToRoot)

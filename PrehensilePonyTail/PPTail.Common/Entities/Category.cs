@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PPTail.Entities
 {
@@ -10,5 +7,10 @@ namespace PPTail.Entities
         public Guid Id { get; set; }
         public String Description { get; set; }
         public String Name { get; set; }
+
+        public override String ToString()
+        {
+            return $"{this.Name} ({this.Id}): {this.Description}";
+        }
     }
 }

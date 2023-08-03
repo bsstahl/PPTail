@@ -72,6 +72,9 @@ namespace PPTail
                         case Constants.VALIDATEONLY_SWITCH:
                             break;
 
+                        case Constants.VERBOSE_SWITCH:
+                            break;
+
                         default:
                             result = false;
                             errors?.Add($"Invalid Switch '{item}'");

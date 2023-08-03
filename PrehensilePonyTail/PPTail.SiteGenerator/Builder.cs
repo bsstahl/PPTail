@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Extensions;
 using System.Xml.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace PPTail.SiteGenerator
 {
@@ -52,6 +53,7 @@ namespace PPTail.SiteGenerator
             var syndicationProvider = this.ServiceProvider.GetService<ISyndicationProvider>();
             var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
             var contentRepo = this.ServiceProvider.GetService<IContentRepository>();
+            var logger = this.ServiceProvider.GetService<ILogger<Builder>>();
 
             var siteSettings = contentRepo.GetSiteSettings() ?? new SiteSettings();
             var posts = contentRepo.GetAllPosts();
@@ -60,26 +62,28 @@ namespace PPTail.SiteGenerator
             var categories = contentRepo.GetCategories();
 
             // Create Sidebar Content
+            if (logger.IsNotNull()) logger.LogInformation("Generating sidebar content");
             var rootLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "./");
             var childLevelSidebarContent = pageGen.GenerateSidebarContent(posts, pages, widgets, "../");
 
             // Create navbars
+            if (logger.IsNotNull()) logger.LogInformation("Generating navbar content");
             var rootLevelNavigationContent = navProvider.CreateNavigation(pages, "./", siteSettings.OutputFileExtension);
             var childLevelNavigationContent = navProvider.CreateNavigation(pages, "../", siteSettings.OutputFileExtension);
 
             // Create bootstrap file
+            if (logger.IsNotNull()) logger.LogInformation("Generating bootstrap file");
             var bootstrapFile = new SiteFile()
             {
                 RelativeFilePath = $"./bootstrap.min.css",
                 SourceTemplateType = Enumerations.TemplateType.Bootstrap,
                 Content = pageGen.GenerateBootstrapPage()
             };
-
             if (!string.IsNullOrEmpty(bootstrapFile.Content))
                 result.Add(bootstrapFile);
 
-
             // Create Style page
+            if (logger.IsNotNull()) logger.LogInformation("Generating style (css) file");
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $"./Style.css",
@@ -88,6 +92,7 @@ namespace PPTail.SiteGenerator
             });
 
             // Create home page
+            if (logger.IsNotNull()) logger.LogInformation("Generating home page");
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $"./index.html",
@@ -96,6 +101,7 @@ namespace PPTail.SiteGenerator
             });
 
             // Create Archive
+            if (logger.IsNotNull()) logger.LogInformation("Generating archive page");
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $"./archive.html",
@@ -104,6 +110,7 @@ namespace PPTail.SiteGenerator
             });
 
             // Create Contact Page
+            if (logger.IsNotNull()) logger.LogInformation("Generating contact page");
             result.Add(new SiteFile()
             {
                 RelativeFilePath = $"./contact.html",
@@ -112,6 +119,7 @@ namespace PPTail.SiteGenerator
             });
 
             // Create RSS Feed
+            if (logger.IsNotNull()) logger.LogInformation("Generating RSS feed");
             var syndicationContent = syndicationProvider.GenerateFeed(posts);
             result.Add(new SiteFile()
             {
@@ -120,6 +128,7 @@ namespace PPTail.SiteGenerator
                 Content = syndicationContent
             });
 
+            if (logger.IsNotNull()) logger.LogInformation("Generating post pages");
             foreach (var post in posts)
             {
                 // Add all published content pages to the results
@@ -132,6 +141,7 @@ namespace PPTail.SiteGenerator
                     // Add the post page
                     String postFilePath = System.IO.Path.Combine("Posts", postFileName);
                     var postPageTemplateType = Enumerations.TemplateType.PostPage;
+                    if (logger.IsNotNull()) logger.LogInformation("Generating post page for PostId: {PostId}", post.Id);
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = postFilePath,
@@ -146,6 +156,7 @@ namespace PPTail.SiteGenerator
                     String permalinkFileName = $"{contentEncoder.HTMLEncode(post.Id.ToString())}.{siteSettings.OutputFileExtension}";
                     String permalinkFilePath = System.IO.Path.Combine("Permalinks", permalinkFileName);
                     String redirectFilePath = $"../Posts/{postFileName}"; // System.IO.Path.Combine("..", postFilePath);
+                    if (logger.IsNotNull()) logger.LogInformation("Publishing post page for PostId: {PostId}", post.Id);
                     result.Add(new SiteFile()
                     {
                         RelativeFilePath = permalinkFilePath,
@@ -155,11 +166,14 @@ namespace PPTail.SiteGenerator
                 }
             }
 
+            if (logger.IsNotNull()) logger.LogInformation("Generating content pages");
             foreach (var page in pages)
             {
                 // Add all published content pages to the results
                 if (page.IsPublished)
                 {
+                    if (logger.IsNotNull()) logger.LogInformation("Generating content page for Id: {Id}", page.Id);
+
                     if (string.IsNullOrWhiteSpace(page.Slug))
                         page.Slug = contentEncoder.UrlEncode(page.Title);
 
@@ -174,6 +188,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add Search Pages
+            if (logger.IsNotNull()) logger.LogInformation("Generating search pages");
             var tags = posts.GetAllTags().Distinct();
 
             var categoryIds = posts.SelectMany(p => p.CategoryIds).Distinct();
@@ -203,6 +218,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add favicon.ico file if it exists
+            if (logger.IsNotNull()) logger.LogInformation("Add favicon.ico file");
             var rootFiles = contentRepo.GetFolderContents(".");
             var faviconFile = rootFiles.SingleOrDefault(f => f.FileName == "favicon.ico");
             if (faviconFile.IsNotNull())
@@ -217,6 +233,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add files from Theme if there are any
+            if (logger.IsNotNull()) logger.LogInformation("Add files from theme");
             if (!string.IsNullOrWhiteSpace(siteSettings.Theme))
             {
                 String path = $".\\themes\\{siteSettings.Theme}";
@@ -234,6 +251,7 @@ namespace PPTail.SiteGenerator
             }
 
             // Add additional raw files
+            if (logger.IsNotNull()) logger.LogInformation("Add additional raw files");
             if (siteSettings.AdditionalFilePaths.IsNotNull() && siteSettings.AdditionalFilePaths.Any())
             {
                 var additionalFiles = contentRepo.GetFoldersContents(siteSettings.AdditionalFilePaths);

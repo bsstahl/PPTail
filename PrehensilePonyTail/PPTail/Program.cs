@@ -4,6 +4,8 @@ using PPTail.Entities;
 using PPTail.Interfaces;
 using PPTail.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Core;
 
 namespace PPTail
 {
@@ -21,11 +23,23 @@ namespace PPTail
             {
                 var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
 
+                var loggingLevelSwitch = switches.Contains(Constants.VERBOSE_SWITCH)
+                    ? new LoggingLevelSwitch(Serilog.Events.LogEventLevel.Verbose)
+                    : new LoggingLevelSwitch(Serilog.Events.LogEventLevel.Warning);
+
+                var logFormatter = new Serilog.Formatting.Json.JsonFormatter();
+
+                Log.Logger = new LoggerConfiguration()
+                    .WriteTo.Console(logFormatter)
+                    .MinimumLevel.ControlledBy(loggingLevelSwitch)
+                    .CreateLogger();
+
                 var serviceProvider = new ServiceCollection()
                     .AddSourceRepository(sourceConnection)
                     .AddTargetRepository(targetConnection)
                     .AddTemplateRepository(templateConnection)
                     .AddServices()
+                    .AddLogging(l => l.AddSerilog(Log.Logger))
                     .BuildServiceProvider();
 
                 // Generate the website pages
@@ -56,6 +70,8 @@ namespace PPTail
                 }
 
                 Console.WriteLine();
+
+                throw new ArgumentException("One or more arguments are invalid");
             }
         }
 
