@@ -12,6 +12,7 @@ namespace PPTail.Data.Forestry
         public String Author { get; set; }
         public String Title { get; set; }
         public String Description { get; set; }
+        public String Teaser {  get; set; }
         public String Content { get; set; }
         public bool IsPublished { get; set; }
         public bool BuildIfNotPublished { get; set; }
@@ -33,6 +34,7 @@ namespace PPTail.Data.Forestry
                 Id = this.Id,
                 Author = this.Author,
                 ByLine = this.ByLine,
+                Teaser = this.Teaser,
                 Content = this.Content,
                 Description = this.Description ?? string.Empty,
                 IsPublished = this.IsPublished,
