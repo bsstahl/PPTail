@@ -34,6 +34,8 @@ namespace PPTail.Generator.Template
                 .ReplacePageLinkVariables(serviceProvider, pathToRoot);
 
             var description = item.Description;
+            var teaser = item.Teaser;
+            var teaserOrDescription = string.IsNullOrWhiteSpace(teaser) ? description : teaser;
             var pubDate = item.PublicationDate.ToUniversalTime().ToString(siteSettings.DateFormatSpecifier);
             var pubDateTime = item.PublicationDate.ToUniversalTime().ToString(siteSettings.DateTimeFormatSpecifier);
             var pubDateTimeRFC = item.PublicationDate.ToUniversalTime().ToString("R"); // Wed, 02 Oct 2002 13:00:00 GMT
@@ -44,6 +46,8 @@ namespace PPTail.Generator.Template
             {
                 content = contentEncoder.XmlEncode(content);
                 description = contentEncoder.XmlEncode(description);
+                teaser = contentEncoder.XmlEncode(teaser);
+                teaserOrDescription = contentEncoder.XmlEncode(teaserOrDescription);
                 pubDate = item.PublicationDate.ToUniversalTime().Date.ToString("o");
                 pubDateTime = item.PublicationDate.ToUniversalTime().ToString("o");
                 lastModDate = item.LastModificationDate.IsMinDate() ? String.Empty : item.LastModificationDate.ToUniversalTime().Date.ToString("o");
@@ -57,6 +61,8 @@ namespace PPTail.Generator.Template
                 .Replace("{Content}", content)
                 .Replace("{Author}", item.Author)
                 .Replace("{Description}", description)
+                .Replace("{Teaser}", teaser)
+                .Replace("{TeaserOrDescription}", teaserOrDescription)
                 .Replace("{ByLine}", item.ByLine)
                 .Replace("{PublicationDate}", pubDate)
                 .Replace("{PublicationDateTime}", pubDateTime)
@@ -66,6 +72,7 @@ namespace PPTail.Generator.Template
                 .Replace("{Link}", linkProvider.GetUrl(pathToRoot, "Posts", item.Slug))
                 .Replace("{Permalink}", permaLink)
                 .Replace("{PermalinkUrl}", permaLinkUrl)
+                .Replace("{Hashtags}", item.Tags.HashTagList())
                 .Replace("{Tags}", item.Tags.TagLinkList(serviceProvider, pathToRoot, "small"))
                 .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, siteSettings, pathToRoot, "small"));
 
@@ -394,5 +401,13 @@ namespace PPTail.Generator.Template
             return results;
         }
 
+        internal static String HashTagList(this IEnumerable<String> tags)
+        {
+            var results = String.Empty;
+            if (tags.IsNotNull())
+                foreach (var tag in tags)
+                    results += $" #{tag}";
+            return results.Trim();
+        }
     }
 }

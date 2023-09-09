@@ -42,7 +42,7 @@ namespace PPTail.Generator.Encoder
 
         public String XmlEncode(String data)
         {
-            return data
+            return (data ?? string.Empty)
                 .Replace("&", "&amp;")
                 .Replace("<", "&lt;")
                 .Replace(">", "&gt;")
