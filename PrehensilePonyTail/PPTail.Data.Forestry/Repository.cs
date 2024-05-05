@@ -157,7 +157,12 @@ namespace PPTail.Data.Forestry
             return results;
         }
 
-        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(string relativePath)
+        {
+            return GetFolderContents(relativePath, false);
+        }
+
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath, bool recursive)
         {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
@@ -167,7 +172,7 @@ namespace PPTail.Data.Forestry
 
             if (directory.Exists(folderPath))
             {
-                var sourceFiles = directory.EnumerateFiles(folderPath);
+                var sourceFiles = directory.EnumerateFiles(folderPath, recursive);
                 foreach (var sourceFile in sourceFiles)
                 {
                     byte[] contents = null;
@@ -183,7 +188,7 @@ namespace PPTail.Data.Forestry
                         {
                             Contents = contents,
                             FileName = System.IO.Path.GetFileName(sourceFile),
-                            RelativePath = relativePath
+                            RelativePath = System.IO.Path.GetDirectoryName(sourceFile.Replace(_rootSitePath, "./")) // relativePath
                         });
                 }
             }
@@ -210,5 +215,6 @@ namespace PPTail.Data.Forestry
 
             return _categories;
         }
+
     }
 }

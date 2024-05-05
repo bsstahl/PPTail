@@ -43,6 +43,11 @@ namespace PPTail.Data.Ef
             throw new NotImplementedException();
         }
 
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath, bool recursive)
+        {
+            throw new NotImplementedException();
+        }
+
         public SiteSettings GetSiteSettings()
         {
             throw new NotImplementedException();

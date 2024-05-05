@@ -137,9 +137,16 @@ namespace PPTail.Data.WordpressFiles
             return this.Categories.Select(c => c.Value);
         }
 
-        public IEnumerable<Entities.SourceFile> GetFolderContents(String relativePath)
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
-            return this.FolderContents;
+            return GetFolderContents(relativePath, false);
+        }
+
+        public IEnumerable<Entities.SourceFile> GetFolderContents(String relativePath, bool recursive)
+        {
+            return recursive 
+                ? throw new NotImplementedException() 
+                : this.FolderContents;
         }
 
         public Entities.SiteSettings GetSiteSettings()

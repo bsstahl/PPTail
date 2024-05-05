@@ -254,7 +254,7 @@ namespace PPTail.SiteGenerator
             if (logger.IsNotNull()) logger.LogInformation("Add additional raw files");
             if (siteSettings.AdditionalFilePaths.IsNotNull() && siteSettings.AdditionalFilePaths.Any())
             {
-                var additionalFiles = contentRepo.GetFoldersContents(siteSettings.AdditionalFilePaths);
+                var additionalFiles = contentRepo.GetFoldersContents(siteSettings.AdditionalFilePaths, true);
                 foreach (var rawFile in additionalFiles)
                 {
                     result.Add(new SiteFile()

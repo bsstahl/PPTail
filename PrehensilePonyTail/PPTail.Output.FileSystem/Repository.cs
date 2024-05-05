@@ -6,6 +6,7 @@ using PPTail.Entities;
 using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Extensions;
+using System.IO;
 
 namespace PPTail.Output.FileSystem
 {
@@ -44,8 +45,8 @@ namespace PPTail.Output.FileSystem
         {
             foreach (var sitePage in files)
             {
-                String fullPath = System.IO.Path.Combine(_outputPath, sitePage.RelativeFilePath);
-                String folderPath = System.IO.Path.GetDirectoryName(fullPath);
+                String fullPath = Path.GetFullPath(Path.Combine(_outputPath, sitePage.RelativeFilePath));
+                String folderPath = Path.GetDirectoryName(fullPath);
 
                 if (!_directory.Exists(folderPath))
                     _directory.CreateDirectory(folderPath);

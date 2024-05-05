@@ -12,6 +12,8 @@ namespace PPTail.Interfaces
     {
         bool Exists(String path);
         void CreateDirectory(String path);
+
         IEnumerable<string> EnumerateFiles(String path);
+        IEnumerable<string> EnumerateFiles(String path, bool recursive);
     }
 }

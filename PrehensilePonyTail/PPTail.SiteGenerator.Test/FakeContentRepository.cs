@@ -31,6 +31,11 @@ namespace PPTail.SiteGenerator.Test
 
         public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
+            return GetFolderContents(relativePath, false);
+        }
+
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath, bool recursive)
+        {
             throw new NotImplementedException();
         }
 

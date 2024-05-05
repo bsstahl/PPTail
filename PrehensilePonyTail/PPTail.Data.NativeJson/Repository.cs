@@ -55,6 +55,11 @@ namespace PPTail.Data.NativeJson
 
         public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
+            return GetFolderContents(relativePath, false);
+        }
+
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath, bool recursive)
+        {
             // TODO: Implement
             return new List<SourceFile>();
         }

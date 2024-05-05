@@ -119,6 +119,11 @@ namespace PPTail.Data.PhotoBlog
 
         public IEnumerable<SourceFile> GetFolderContents(String relativePath)
         {
+            return GetFolderContents(relativePath, false);
+        }
+
+        public IEnumerable<SourceFile> GetFolderContents(String relativePath, bool recursive)
+        {
             var fileSystem = _serviceProvider.GetService<IFile>();
             var directory = _serviceProvider.GetService<IDirectory>();
 
@@ -127,7 +132,7 @@ namespace PPTail.Data.PhotoBlog
 
             if (directory.Exists(folderPath))
             {
-                var sourceFiles = directory.EnumerateFiles(folderPath);
+                var sourceFiles = directory.EnumerateFiles(folderPath, recursive);
                 foreach (var sourceFile in sourceFiles)
                 {
                     Byte[] contents = null;

@@ -42,7 +42,7 @@ namespace PPTail
             bool isValid = ((args?.Length == 3) && !args.IsNullOrWhiteSpace());
 
             if ((args is null) || (args.Length != 3))
-                errors.Add("Usage - PPTail.exe SourceConnectionString TargetConnectionString TemplatePath [--Switches]");
+                errors.Add("Usage - PPTail.exe SourceConnectionString TargetConnectionString TemplateConnectionString [--Switches]");
             else
             {
                 if (string.IsNullOrEmpty(args[0]))
