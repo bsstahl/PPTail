@@ -54,7 +54,7 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void PassTheCorrectPathsToTheWriteMethod()
         {
-            var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            var outputPath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}.{string.Empty.GetRandom(3)}";
             var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
 
             var file = new Mock<IFile>();
@@ -110,7 +110,7 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void CreateTheDirectoryIfItDoesntExist()
         {
-            var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            var outputPath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}.{string.Empty.GetRandom(3)}";
             var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
 
             var file = Mock.Of<IFile>();
@@ -120,7 +120,8 @@ namespace PPTail.Output.FileSystem.Test
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
-            String folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
+            var fullPath = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
+            String folderPath = System.IO.Path.GetDirectoryName(fullPath) ?? string.Empty;
 
             directory.Setup(d => d.Exists(folderPath)).Returns(false);
 
@@ -132,7 +133,7 @@ namespace PPTail.Output.FileSystem.Test
         [Fact]
         public void NotCreateTheDirectoryIfItAlreadyExists()
         {
-            var outputPath = $"\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
+            var outputPath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
             var connectionString = String.Format(_connectionStringFormat, _defaultProviderName, outputPath);
 
             var file = Mock.Of<IFile>();
@@ -142,7 +143,8 @@ namespace PPTail.Output.FileSystem.Test
             var files = (null as IEnumerable<SiteFile>).Create(1);
 
             var siteFile = files.Single();
-            String folderPath = System.IO.Path.GetDirectoryName(System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath));
+            var fullPath = System.IO.Path.Combine(outputPath, siteFile.RelativeFilePath);
+            String folderPath = System.IO.Path.GetDirectoryName(fullPath) ?? string.Empty;
 
             directory.Setup(d => d.Exists(folderPath)).Returns(true);
 

@@ -21,10 +21,10 @@ namespace PPTail.SiteGenerator.Test
         public void NotFailIfNoSiteSettingsArePresent()
         {
             var container = (null as IServiceCollection).Create();
-            SiteSettings siteSettings = null;
+            SiteSettings? siteSettings = null;
 
             var contentRepo = new Mock<IContentRepository>();
-            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings!); // Testing for null handling
             container.ReplaceDependency<IContentRepository>(contentRepo.Object);
 
             var target = (null as Builder).Create(container);
@@ -477,6 +477,7 @@ namespace PPTail.SiteGenerator.Test
         [Fact]
         public void CreateOneRawSiteFileForEachSourceFile()
         {
+            var rootPath = $"c:\\{string.Empty.GetRandom()}";
             var additionalPaths = new string[] { string.Empty.GetRandom(), string.Empty.GetRandom(), string.Empty.GetRandom() };
             var siteSettings = new SiteSettingsBuilder()
                 .AddAdditionalFilePaths(additionalPaths)
@@ -488,12 +489,12 @@ namespace PPTail.SiteGenerator.Test
             var container = (null as IServiceCollection).Create(contentRepo.Object);
 
             Int32 expected = 0;
-            foreach (var additionalPath in additionalPaths)
+            foreach (var paths in siteSettings.AdditionalFilePaths)
             {
                 Int32 count = 10.GetRandom(3);
                 var additionalFiles = (null as IEnumerable<SourceFile>).Create(count);
                 expected += count;
-                contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
+                contentRepo.Setup(r => r.GetFolderContents(paths, It.IsAny<bool>())).Returns(additionalFiles);
             }
 
             var target = (null as Builder).Create(container);
@@ -521,7 +522,7 @@ namespace PPTail.SiteGenerator.Test
             {
                 var additionalFiles = (null as IEnumerable<SourceFile>).Create();
                 sourceFiles.AddRange(additionalFiles);
-                contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
+                contentRepo.Setup(r => r.GetFolderContents(additionalPath, It.IsAny<bool>())).Returns(additionalFiles);
             }
 
             var target = (null as Builder).Create(container);
@@ -555,7 +556,7 @@ namespace PPTail.SiteGenerator.Test
                 Int32 count = 10.GetRandom(3);
                 var additionalFiles = (null as IEnumerable<SourceFile>).Create(count);
                 expected += count;
-                contentRepo.Setup(r => r.GetFolderContents(additionalPath)).Returns(additionalFiles);
+                contentRepo.Setup(r => r.GetFolderContents(additionalPath, It.IsAny<bool>())).Returns(additionalFiles);
             }
 
             var target = (null as Builder).Create(container);
@@ -1143,7 +1144,7 @@ namespace PPTail.SiteGenerator.Test
         {
             var container = (null as IServiceCollection).Create();
 
-            String theme = null;
+            String? theme = null;
             SiteSettings siteSettings = new SiteSettings()
             {
                 Title = string.Empty.GetRandom(),

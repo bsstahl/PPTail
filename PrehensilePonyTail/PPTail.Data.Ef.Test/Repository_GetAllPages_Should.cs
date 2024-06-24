@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TestHelperExtensions;
 using Xunit;
 
@@ -53,7 +49,10 @@ namespace PPTail.Data.Ef.Test
             using (var dataContext = serviceProvider.GetService<ContentContext>())
             {
                 for (Int32 i = 0; i < itemCount; i++)
-                    dataContext.Pages.Add((null as ContentItem).Create());
+                {
+                    var ci = (null as ContentItem).Create();
+                    dataContext.Pages.Add(ci);
+                }
                 dataContext.SaveChanges();
             }
 

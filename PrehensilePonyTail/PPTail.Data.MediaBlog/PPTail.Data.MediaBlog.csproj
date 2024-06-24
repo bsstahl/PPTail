@@ -1,22 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<AnalysisLevel>latest-all</AnalysisLevel>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Markdig" Version="0.20.0" />
-    <PackageReference Include="Markdig.SyntaxHighlighting" Version="1.1.7" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Markdig" Version="0.37.0" />
+		<PackageReference Include="Markdig.SyntaxHighlighting" Version="1.1.7" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="YamlDotNet" Version="8.1.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+	</ItemGroup>
 
 </Project>

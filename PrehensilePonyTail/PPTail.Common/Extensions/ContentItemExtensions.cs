@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PPTail.Extensions
 {
@@ -11,7 +10,7 @@ namespace PPTail.Extensions
         public static IEnumerable<string> GetAllTags(this IEnumerable<ContentItem> contentItems)
         {
             return contentItems
-                .Where(p => p.IsPublished && p.Tags.IsNotNull())
+                .Where(p => p.IsPublished && p.Tags is not null)
                 .SelectMany(p => p.Tags)
                 .Where(t => !string.IsNullOrWhiteSpace(t));
         }

@@ -68,7 +68,7 @@ namespace PPTail.Builders
             return this;
         }
 
-        public new SiteSettingsBuilder AdditionalFilePaths(IEnumerable<String> value)
+        public new SiteSettingsBuilder AdditionalFilePaths(IEnumerable<String>? value)
         {
             base.AdditionalFilePaths = value;
             return this;
@@ -78,10 +78,10 @@ namespace PPTail.Builders
         {
             var additionalPathsResult = new List<String>();
 
-            if (base.AdditionalFilePaths.IsNotNull() && base.AdditionalFilePaths.Any())
+            if (base.AdditionalFilePaths is not null && base.AdditionalFilePaths.Any())
                 additionalPathsResult.AddRange(base.AdditionalFilePaths);
 
-            if (value.IsNotNull() && value.Any())
+            if (value is not null && value.Any())
                 additionalPathsResult.AddRange(value);
 
             return this.AdditionalFilePaths(additionalPathsResult);

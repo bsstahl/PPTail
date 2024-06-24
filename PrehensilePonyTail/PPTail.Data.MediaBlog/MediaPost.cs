@@ -38,7 +38,7 @@ namespace PPTail.Data.MediaBlog
             const string unknownMediaTypeMessage = "Unknown media type";
 
             MediaItem result = new EmptyMediaItem(string.Empty, 0, 0, DateTime.MinValue);
-            if (mediaItem.IsNotNull())
+            if (mediaItem is not null)
             {
                 String mediaTypeName = mediaType ?? "None";
 

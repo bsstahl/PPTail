@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Moq;
 using TestHelperExtensions;
 using Xunit;
-using PPTail.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using PPTail.Entities;
 using PPTail.Builders;
-using System.IO;
 
 namespace PPTail.Data.MediaBlog.Test
 {
@@ -48,7 +41,7 @@ namespace PPTail.Data.MediaBlog.Test
 
             var actual = target.GetFolderContents(relativePath);
 
-            directoryService.Verify(fs => fs.EnumerateFiles(folderPath), Times.Once);
+            directoryService.Verify(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]

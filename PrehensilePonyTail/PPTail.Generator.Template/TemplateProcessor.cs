@@ -32,17 +32,17 @@ namespace PPTail.Generator.Template
                 recentPosts = recentPosts.Take(maxPostCount);
             }
 
-            if (logger.IsNotNull())
+            if (logger is not null)
                 logger.LogInformation("Processing {PostCount} posts", recentPosts.Count());
 
             var contentItems = new List<String>();
             foreach (var post in recentPosts)
             {
-                if (logger.IsNotNull())
+                if (logger is not null)
                     logger.LogInformation("Processing Template for Post: {PostId}:{Title}", post.Id, post.Title);
 
                 var contentItem = this.ProcessContentItemTemplate(itemTemplate, post, sidebarContent, navContent, pathToRoot, xmlEncodeContent);
-                if (logger.IsNotNull())
+                if (logger is not null)
                     logger.LogInformation("Template Results for {PostId}: '{ContentItem}'", post.Id, contentItem);
 
                 contentItems.Add(contentItem);

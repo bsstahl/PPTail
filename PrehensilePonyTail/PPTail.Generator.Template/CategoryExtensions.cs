@@ -16,19 +16,19 @@ namespace PPTail.Generator.Template
 
             var logger = serviceProvider.GetService<ILogger<TemplateProcessor>>();
 
-            if (selectedCategoryIds.IsNotNull() && selectedCategoryIds.Any())
+            if (selectedCategoryIds is not null && selectedCategoryIds.Any())
             {
-                if (logger.IsNotNull())
+                if (logger is not null)
                     logger.LogInformation("Categories: {Categories} - SelectedCategoryIds: {SelectedCategoryIds}", categories, selectedCategoryIds);
 
                 var selectedCategories = categories.Where(c => selectedCategoryIds.Contains(c.Id));
-                if (logger.IsNotNull())
+                if (logger is not null)
                     logger.LogInformation("Selected Categories: {SelectedCategories}", selectedCategories);
 
                 foreach (var category in selectedCategories)
                     results += $"{category.Name.ToLower().CreateSearchLink(serviceProvider, pathToRoot, "Category", cssClass)}&nbsp;";
             
-                if (logger.IsNotNull())
+                if (logger is not null)
                     logger.LogInformation("Category Link List: {CategoryLinkList}", results);
             }
 

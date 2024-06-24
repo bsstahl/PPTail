@@ -32,7 +32,7 @@ namespace PPTail.Data.FileSystem.Test
             return ignore.Create(fileSystem, Mock.Of<IDirectory>(), sourcePath);
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IFile fileSystem, IDirectory directoryProvider, String sourcePath)
+        public static IContentRepository Create(this IContentRepository? ignore, IFile fileSystem, IDirectory directoryProvider, String sourcePath)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(fileSystem);
@@ -42,7 +42,7 @@ namespace PPTail.Data.FileSystem.Test
             return ignore.Create(container.BuildServiceProvider(), sourceConnection);
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IServiceProvider serviceProvider, string connectionString)
+        public static IContentRepository Create(this IContentRepository? _, IServiceProvider serviceProvider, string connectionString)
         {
             return new Repository(serviceProvider, connectionString);
         }
@@ -185,7 +185,7 @@ namespace PPTail.Data.FileSystem.Test
             return rootNode;
         }
 
-        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, String relativePath, Int32 count)
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile>? _, String relativePath, Int32 count)
         {
             var result = new List<SourceFile>();
 

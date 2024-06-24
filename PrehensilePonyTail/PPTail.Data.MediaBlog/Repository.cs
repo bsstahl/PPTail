@@ -64,7 +64,7 @@ namespace PPTail.Data.MediaBlog
 
             if (directory.Exists(postPath))
             {
-                var files = directory.EnumerateFiles(postPath);
+                var files = directory.EnumerateFiles(postPath, false);
                 foreach (var file in files.Where(f => f.ToUpperInvariant().EndsWith(".JSON", StringComparison.InvariantCulture)))
                 {
                     var json = fileSystem.ReadAllText(file);

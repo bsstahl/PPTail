@@ -31,7 +31,7 @@ namespace PPTail.Data.MediaBlog.Test
             // The list of post files should be returned
             // when that path is enumerated
             directoryService
-                .Setup(f => f.EnumerateFiles(postPath))
+                .Setup(f => f.EnumerateFiles(postPath, It.IsAny<bool>()))
                 .Returns(_postFiles)
                 .Verifiable();
 
@@ -53,7 +53,7 @@ namespace PPTail.Data.MediaBlog.Test
                 // when that path is enumerated
                 var files = _sourceFiles.Where(f => Path.Combine(rootPath, f.RelativePath) == sourceFilesPath);
                 directoryService
-                    .Setup(f => f.EnumerateFiles(sourceFilesPath))
+                    .Setup(f => f.EnumerateFiles(sourceFilesPath, It.IsAny<bool>()))
                     .Returns(files.Select(f => Path.Combine(f.RelativePath, f.FileName)))
                     .Verifiable();
             }

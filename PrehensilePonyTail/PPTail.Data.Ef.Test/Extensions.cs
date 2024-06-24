@@ -13,7 +13,7 @@ namespace PPTail.Data.Ef.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
-        public static ContentItem Create(this ContentItem ignore)
+        public static ContentItem Create(this ContentItem? _)
         {
             return new ContentItem()
             {
@@ -38,12 +38,12 @@ namespace PPTail.Data.Ef.Test
             return container.AddInMemoryContext(string.Empty.GetRandom());
         }
 
-        public static IServiceCollection AddInMemoryContext(this IServiceCollection container, String dbName)
+        public static IServiceCollection AddInMemoryContext(this IServiceCollection container, String? dbName)
         {
-            return container.AddDbContext<ContentContext>(p => p.UseInMemoryDatabase(databaseName: string.Empty.GetRandom()), ServiceLifetime.Transient);
+            return container.AddDbContext<ContentContext>(p => p.UseInMemoryDatabase(databaseName: dbName ?? string.Empty.GetRandom()), ServiceLifetime.Transient);
         }
 
-        public static String CreateTagList(this String ignore)
+        public static String CreateTagList(this String? _)
         {
             var tags = new List<string>();
             Int32 tagCount = 7.GetRandom(3);
@@ -52,7 +52,7 @@ namespace PPTail.Data.Ef.Test
             return string.Join(";", tags);
         }
 
-        public static String CreateCategoryIdList(this String ignore)
+        public static String CreateCategoryIdList(this String? _)
         {
             var resultList = new List<string>();
             Int32 count = 7.GetRandom(3);
@@ -61,7 +61,7 @@ namespace PPTail.Data.Ef.Test
             return string.Join(";", resultList);
         }
 
-        public static IServiceProvider Create(this IServiceProvider ignore)
+        public static IServiceProvider Create(this IServiceProvider? _)
         {
             var container = new ServiceCollection();
             container.AddInMemoryContext();
@@ -96,8 +96,9 @@ namespace PPTail.Data.Ef.Test
             var expected = getExpectedPropertyValue(expectedObject);
             var actual = getActualPropertyValue(actualEntity);
 
-            Assert.False(expected == null, $"Test is invalid if using a null {typeof(T).Name} value");
-            Assert.False(expected.Equals(default(T)), $"Test is invalid if using a default {typeof(T).Name} value");
+            // Test is invalid if using a null or default value for T
+            Assert.NotNull(expected);
+            Assert.False(expected!.Equals(default(T)), $"Test is invalid if using a default {typeof(T).Name} value");
             Assert.Equal(expected, actual);
         }
 

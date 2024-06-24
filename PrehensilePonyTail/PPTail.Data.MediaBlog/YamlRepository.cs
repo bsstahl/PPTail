@@ -120,7 +120,7 @@ namespace PPTail.Data.MediaBlog
                     .ReadAllText(file)
                     .ParseWidgetYaml(this.MarkdownPipeline);
 
-                if (widget.IsNotNull() && widget.ShowInSidebar)
+                if (widget is not null && widget.ShowInSidebar)
                     results.Add(widget);
             }
 

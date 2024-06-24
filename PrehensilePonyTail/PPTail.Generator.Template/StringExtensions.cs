@@ -76,7 +76,8 @@ namespace PPTail.Generator.Template
                 .Replace("{Tags}", item.Tags.TagLinkList(serviceProvider, pathToRoot, "small"))
                 .Replace("{Categories}", categories.CategoryLinkList(serviceProvider, item.CategoryIds, siteSettings, pathToRoot, "small"));
 
-            if (logger.IsNotNull()) logger.LogInformation("Template processing results for ItemId={ItemId}: {TemplateResult}", item.Id, result);
+            if (logger is not null)
+                logger.LogInformation("Template processing results for ItemId={ItemId}: {TemplateResult}", item.Id, result);
 
             return result;
         }
@@ -130,7 +131,7 @@ namespace PPTail.Generator.Template
 
             string result = template;
 
-            if (variables.IsNotNull())
+            if (variables is not null)
                 foreach (var variable in variables)
                 {
                     string key = "{" + variable.Name + "}";
@@ -395,7 +396,7 @@ namespace PPTail.Generator.Template
         internal static String TagLinkList(this IEnumerable<String> tags, IServiceProvider serviceProvider, String pathToRoot, String cssClass)
         {
             var results = String.Empty;
-            if (tags.IsNotNull())
+            if (tags is not null)
                 foreach (var tag in tags)
                     results += $"{tag.CreateSearchLink(serviceProvider, pathToRoot, "Tag", cssClass)}&nbsp;";
             return results;
@@ -404,7 +405,7 @@ namespace PPTail.Generator.Template
         internal static String HashTagList(this IEnumerable<String> tags)
         {
             var results = String.Empty;
-            if (tags.IsNotNull())
+            if (tags is not null)
                 foreach (var tag in tags)
                     results += $" #{tag}";
             return results.Trim();

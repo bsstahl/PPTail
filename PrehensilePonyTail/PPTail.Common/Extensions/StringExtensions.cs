@@ -97,7 +97,7 @@ namespace PPTail.Extensions
         public static String RemoveTrailingDash(this String data)
         {
             string result = data;
-            if (data.IsNotNull() && data.EndsWith("-", StringComparison.InvariantCulture))
+            if (data is not null && data.EndsWith("-", StringComparison.InvariantCulture))
                 result = data.Substring(0, data.Length - 1);
             return result;
         }

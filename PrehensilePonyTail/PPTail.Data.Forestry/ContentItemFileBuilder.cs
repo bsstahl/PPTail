@@ -276,7 +276,7 @@ namespace PPTail.Data.Forestry
             foreach (var categoryId in value ?? new List<Guid>())
             {
                 var category = categories.SingleOrDefault(c => c.Id == categoryId);
-                if (category.IsNotNull())
+                if (category is not null)
                     categoryNames.Add(category.Name);
             }
 

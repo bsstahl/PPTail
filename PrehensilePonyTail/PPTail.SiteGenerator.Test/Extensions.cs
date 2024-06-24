@@ -27,12 +27,12 @@ namespace PPTail.SiteGenerator.Test
             return System.Text.Encoding.UTF8.GetString(byteContent);
         }
 
-        public static Builder Create(this Builder builder)
+        public static Builder Create(this Builder? builder)
         {
             return builder.Create((null as IServiceCollection).Create());
         }
 
-        public static Builder Create(this Builder _1, IServiceCollection container)
+        public static Builder Create(this Builder? _1, IServiceCollection container)
         {
             return new Builder(container.BuildServiceProvider());
         }
@@ -50,12 +50,12 @@ namespace PPTail.SiteGenerator.Test
             return contentRepo.Object;
         }
 
-        public static IServiceCollection Create(this IServiceCollection container)
+        public static IServiceCollection Create(this IServiceCollection? container)
         {
             return container.Create(Mock.Of<IPageGenerator>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection container, IPageGenerator pageGenerator)
+        public static IServiceCollection Create(this IServiceCollection? container, IPageGenerator pageGenerator)
         {
             var contentRepo = new Mock<IContentRepository>();
             var siteSettings = new SiteSettings();
@@ -69,14 +69,14 @@ namespace PPTail.SiteGenerator.Test
                 Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection container, IContentRepository contentRepo)
+        public static IServiceCollection Create(this IServiceCollection? container, IContentRepository contentRepo)
         {
             return container.Create(contentRepo, Mock.Of<IArchiveProvider>(), Mock.Of<IContactProvider>(),
                 Mock.Of<ISearchProvider>(), Mock.Of<IPageGenerator>(), Mock.Of<IHomePageGenerator>(), Mock.Of<INavigationProvider>(), Mock.Of<IRedirectProvider>(), Mock.Of<ISyndicationProvider>(),
                 new List<Category>(), Mock.Of<IContentEncoder>(), Mock.Of<IContentItemPageGenerator>());
         }
 
-        public static IServiceCollection Create(this IServiceCollection _1, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, IEnumerable<Category> categories, IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen)
+        public static IServiceCollection Create(this IServiceCollection? _1, IContentRepository contentRepo, IArchiveProvider archiveProvider, IContactProvider contactProvider, ISearchProvider searchProvider, IPageGenerator pageGen, IHomePageGenerator homePageGen, INavigationProvider navProvider, IRedirectProvider redirectProvider, ISyndicationProvider syndicationProvider, IEnumerable<Category> categories, IContentEncoder contentEncoder, IContentItemPageGenerator contentItemPageGen)
         {
             IServiceCollection container = new ServiceCollection();
             container.AddSingleton<IPageGenerator>(pageGen);
@@ -122,13 +122,13 @@ namespace PPTail.SiteGenerator.Test
             return container;
         }
 
-        public static ContentItem Create(this ContentItem item)
+        public static ContentItem Create(this ContentItem? item)
         {
             var categoryId = Guid.NewGuid();
             return item.Create(categoryId);
         }
 
-        public static ContentItem Create(this ContentItem item, Guid categoryId)
+        public static ContentItem Create(this ContentItem? item, Guid categoryId)
         {
             String tag = string.Empty.GetRandom();
             return item.Create(categoryId, new List<string>() { tag });
@@ -140,7 +140,7 @@ namespace PPTail.SiteGenerator.Test
             return item.Create(categoryId, new List<string>() { tag });
         }
 
-        public static ContentItem Create(this ContentItem _1, Guid categoryId, IEnumerable<string> tags)
+        public static ContentItem Create(this ContentItem? _1, Guid categoryId, IEnumerable<string> tags)
         {
             return new ContentItem()
             {
@@ -159,18 +159,18 @@ namespace PPTail.SiteGenerator.Test
             };
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> items)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem>? items)
         {
             return items.Create(25.GetRandom(5));
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> items, Int32 count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem>? items, Int32 count)
         {
             var allCategories = (null as IEnumerable<Category>).Create();
             return items.Create(allCategories, count);
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> _1, IEnumerable<Category> allCategories, Int32 count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem>? _1, IEnumerable<Category> allCategories, Int32 count)
         {
             var contentItems = new List<ContentItem>();
             for (Int32 i = 0; i < count; i++)
@@ -178,12 +178,12 @@ namespace PPTail.SiteGenerator.Test
             return contentItems;
         }
 
-        public static SiteSettings Create(this SiteSettings siteSettings)
+        public static SiteSettings Create(this SiteSettings? siteSettings)
         {
             return siteSettings.Create("My Test Blog", "A blog of epic scalability", 10.GetRandom(2));
         }
 
-        public static SiteSettings Create(this SiteSettings _1, String title, String description, Int32 postsPerPage)
+        public static SiteSettings Create(this SiteSettings? _1, String title, String description, Int32 postsPerPage)
         {
             return new SiteSettings()
             {
@@ -193,12 +193,12 @@ namespace PPTail.SiteGenerator.Test
             };
         }
 
-        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> sourceFiles)
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile>? sourceFiles)
         {
             return sourceFiles.Create(10.GetRandom(3));
         }
 
-        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> _1, Int32 count)
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile>? _1, Int32 count)
         {
             var result = new List<SourceFile>();
 
@@ -208,7 +208,7 @@ namespace PPTail.SiteGenerator.Test
             return result;
         }
 
-        public static SourceFile Create(this SourceFile sourceFile)
+        public static SourceFile Create(this SourceFile? sourceFile)
         {
             return sourceFile.Create(
                 string.Empty.GetRandom().Select(s => Convert.ToByte(s)).ToArray(),
@@ -216,7 +216,7 @@ namespace PPTail.SiteGenerator.Test
                 string.Empty.GetRandom());
         }
 
-        public static SourceFile Create(this SourceFile _1, byte[] content, String relativePath, String fileName)
+        public static SourceFile Create(this SourceFile? _1, byte[] content, String relativePath, String fileName)
         {
             return new SourceFile()
             {
@@ -235,12 +235,12 @@ namespace PPTail.SiteGenerator.Test
             return result;
         }
 
-        public static IEnumerable<Category> Create(this IEnumerable<Category> categories)
+        public static IEnumerable<Category> Create(this IEnumerable<Category>? categories)
         {
             return categories.Create(8.GetRandom(3));
         }
 
-        public static IEnumerable<Category> Create(this IEnumerable<Category> _1, Int32 count)
+        public static IEnumerable<Category> Create(this IEnumerable<Category>? _1, Int32 count)
         {
             var result = new List<Category>();
             for (Int32 i = 0; i < count; i++)
@@ -248,7 +248,7 @@ namespace PPTail.SiteGenerator.Test
             return result;
         }
 
-        public static Category Create(this Category category)
+        public static Category Create(this Category? category)
         {
             var id = Guid.NewGuid();
             var name = $"nameof_{id.ToString()}";
@@ -256,7 +256,7 @@ namespace PPTail.SiteGenerator.Test
             return category.Create(id, name, description);
         }
 
-        public static Category Create(this Category _1, Guid id, String name, String description)
+        public static Category Create(this Category? _1, Guid id, String name, String description)
         {
             return new Category()
             {

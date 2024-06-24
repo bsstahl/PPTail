@@ -1,5 +1,4 @@
-﻿using PPTail.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +7,8 @@ namespace PPTail.Data.Forestry
 {
     internal class ContentItem
     {
+        // TODO: Determine which fields should be nullable
+
         public Guid Id { get; set; }
         public String Author { get; set; }
         public String Title { get; set; }

@@ -39,7 +39,7 @@ namespace PPTail.Data.Forestry.Test
             return ignore.Create(fileSystem, Mock.Of<IDirectory>(), sourcePath);
         }
 
-        public static IContentRepository Create(this IContentRepository ignore, IFile fileSystem, IDirectory directoryProvider, String sourcePath)
+        public static IContentRepository Create(this IContentRepository? _, IFile fileSystem, IDirectory directoryProvider, String sourcePath)
         {
             var container = new ServiceCollection();
 
@@ -219,7 +219,7 @@ namespace PPTail.Data.Forestry.Test
         public static String Serialize(this IEnumerable<Tuple<string, string>> dictionary)
         {
             String results = "[]";
-            if (dictionary.IsNotNull() && dictionary.Any())
+            if (dictionary is not null && dictionary.Any())
             {
                 results = "\r\n";
                 foreach (var (key, value) in dictionary)
@@ -250,7 +250,7 @@ namespace PPTail.Data.Forestry.Test
             return sb.ToString();
         }
 
-        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile> ignore, String relativePath, Int32 count)
+        public static IEnumerable<SourceFile> Create(this IEnumerable<SourceFile>? _, String relativePath, Int32 count)
         {
             var result = new List<SourceFile>();
 
@@ -260,7 +260,7 @@ namespace PPTail.Data.Forestry.Test
             return result;
         }
 
-        private static SourceFile Create(this SourceFile ignore, String relativePath)
+        private static SourceFile Create(this SourceFile? _, String relativePath)
         {
             return new SourceFile()
             {
@@ -274,7 +274,7 @@ namespace PPTail.Data.Forestry.Test
         {
             String result = string.Empty;
 
-            if (values.IsNotNull() && values.Any())
+            if (values is not null && values.Any())
             {
                 var cleanedValues = values
                     .OrderBy(v => v.ToString().Trim())
@@ -303,7 +303,7 @@ namespace PPTail.Data.Forestry.Test
             var fileSystemBuilder = new FileSystemBuilder()
                 .AddContentItemFile($"{string.Empty.GetRandom()}.md", fileContents);
 
-            if (categories.IsNotNull() && categories.Any())
+            if (categories is not null && categories.Any())
                 fileSystemBuilder.AddCategories(categories);
             else
                 fileSystemBuilder.AddRandomCategories();

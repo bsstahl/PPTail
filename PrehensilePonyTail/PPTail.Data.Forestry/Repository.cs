@@ -10,6 +10,7 @@ using PPTail.Extensions;
 using Markdig;
 using Markdig.SyntaxHighlighting;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace PPTail.Data.Forestry
 {
@@ -130,7 +131,7 @@ namespace PPTail.Data.Forestry
                     throw new InvalidOperationException(message, ex);
                 }
 
-                if (contentItem.IsNotNull())
+                if (contentItem is not null)
                     results.Add(contentItem);
             }
 
@@ -150,7 +151,7 @@ namespace PPTail.Data.Forestry
                     .ReadAllText(file)
                     .ParseWidget(this.MarkdownPipeline);
 
-                if (widget.IsNotNull())
+                if (widget is not null)
                     results.Add(widget);
             }
 
@@ -183,12 +184,13 @@ namespace PPTail.Data.Forestry
                     catch (System.UnauthorizedAccessException)
                     { }
 
+                    var fullFilePath = Path.GetFullPath(sourceFile);
                     if (contents != null)
                         results.Add(new SourceFile()
                         {
                             Contents = contents,
                             FileName = System.IO.Path.GetFileName(sourceFile),
-                            RelativePath = System.IO.Path.GetDirectoryName(sourceFile.Replace(_rootSitePath, "./")) // relativePath
+                            RelativePath = fullFilePath.GetRelativePathFrom(_rootSitePath)
                         });
                 }
             }
@@ -209,7 +211,7 @@ namespace PPTail.Data.Forestry
                     .ParseCategories()
                     .Where(c => c.Id != Guid.Empty && !String.IsNullOrWhiteSpace(c.Name));
 
-                if (logger.IsNotNull())
+                if (logger is not null)
                     logger.LogInformation($"Loaded {_categories.Count()} categories from '{path}'");
             }
 

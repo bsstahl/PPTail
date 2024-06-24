@@ -5,75 +5,103 @@ using PPTail.Interfaces;
 using PPTail.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Core;
+using PPTail.Console.Common.Extensions;
+using PPTail.Console.Common;
+using PPTail.Output.FileSystem.Extensions;
 
-namespace PPTail
+namespace PPTail;
+
+public static class Program
 {
-    public static class Program
+    private const String _invalidArgumentsText = "Invalid Arguments:";
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed when globalization is done")]
+    public static void Main(String[] args)
     {
-        // private const String _connectionStringProviderKey = "Provider";
-        private const String _invalidArgumentsText = "Invalid Arguments:";
+        (var argsAreValid, var argumentErrors) = args.ValidateParameters("PPtail.exe");
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed when globalization is done")]
-        public static void Main(String[] args)
+        if (argsAreValid)
         {
-            (var argsAreValid, var argumentErrors) = args.ValidateParameters();
+            var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
 
-            if (argsAreValid)
+            var loggingLevelSwitch = switches.Contains(Constants.VERBOSE_SWITCH)
+                ? new Serilog.Core.LoggingLevelSwitch(Serilog.Events.LogEventLevel.Verbose)
+                : new Serilog.Core.LoggingLevelSwitch(Serilog.Events.LogEventLevel.Warning);
+
+            var logFormatter = new Serilog.Formatting.Json.JsonFormatter();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console(logFormatter)
+                .MinimumLevel.ControlledBy(loggingLevelSwitch)
+                .CreateLogger();
+
+            var serviceProvider = new ServiceCollection()
+                .AddSourceRepository(sourceConnection)
+                .AddTargetRepository(targetConnection)
+                .AddTemplateRepository(templateConnection)
+                .AddServices()
+                .AddLogging(l => l.AddSerilog(Log.Logger))
+                .BuildServiceProvider();
+
+            // Run the pre-generation tasks
+            // TOOD: Add tool to generate an Unpublished Posts list page
+
+            // Generate the website pages
+            var siteBuilder = serviceProvider.GetRequiredService<ISiteBuilder>();
+            var sitePages = siteBuilder.Build();
+
+            if (!switches.Contains(Constants.WINDOWSLINEENDINGS_SWITCH))
+                sitePages = sitePages.ConvertLineEndingsToUnix();
+
+            if (switches.Contains(Constants.VALIDATEONLY_SWITCH))
             {
-                var (sourceConnection, targetConnection, templateConnection, switches) = args.ParseArguments();
-
-                var loggingLevelSwitch = switches.Contains(Constants.VERBOSE_SWITCH)
-                    ? new LoggingLevelSwitch(Serilog.Events.LogEventLevel.Verbose)
-                    : new LoggingLevelSwitch(Serilog.Events.LogEventLevel.Warning);
-
-                var logFormatter = new Serilog.Formatting.Json.JsonFormatter();
-
-                Log.Logger = new LoggerConfiguration()
-                    .WriteTo.Console(logFormatter)
-                    .MinimumLevel.ControlledBy(loggingLevelSwitch)
-                    .CreateLogger();
-
-                var serviceProvider = new ServiceCollection()
-                    .AddSourceRepository(sourceConnection)
-                    .AddTargetRepository(targetConnection)
-                    .AddTemplateRepository(templateConnection)
-                    .AddServices()
-                    .AddLogging(l => l.AddSerilog(Log.Logger))
-                    .BuildServiceProvider();
-
-                // Generate the website pages
-                var siteBuilder = serviceProvider.GetService<ISiteBuilder>();
-                var sitePages = siteBuilder.Build();
-
-                if (switches.Contains(Constants.VALIDATEONLY_SWITCH))
+                var contentRepo = serviceProvider.GetRequiredService<IContentRepository>();
+                var siteSettings = contentRepo.GetSiteSettings();
+                if (sitePages is null || !sitePages.Any())
+                    System.Console.WriteLine($"Unable to generate {siteSettings.Title}. No results returned.");
+                else 
                 {
-                    var contentRepo = serviceProvider.GetService<IContentRepository>();
-                    var siteSettings = contentRepo.GetSiteSettings();
-                    Console.WriteLine($"{siteSettings.Title} generated successfully.");
-                    Console.WriteLine($"\tPost Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage)}");
-                    Console.WriteLine($"\tContent Pages: {sitePages.Count(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage)}");
-                }
-                else
-                {
-                    // Store the resulting output
-                    var outputRepo = serviceProvider.GetService<IOutputRepository>();
-                    outputRepo.Save(sitePages);
+                    var postPages = sitePages.Where(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage);
+                    var contentPages = sitePages.Where(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage);
+                    var otherPages = sitePages.Where(p => p.SourceTemplateType != Enumerations.TemplateType.PostPage && p.SourceTemplateType != Enumerations.TemplateType.ContentPage);
+
+                    System.Console.WriteLine($"{siteSettings.Title} generated successfully.");
+                    System.Console.WriteLine($"\tPost Pages: {postPages.Count()}");
+                    System.Console.WriteLine($"\tContent Pages: {contentPages.Count()}");
+                    System.Console.WriteLine($"\tOther Pages: {otherPages.Count()}");
+
+                    if (switches.Contains(Constants.VERBOSE_SWITCH))
+                    {
+                        System.Console.WriteLine("Post Pages:");
+                        foreach (var page in postPages)
+                            System.Console.WriteLine($"\t{page.RelativeFilePath}");
+
+                        System.Console.WriteLine("Content Pages:");
+                        foreach (var page in contentPages)
+                            System.Console.WriteLine($"\t{page.RelativeFilePath}");
+
+                        System.Console.WriteLine("Other Pages:");
+                        foreach (var page in otherPages)
+                            System.Console.WriteLine($"\t{page.RelativeFilePath} ({page.SourceTemplateType})");
+                    }
                 }
             }
             else
             {
-                Console.WriteLine(_invalidArgumentsText);
-                foreach (var argumentError in argumentErrors)
-                {
-                    Console.WriteLine($"\t{argumentError}");
-                }
-
-                Console.WriteLine();
-
-                throw new ArgumentException("One or more arguments are invalid");
+                // Store the resulting output
+                var outputRepo = serviceProvider.GetRequiredService<IOutputRepository>();
+                outputRepo.Save(sitePages);
             }
         }
+        else
+        {
+            System.Console.WriteLine(_invalidArgumentsText);
+            foreach (var argumentError in argumentErrors)
+                System.Console.WriteLine($"\t{argumentError}");
+            System.Console.WriteLine();
 
+            throw new ArgumentException("One or more arguments are invalid");
+        }
     }
+
 }

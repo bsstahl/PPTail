@@ -43,7 +43,8 @@ namespace PPTail.Output.FileSystem
 
         public void Save(IEnumerable<SiteFile> files)
         {
-            foreach (var sitePage in files)
+            var filesToSave = files ?? [];
+            foreach (var sitePage in filesToSave)
             {
                 String fullPath = Path.GetFullPath(Path.Combine(_outputPath, sitePage.RelativeFilePath));
                 String folderPath = Path.GetDirectoryName(fullPath);
@@ -66,7 +67,7 @@ namespace PPTail.Output.FileSystem
                     _file.WriteAllText(fullPath, sitePage.Content);
             }
 
-            Console.WriteLine($"Site written to {System.IO.Path.GetFullPath(_outputPath)}");
+            Console.WriteLine($"{filesToSave.Count()} files written to {System.IO.Path.GetFullPath(_outputPath)}");
         }
     }
 }

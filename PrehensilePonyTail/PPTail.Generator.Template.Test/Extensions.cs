@@ -13,19 +13,19 @@ namespace PPTail.Generator.Template.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions
     {
-        public static IServiceCollection Create(this IServiceCollection ignore)
+        public static IServiceCollection Create(this IServiceCollection? ignore)
         {
             var contentRepo = new Mock<IContentRepository>();
             return ignore.Create(contentRepo);
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, Mock<IContentRepository> mockContentRepo)
+        public static IServiceCollection Create(this IServiceCollection? ignore, Mock<IContentRepository> mockContentRepo)
         {
             var siteSettings = (null as SiteSettings).Create();
             return ignore.Create(mockContentRepo, siteSettings);
         }
 
-        public static IServiceCollection Create(this IServiceCollection ignore, Mock<IContentRepository> mockContentRepo, SiteSettings siteSettings)
+        public static IServiceCollection Create(this IServiceCollection? _, Mock<IContentRepository> mockContentRepo, SiteSettings siteSettings)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IEnumerable<Entities.Template>>((null as IEnumerable<Entities.Template>).Create());
@@ -45,24 +45,24 @@ namespace PPTail.Generator.Template.Test
         //    return ignore.Create(new SiteSettings());
         //}
 
-        public static IContentRepository Create(this IContentRepository ignore, SiteSettings siteSettings)
+        public static IContentRepository Create(this IContentRepository? _, SiteSettings siteSettings)
         {
             var contentRepo = new Mock<IContentRepository>();
             contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
             return contentRepo.Object;
         }
 
-        public static ITemplateProcessor Create(this ITemplateProcessor ignore, IServiceCollection container)
+        public static ITemplateProcessor Create(this ITemplateProcessor? ignore, IServiceCollection container)
         {
             return ignore.Create(container.BuildServiceProvider());
         }
 
-        public static ITemplateProcessor Create(this ITemplateProcessor ignore, IServiceProvider serviceProvider)
+        public static ITemplateProcessor Create(this ITemplateProcessor? _, IServiceProvider serviceProvider)
         {
             return new TemplateProcessor(serviceProvider);
         }
 
-        public static IEnumerable<Entities.Template> Create(this IEnumerable<Entities.Template> ignore)
+        public static IEnumerable<Entities.Template> Create(this IEnumerable<Entities.Template>? _)
         {
             var templates = new List<Entities.Template>();
             foreach (Enumerations.TemplateType templateType in Enum.GetValues(typeof(Enumerations.TemplateType)))
@@ -75,7 +75,7 @@ namespace PPTail.Generator.Template.Test
             throw new NotImplementedException();
         }
 
-        public static Entities.Template Create(this Entities.Template ignore, Enumerations.TemplateType templateType)
+        public static Entities.Template Create(this Entities.Template? _, Enumerations.TemplateType templateType)
         {
             return new Entities.Template()
             {
@@ -84,12 +84,12 @@ namespace PPTail.Generator.Template.Test
             };
         }
 
-        public static ContentItem Create(this ContentItem ignore)
+        public static ContentItem Create(this ContentItem? ignore)
         {
-            return ignore.Create(string.Empty.GetRandom(), new List<Guid>() { Guid.NewGuid() }, string.Empty.GetRandom(), string.Empty.GetRandom(), true.GetRandom(), DateTime.UtcNow.AddMinutes(10.GetRandom()), DateTime.UtcNow.AddHours(10.GetRandom(1)), string.Empty.GetRandom(), new List<string>() { string.Empty.GetRandom() }, string.Empty.GetRandom());
+            return ignore.Create(string.Empty.GetRandom(), new List<Guid>() { Guid.NewGuid() }, string.Empty.GetRandom(), string.Empty.GetRandom(), true.GetRandom(), DateTime.UtcNow.AddMinutes(10.GetRandom()), DateTime.UtcNow.AddHours(10.GetRandom(1)), string.Empty.GetRandom(), new List<string>() { string.Empty.GetRandom() }, string.Empty.GetRandom(), string.Empty.GetRandom());
         }
 
-        public static ContentItem Create(this ContentItem ignore, String author, IEnumerable<Guid> categoryIds, String content, String description, bool isPublished, DateTime lastModDate, DateTime pubDate, String slug, IEnumerable<string> tags, String title)
+        public static ContentItem Create(this ContentItem? _, String author, IEnumerable<Guid> categoryIds, String content, String description, bool isPublished, DateTime lastModDate, DateTime pubDate, String slug, IEnumerable<string> tags, String title, String teaser)
         {
             return new ContentItem()
             {
@@ -104,17 +104,18 @@ namespace PPTail.Generator.Template.Test
                 Slug = slug,
                 Tags = tags,
                 Title = title,
-                ByLine = $"by {author}"
+                ByLine = $"by {author}",
+                Teaser = teaser
             };
         }
 
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem>? ignore)
         {
             return ignore.Create(50.GetRandom(25));
         }
 
-        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem> ignore, Int32 count)
+        public static IEnumerable<ContentItem> Create(this IEnumerable<ContentItem>? _, Int32 count)
         {
             var result = new List<ContentItem>();
             for (Int32 i = 0; i < count; i++)
@@ -122,7 +123,7 @@ namespace PPTail.Generator.Template.Test
             return result;
         }
 
-        public static SiteSettings Create(this SiteSettings ignore)
+        public static SiteSettings Create(this SiteSettings? _)
         {
             return new SiteSettings()
             {

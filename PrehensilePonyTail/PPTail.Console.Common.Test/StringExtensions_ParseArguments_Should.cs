@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using PPTail;
 using TestHelperExtensions;
+using PPTail.Console.Common.Extensions;
 
 namespace PPTail.Test
 {
@@ -14,24 +10,24 @@ namespace PPTail.Test
         [Fact]
         public void ReturnNullForSourceConnectionIfArgsIsNull()
         {
-            string[] target = null;
-            (String actualSource, String actualTarget, String actualTemplate, var switches) = target.ParseArguments();
+            string[]? target = null;
+            (String? actualSource, String? actualTarget, String? actualTemplate, var switches) = target.ParseArguments();
             Assert.Null(actualSource);
         }
 
         [Fact]
         public void ReturnNullForTargetConnectionIfArgsIsNull()
         {
-            string[] target = null;
-            (String actualSource, String actualTarget, String actualTemplate, var switches) = target.ParseArguments();
+            string[]? target = null;
+            (String? actualSource, String? actualTarget, String? actualTemplate, var switches) = target.ParseArguments();
             Assert.Null(actualTarget);
         }
 
         [Fact]
         public void ReturnNullForTemplateConnectionIfArgsIsNull()
         {
-            string[] target = null;
-            (String actualSource, String actualTarget, String actualTemplate, var switches) = target.ParseArguments();
+            string[]? target = null;
+            (String? actualSource, String? actualTarget, String? actualTemplate, var switches) = target.ParseArguments();
             Assert.Null(actualTemplate);
         }
 
@@ -42,7 +38,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate};
-            (String actualSource, String actualTarget, String actualTemplate, var switches) = target.ParseArguments();
+            (String? actualSource, String? actualTarget, String? actualTemplate, var switches) = target.ParseArguments();
             Assert.Equal(expectedSource, actualSource);
         }
 
@@ -53,7 +49,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (String actualSource, String actualTarget, String actualTemplate, var switches) = target.ParseArguments();
+            (String? actualSource, String? actualTarget, String? actualTemplate, var switches) = target.ParseArguments();
             Assert.Equal(expectedTarget, actualTarget);
         }
 
@@ -64,7 +60,7 @@ namespace PPTail.Test
             String expectedTarget = string.Empty.GetRandom();
             String expectedTemplate = string.Empty.GetRandom();
             var target = new string[] { expectedSource, expectedTarget, expectedTemplate };
-            (String actualSource, String actualTarget, String actualTemplate, var switches) = target.ParseArguments();
+            (String? actualSource, String? actualTarget, String? actualTemplate, var switches) = target.ParseArguments();
             Assert.Equal(expectedTemplate, actualTemplate);
         }
     }

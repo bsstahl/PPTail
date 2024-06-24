@@ -26,12 +26,12 @@ namespace PPTail.Output.FileSystem.Test
             return ignore.Create(Mock.Of<IFile>(), targetConnection);
         }
 
-        public static Repository Create(this IOutputRepository ignore, IFile file, String targetConnection)
+        public static Repository Create(this IOutputRepository? ignore, IFile file, String targetConnection)
         {
             return ignore.Create(file, Mock.Of<IDirectory>(), targetConnection);
         }
 
-        public static Repository Create(this IOutputRepository ignore, IFile file, IDirectory directory, string targetConnection)
+        public static Repository Create(this IOutputRepository? ignore, IFile file, IDirectory directory, string targetConnection)
         {
             var container = new ServiceCollection();
             container.AddSingleton<IFile>(file);
@@ -39,18 +39,18 @@ namespace PPTail.Output.FileSystem.Test
             return ignore.Create(container, targetConnection);
         }
 
-        public static Repository Create(this IOutputRepository ignore, IServiceCollection container, String targetConnection)
+        public static Repository Create(this IOutputRepository? _, IServiceCollection container, String targetConnection)
         {
             var serviceProvider = container.BuildServiceProvider();
             return new PPTail.Output.FileSystem.Repository(serviceProvider, targetConnection);
         }
 
-        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore)
+        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile>? ignore)
         {
             return ignore.Create(25.GetRandom(10));
         }
 
-        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore, Int32 count)
+        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile>? _, Int32 count)
         {
             var files = new List<SiteFile>();
 
@@ -60,22 +60,22 @@ namespace PPTail.Output.FileSystem.Test
             return files;
         }
 
-        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile> ignore, Int32 count, bool isEncoded)
+        public static IEnumerable<SiteFile> Create(this IEnumerable<SiteFile>? _, Int32 count, bool isEncoded)
         {
             var files = new List<SiteFile>();
 
             for (Int32 i = 0; i < count; i++)
-                files.Add((null as SiteFile).Create(string.Empty.GetRandom(), $"./{string.Empty.GetRandom()}", Enumerations.TemplateType.ContentPage, isEncoded));
+                files.Add((null as SiteFile).Create(string.Empty.GetRandom(), string.Empty.GetRandom(), Enumerations.TemplateType.ContentPage, isEncoded));
 
             return files;
         }
 
-        public static SiteFile Create(this SiteFile ignore)
+        public static SiteFile Create(this SiteFile? ignore)
         {
-            return ignore.Create(string.Empty.GetRandom(), $"./{string.Empty.GetRandom()}", Enumerations.TemplateType.ContentPage, false);
+            return ignore.Create(string.Empty.GetRandom(), string.Empty.GetRandom(), Enumerations.TemplateType.ContentPage, false);
         }
 
-        public static SiteFile Create(this SiteFile ignore, bool isEncoded)
+        public static SiteFile Create(this SiteFile? ignore, bool isEncoded)
         {
             String content;
             TemplateType templateType;
@@ -94,7 +94,7 @@ namespace PPTail.Output.FileSystem.Test
             return ignore.Create(content, $"./{string.Empty.GetRandom()}", templateType, isEncoded);
         }
 
-        public static SiteFile Create(this SiteFile ignore, String content, String relativeFilePath, TemplateType sourceTemplateType, bool isEncoded)
+        public static SiteFile Create(this SiteFile? _, String content, String relativeFilePath, TemplateType sourceTemplateType, bool isEncoded)
         {
             return new SiteFile()
             {

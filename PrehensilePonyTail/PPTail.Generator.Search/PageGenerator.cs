@@ -41,7 +41,7 @@ namespace PPTail.Generator.Search
 
             var category = categories.SingleOrDefault(c => c.Name.ToUpperInvariant() == tag.ToUpperInvariant());
             var categoryId = (category == null) ? Guid.Empty : category.Id;
-            var posts = contentItems.Where(i => (i.Tags.IsNotNull() && i.Tags.Contains(tag)) || i.CategoryIds.Contains(categoryId));
+            var posts = contentItems.Where(i => (i.Tags is not null && i.Tags.Contains(tag)) || i.CategoryIds.Contains(categoryId));
             return templateProcessor.Process(_searchTemplate, _itemTemplate, sidebarContent, navigationContent, posts, $"Tag: {tag}", pathToRoot, siteSettings.ItemSeparator, false, 0);
         }
 

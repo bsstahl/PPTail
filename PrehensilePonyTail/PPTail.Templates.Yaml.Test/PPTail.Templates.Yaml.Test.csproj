@@ -1,26 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="Moq" Version="4.14.1" />
-    <PackageReference Include="TestHelperExtensions" Version="2.1.0.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+		<PackageReference Include="Moq" Version="4.14.1" />
+		<PackageReference Include="TestHelperExtensions" Version="2.1.0.1" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
-    <ProjectReference Include="..\PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj" />
-    <ProjectReference Include="..\PPTail.Templates.Yaml\PPTail.Templates.Yaml.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+		<ProjectReference Include="..\PPTail.Templates.FileSystem\PPTail.Templates.FileSystem.csproj" />
+		<ProjectReference Include="..\PPTail.Templates.Yaml\PPTail.Templates.Yaml.csproj" />
+	</ItemGroup>
 
 </Project>

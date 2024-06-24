@@ -15,7 +15,7 @@ namespace PPTail.Templates.FileSystem
         private readonly IServiceProvider _serviceProvider;
         private readonly String _templatePath;
 
-        private IEnumerable<Template>? _templates = null;
+        private IEnumerable<Template>? _templates;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be corrected in Globalization project")]
         public ReadRepository(IServiceProvider serviceProvider, string templateConnection)

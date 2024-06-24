@@ -1,10 +1,7 @@
 ﻿using PPTail.Entities;
-using PPTail.Enumerations;
 using PPTail.Exceptions;
-using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,6 +12,20 @@ namespace PPTail.Data.Forestry
 {
     public static class StringExtensions
     {
+        public static string GetRelativePathFrom(this string fileLocation, string containingFolderPath)
+        {
+            var fullFileLocation = Path.GetFullPath(fileLocation);
+            var fullContainingFolderPath = Path.GetFullPath(containingFolderPath);
+            var fileName = Path.GetFileName(fullFileLocation);
+            var result = fullFileLocation.StartsWith(fullContainingFolderPath, StringComparison.OrdinalIgnoreCase)
+                ? fullFileLocation
+                    .Substring(fullContainingFolderPath.Length)
+                    .Replace(fileName, string.Empty)
+                    .Trim(Path.DirectorySeparatorChar)
+                : throw new ArgumentException("The file must be in the directory", nameof(containingFolderPath));
+            return result;
+        }
+
         public static String Sanitize(this string value)
         {
             return value?
@@ -61,7 +72,7 @@ namespace PPTail.Data.Forestry
 
             if (addList)
             {
-                if (values.IsNotNull() && values.Any())
+                if (values is not null && values.Any())
                 {
                     builder.AppendLine($"{name}:");
                     foreach (var value in values ?? Array.Empty<String>())
@@ -80,7 +91,7 @@ namespace PPTail.Data.Forestry
 
             if (addList)
             {
-                if (values.IsNotNull() && values.Any())
+                if (values is not null && values.Any())
                 {
                     builder.AppendLine($"{collectionName}:");
                     foreach (var value in values ?? new List<Entities.SiteVariable>())

@@ -32,21 +32,22 @@ namespace PPTail.Data.Forestry.Test
             var target = (null as IContentRepository).Create(fileProvider, directoryProvider.Object, rootPath);
             var actual = target.GetFolderContents(relativePath);
 
-            directoryProvider.Verify(fs => fs.EnumerateFiles(folderPath), Times.Once);
+            directoryProvider.Verify(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]
-        public void ReturnOneEntityForEachItemInTheFolder()
+        public void ReturnOneEntityForEachItemInTheFullyQualifiedPath()
         {
-            Int32 expected = 25.GetRandom(10);
+            Int32 expectedCount = 25.GetRandom(10);
+
             String relativePath = string.Empty.GetRandom();
             String rootPath = "c:\\";
             String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
-            var files = (null as IEnumerable<SourceFile>).Create(relativePath, expected);
+            var files = (null as IEnumerable<SourceFile>).Create(relativePath, expectedCount);
 
             var directoryProvider = new Mock<IDirectory>();
-            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(files.Select(f => f.FileName));
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>())).Returns(files.Select(f => f.FileName));
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
 
             var fileProvider = new Mock<IFile>();
@@ -57,9 +58,9 @@ namespace PPTail.Data.Forestry.Test
             }
 
             var target = (null as IContentRepository).Create(fileProvider.Object, directoryProvider.Object, rootPath);
-            var actual = target.GetFolderContents(relativePath);
+            var actual = target.GetFolderContents(folderPath);
 
-            Assert.Equal(expected, actual.Count());
+            Assert.Equal(expectedCount, actual.Count());
         }
 
         [Fact]
@@ -74,7 +75,7 @@ namespace PPTail.Data.Forestry.Test
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
-            directoryProvider.Setup(dp => dp.EnumerateFiles(It.IsAny<string>()))
+            directoryProvider.Setup(dp => dp.EnumerateFiles(It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(files.Select(f => System.IO.Path.Combine(rootPath, relativePath, f.FileName)));
 
             var fileProvider = new Mock<IFile>();
@@ -93,14 +94,16 @@ namespace PPTail.Data.Forestry.Test
         {
             Int32 count = 25.GetRandom(10);
             String relativePath = string.Empty.GetRandom();
-            String rootPath = "c:\\";
+            String rootPath = $"c:\\{string.Empty.GetRandom()}\\{string.Empty.GetRandom()}";
             String folderPath = System.IO.Path.Combine(rootPath, relativePath);
 
             var files = (null as IEnumerable<SourceFile>).Create(relativePath, count);
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
-            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(files.Select(f => f.FileName));
+            directoryProvider
+                .Setup(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>()))
+                .Returns(files.Select(f => Path.Combine(folderPath, f.FileName)));
 
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
@@ -110,7 +113,7 @@ namespace PPTail.Data.Forestry.Test
             }
 
             var target = (null as IContentRepository).Create(fileProvider.Object, directoryProvider.Object, rootPath);
-            var actual = target.GetFolderContents(relativePath);
+            var actual = target.GetFolderContents(relativePath, true);
 
             Assert.Equal(count, actual.Count(f => f.RelativePath == relativePath));
         }
@@ -127,7 +130,7 @@ namespace PPTail.Data.Forestry.Test
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
-            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(files.Select(f => f.FileName));
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>())).Returns(files.Select(f => f.FileName));
 
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
@@ -155,7 +158,7 @@ namespace PPTail.Data.Forestry.Test
 
             var directoryProvider = new Mock<IDirectory>();
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
-            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(files.Select(f => System.IO.Path.Combine(folderPath, f.FileName)));
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>())).Returns(files.Select(f => System.IO.Path.Combine(folderPath, f.FileName)));
 
             var fileProvider = new Mock<IFile>();
             foreach (var file in files)
@@ -202,7 +205,7 @@ namespace PPTail.Data.Forestry.Test
             fileNames.AddRange(files.Select(f => System.IO.Path.Combine(folderPath, f.FileName)));
 
             var directoryProvider = new Mock<IDirectory>();
-            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath)).Returns(fileNames);
+            directoryProvider.Setup(fs => fs.EnumerateFiles(folderPath, It.IsAny<bool>())).Returns(fileNames);
             directoryProvider.Setup(fs => fs.Exists(folderPath)).Returns(true);
 
             var fileProvider = new Mock<IFile>();

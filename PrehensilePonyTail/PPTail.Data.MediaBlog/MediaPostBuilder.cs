@@ -59,17 +59,17 @@ namespace PPTail.Data.MediaBlog
             return this.AddTags(new string[] { tag });
         }
 
-        public MediaPostBuilder AddTags(IEnumerable<string> tags)
+        public MediaPostBuilder AddTags(IEnumerable<string>? tags)
         {
             var newTags = new List<string>();
 
-            if (base.Tags.IsNotNull() && base.Tags.Any())
+            if (base.Tags is not null && base.Tags.Any())
                 newTags.AddRange(base.Tags);
 
-            if (tags.IsNotNull() && tags.Any())
+            if (tags is not null && tags.Any())
                 newTags.AddRange(tags);
 
-            if (newTags.Any())
+            if (newTags.Count != 0)
                 base.Tags = newTags;
 
             return this;
@@ -111,13 +111,13 @@ namespace PPTail.Data.MediaBlog
             return this;
         }
 
-        public new MediaPostBuilder MediaItem(JObject value)
+        public new MediaPostBuilder MediaItem(JObject? value)
         {
             base.MediaItem = value;
             return this;
         }
 
-        public new MediaPostBuilder MediaType(string value)
+        public new MediaPostBuilder MediaType(string? value)
         {
             base.MediaType = value;
             return this;
