@@ -43,9 +43,6 @@ public static class Program
                 .AddLogging(l => l.AddSerilog(Log.Logger))
                 .BuildServiceProvider();
 
-            // Run the pre-generation tasks
-            // TOOD: Add tool to generate an Unpublished Posts list page
-
             // Generate the website pages
             var siteBuilder = serviceProvider.GetRequiredService<ISiteBuilder>();
             var sitePages = siteBuilder.Build();
@@ -61,28 +58,19 @@ public static class Program
                     System.Console.WriteLine($"Unable to generate {siteSettings.Title}. No results returned.");
                 else 
                 {
-                    var postPages = sitePages.Where(p => p.SourceTemplateType == Enumerations.TemplateType.PostPage);
-                    var contentPages = sitePages.Where(p => p.SourceTemplateType == Enumerations.TemplateType.ContentPage);
-                    var otherPages = sitePages.Where(p => p.SourceTemplateType != Enumerations.TemplateType.PostPage && p.SourceTemplateType != Enumerations.TemplateType.ContentPage);
-
                     System.Console.WriteLine($"{siteSettings.Title} generated successfully.");
-                    System.Console.WriteLine($"\tPost Pages: {postPages.Count()}");
-                    System.Console.WriteLine($"\tContent Pages: {contentPages.Count()}");
-                    System.Console.WriteLine($"\tOther Pages: {otherPages.Count()}");
 
-                    if (switches.Contains(Constants.VERBOSE_SWITCH))
+                    var templateTypes = sitePages.Select(p => p.SourceTemplateType).Distinct();
+                    foreach (var templateType in templateTypes)
                     {
-                        System.Console.WriteLine("Post Pages:");
-                        foreach (var page in postPages)
-                            System.Console.WriteLine($"\t{page.RelativeFilePath}");
+                        var templatePages = sitePages.Where(p => p.SourceTemplateType == templateType);
+                        System.Console.WriteLine($"\r\n{templateType} Pages: {templatePages.Count()}");
 
-                        System.Console.WriteLine("Content Pages:");
-                        foreach (var page in contentPages)
-                            System.Console.WriteLine($"\t{page.RelativeFilePath}");
-
-                        System.Console.WriteLine("Other Pages:");
-                        foreach (var page in otherPages)
-                            System.Console.WriteLine($"\t{page.RelativeFilePath} ({page.SourceTemplateType})");
+                        if (switches.Contains(Constants.VERBOSE_SWITCH))
+                        {
+                            foreach (var page in templatePages)
+                                System.Console.WriteLine($"\t{page.RelativeFilePath}");
+                        }
                     }
                 }
             }

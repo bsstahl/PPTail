@@ -55,6 +55,13 @@ namespace PPTail.SiteGenerator
             var contentRepo = this.ServiceProvider.GetService<IContentRepository>();
             var logger = this.ServiceProvider.GetService<ILogger<Builder>>();
 
+
+            // Run the pre-generation tasks -- These add additional content to the site
+            // TOOD: Add tool to generate an Unpublished Posts list page
+            // Perhaps this should be done with a generic pipeline, we could inject the
+            // generated pages into the contentRepo prior to using the get methods below
+
+
             var siteSettings = contentRepo.GetSiteSettings() ?? new SiteSettings();
             var posts = contentRepo.GetAllPosts();
             var pages = contentRepo.GetAllPages();
