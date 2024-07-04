@@ -44,6 +44,7 @@ public static class Program
                 .BuildServiceProvider();
 
             // Generate the website pages
+            var outputRepo = serviceProvider.GetRequiredService<IOutputRepository>();
             var siteBuilder = serviceProvider.GetRequiredService<ISiteBuilder>();
             var sitePages = siteBuilder.Build();
 
@@ -54,12 +55,13 @@ public static class Program
             {
                 var contentRepo = serviceProvider.GetRequiredService<IContentRepository>();
                 var siteSettings = contentRepo.GetSiteSettings();
+
                 if (sitePages is null || !sitePages.Any())
                     System.Console.WriteLine($"Unable to generate {siteSettings.Title}. No results returned.");
                 else 
                 {
                     System.Console.WriteLine($"{siteSettings.Title} generated successfully.");
-
+                    System.Console.WriteLine($"Output WOULD HAVE gone to: {outputRepo.OutputLocation}");
                     var templateTypes = sitePages.Select(p => p.SourceTemplateType).Distinct();
                     foreach (var templateType in templateTypes)
                     {
@@ -77,7 +79,6 @@ public static class Program
             else
             {
                 // Store the resulting output
-                var outputRepo = serviceProvider.GetRequiredService<IOutputRepository>();
                 outputRepo.Save(sitePages);
             }
         }

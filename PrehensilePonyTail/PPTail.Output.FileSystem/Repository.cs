@@ -20,6 +20,8 @@ namespace PPTail.Output.FileSystem
 
         readonly String _outputPath;
 
+        public String OutputLocation => Path.GetFullPath(_outputPath);
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization effort")]
         public Repository(IServiceProvider serviceProvider, String targetConnection)
         {

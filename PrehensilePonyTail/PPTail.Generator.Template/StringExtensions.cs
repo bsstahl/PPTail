@@ -6,6 +6,7 @@ using PPTail.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -144,6 +145,7 @@ namespace PPTail.Generator.Template
         internal static String ReplacePageLinkVariables(this string template, IServiceProvider serviceProvider, String pathToRoot)
         {
             var linkProvider = serviceProvider.GetService<ILinkProvider>();
+            var contentRepo = serviceProvider.GetService<IContentRepository>();
             return template
                 .ReplaceHomePageLinks(linkProvider, pathToRoot)
                 .ReplaceArchivePageLinks(linkProvider, pathToRoot)
@@ -152,8 +154,8 @@ namespace PPTail.Generator.Template
                 .ReplaceSearchPageLinks(linkProvider, pathToRoot)
                 .ReplaceContentPageLinks(serviceProvider, pathToRoot)
                 .ReplaceContentPostLinks(serviceProvider, pathToRoot)
-                .ReplaceFileLinks(linkProvider, pathToRoot)
-                .ReplaceImageEmbeddings(linkProvider, pathToRoot);
+                .ReplaceFileLinks(contentRepo, linkProvider, pathToRoot)
+                .ReplaceImageEmbeddings(contentRepo, linkProvider, pathToRoot);
         }
 
         internal static String ReplaceHomePageLinks(this string template, ILinkProvider linkProvider, String pathToRoot)
@@ -227,19 +229,25 @@ namespace PPTail.Generator.Template
             return template.Replace(replacements);
         }
 
-        internal static String ReplaceFileLinks(this string template, ILinkProvider linkProvider, String pathToRoot)
+        internal static String ReplaceFileLinks(this string template, IContentRepository contentRepo, ILinkProvider linkProvider, String pathToRoot)
         {
+            var siteSettings = contentRepo.GetSiteSettings();
+
             string regexPattern = @"\{FileLink:([^\|\}]+)\|*([^\}]*)\}";
-            string relativePath = "Files";
+            string relativePath = siteSettings?.Variables?.SingleOrDefault(v => v.Name == "FilesFolder")?.Value 
+                ?? "Files"; 
 
             var replacements = template.GetLinkReplacementsForFileLinks(linkProvider, regexPattern, pathToRoot, relativePath);
             return template.Replace(replacements);
         }
 
-        internal static String ReplaceImageEmbeddings(this string template, ILinkProvider linkProvider, String pathToRoot)
+        internal static String ReplaceImageEmbeddings(this string template, IContentRepository contentRepo, ILinkProvider linkProvider, String pathToRoot)
         {
+            var siteSettings = contentRepo?.GetSiteSettings();
+
             string regexPattern = @"\{ImageLink:([^\|\}]+)\|*([^\}]*)\}";
-            string relativePath = "Images";
+            string relativePath = siteSettings?.Variables?.SingleOrDefault(v => v.Name == "ImagesFolder")?.Value
+                ?? "Images"; // TODO: Pull folder name from settings
 
             var replacements = template.GetLinkReplacementsForImageEmbeddings(linkProvider, regexPattern, pathToRoot, relativePath);
             return template.Replace(replacements);
