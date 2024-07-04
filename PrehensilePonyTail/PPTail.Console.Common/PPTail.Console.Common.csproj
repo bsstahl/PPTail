@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+		<ProjectReference Include="..\PPTail.Content.UnpublishedPosts\PPTail.Content.UnpublishedPosts.csproj" />
 		<ProjectReference Include="..\PPTail.Data.Ef\PPTail.Data.Ef.csproj" />
 		<ProjectReference Include="..\PPTail.Data.FileSystem\PPTail.Data.FileSystem.csproj" />
 		<ProjectReference Include="..\PPTail.Data.Forestry\PPTail.Data.Forestry.csproj" />

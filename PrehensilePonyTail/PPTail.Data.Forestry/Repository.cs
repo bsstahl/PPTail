@@ -41,6 +41,8 @@ namespace PPTail.Data.Forestry
 
         private MarkdownPipeline _markdownPipeline = null;
 
+        private readonly List<Entities.ContentItem> _generatedPages = new();
+
         public MarkdownPipeline MarkdownPipeline 
         { 
             get
@@ -99,9 +101,22 @@ namespace PPTail.Data.Forestry
             return _siteSettings;
         }
 
+        public void AddPage(Entities.ContentItem item)
+        {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+            item.Content = item.Content.ToHtml(this.MarkdownPipeline);
+            _generatedPages.Add(item);
+        }
+
+        public void AddPages(IEnumerable<Entities.ContentItem> items)
+            => items.ToList().ForEach(p => this.AddPage(p));
+
         public IEnumerable<Entities.ContentItem> GetAllPages()
         {
-            return this.GetContentItems(_rootPagesPath);
+            var results = new List<Entities.ContentItem>();
+            results.AddRange(this.GetContentItems(_rootPagesPath));
+            results.AddRange(_generatedPages);
+            return results;
         }
 
         public IEnumerable<Entities.ContentItem> GetAllPosts()
@@ -160,7 +175,7 @@ namespace PPTail.Data.Forestry
 
         public IEnumerable<SourceFile> GetFolderContents(string relativePath)
         {
-            return GetFolderContents(relativePath, false);
+            return this.GetFolderContents(relativePath, false);
         }
 
         public IEnumerable<SourceFile> GetFolderContents(String relativePath, bool recursive)
@@ -217,6 +232,5 @@ namespace PPTail.Data.Forestry
 
             return _categories;
         }
-
     }
 }

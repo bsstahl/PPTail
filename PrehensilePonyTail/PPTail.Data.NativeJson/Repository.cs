@@ -75,5 +75,8 @@ namespace PPTail.Data.NativeJson
             var context = Newtonsoft.Json.JsonConvert.DeserializeObject<Context>(jsonData);
             _context = context;
         }
+
+        public void AddPage(ContentItem item) => throw new NotImplementedException();
+        public void AddPages(IEnumerable<ContentItem> items) => throw new NotImplementedException();
     }
 }

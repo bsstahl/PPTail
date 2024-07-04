@@ -220,5 +220,8 @@ namespace PPTail.Data.FileSystem
 
             return results;
         }
+
+        public void AddPage(ContentItem item) => throw new NotImplementedException();
+        public void AddPages(IEnumerable<ContentItem> items) => throw new NotImplementedException();
     }
 }

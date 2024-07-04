@@ -8,6 +8,12 @@ namespace PPTail.Console.Common.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddUnpublishedPagesGenerator(this IServiceCollection container)
+    {
+        return container
+            .AddScoped<IContentItemGenerator, PPTail.Content.UnpublishedPosts.Generator>();
+    }
+
     public static IServiceCollection UseFileSystem(this IServiceCollection container)
     {
         return container

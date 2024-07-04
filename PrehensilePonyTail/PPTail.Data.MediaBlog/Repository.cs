@@ -36,6 +36,9 @@ namespace PPTail.Data.MediaBlog
                 throw new ArgumentException($"{_connectionStringFilepathKey} not found in Connection String", nameof(connectionString));
         }
 
+        public void AddPage(ContentItem item) => throw new NotImplementedException();
+        public void AddPages(IEnumerable<ContentItem> items) => throw new NotImplementedException();
+
         public IEnumerable<ContentItem> GetAllPages()
         {
             var fileSystem = _serviceProvider.GetService<IFile>();

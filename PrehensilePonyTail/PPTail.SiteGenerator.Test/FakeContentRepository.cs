@@ -9,6 +9,9 @@ namespace PPTail.SiteGenerator.Test
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class FakeContentRepository : IContentRepository
     {
+        public void AddPage(ContentItem item) => throw new NotImplementedException();
+        public void AddPages(IEnumerable<ContentItem> items) => throw new NotImplementedException();
+
         public IEnumerable<ContentItem> GetAllPages()
         {
             throw new NotImplementedException();

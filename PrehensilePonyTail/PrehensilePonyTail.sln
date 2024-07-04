@@ -128,9 +128,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Templates.Yaml.Test"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{BA331D13-92C7-449F-B69A-F3AC4C8BED09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Console.Common", "PPTail.Console.Common\PPTail.Console.Common.csproj", "{7609AA2B-B73D-455F-ABFD-1AC6B5614968}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Console.Common", "PPTail.Console.Common\PPTail.Console.Common.csproj", "{7609AA2B-B73D-455F-ABFD-1AC6B5614968}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Console.Common.Test", "PPTail.Console.Common.Test\PPTail.Console.Common.Test.csproj", "{EEEDFD0A-F72B-4515-A9D0-2A0DE374DB29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Console.Common.Test", "PPTail.Console.Common.Test\PPTail.Console.Common.Test.csproj", "{EEEDFD0A-F72B-4515-A9D0-2A0DE374DB29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPTail.Content.UnpublishedPosts", "PPTail.Content.UnpublishedPosts\PPTail.Content.UnpublishedPosts.csproj", "{AA4D7651-9F29-449E-9E73-E050E5EE887D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -350,6 +352,10 @@ Global
 		{EEEDFD0A-F72B-4515-A9D0-2A0DE374DB29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEEDFD0A-F72B-4515-A9D0-2A0DE374DB29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEEDFD0A-F72B-4515-A9D0-2A0DE374DB29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA4D7651-9F29-449E-9E73-E050E5EE887D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA4D7651-9F29-449E-9E73-E050E5EE887D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA4D7651-9F29-449E-9E73-E050E5EE887D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA4D7651-9F29-449E-9E73-E050E5EE887D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -408,6 +414,7 @@ Global
 		{0ED36A21-7DD6-4DA0-9953-CE361C2E0818} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
 		{7609AA2B-B73D-455F-ABFD-1AC6B5614968} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 		{EEEDFD0A-F72B-4515-A9D0-2A0DE374DB29} = {1AF51888-396D-4451-AB09-1CEC9AAC5BA5}
+		{AA4D7651-9F29-449E-9E73-E050E5EE887D} = {D393F4F6-8FF4-452C-B1BB-070DEFA7FD31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C6FD3D6-AA5B-4B33-A93A-E8286791C3F4}

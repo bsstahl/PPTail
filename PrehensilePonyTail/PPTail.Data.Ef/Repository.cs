@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PPTail.Data.Ef
 {
-    public class Repository: Interfaces.IContentRepository
+    public class Repository : Interfaces.IContentRepository
     {
         ContentContext _context;
 
@@ -13,6 +13,9 @@ namespace PPTail.Data.Ef
         {
             _context = serviceProvider.GetService<ContentContext>();
         }
+
+        public void AddPage(Entities.ContentItem item) => throw new NotImplementedException();
+        public void AddPages(IEnumerable<Entities.ContentItem> items) => throw new NotImplementedException();
 
         public IEnumerable<Entities.ContentItem> GetAllPages()
         {
