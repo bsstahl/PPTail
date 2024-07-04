@@ -8,6 +8,11 @@ namespace PPTail.Extensions
 {
     public static class StringExtensions
     {
+        public static string ToUrl(this string filePath)
+        {
+            return filePath.Replace("\\", "/");
+        }
+
         public static Boolean AsBoolean(this String value)
         {
             _ = bool.TryParse(value, out var result);

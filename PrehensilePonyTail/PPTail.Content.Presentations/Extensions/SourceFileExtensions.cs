@@ -1,4 +1,5 @@
 ﻿using PPTail.Entities;
+using PPTail.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,10 +23,10 @@ internal static class SourceFileExtensions
 
             if (typedPresentations.Any())
             {
-                contentBuilder.AppendLine($"### {presentationType}\r\n");
+                contentBuilder.AppendLine($"\r\n### {presentationType}\r\n");
                 foreach (var presentation in typedPresentations)
                 {
-                    var path = Path.Combine(presentation.RelativePath, presentation.FileName);
+                    var path = $"{{PathToRoot}}\\{Path.Combine(presentation.RelativePath, presentation.FileName)}".ToUrl();
                     var startOfName = presentation.RelativePath.LastIndexOf(presentationType) + presentationType.Length + 1;
                     var name = presentation.RelativePath.Substring(startOfName);
                     contentBuilder.AppendLine($"* [{name}]({path})");
