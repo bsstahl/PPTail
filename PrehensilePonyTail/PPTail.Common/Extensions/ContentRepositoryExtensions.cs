@@ -32,5 +32,15 @@ namespace PPTail.Extensions
             return method.Invoke(repo).SingleOrDefault(i => field.Invoke(i) == value);
         }
 
+        public static IEnumerable<SourceFile> GetFoldersContents(this IContentRepository contentRepo, IEnumerable<string> relativePaths, bool recursive)
+        {
+            if (contentRepo is null)
+                throw new ArgumentNullException(nameof(contentRepo));
+
+            var results = new List<SourceFile>();
+            foreach (string relativePath in relativePaths ?? [])
+                results.AddRange(contentRepo.GetFolderContents(relativePath, recursive));
+            return results;
+        }
     }
 }

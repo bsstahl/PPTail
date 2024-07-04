@@ -37,6 +37,7 @@ public static class Program
 
             var serviceProvider = new ServiceCollection()
                 .AddUnpublishedPagesGenerator()
+                .AddPresentationsLinksGenerator()
                 .AddSourceRepository(sourceConnection)
                 .AddTargetRepository(targetConnection)
                 .AddTemplateRepository(templateConnection)

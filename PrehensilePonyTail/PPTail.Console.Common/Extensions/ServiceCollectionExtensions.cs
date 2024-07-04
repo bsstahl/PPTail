@@ -14,6 +14,12 @@ public static class ServiceCollectionExtensions
             .AddScoped<IContentItemGenerator, PPTail.Content.UnpublishedPosts.Generator>();
     }
 
+    public static IServiceCollection AddPresentationsLinksGenerator(this IServiceCollection container)
+    {
+        return container
+            .AddScoped<IContentItemGenerator, PPTail.Content.Presentations.Generator>();
+    }
+
     public static IServiceCollection UseFileSystem(this IServiceCollection container)
     {
         return container
