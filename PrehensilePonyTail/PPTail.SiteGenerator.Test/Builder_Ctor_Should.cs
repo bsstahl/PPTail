@@ -145,6 +145,18 @@ namespace PPTail.SiteGenerator.Test
             ShouldReturnTheCorrectDependencyNameIfDependencyIsRemoved<IContentItemPageGenerator>();
         }
 
+        [Fact]
+        public void ThrowADependencyNotFoundExceptionIfTheNotFoundProviderIsNotSupplied()
+        {
+            ShouldThrowDependencyNotFoundExceptionIfDependencyIsRemoved<INotFoundProvider>();
+        }
+
+        [Fact]
+        public void ShouldReturnTheCorrectDependencyNameIfTheNotFoundProviderIsNotSupplied()
+        {
+            ShouldReturnTheCorrectDependencyNameIfDependencyIsRemoved<INotFoundProvider>();
+        }
+
 
         private void ShouldThrowDependencyNotFoundExceptionIfDependencyIsRemoved<T>() where T: class
         {

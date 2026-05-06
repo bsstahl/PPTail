@@ -87,5 +87,11 @@ namespace PPTail.Builders
             return this.AdditionalFilePaths(additionalPathsResult);
         }
 
+        public new SiteSettingsBuilder Generate404Page(bool value)
+        {
+            base.Generate404Page = value;
+            return this;
+        }
+
     }
 }
