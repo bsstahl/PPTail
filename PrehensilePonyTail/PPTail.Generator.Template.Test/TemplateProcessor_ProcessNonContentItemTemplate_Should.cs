@@ -71,6 +71,29 @@ namespace PPTail.Generator.Template.Test
 
 
         [Fact]
+        public void ReplaceTheDescriptionPlaceHolderWithThePageTitle()
+        {
+            String pageTemplateContent = "-----{Description}-----";
+            var pageTemplate = new Entities.Template() { Content = pageTemplateContent, TemplateType = Enumerations.TemplateType.ContactPage };
+            var templates = new List<Entities.Template>() { pageTemplate };
+
+            String sidebarContent = string.Empty.GetRandom();
+            String navContent = string.Empty.GetRandom();
+            String pageTitle = string.Empty.GetRandom();
+            String content = string.Empty.GetRandom();
+            String pathToRoot = string.Empty.GetRandom();
+
+            var container = (null as IServiceCollection).Create();
+            container.ReplaceDependency<IEnumerable<Entities.Template>>(templates);
+
+            var target = (null as ITemplateProcessor).Create(container);
+            var actual = target.ProcessNonContentItemTemplate(pageTemplate, sidebarContent, navContent, content, pageTitle, pathToRoot);
+
+            Assert.Contains(pageTitle, actual);
+            Assert.DoesNotContain("{Description}", actual);
+        }
+
+        [Fact]
         public void ReplaceTheTitlePlaceHolderWithTheTitle()
         {
             String pageTemplateContent = "-----{Title}-----";
