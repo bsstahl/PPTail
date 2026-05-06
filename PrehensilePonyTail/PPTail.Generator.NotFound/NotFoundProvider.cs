@@ -26,7 +26,7 @@ namespace PPTail.Generator.NotFound
 
             var copyrightSection = string.IsNullOrWhiteSpace(copyright)
                 ? string.Empty
-                : $"\r\n    <footer>\r\n      <p>{System.Net.WebUtility.HtmlEncode(copyright)}</p>\r\n    </footer>";
+                : $"{Environment.NewLine}    <footer>{Environment.NewLine}      <p>{System.Net.WebUtility.HtmlEncode(copyright)}</p>{Environment.NewLine}    </footer>";
 
             return $@"<!DOCTYPE html>
 <html lang=""en"">
