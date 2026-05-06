@@ -33,7 +33,7 @@ namespace PPTReport
                 // Add all possible source repositories to the container
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.FileSystem.Repository(c, sourceConnection));
                 container.AddSingleton<IContentRepository, PPTail.Data.Ef.Repository>();
-                container.AddSingleton<IContentRepository>(c => new PPTail.Data.Forestry.Repository(c, sourceConnection));
+                container.AddSingleton<IContentRepository>(c => new PPTail.Data.MarkdownFiles.Repository(c, sourceConnection));
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.WordpressFiles.Repository(inputFilePath));
                 container.AddSingleton<IContentRepository>(c => new PPTail.Data.MediaBlog.YamlRepository(c, sourceConnection));
 

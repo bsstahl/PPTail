@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using TestHelperExtensions;
 using Xunit;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetCategories_Should

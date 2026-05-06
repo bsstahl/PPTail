@@ -7,7 +7,7 @@ using Moq;
 using PPTail.Entities;
 using PPTail.Exceptions;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_Ctor_Should

@@ -17,7 +17,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using System.Text.RegularExpressions;
 using System.Runtime.CompilerServices;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Extensions

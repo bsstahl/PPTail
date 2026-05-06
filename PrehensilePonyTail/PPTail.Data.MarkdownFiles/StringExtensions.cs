@@ -8,7 +8,7 @@ using System.Text;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace PPTail.Data.Forestry
+namespace PPTail.Data.MarkdownFiles
 {
     public static class StringExtensions
     {

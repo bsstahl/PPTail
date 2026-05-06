@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using PPTail.Enumerations;
 using System.Runtime.CompilerServices;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllWidgets_Should

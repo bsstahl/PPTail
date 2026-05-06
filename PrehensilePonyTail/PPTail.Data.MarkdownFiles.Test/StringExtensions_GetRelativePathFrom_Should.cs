@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace PPTail.Data.Forestry.Test;
+namespace PPTail.Data.MarkdownFiles.Test;
 
 public class StringExtensions_GetRelativePathFrom_Should
 {

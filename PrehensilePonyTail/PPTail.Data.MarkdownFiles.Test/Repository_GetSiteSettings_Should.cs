@@ -10,7 +10,7 @@ using PPTail.Interfaces;
 using System.Xml.Linq;
 using PPTail.Exceptions;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetSiteSettings_Should

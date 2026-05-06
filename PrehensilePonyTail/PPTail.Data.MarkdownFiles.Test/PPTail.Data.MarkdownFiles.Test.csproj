@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PPTail.Data.Forestry\PPTail.Data.Forestry.csproj" />
+		<ProjectReference Include="..\PPTail.Data.MarkdownFiles\PPTail.Data.MarkdownFiles.csproj" />
 		<ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
 	</ItemGroup>
 
