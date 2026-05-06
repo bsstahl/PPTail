@@ -27,8 +27,8 @@ namespace PPTConvert
                     result = new PPTail.Data.FileSystem.Repository(serviceProvider, connectionString);
                     break;
 
-                case "PPTail.Data.Forestry.Repository":
-                    result = new PPTail.Data.Forestry.Repository(serviceProvider, connectionString);
+                case "PPTail.Data.MarkdownFiles.Repository":
+                    result = new PPTail.Data.MarkdownFiles.Repository(serviceProvider, connectionString);
                     break;
 
                 case "PPTail.Data.MediaBlog.Repository":
@@ -70,8 +70,8 @@ namespace PPTConvert
                     result = new PPTail.Data.NativeJson.RepositoryWriter(filePath);
                     break;
 
-                case "PPTail.Data.Forestry.RepositoryWriter":
-                    result = new PPTail.Data.Forestry.RepositoryWriter(serviceProvider, filePath, providerName);
+                case "PPTail.Data.MarkdownFiles.RepositoryWriter":
+                    result = new PPTail.Data.MarkdownFiles.RepositoryWriter(serviceProvider, filePath, providerName);
                     break;
 
                 default:

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PPTail.Data.Forestry
+namespace PPTail.Data.MarkdownFiles
 {
     public class RepositoryWriter : IContentRepositoryWriter
     {

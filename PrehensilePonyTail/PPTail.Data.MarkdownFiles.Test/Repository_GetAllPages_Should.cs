@@ -7,7 +7,7 @@ using TestHelperExtensions;
 using Moq;
 using PPTail.Entities;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPages_Should

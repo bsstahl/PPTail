@@ -112,9 +112,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.MediaBlog", "PP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.MediaBlog.Test", "PPTail.Data.MediaBlog.Test\PPTail.Data.MediaBlog.Test.csproj", "{A8747BFA-B710-4E22-8800-75820B6A9A75}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Forestry", "PPTail.Data.Forestry\PPTail.Data.Forestry.csproj", "{F2632130-BAD3-4B4D-BF99-296D3DD82AC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.MarkdownFiles", "PPTail.Data.MarkdownFiles\PPTail.Data.MarkdownFiles.csproj", "{F2632130-BAD3-4B4D-BF99-296D3DD82AC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.Forestry.Test", "PPTail.Data.Forestry.Test\PPTail.Data.Forestry.Test.csproj", "{E3D69688-CA4D-4A37-899A-D93FAA79FF0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTail.Data.MarkdownFiles.Test", "PPTail.Data.MarkdownFiles.Test\PPTail.Data.MarkdownFiles.Test.csproj", "{E3D69688-CA4D-4A37-899A-D93FAA79FF0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPTReport", "PPTReport\PPTReport.csproj", "{B78FE80A-1ED7-46D9-83DC-9EE35C765D94}"
 EndProject

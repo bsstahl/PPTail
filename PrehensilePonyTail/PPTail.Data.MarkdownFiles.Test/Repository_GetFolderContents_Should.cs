@@ -9,7 +9,7 @@ using PPTail.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using PPTail.Entities;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetFolderContents_Should

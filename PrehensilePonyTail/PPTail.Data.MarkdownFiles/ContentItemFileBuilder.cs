@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace PPTail.Data.Forestry
+namespace PPTail.Data.MarkdownFiles
 {
     public class ContentItemFileBuilder
     {

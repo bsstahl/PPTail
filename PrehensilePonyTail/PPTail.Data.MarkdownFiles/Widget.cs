@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PPTail.Data.Forestry
+namespace PPTail.Data.MarkdownFiles
 {
     internal class Widget
     {

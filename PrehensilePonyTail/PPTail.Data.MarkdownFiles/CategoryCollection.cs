@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PPTail.Data.Forestry
+namespace PPTail.Data.MarkdownFiles
 {
     internal class CategoryCollection
     {

@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 using PPTail.Entities;
 using Xunit.Sdk;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Repository_GetAllPosts_Should

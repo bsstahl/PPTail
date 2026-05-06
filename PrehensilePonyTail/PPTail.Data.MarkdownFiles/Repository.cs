@@ -12,7 +12,7 @@ using Markdig.SyntaxHighlighting;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
-namespace PPTail.Data.Forestry
+namespace PPTail.Data.MarkdownFiles
 {
     public class Repository : Interfaces.IContentRepository
     {

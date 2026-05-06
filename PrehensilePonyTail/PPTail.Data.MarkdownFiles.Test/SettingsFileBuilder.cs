@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using TestHelperExtensions;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class SettingsFileBuilder: Entities.SiteSettings

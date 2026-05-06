@@ -4,7 +4,7 @@ using System.Text;
 using PPTail.Builders;
 using TestHelperExtensions;
 
-namespace PPTail.Data.Forestry.Test
+namespace PPTail.Data.MarkdownFiles.Test
 {
     public static class CategoriesBuilderExtensions
     {

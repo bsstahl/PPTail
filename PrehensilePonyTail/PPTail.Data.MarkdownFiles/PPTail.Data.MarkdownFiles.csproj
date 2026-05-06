@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<AssemblyName>PPTail.Data.Forestry</AssemblyName>
-		<PackageId>PPTail.Data.Forestry</PackageId>
+		<AssemblyName>PPTail.Data.MarkdownFiles</AssemblyName>
+		<PackageId>PPTail.Data.MarkdownFiles</PackageId>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

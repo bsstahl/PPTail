@@ -80,7 +80,7 @@ public static class ServiceCollectionExtensions
         else if (provider.Equals("PPTAIL.DATA.MEDIABLOG.YAMLREPOSITORY", StringComparison.OrdinalIgnoreCase))
             container.AddSingleton<IContentRepository>(c => new PPTail.Data.MediaBlog.YamlRepository(c, sourceConnection!));
         else if (provider.Equals("PPTAIL.DATA.FORESTRY.REPOSITORY", StringComparison.OrdinalIgnoreCase))
-            container.AddSingleton<IContentRepository>(c => new PPTail.Data.Forestry.Repository(c, sourceConnection));
+            container.AddSingleton<IContentRepository>(c => new PPTail.Data.MarkdownFiles.Repository(c, sourceConnection));
         else
             throw new ArgumentException($"Unknown source provider '{provider}'", nameof(sourceConnection));
 
