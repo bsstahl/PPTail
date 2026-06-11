@@ -53,6 +53,7 @@ namespace PPTail.Data.Forestry
                         //  Enabling AdvancedExtensions in Markdig breaks my page reference system
                         // .UseAdvancedExtensions()
                         .UseSyntaxHighlighting()
+                        .UsePipeTables()
                         .Build();
                 }
                 return _markdownPipeline;
