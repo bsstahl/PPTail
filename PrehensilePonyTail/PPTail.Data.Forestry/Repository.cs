@@ -8,7 +8,6 @@ using System.Xml.Linq;
 using PPTail.Interfaces;
 using PPTail.Extensions;
 using Markdig;
-using Markdig.SyntaxHighlighting;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
@@ -52,7 +51,6 @@ namespace PPTail.Data.Forestry
                     _markdownPipeline = new MarkdownPipelineBuilder()
                         //  Enabling AdvancedExtensions in Markdig breaks my page reference system
                         // .UseAdvancedExtensions()
-                        .UseSyntaxHighlighting()
                         .UsePipeTables()
                         .Build();
                 }

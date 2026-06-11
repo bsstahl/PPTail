@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <!-- Add new shared frameworks here once for all projects. -->
+    <PPTailAdditionalTargetFrameworks Condition="'$(PPTailAdditionalTargetFrameworks)' == ''">net10.0</PPTailAdditionalTargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- Pin secure Newtonsoft version to override older transitive versions in test dependency graph. -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>

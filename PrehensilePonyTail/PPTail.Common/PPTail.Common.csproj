@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<AssemblyTitle>PPTail.Common</AssemblyTitle>
-		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;$(PPTailAdditionalTargetFrameworks)</TargetFrameworks>
 		<AssemblyName>PPTail.Common</AssemblyName>
 		<PackageId>PPTail.Common</PackageId>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

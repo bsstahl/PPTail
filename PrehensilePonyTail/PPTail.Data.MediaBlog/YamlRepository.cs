@@ -8,7 +8,6 @@ using System.Linq;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using Markdig;
-using Markdig.SyntaxHighlighting;
 
 namespace PPTail.Data.MediaBlog
 {
@@ -34,7 +33,6 @@ namespace PPTail.Data.MediaBlog
                 if (_markdownPipeline is null)
                 {
                     _markdownPipeline = new MarkdownPipelineBuilder()
-                        .UseSyntaxHighlighting()
                         .Build();
                 }
 
