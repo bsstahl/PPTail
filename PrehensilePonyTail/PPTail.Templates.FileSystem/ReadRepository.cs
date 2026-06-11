@@ -20,8 +20,12 @@ namespace PPTail.Templates.FileSystem
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be corrected in Globalization project")]
         public ReadRepository(IServiceProvider serviceProvider, string templateConnection)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+#else
             if (serviceProvider is null)
                 throw new ArgumentNullException(nameof(serviceProvider));
+#endif
 
             _serviceProvider = serviceProvider;
             _templatePath = templateConnection.GetConnectionStringValue(_connectionStringFilePathKey);

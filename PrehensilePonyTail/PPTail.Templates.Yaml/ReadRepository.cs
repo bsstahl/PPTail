@@ -19,8 +19,12 @@ namespace PPTail.Templates.Yaml
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "To be fixed in Globalization effort")]
         public ReadRepository(IServiceProvider serviceProvider, String templateConnection)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+#else
             if (serviceProvider is null)
                 throw new ArgumentNullException(nameof(serviceProvider));
+#endif
 
             _serviceProvider = serviceProvider;
 
