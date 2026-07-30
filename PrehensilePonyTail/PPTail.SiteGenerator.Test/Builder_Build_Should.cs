@@ -1207,5 +1207,134 @@ namespace PPTail.SiteGenerator.Test
 
             Assert.Equal(expectedItemCount, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.Raw && p.RelativeFilePath.StartsWith("Theme")));
         }
+
+        [Fact]
+        public void NotGenerateA404PageIfTheSettingIsNotEnabled()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = new SiteSettings() { Generate404Page = false };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.NotFound));
+        }
+
+        [Fact]
+        public void NotGenerateA404PageIfTheSettingIsTheDefault()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(0, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.NotFound));
+        }
+
+        [Fact]
+        public void GenerateA404PageIfTheSettingIsEnabled()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = new SiteSettings() { Generate404Page = true };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var notFoundProvider = new Mock<INotFoundProvider>();
+            notFoundProvider.Setup(n => n.Generate404Page()).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<INotFoundProvider>(notFoundProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.NotFound));
+        }
+
+        [Fact]
+        public void Generate404PageWithCorrectFilename()
+        {
+            String expectedFileName = "404.html";
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = new SiteSettings() { Generate404Page = true };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var notFoundProvider = new Mock<INotFoundProvider>();
+            notFoundProvider.Setup(n => n.Generate404Page()).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<INotFoundProvider>(notFoundProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            Assert.Equal(1, actual.Count(p => p.SourceTemplateType == Enumerations.TemplateType.NotFound && p.RelativeFilePath.EndsWith(expectedFileName)));
+        }
+
+        [Fact]
+        public void Generate404PageWithCorrectContent()
+        {
+            String expectedContent = string.Empty.GetRandom();
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = new SiteSettings() { Generate404Page = true };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var notFoundProvider = new Mock<INotFoundProvider>();
+            notFoundProvider.Setup(n => n.Generate404Page()).Returns(expectedContent);
+            container.ReplaceDependency<INotFoundProvider>(notFoundProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            var page = actual.Single(p => p.SourceTemplateType == Enumerations.TemplateType.NotFound);
+            Assert.Equal(expectedContent, page.Content);
+        }
+
+        [Fact]
+        public void CallNotFoundProviderExactlyOnceWhenSettingIsEnabled()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = new SiteSettings() { Generate404Page = true };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var notFoundProvider = new Mock<INotFoundProvider>();
+            notFoundProvider.Setup(n => n.Generate404Page()).Returns(string.Empty.GetRandom());
+            container.ReplaceDependency<INotFoundProvider>(notFoundProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            notFoundProvider.Verify(n => n.Generate404Page(), Times.Once);
+        }
+
+        [Fact]
+        public void NotCallNotFoundProviderWhenSettingIsNotEnabled()
+        {
+            var container = (null as IServiceCollection).Create();
+
+            var siteSettings = new SiteSettings() { Generate404Page = false };
+            var contentRepo = new Mock<IContentRepository>();
+            contentRepo.Setup(r => r.GetSiteSettings()).Returns(siteSettings);
+            container.ReplaceDependency<IContentRepository>(contentRepo.Object);
+
+            var notFoundProvider = new Mock<INotFoundProvider>();
+            container.ReplaceDependency<INotFoundProvider>(notFoundProvider.Object);
+
+            var target = (null as Builder).Create(container);
+            var actual = target.Build();
+
+            notFoundProvider.Verify(n => n.Generate404Page(), Times.Never);
+        }
     }
 }

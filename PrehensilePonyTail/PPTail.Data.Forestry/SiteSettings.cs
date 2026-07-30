@@ -29,6 +29,7 @@ namespace PPTail.Data.Forestry
 
         public IEnumerable<String> AdditionalFilePaths { get; set; } = new List<String>();
         public IEnumerable<SiteVariable> SiteVariables { get; set; } = new List<SiteVariable>();
+        public bool Generate404Page { get; set; } = false;
 
         // public IEnumerable<String> ExtendedSettings { get; set; }
 
@@ -51,6 +52,7 @@ namespace PPTail.Data.Forestry
                 ItemSeparator = this.ItemSeparator ?? String.Empty,
                 OutputFileExtension = this.OutputFileExtension ?? _defaultOutputFileExtension,
                 AdditionalFilePaths = this.AdditionalFilePaths,
+                Generate404Page = this.Generate404Page,
                 Variables = this.SiteVariables.Select(v => 
                     new Entities.SiteVariable()
                     { 

@@ -33,6 +33,7 @@ namespace PPTail.SiteGenerator
             _serviceProvider.ValidateService<IRedirectProvider>();
             _serviceProvider.ValidateService<ISyndicationProvider>();
             _serviceProvider.ValidateService<IContentEncoder>();
+            _serviceProvider.ValidateService<INotFoundProvider>();
         }
 
         private IServiceProvider ServiceProvider { get { return _serviceProvider; } }
@@ -53,6 +54,7 @@ namespace PPTail.SiteGenerator
             var syndicationProvider = this.ServiceProvider.GetService<ISyndicationProvider>();
             var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
             var contentRepo = this.ServiceProvider.GetService<IContentRepository>();
+            var notFoundProvider = this.ServiceProvider.GetService<INotFoundProvider>();
             var logger = this.ServiceProvider.GetService<ILogger<Builder>>();
 
             // Run the pre-generation tasks -- These add additional pages to the site
@@ -133,6 +135,18 @@ namespace PPTail.SiteGenerator
                 SourceTemplateType = Enumerations.TemplateType.Syndication,
                 Content = syndicationContent
             });
+
+            // Create custom 404 page (only when configured to do so)
+            if (siteSettings.Generate404Page)
+            {
+                if (logger is not null) logger.LogInformation("Generating custom 404 page");
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = "./404.html",
+                    SourceTemplateType = Enumerations.TemplateType.NotFound,
+                    Content = notFoundProvider.Generate404Page()
+                });
+            }
 
             if (logger is not null) logger.LogInformation("Generating post pages");
             foreach (var post in posts)
