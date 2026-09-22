@@ -15,6 +15,10 @@ namespace PPTail.Generator.Template
 {
     public static class StringExtensions
     {
+        private const String _mermaidAssetsPlaceholder = "{MermaidAssets}";
+        private const String _mermaidMarker = "class=\"mermaid\"";
+        private const String _mermaidAssets = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js\"></script>\n    <script>if (window.mermaid) { mermaid.initialize({ startOnLoad: false }); mermaid.run(); }</script>";
+
         internal static String ReplaceContentItemVariables(this String template, IServiceProvider serviceProvider, ContentItem item, String pathToRoot, Boolean xmlEncodeContent)
         {
             serviceProvider.ValidateService<IContentRepository>();
@@ -97,6 +101,15 @@ namespace PPTail.Generator.Template
                 .ReplacePathToRootVariables(pathToRoot)
                 .ReplaceSettingsVariables(serviceProvider)
                 .ReplacePageLinkVariables(serviceProvider, pathToRoot);
+        }
+
+        internal static String ReplaceMermaidAssets(this String template, params String[] htmlFragments)
+        {
+            var includeMermaidAssets = htmlFragments
+                .Where(f => !String.IsNullOrWhiteSpace(f))
+                .Any(f => f.Contains(_mermaidMarker, StringComparison.OrdinalIgnoreCase));
+
+            return template.Replace(_mermaidAssetsPlaceholder, includeMermaidAssets ? _mermaidAssets : String.Empty);
         }
 
         internal static String ReplacePathToRootVariables(this String content, String pathToRoot)
