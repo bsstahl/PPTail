@@ -55,6 +55,7 @@ namespace PPTail.Generator.Template
         public String ProcessContentItemTemplate(Entities.Template template, ContentItem item, String sidebarContent, String navContent, String pathToRoot, Boolean xmlEncodeContent)
         {
             return template.Content
+                .ReplaceMermaidAssets(item.Content, sidebarContent)
                 .ReplaceContentItemVariables(_serviceProvider, item, pathToRoot, xmlEncodeContent)
                 .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, String.Empty, pathToRoot);
         }
@@ -62,6 +63,7 @@ namespace PPTail.Generator.Template
         public String ProcessNonContentItemTemplate(Entities.Template template, String sidebarContent, String navContent, String content, String pageTitle, String pathToRoot)
         {
             return template.Content
+                  .ReplaceMermaidAssets(content, sidebarContent)
                   .Replace("{Title}", pageTitle)
                   .Replace("{ByLine}", String.Empty)
                   .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, content, pathToRoot);

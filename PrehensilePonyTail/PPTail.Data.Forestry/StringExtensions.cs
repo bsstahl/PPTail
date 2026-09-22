@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -12,6 +13,8 @@ namespace PPTail.Data.Forestry
 {
     public static class StringExtensions
     {
+        private static readonly Regex _mermaidCodeBlockPattern = new(@"<pre><code class=""language-mermaid"">(?<content>[\s\S]*?)</code></pre>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public static string GetRelativePathFrom(this string fileLocation, string containingFolderPath)
         {
             var fullFileLocation = Path.GetFullPath(fileLocation);
@@ -44,7 +47,18 @@ namespace PPTail.Data.Forestry
 
         public static String ToHtml(this string markdown, Markdig.MarkdownPipeline markdownPipeline)
         {
-            return Markdig.Markdown.ToHtml(markdown, markdownPipeline);
+            var html = Markdig.Markdown.ToHtml(markdown, markdownPipeline);
+            return html.ReplaceMermaidCodeBlocks();
+        }
+
+        internal static String ReplaceMermaidCodeBlocks(this String html)
+        {
+            if (String.IsNullOrEmpty(html))
+                return html;
+
+            return _mermaidCodeBlockPattern.Replace(
+                html,
+                m => $"<pre class=\"mermaid\">{m.Groups["content"].Value}</pre>");
         }
 
         public static String ConditionalWrap(this string value, char? delimiter)
