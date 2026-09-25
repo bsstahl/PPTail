@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bsstahl/PPTail/blob/main/Docs/Schema/content-item-frontmatter.schema.json",
+  "title": "PPTail ContentItem frontmatter",
+  "description": "Schema for the YAML frontmatter at the start of a PPTail markdown content item. The markdown body after the closing --- delimiter is the ContentItem.Content value and is not part of this schema. The categories property contains category names; PPTail resolves those names to ContentItem.CategoryIds when it loads the file.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The ContentItem identifier."
+    },
+    "author": {
+      "type": "string",
+      "description": "The author name or identifier."
+    },
+    "title": {
+      "type": "string",
+      "description": "The title displayed for the content item."
+    },
+    "description": {
+      "type": "string",
+      "description": "A short description of the content item."
+    },
+    "teaser": {
+      "type": "string",
+      "description": "Optional teaser text for the content item."
+    },
+    "ispublished": {
+      "type": "boolean",
+      "description": "Whether the content item is published."
+    },
+    "buildifnotpublished": {
+      "type": "boolean",
+      "description": "Whether to build the content item even when it is not published."
+    },
+    "showinlist": {
+      "type": "boolean",
+      "description": "Whether to include the content item in content lists."
+    },
+    "publicationdate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The publication date and time."
+    },
+    "lastmodificationdate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time when the content item was last modified."
+    },
+    "slug": {
+      "type": "string",
+      "description": "The URL-friendly identifier for the content item."
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags associated with the content item.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "description": "Category names. PPTail maps these names to ContentItem.CategoryIds.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "menuorder": {
+      "type": "integer",
+      "description": "The sort order used when displaying the content item."
+    },
+    "byline": {
+      "type": "string",
+      "description": "Optional byline text. PPTail derives one from author when omitted."
+    }
+  },
+  "required": [
+    "id",
+    "author",
+    "title",
+    "description",
+    "ispublished",
+    "showinlist",
+    "publicationdate",
+    "lastmodificationdate",
+    "slug",
+    "tags",
+    "categories",
+    "menuorder"
+  ]
+}
