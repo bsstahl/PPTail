@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\PPTail.SiteGenerator\PPTail.SiteGenerator.csproj" />
 		<ProjectReference Include="..\PPTail.Common\PPTail.Common.csproj" />
+		<ProjectReference Include="..\PPTail.Content.UnpublishedPosts\PPTail.Content.UnpublishedPosts.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

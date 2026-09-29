@@ -36,6 +36,7 @@ public static class Program
                 .CreateLogger();
 
             var serviceProvider = new ServiceCollection()
+                .AddBuildSettings(switches.ToBuildSettings())
                 .AddUnpublishedPagesGenerator()
                 .AddPresentationsLinksGenerator()
                 .AddSourceRepository(sourceConnection)

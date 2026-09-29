@@ -20,6 +20,12 @@ public static class ServiceCollectionExtensions
             .AddScoped<IContentItemGenerator, PPTail.Content.Presentations.Generator>();
     }
 
+    public static IServiceCollection AddBuildSettings(this IServiceCollection container, BuildSettings buildSettings)
+    {
+        return container
+            .AddSingleton<BuildSettings>(buildSettings ?? new BuildSettings());
+    }
+
     public static IServiceCollection UseFileSystem(this IServiceCollection container)
     {
         return container

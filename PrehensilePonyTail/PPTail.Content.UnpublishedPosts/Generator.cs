@@ -32,6 +32,7 @@ public class Generator : IContentItemGenerator
             .BuildIfNotPublished(true)
             .Content(content)
             .Description(_description)
+            .ExcludeFromSitemap(true)
             .IsPublished(true)
             .LastModificationDate(DateTime.UtcNow)
             .PublicationDate(DateTime.UtcNow)

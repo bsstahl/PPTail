@@ -39,6 +39,10 @@
       "type": "boolean",
       "description": "Whether to include the content item in content lists."
     },
+    "excludefromsitemap": {
+      "type": "boolean",
+      "description": "Whether to omit the content item from the generated sitemap.xml. Defaults to false. Unpublished content is always omitted."
+    },
     "publicationdate": {
       "type": "string",
       "format": "date-time",

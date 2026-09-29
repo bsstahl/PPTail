@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PPTail.Extensions;
 using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
+using PPTail.Enumerations;
+using PPTail.Exceptions;
 
 namespace PPTail.SiteGenerator
 {
@@ -54,6 +56,12 @@ namespace PPTail.SiteGenerator
             var contentEncoder = this.ServiceProvider.GetService<IContentEncoder>();
             var contentRepo = this.ServiceProvider.GetService<IContentRepository>();
             var logger = this.ServiceProvider.GetService<ILogger<Builder>>();
+            var buildSettings = this.ServiceProvider.GetService<BuildSettings>() ?? new BuildSettings();
+
+            // Validate the sitemap configuration before doing any work so that
+            // an invalid configuration fails the build before any output is saved
+            String? sitemapBaseUrl = GetSitemapBaseUrl(buildSettings, logger);
+            var sitemapPaths = new List<String>();
 
             // Run the pre-generation tasks -- These add additional pages to the site
             var contentItems = this.ServiceProvider
@@ -99,30 +107,36 @@ namespace PPTail.SiteGenerator
 
             // Create home page
             if (logger is not null) logger.LogInformation("Generating home page");
-            result.Add(new SiteFile()
+            var homePage = new SiteFile()
             {
                 RelativeFilePath = $"./index.html",
                 SourceTemplateType = Enumerations.TemplateType.HomePage,
                 Content = homePageGen.GenerateHomepage(rootLevelSidebarContent, rootLevelNavigationContent, posts)
-            });
+            };
+            result.Add(homePage);
+            sitemapPaths.Add(homePage.RelativeFilePath);
 
             // Create Archive
             if (logger is not null) logger.LogInformation("Generating archive page");
-            result.Add(new SiteFile()
+            var archivePage = new SiteFile()
             {
                 RelativeFilePath = $"./archive.html",
                 SourceTemplateType = Enumerations.TemplateType.Archive,
                 Content = archiveProvider.GenerateArchive(posts, pages, rootLevelNavigationContent, rootLevelSidebarContent, "./")
-            });
+            };
+            result.Add(archivePage);
+            sitemapPaths.Add(archivePage.RelativeFilePath);
 
             // Create Contact Page
             if (logger is not null) logger.LogInformation("Generating contact page");
-            result.Add(new SiteFile()
+            var contactPage = new SiteFile()
             {
                 RelativeFilePath = $"./contact.html",
                 SourceTemplateType = Enumerations.TemplateType.ContactPage,
                 Content = contactProvider.GenerateContactPage(rootLevelNavigationContent, rootLevelSidebarContent, "./")
-            });
+            };
+            result.Add(contactPage);
+            sitemapPaths.Add(contactPage.RelativeFilePath);
 
             // Create RSS Feed
             if (logger is not null) logger.LogInformation("Generating RSS feed");
@@ -154,6 +168,10 @@ namespace PPTail.SiteGenerator
                         SourceTemplateType = postPageTemplateType,
                         Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, post, postPageTemplateType, "..", false)
                     });
+
+                    // Only published posts belong in the sitemap, never preview-only posts
+                    if (post.IsPublished && !post.ExcludeFromSitemap)
+                        sitemapPaths.Add(postFilePath);
                 }
 
                 if (post.IsPublished)
@@ -184,12 +202,16 @@ namespace PPTail.SiteGenerator
                         page.Slug = contentEncoder.UrlEncode(page.Title);
 
                     var contentPageTemplateType = Enumerations.TemplateType.ContentPage;
+                    String pageFilePath = $"Pages/{page.Slug}.{siteSettings.OutputFileExtension}";
                     result.Add(new SiteFile()
                     {
-                        RelativeFilePath = $"Pages/{page.Slug}.{siteSettings.OutputFileExtension}",
+                        RelativeFilePath = pageFilePath,
                         SourceTemplateType = contentPageTemplateType,
                         Content = contentItemPageGen.Generate(childLevelSidebarContent, childLevelNavigationContent, page, contentPageTemplateType, "..", false)
                     });
+
+                    if (!page.ExcludeFromSitemap)
+                        sitemapPaths.Add(pageFilePath);
                 }
             }
 
@@ -273,6 +295,53 @@ namespace PPTail.SiteGenerator
                 }
             }
 
+            // Create the sitemap
+            if (sitemapBaseUrl is not null)
+            {
+                if (logger is not null) logger.LogInformation("Generating sitemap");
+
+                var collision = result.FirstOrDefault(f => SitemapGenerator.IsSitemapPath(f.RelativeFilePath));
+                if (collision is not null)
+                    throw new SitemapException($"The file '{collision.RelativeFilePath}' would overwrite the generated {SitemapGenerator.FileName}. Remove the file or disable sitemap generation (SitemapMode=Disabled).");
+
+                result.Add(new SiteFile()
+                {
+                    RelativeFilePath = $"./{SitemapGenerator.FileName}",
+                    SourceTemplateType = Enumerations.TemplateType.Sitemap,
+                    Content = SitemapGenerator.Generate(sitemapBaseUrl, sitemapPaths),
+                    IsBase64Encoded = false
+                });
+            }
+
+            return result;
+        }
+
+        private static String? GetSitemapBaseUrl(BuildSettings buildSettings, ILogger? logger)
+        {
+            String? result = null;
+            switch (buildSettings.SitemapMode)
+            {
+                case SitemapMode.Disabled:
+                    break;
+
+                case SitemapMode.Auto:
+                    if (String.IsNullOrWhiteSpace(buildSettings.PublicBaseUrl))
+                    {
+                        if (logger is not null) logger.LogWarning("No PublicBaseUrl was configured so {FileName} will not be generated. Supply a PublicBaseUrl to generate a sitemap, or set SitemapMode to Disabled to suppress this warning.", SitemapGenerator.FileName);
+                    }
+                    else
+                        result = SitemapGenerator.NormalizeBaseUrl(buildSettings.PublicBaseUrl);
+                    break;
+
+                case SitemapMode.Enabled:
+                    if (String.IsNullOrWhiteSpace(buildSettings.PublicBaseUrl))
+                        throw new SitemapException("SitemapMode is Enabled but no PublicBaseUrl was configured. Supply the absolute public URL of the site, e.g. https://example.com/blog/.");
+                    result = SitemapGenerator.NormalizeBaseUrl(buildSettings.PublicBaseUrl);
+                    break;
+
+                default:
+                    throw new SitemapException($"Unknown SitemapMode '{buildSettings.SitemapMode}'.");
+            }
             return result;
         }
     }
