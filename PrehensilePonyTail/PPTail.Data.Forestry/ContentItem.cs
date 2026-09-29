@@ -18,6 +18,7 @@ namespace PPTail.Data.Forestry
         public bool IsPublished { get; set; }
         public bool BuildIfNotPublished { get; set; }
         public bool ShowInList { get; set; }
+        public bool ExcludeFromSitemap { get; set; }
         public DateTime PublicationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
         public String Slug { get; set; }
@@ -44,6 +45,7 @@ namespace PPTail.Data.Forestry
                 MenuOrder = this.MenuOrder,
                 PublicationDate = this.PublicationDate,
                 ShowInList = this.ShowInList,
+                ExcludeFromSitemap = this.ExcludeFromSitemap,
                 Slug = this.Slug,
                 Tags = this.Tags,
                 Title = this.Title,

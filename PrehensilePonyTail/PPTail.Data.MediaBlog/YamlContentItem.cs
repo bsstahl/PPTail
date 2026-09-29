@@ -16,6 +16,7 @@ namespace PPTail.Data.MediaBlog
         public String Content { get; set; }
         public bool IsPublished { get; set; }
         public bool ShowInList { get; set; }
+        public bool ExcludeFromSitemap { get; set; }
         public DateTime PublicationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
         public String Slug { get; set; }
@@ -37,6 +38,7 @@ namespace PPTail.Data.MediaBlog
                 Content = this.Content,
                 IsPublished = this.IsPublished,
                 ShowInList = this.ShowInList,
+                ExcludeFromSitemap = this.ExcludeFromSitemap,
                 PublicationDate = this.PublicationDate,
                 LastModificationDate = this.LastModificationDate,
                 Slug = this.Slug ?? this.Title.CreateSlug(),

@@ -67,6 +67,12 @@ public class ContentItemBuilder
         return this;
     }
 
+    public ContentItemBuilder ExcludeFromSitemap(bool value)
+    {
+        _item.ExcludeFromSitemap = value;
+        return this;
+    }
+
     public ContentItemBuilder PublicationDate(DateTime value)
     {
         _item.PublicationDate = value;
