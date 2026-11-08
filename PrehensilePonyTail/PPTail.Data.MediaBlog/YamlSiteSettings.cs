@@ -29,6 +29,7 @@ namespace PPTail.Data.MediaBlog
 
         public IEnumerable<String> AdditionalFilePaths { get; set; } = new List<String>();
         public IEnumerable<YamlSiteVariable> SiteVariables { get; set; } = new List<YamlSiteVariable>();
+        public bool Generate404Page { get; set; } = false;
 
         public Entities.SiteSettings AsEntity()
         {
@@ -49,6 +50,7 @@ namespace PPTail.Data.MediaBlog
                 ItemSeparator = this.ItemSeparator ?? String.Empty,
                 OutputFileExtension = this.OutputFileExtension ?? _defaultOutputFileExtension,
                 AdditionalFilePaths = this.AdditionalFilePaths,
+                Generate404Page = this.Generate404Page,
                 Variables = this.SiteVariables.Select(v => 
                     new Entities.SiteVariable()
                     { 

@@ -25,5 +25,6 @@ namespace PPTail.Entities
         public String OutputFileExtension { get; set; } = "html";
         public IEnumerable<String> AdditionalFilePaths { get; set; } = new[] { "Images", "Pics", "Files" };
         public IEnumerable<SiteVariable> Variables { get; set; } = new List<SiteVariable>();
+        public bool Generate404Page { get; set; } = false;
     }
 }

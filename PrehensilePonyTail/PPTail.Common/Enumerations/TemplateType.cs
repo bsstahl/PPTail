@@ -20,6 +20,7 @@ namespace PPTail.Enumerations
         Syndication,
         SyndicationItem,
         Item,
-        Raw
+        Raw,
+        NotFound
     }
 }

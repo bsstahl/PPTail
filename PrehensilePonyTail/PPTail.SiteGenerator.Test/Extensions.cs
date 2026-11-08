@@ -90,6 +90,7 @@ namespace PPTail.SiteGenerator.Test
             container.AddSingleton<IRedirectProvider>(redirectProvider);
             container.AddSingleton<IContentEncoder>(contentEncoder);
             container.AddSingleton<IContentItemPageGenerator>(contentItemPageGen);
+            container.AddSingleton<INotFoundProvider>(Mock.Of<INotFoundProvider>());
 
             container.AddSingleton<IContentRepository>(contentRepo);
 
