@@ -65,6 +65,7 @@ namespace PPTail.Generator.Template
             return template.Content
                   .ReplaceMermaidAssets(content, sidebarContent)
                   .Replace("{Title}", pageTitle)
+                  .Replace("{Description}", pageTitle)
                   .Replace("{ByLine}", String.Empty)
                   .ReplaceNonContentItemSpecificVariables(_serviceProvider, sidebarContent, navContent, content, pathToRoot);
         }
